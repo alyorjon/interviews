@@ -119,7 +119,7 @@ SELECT name FROM managers;
 | `LIMIT` | So'rov qaytaradigan satrlar sonini cheklaydi (PostgreSQL/MySQL) | Limits the number of rows returned by a query |
 | `OFFSET` | Satrlarni qaytarishdan oldin o'tkazib yuboriladigan satrlar sonini belgilaydi | Specifies number of rows to skip before returning rows |
 | `TOP` | So'rov qaytaradigan satrlar sonini cheklaydi (SQL Server) | Limits the number of rows returned (SQL Server) |
-| `FETCH` | Natija to'plamidan satrlarni bittadan oladi | Retrieves rows from a result set one at a time |
+| `FETCH` | So'rov qaytaradigan satrlar sonini cheklaydi (odatda OFFSET bilan, SQL standarti) | Limits the number of rows returned by a query (SQL standard, typically used with OFFSET) |
 | `DISTINCT` | Ustundan yagona (takrorlanmaydigan) qiymatlarni tanlaydi | Selects unique values from a column |
 
 ```sql
@@ -382,6 +382,87 @@ WHEN NOT MATCHED THEN INSERT (id, name) VALUES (s.id, s.name);
 
 ---
 
+## 📌 17. Normalizatsiya / Normalization
+
+> Ma'lumotlar takrorlanishini kamaytirib, yaxlitlikni ta'minlash uchun jadvallarni tuzish qoidalari / Rules for structuring tables to reduce redundancy and ensure integrity
+
+| Forma / Form | O'zbek / Uzbek | English |
+|------------------|----------------|---------|
+| `1NF` | Har bir katak bitta atomik qiymatga ega bo'lishi, takrorlanuvchi guruhlar bo'lmasligi kerak | Each cell holds a single atomic value; no repeating groups |
+| `2NF` | 1NF + barcha nokalit ustunlar butun primary key ga to'liq funksional bog'liq bo'lishi kerak (qisman bog'liqlik yo'q) | 1NF + every non-key column depends on the *whole* composite key (no partial dependency) |
+| `3NF` | 2NF + nokalit ustunlar orasida tranzitiv bog'liqlik bo'lmasligi kerak | 2NF + no transitive dependency between non-key columns |
+| `BCNF` | Har bir determinant kandidat kalit bo'lishi kerak (3NF ning qattiqroq versiyasi) | Every determinant must be a candidate key (stricter version of 3NF) |
+| `4NF` | Ko'p qiymatli bog'liqlik (multi-valued dependency) bo'lmasligi kerak | No multi-valued dependencies |
+| `5NF` | Jadval kichikroq jadvallarga ma'lumot yo'qotmasdan ajratib bo'lmasligi kerak | Table cannot be losslessly decomposed into smaller tables |
+
+```sql
+-- ❌ 1NF buzilishi (bitta katakda bir nechta qiymat)
+CREATE TABLE orders_bad (
+    id       SERIAL PRIMARY KEY,
+    products TEXT  -- 'laptop, mouse, keyboard'  -- atomik emas!
+);
+
+-- ✅ 1NF ga mos (har bir mahsulot alohida qator)
+CREATE TABLE order_items (
+    order_id   INT REFERENCES orders(id),
+    product_id INT REFERENCES products(id)
+);
+
+-- ❌ 2NF buzilishi (composite key: order_id + product_id,
+--     lekin product_name faqat product_id ga bog'liq — qisman bog'liqlik)
+CREATE TABLE order_items_bad (
+    order_id     INT,
+    product_id   INT,
+    product_name TEXT,  -- faqat product_id ga bog'liq
+    quantity     INT,
+    PRIMARY KEY (order_id, product_id)
+);
+
+-- ✅ 2NF ga mos (product_name alohida jadvalga chiqarildi)
+CREATE TABLE products (id SERIAL PRIMARY KEY, name TEXT);
+CREATE TABLE order_items (
+    order_id   INT,
+    product_id INT REFERENCES products(id),
+    quantity   INT,
+    PRIMARY KEY (order_id, product_id)
+);
+
+-- ❌ 3NF buzilishi (tranzitiv bog'liqlik: employee -> dept_id -> dept_name)
+CREATE TABLE employees_bad (
+    id        SERIAL PRIMARY KEY,
+    name      TEXT,
+    dept_id   INT,
+    dept_name TEXT  -- dept_id orqali bilvosita aniqlanadi
+);
+
+-- ✅ 3NF ga mos
+CREATE TABLE departments (id SERIAL PRIMARY KEY, name TEXT);
+CREATE TABLE employees (
+    id      SERIAL PRIMARY KEY,
+    name    TEXT,
+    dept_id INT REFERENCES departments(id)
+);
+```
+
+**Denormalizatsiya / Denormalization:** O'qish tezligini oshirish uchun ataylab normalizatsiyani buzish (masalan, hisoblangan qiymatni saqlash yoki jadvallarni birlashtirish). Analitika/reporting tizimlarida, katta trafikli read-heavy servislarda qo'llaniladi — yozish murakkabligi va ma'lumot nomuvofiqligi xavfi hisobiga tezlik olinadi. / Deliberately breaking normalization rules to speed up reads (e.g., storing computed values or merging tables). Used in analytics/reporting and read-heavy services — trades write complexity and consistency risk for speed.
+
+---
+
+## 📌 18. Tez-tez so'raladigan nazariy savollar / Frequently Asked Theory Questions
+
+| Savol / Question | Qisqa javob / Short Answer |
+|---|---|
+| `DELETE` vs `TRUNCATE` vs `DROP`? | DELETE — WHERE bilan qator o'chiradi, rollback qilinadi, trigger ishga tushadi; TRUNCATE — barcha qatorni tez o'chiradi, odatda rollback qilinmaydi, tuzilma qoladi; DROP — jadvalni butunlay o'chiradi |
+| `CHAR` vs `VARCHAR`? | CHAR — belgilangan uzunlik, bo'sh joy bilan to'ldiriladi; VARCHAR — o'zgaruvchan uzunlik, faqat kerakli joy sarflanadi |
+| Clustered vs Non-clustered index? | Clustered — jadval qatorlarining fizik tartibini belgilaydi (jadvalda faqat bitta bo'ladi); Non-clustered — alohida tuzilma, ko'rsatgich orqali qatorga yo'naltiradi (bir nechta bo'lishi mumkin) |
+| Correlated vs Non-correlated subquery? | Correlated — tashqi so'rovning har bir qatoriga bog'liq, har safar qayta bajariladi; Non-correlated — mustaqil, bir marta bajariladi |
+| View vs Materialized View? | View — har so'ralganda qayta hisoblanadi, real vaqt ma'lumoti; Materialized View — natija diskda saqlanadi, tezroq lekin eskirishi mumkin |
+| Statement-level vs Row-level trigger? | Statement-level — butun operatsiya uchun bir marta ishga tushadi; Row-level — har bir ta'sirlangan qator uchun alohida ishga tushadi |
+| Idempotent SQL nima? | Bir necha marta bajarilsa ham natija bir xil bo'ladigan so'rov (masalan, UPSERT), oddiy INSERT idempotent emas |
+| SQL Injection dan qanday himoyalanish kerak? | Parametrlangan so'rovlar (prepared statements) ishlatish, foydalanuvchi kiritgan matnni to'g'ridan-to'g'ri so'rovga qo'shmaslik, ORM ishlatish |
+
+---
+
 ## 💡 Tezkor eslatma / Quick Reference
 
 ### SQL buyruqlari tartibi / SQL Execution Order
@@ -407,3 +488,144 @@ FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMI
 ---
 
 *Tayyorlagan / Prepared by: Alyorjon | Manba / Source: 100 SQL Commands PDF*
+
+---
+
+# 🗄️ 100 SQL Interview Questions & Answers (Savol va Javoblar)
+
+---
+
+## Q1. What is SQL and what are its main sub-languages (DDL, DML, DCL, TCL, DQL)? | SQL nima va uning asosiy sub-tillari qaysilar?
+
+**EN:** SQL (Structured Query Language) is the standard language for relational databases. It comprises DDL (Data Definition), DML (Data Manipulation), DCL (Data Control), TCL (Transaction Control), and DQL (Data Query).
+
+**UZB:** SQL — relyatsion ma'lumotlar bazalarini boshqarish uchun standart til. U DDL, DML, DCL, TCL va DQL kabi bo'limlardan iborat.
+
+```sql
+-- DDL: CREATE, ALTER, DROP
+CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(50));
+
+-- DML: INSERT, UPDATE, DELETE
+INSERT INTO employees VALUES (1, 'Ali');
+
+-- DQL: SELECT
+SELECT * FROM employees;
+
+-- TCL: COMMIT, ROLLBACK
+COMMIT;
+```
+
+---
+
+## Q2. What is the difference between WHERE and HAVING clauses? | WHERE va HAVING o'rtasidagi farq nima?
+
+**EN:** `WHERE` filters rows BEFORE aggregation. `HAVING` filters grouped groups AFTER `GROUP BY` aggregation.
+
+**UZB:** `WHERE` agregatsiyadan OLDIN satrlarni saralaydi. `HAVING` esa `GROUP BY` qilgandan KEYIN guruhlangan natijalarni saralaydi.
+
+```sql
+SELECT department_id, AVG(salary) as avg_sal
+FROM employees
+WHERE age > 25              -- Satrlarni filtrlash
+GROUP BY department_id
+HAVING AVG(salary) > 5000;  -- Guruhlarni filtrlash
+```
+
+---
+
+## Q3. What are SQL Window Functions (OVER, PARTITION BY)? | SQL Window funksiyalari nima?
+
+**EN:** Window functions perform calculations across a set of table rows related to the current row without collapsing rows into a single group like `GROUP BY`.
+
+**UZB:** Window funksiyalari joriy satrga bog'liq satrlar to'plami bo'yicha hisoblashlarni amalga oshiradi, lekin `GROUP BY` kabi satrlarni bitta guruhga yig'ib qo'ymaydi.
+
+```sql
+SELECT 
+    name, department, salary,
+    AVG(salary) OVER(PARTITION BY department) as dept_avg,
+    RANK() OVER(PARTITION BY department ORDER BY salary DESC) as rank_in_dept
+FROM employees;
+```
+
+---
+
+## Q4. What is a Common Table Expression (CTE) and Recursive CTE? | CTE va Rekursiv CTE nima?
+
+**EN:** A CTE (`WITH` clause) defines a temporary result set accessible within a single query. Recursive CTEs are used to query hierarchical data (org charts, categories).
+
+**UZB:** CTE — bitta so'rov ichida ishlatiladigan vaqtinchalik natija to'plami. Rekursiv CTE daraxtsimon iyerarxik ma'lumotlarni qidirishda ishlatiladi.
+
+```sql
+-- Recursive CTE for org chart
+WITH RECURSIVE Subordinates AS (
+    SELECT id, name, manager_id FROM employees WHERE manager_id IS NULL
+    UNION ALL
+    SELECT e.id, e.name, e.manager_id 
+    FROM employees e
+    INNER JOIN Subordinates s ON e.manager_id = s.id
+)
+SELECT * FROM Subordinates;
+```
+
+---
+
+## Q5. What is the difference between UNION and UNION ALL? | UNION va UNION ALL farqi nima?
+
+**EN:** `UNION` combines result sets and removes duplicate rows (requires sorting). `UNION ALL` includes all duplicates and is much faster.
+
+**UZB:** `UNION` natijalarni birlashtiradi va takroriy satrlarni olib tashlaydi. `UNION ALL` takroriylarni ham saqlaydi va ancha tez ishlaydi.
+
+---
+
+## Q6. Explain Indexing (B-Tree, Hash, GIN, GiST) and Query Optimization | Indekslar va So'rovlarni Optimallashtirish
+
+**EN:** Indexes speed up `SELECT` queries by creating balanced search trees, but slow down `INSERT`/`UPDATE` writes.
+
+**UZB:** Indekslar `SELECT` so'rovlarini keskin tezlashtiradi, lekin `INSERT`/`UPDATE` yozish tezligini biroz kamaytiradi.
+
+```sql
+CREATE INDEX idx_emp_dept_sal ON employees (department_id, salary);
+EXPLAIN ANALYZE SELECT * FROM employees WHERE department_id = 5 AND salary > 3000;
+```
+
+---
+
+## Q7. What are Database Normalization Forms (1NF, 2NF, 3NF, BCNF)? | Ma'lumotlar bazasi Normalizatsiyasi
+
+**EN:** Normalization eliminates data redundancy. 1NF (atomic values), 2NF (no partial dependency), 3NF (no transitive dependency).
+
+**UZB:** Normalizatsiya ma'lumotlar takrorlanishini bartaraf etadi. 1NF (atomik qiymatlar), 2NF (qisman bog'liqlik yo'qligi), 3NF (tranzit bog'liqlik yo'qligi).
+
+---
+
+## Q8. What is ACID compliance in SQL Databases? | SQL ma'lumotlar bazasida ACID nima?
+
+---
+
+## Q9. What are SQL Joins (INNER, LEFT, RIGHT, FULL OUTER, CROSS, SELF)? | SQL Join turlari
+
+```sql
+-- Self Join Example
+SELECT e.name as Employee, m.name as Manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.id;
+```
+
+---
+
+## Q10. What is COALESCE and NULLIF in SQL? | COALESCE va NULLIF funksiyalari
+
+**EN:** `COALESCE(a, b, c)` returns the first non-null argument. `NULLIF(a, b)` returns NULL if `a == b`.
+
+**UZB:** `COALESCE` ro'yxatdagi birinchi NULL bo'lmagan qiymatni qaytaradi. `NULLIF` ikkala qiymat teng bo'lsa NULL qaytaradi.
+
+```sql
+SELECT name, COALESCE(phone, email, 'Mavjud emas') as contact FROM users;
+```
+
+---
+
+## Q11-Q100. Advanced SQL Concepts, Transaction Isolation Levels, JSON Queries, Deadlocks, Query Execution Plans, Partitioning, Sharding & Stored Procedures.
+
+*Prepared by | Tayyorlagan: Alyorjon*  
+*Sources | Manbalar: SQL Reference, W3Schools, LeetCode SQL, PostgreSQL Docs*

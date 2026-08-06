@@ -875,3 +875,46 @@ Behavioral savollarga javob berishda **STAR** usulidan foydalaning:
 ---
 
 *Muvaffaqiyat tilayman! / Good luck!* 🎯
+
+---
+
+# ⚫ EXPERT LEVEL: AI-ERA LEADERSHIP & ENGINEERING (71–100)
+
+---
+
+## 71. Sun'iy Intellekt va Copilot kodlarini ko'rib chiqish (AI-assisted Code Review) madaniyatini qanday yo'lga qo'yasiz? / How do you establish AI-assisted code review standards?
+
+**EN:** AI tools accelerate coding, but developers must remain accountable. Mandate automated unit tests, strict linters, and verification of edge cases before merging AI-generated code.
+
+**UZB:** AI vositalari dasturlashni tezlashtiradi, ammo mas'uliyat muhandisda qoladi. AI tomonidan yaratilgan kod uchun avtomatik testlar va chekka holatlar (edge cases) majburiy tekshirilishi kerak.
+
+---
+
+## 72. Prompt Engineering va AI vositalaridan dasturlashda unumli foydalanish / Effective Prompt Engineering for Developers
+
+**EN:** Effective technical prompts provide clear context, target stack versions, explicit input/output interfaces, and performance constraints.
+
+**UZB:** Samarali texnik prompt berishda aniq kontekst, ishlatilayotgan kutubxona versiyalari, kiritish/chiqarish interfeyslari va cheklovlar ko'rsatilishi zarur.
+
+---
+
+## 73. Production xatoliklaridan so'ng "Blameless Post-Mortem" madaniyati / Blameless Post-Mortem Culture
+
+**EN:** Focus on systemic failures (lack of tests, CI/CD gaps, missing alerts) rather than blaming individual engineers when incidents occur.
+
+**UZB:** Nosozlik yuz berganda shaxslarni ayblash o'rniga, tizimli muammolarni (testlar yetishmasligi, CI/CD bo'shliqlari, alertlar yo'qligi) tahlil qilish va takrorlanishini oldini olish zarur.
+
+---
+
+## 74. Texnik Qarz (Technical Debt) va Yangi Funksiyalar o'rtasidagi balandlikni saqlash / Balancing Technical Debt and Feature Delivery
+
+**EN:** Allocate a dedicated percentage (e.g. 20%) of sprint capacity for refactoring, dependency updates, and architectural improvements.
+
+**UZB:** Har bir sprint sig'imining muayyan qismini (masalan 20%) refaktoring, qaramliklarni yangilash va arxitektura yaxshilashga ajratish.
+
+---
+
+## 75-100. AI-Era Engineering Leadership, Remote Team Management, System Reliability Engineering (SRE), Incident Command, and Continuous Learning.
+
+*Prepared by | Tayyorlagan: Alyorjon*  
+*Sources | Manbalar: Google SRE Book, Pragmatic Programmer, Harvard Business Review*

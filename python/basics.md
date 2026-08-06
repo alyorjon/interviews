@@ -1330,8 +1330,8 @@ from collections import Counter, defaultdict, OrderedDict, namedtuple, deque
 # Counter — hisoblash
 text = "mississippi"
 counter = Counter(text)
-print(counter)               # Counter({'s': 4, 'i': 4, 'p': 2, 'm': 1})
-print(counter.most_common(3))# [('s', 4), ('i', 4), ('p', 2)]
+print(counter)               # Counter({'i': 4, 's': 4, 'p': 2, 'm': 1})
+print(counter.most_common(3))# [('i', 4), ('s', 4), ('p', 2)]
 
 words = ["apple", "banana", "apple", "cherry", "banana", "apple"]
 word_count = Counter(words)
@@ -1691,7 +1691,7 @@ for emp in by_salary:
 students = [("Ali", 85), ("Vali", 92), ("Sami", 85), ("Doni", 92)]
 sorted_students = sorted(students, key=lambda s: (-s[1], s[0]))
 print(sorted_students)
-# [('Vali', 92), ('Doni', 92), ('Ali', 85), ('Sami', 85)]
+# [('Doni', 92), ('Vali', 92), ('Ali', 85), ('Sami', 85)]
 
 # operator.attrgetter bilan
 from operator import attrgetter, itemgetter
@@ -3248,7 +3248,7 @@ def safe_eval(expression: str) -> float:
     except Exception as e:
         raise ValueError(f"Noto'g'ri ifoda: {e}")
 
-print(safe_eval("2 + 3 * 4"))  # 14.0
+print(safe_eval("2 + 3 * 4"))  # 14
 ```
 
 ---
@@ -3855,7 +3855,6 @@ print(weak_head().value)  # 0
 
 ```python
 import struct
-import memoryview
 
 # memoryview — nusxasiz kirish / Zero-copy access
 data = bytearray(b"Hello, World!")

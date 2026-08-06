@@ -1428,3 +1428,662 @@ docker compose down
 
 *Prepared by | Tayyorlagan: Alyorjon*  
 *Sources | Manbalar: Docker Docs, GeeksforGeeks, DataCamp, InterviewBit, Edureka*
+
+---
+
+# 🔴 ADVANCED LEVEL (46–80)
+
+---
+
+## 46. Docker WASM / WASI integration nima va containerization kelajagida u qanday o'rin tutadi? / What is Docker WASM / WASI integration and its role in containerization?
+
+**EN:** Docker supports WebAssembly (Wasm) runtimes alongside traditional OCI containers via WasmEdge / Spin runtimes. WASM containers launch in milliseconds and have negligible memory overhead (~few MBs).
+
+**UZB:** Docker WasmEdge va Spin kabi runtime'lar yordamida an'anaviy OCI konteynerlari bilan birga WebAssembly (Wasm) ni qo'llab-quvvatlaydi. WASM konteynerlari millisekundlarda ishga tushadi va juda kam xotira (~bir necha MB) talab qiladi.
+
+```bash
+# Docker Desktop'da WASM ishga tushirish | Run WASM container in Docker
+docker run --runtime=io.containerd.spin.v2 --platform=wasi/wasm32   ghcr.io/spinframework/spin-dotnet-http:v0.1.0
+```
+
+---
+
+## 47. Docker Buildx va Multi-Platform Build qanday ishlaydi? / How does Docker Buildx and Multi-Platform Build work?
+
+**EN:** `docker buildx` uses BuildKit to create multi-architecture images (e.g. `linux/amd64` and `linux/arm64` for Apple Silicon & Cloud servers) in a single command.
+
+**UZB:** `docker buildx` BuildKit yordamida bitta buyruq bilan bir nechta arxitekturalar (masalan Apple Silicon va Bulutli serverlar uchun `linux/amd64` va `linux/arm64`) uchun konteyner obrazlarini quradi.
+
+```bash
+# Multi-platform builder yaratish va ishlatish | Create and use multi-platform builder
+docker buildx create --name mybuilder --use
+docker buildx inspect --bootstrap
+
+# Bir vaqtda AMD64 va ARM64 uchun build qilib Docker Hub'ga joylash
+docker buildx build --platform linux/amd64,linux/arm64 -t myusername/myapi:v2.0 --push .
+```
+
+---
+
+## 48. Docker Scout va Vulnerability Scanning nima? / What is Docker Scout and Vulnerability Scanning?
+
+**EN:** Docker Scout analyzes container images for security vulnerabilities (CVEs), software bill of materials (SBOM), and supply chain policy compliance.
+
+**UZB:** Docker Scout konteyner obrazlarini xavfsizlik zaifliklari (CVE), dasturiy ta'minot komponentlari ro'yxati (SBOM) va yetkazib berish zanjiri xavfsizligi bo'yicha tahlil qiladi.
+
+```bash
+# Obraz zaifliklarini tekshirish | Quick CVE scan
+docker scout cves myapp:latest
+
+# Baza obrazni tavsiya etilgan yangisiga almashtirish bo'yicha maslahat
+docker scout recommendations myapp:latest
+```
+
+---
+
+## 49. Rootless Docker nima va u xavfsizlikni qanday oshiradi? / What is Rootless Docker and how does it enhance security?
+
+**EN:** Rootless mode allows running Docker daemon and containers as a non-root user, mitigating potential container breakout vulnerabilities.
+
+**UZB:** Rootless rejim Docker daemon va konteynerlarni root bo'lmagan oddiy foydalanuvchi sifatida ishga tushirishga imkon beradi, bu konteynerdan buzib kirish (container breakout) xavflarini bartaraf etadi.
+
+```bash
+# Rootless Docker o'rnatish va ishga tushirish | Setup rootless Docker
+dockerd-rootless-setuptool.sh install
+
+export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+docker run -d -p 8080:80 nginx:alpine
+```
+
+---
+
+## 50. Distroless Image nima va u nima uchun ishlatiladi? / What is a Distroless Image and why is it used?
+
+**EN:** Distroless images contain only your application and runtime dependencies. They omit shell (`sh`/`bash`), package managers (`apt`/`apk`), and standard Linux utilities to minimize attack surface and image size.
+
+**UZB:** Distroless obrazlar faqat ilova va uning ishlash qaramliklarini saqlaydi. Unumdorlik va xavfsizlikni oshirish uchun ularda shell (`sh`/`bash`), paket menejerlari va standart Linux utilitalari bo'lmaydi.
+
+```dockerfile
+# Multi-stage build with Google Distroless
+FROM python:3.12-slim AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt -t /app/packages
+
+FROM gcr.io/distroless/python3-debian12
+COPY --from=builder /app/packages /app/packages
+COPY . /app
+WORKDIR /app
+ENV PYTHONPATH=/app/packages
+CMD ["main.py"]
+```
+
+---
+
+## 51. Docker Contexts nima va u uzoqdagi serverlarni boshqarishda qanday ishlatiladi? / What are Docker Contexts and how are they used for remote management?
+
+**EN:** Docker contexts allow managing multiple local and remote Docker engines (or Kubernetes clusters) directly from your local Docker CLI without SSH password prompts.
+
+**UZB:** Docker context'lar mahalliy va masofadagi Docker engine'larni mahalliy terminaldan SSH orqali oson almashib boshqarish imkonini beradi.
+
+```bash
+# Masofaviy server uchun context yaratish | Create remote context
+docker context create staging-server --docker "host=ssh://deploy@192.168.1.100"
+
+# Context ga o'tish | Switch context
+docker context use staging-server
+docker ps # Endi staging-server'dagi konteynerlarni ko'rsatadi
+```
+
+---
+
+## 52. Docker Compose V2 profile'lar qanday ishlaydi? / How do Docker Compose V2 profiles work?
+
+**EN:** Profiles allow enabling/disabling specific services in `docker-compose.yml` (e.g. debug tools, test DBs, monitoring) depending on the environment.
+
+**UZB:** Profile'lar `docker-compose.yml` da ma'lum servislarni (masalan debug vositalari, test bazalari, monitoring) faqat kerakli muhitda ishga tushirish imkonini beradi.
+
+```yaml
+services:
+  web:
+    image: myapp:v1
+  pgadmin:
+    image: dpage/pgadmin4
+    profiles: ["debug"] # Faqat --profile debug berilganda ishlaydi
+```
+
+```bash
+# Debug bilan birga ishga tushirish | Run with debug profile
+docker compose --profile debug up -d
+```
+
+---
+
+## 53. Docker Container Resource Quotas (CPU & Memory Limit) qanday o'rnatiladi? / How to set Docker Container Resource Quotas (CPU & Memory Limit)?
+
+**EN:** Restricting CPU and RAM prevents a single misbehaving container from crashing the entire host system (OOM Killer prevention).
+
+**UZB:** CPU va RAM manbalarini cheklash bitta konteyner butun server xotirasini tugatib qo'yishini (OOM Killer) oldini oladi.
+
+```bash
+# CLI orqali 1 CPU va 512MB RAM cheklovi | Limit via CLI
+docker run -d --name limited_app --cpus="1.0" --memory="512m" --memory-swap="1g" nginx:alpine
+```
+
+```yaml
+# Docker Compose V2 resurs cheklovi | Resource limit in Compose
+services:
+  app:
+    image: backend:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1024M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+```
+
+---
+
+## 54. Docker Storage Drivers (Overlay2, Btrfs, ZFS) va unumdorlik / Docker Storage Drivers and Performance
+
+**EN:** Overlay2 is the default copy-on-write (CoW) storage driver for Docker on Linux. It overlays upper (writable) and lower (read-only image) layers efficiently.
+
+**UZB:** Overlay2 — Linux platformasida Docker uchun standart saqlash drayveri. U o'qish uchun mo'ljallangan qatlamlar ustiga yoziladigan qatlamni samarali joylashtiradi.
+
+```bash
+# Ishlatilayotgan drayverni ko'rish | Check active storage driver
+docker info | grep "Storage Driver"
+# Storage Driver: overlay2
+```
+
+---
+
+## 55. Docker Init buyrug'i nima? / What is the `docker init` command?
+
+**EN:** `docker init` is a modern CLI utility introduced in Docker Desktop/Engine that automatically generates optimized Dockerfile, docker-compose.yml, and .dockerignore files for Python, Node.js, Go, Rust, Java apps.
+
+**UZB:** `docker init` — loyihangiz tili (Python, Node.js, Go, Rust va hokazo) uchun avtomatik tarzda optimallashtirilgan Dockerfile, docker-compose.yml va .dockerignore fayllarini yaratib beruvchi zamonaviy utilita.
+
+```bash
+# Loyiha papkasida ishga tushirish | Run in project root
+docker init
+```
+
+---
+
+# ⚫ EXPERT LEVEL (56–100)
+
+---
+
+## 56. Container Security Hardening Best Practices / Konteynerlar xavfsizligini oshirish amaliyoti
+
+**EN:** Hardening includes running as non-root, read-only root filesystem, dropping capabilities, and disabling privilege escalation.
+
+**UZB:** Xavfsizlikni oshirish non-root foydalanuvchi, faqat o'qish rejimida ildiz fayl tizimi, keraksiz Linux capability'larni olib tashlashni o'z ichiga oladi.
+
+```yaml
+services:
+  secure_app:
+    image: myapp:prod
+    user: "10001:10001"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    tmpfs:
+      - /tmp
+```
+
+---
+
+## 57. Docker Log Rotation va Log Driver konfiguratsiyasi / Docker Log Rotation and Driver Config
+
+**EN:** Without log rotation, container standard output logs can quickly fill up host disk space. `json-file` or `loki`/`syslog` driver with `max-size` prevents disk exhaustion.
+
+**UZB:** Log rotatsiyasiz konteyner loglari diskni to'ldirib qo'yishi mumkin. `max-size` parametrlari buni oldini oladi.
+
+```json
+// /etc/docker/daemon.json
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  }
+}
+```
+
+---
+
+## 58. Docker Content Trust (DCT) va Image Signing / Docker Content Trust and Image Signing
+
+**EN:** DCT enables digital signing of Docker images using Notary/Cosign to guarantee image integrity and authenticity before deployment.
+
+**UZB:** DCT raqamli imzo yordamida obrazlar faqat ishonchli manbadan kelganini va o'zgartirilmaganini kafolatlaydi.
+
+```bash
+# Content Trust'ni yoqish | Enable DCT
+export DOCKER_CONTENT_TRUST=1
+
+# Faqat imzolangan obrazlarni yuklashga ruxsat beradi
+docker pull myrepo/myimage:signed
+```
+
+---
+
+## 59. Docker Healthcheck va Grace Period sozlash / Configuring Docker Healthcheck and Grace Period
+
+**EN:** Healthchecks allow Docker and Orchestrators to monitor container health and restart unhealthy instances automatically.
+
+**UZB:** Healthcheck konteyner ichidagi servis ishlashini muntazam tekshiradi va buzilgan taqdirda avtomatik qayta ishga tushiradi.
+
+```dockerfile
+HEALTHCHECK --interval=10s --timeout=3s --start-period=30s --retries=3   CMD curl -f http://localhost:8000/health || exit 1
+```
+
+---
+
+## 60. Kubernetes vs Docker Swarm farqlari / Differences between Kubernetes and Docker Swarm
+
+| Xususiyat / Feature | Docker Swarm | Kubernetes (k8s) |
+|---|---|---|
+| O'rnatish / Setup | Juda sodda (Docker ichida o'rnatilgan) | Murakkab, qo'shimcha infratuzilma |
+| Scalability | Kichik va o'rta loyihalar uchun | Cheksiz, enterprise daraja |
+| Ekotizim / Ecosystem | Cheklangan | Juda boy (Helm, Istio, ArgoCD) |
+| Auto-scaling | Qo'lda | HPA (Horizontal Pod Autoscaler) |
+
+---
+
+## 61. Docker Container Networking: Overlay Network va VXLAN
+
+**EN:** Overlay networks create a distributed network across multiple Docker daemon hosts using VXLAN encapsulation, enabling secure cross-host container communication.
+
+**UZB:** Overlay tarmog'i VXLAN protokoli yordamida bir nechta alohida host serverlardagi konteynerlar o'rtasida xavfsiz tarmoq hosil qiladi.
+
+```bash
+# Swarm rejimida overlay network yaratish | Create overlay network in Swarm
+docker network create -d overlay --attachable my_overlay_net
+```
+
+---
+
+## 62. Multi-stage Dockerfile bilan Go/Rust microservice build qilish / Building Go/Rust microservice with Multi-stage Dockerfile
+
+```dockerfile
+# 1-Bosqich: Kompilyatsiya | Stage 1: Build
+FROM golang:1.22-alpine AS builder
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o server .
+
+# 2-Bosqich: Minimal Scratch Obraz | Stage 2: Minimal Scratch
+FROM scratch
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /app/server /server
+EXPOSE 8080
+ENTRYPOINT ["/server"]
+```
+
+---
+
+## 63. Docker Garbage Collection: System Prune va Volume Cleanup
+
+**EN:** Unused images, stopped containers, build caches, and dangling volumes consume massive disk space over time.
+
+**UZB:** Ishlatilmayotgan obrazlar, to'xtatilgan konteynerlar va eskirgan cache'lar vaqt o'tishi bilan katta disk maydonini egallaydi.
+
+```bash
+# Barcha ishlatilmayotgan resurslarni o'chirish | Clean unused Docker objects
+docker system prune -a --volumes --force
+```
+
+---
+
+## 64. Docker Volume Plugins: Remote Storage Integration (NFS, AWS EBS)
+
+**EN:** Docker volume plugins allow containers to mount persistent cloud storage directly across cloud instances.
+
+**UZB:** Volume plaginlari konteynerlarga bulutli saqlash resurslarini (NFS, AWS EBS, NetApp) to'g'ridan-to'g'ri ulash imkonini beradi.
+
+```bash
+# NFS volume yaratish | Create NFS volume
+docker volume create --driver local   --opt type=nfs   --opt o=addr=192.168.1.50,rw   --opt device=:/path/to/dir nfs_volume
+```
+
+---
+
+## 65. Container Privileged Mode va uning xavflari / Container Privileged Mode and Risks
+
+**EN:** Running containers with `--privileged` grants full root access to all host devices and kernel features, introducing critical security vulnerabilities. Avoid in production.
+
+**UZB:** Konteynerni `--privileged` rejimi bilan ishga tushirish host serverning barcha apparat va yadrosiga to'liq kirish beradi, bu juda xavfli. Ishlab chiqarishda ishlatmaslik tavsiya etiladi.
+
+---
+
+## 66. Docker Build Cache Optimizatsiyasi va `--mount=type=cache`
+
+**EN:** Modern BuildKit supports inline package manager caching (`pip`, `apt`, `go build`) to speed up CI/CD pipeline builds significantly.
+
+**UZB:** BuildKit bilan `pip` va paketlar keshini saqlash CI/CD quvurlarida build vaqtini 10 barobargacha tezlashtiradi.
+
+```dockerfile
+# Syntax=docker/dockerfile:1
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN --mount=type=cache,target=/root/.cache/pip     pip install -r requirements.txt
+COPY . .
+```
+
+---
+
+## 67. Docker Swarm Rolling Update va Rollback strategiyasi / Docker Swarm Rolling Update & Rollback
+
+```bash
+# Servisni uzluksiz yangilash | Rolling update without downtime
+docker service update   --image myapp:v2.0   --update-parallelism 2   --update-delay 10s   --update-failure-action rollback   myservice
+```
+
+---
+
+## 68. Docker Container Sidecar Pattern va Logging Aggregation
+
+**EN:** The Sidecar pattern deploys a secondary helper container (e.g., Fluentd, Vector, Filebeat) alongside the main application container to collect and stream logs to central storage.
+
+**UZB:** Sidecar patterni asosiy ilova konteyneri yoniga qo'shimcha yordamchi konteyner qo'yib, loglarni markaziy serverga jo'natishni ta'minlaydi.
+
+---
+
+## 69. Docker Desktop Performance Tuning (VirtioFS, Rosetta 2)
+
+**EN:** On macOS Apple Silicon, enabling VirtioFS for file sharing and Rosetta 2 for x86_64 emulation drastically reduces CPU and I/O latency.
+
+**UZB:** Apple Silicon protsessorlarida VirtioFS fayl tizimi va Rosetta 2 emulyatsiyasini yoqish Docker Desktop ish tezligini keskin oshiradi.
+
+---
+
+## 70. Docker Container Live Restore nima? / What is Docker Container Live Restore?
+
+**EN:** Live Restore keeps containers running even when the Docker daemon crashes or is undergoing maintenance/upgrades.
+
+**UZB:** Live Restore parametri Docker daemon o'chib qolganda yoki yangilanayotganda ham konteynerlar to'xtamasdan ishlashini ta'minlaydi.
+
+```json
+// /etc/docker/daemon.json
+{
+  "live-restore": true
+}
+```
+
+---
+
+## 71. Container Entrypoint vs CMD farqlari va birlashtirib ishlatish / ENTRYPOINT vs CMD
+
+```dockerfile
+# ENTRYPOINT o'zgarmas buyruq, CMD esa default argumentlar
+ENTRYPOINT ["python", "manage.py"]
+CMD ["runserver", "0.0.0.0:8000"]
+```
+
+---
+
+## 72. Docker DNS Resolution va Custom Bridge Networks
+
+**EN:** Containers on custom bridge networks get automatic internal DNS resolution by container name, unlike the default bridge network.
+
+**UZB:** Maxsus yaratilgan bridge tarmoqlaridagi konteynerlar bir-birini avtomatik DNS (konteyner nomi) orqali topadi.
+
+---
+
+## 73. Docker Compose Include va Modular Configurations
+
+**EN:** Docker Compose V2 supports `include` directive to import other compose files modularly.
+
+**UZB:** Docker Compose V2 bir nechta compose fayllarni modulli ravishda birlashtirish uchun `include` imkoniyatini taqdim etadi.
+
+```yaml
+include:
+  - ./infrastructure/db-compose.yml
+  - ./monitoring/prometheus-compose.yml
+
+services:
+  web:
+    build: .
+```
+
+---
+
+## 74. Docker Volume Backup va Restore qilish buyruqlari / Backup and Restore Docker Volumes
+
+```bash
+# Volume ni tar.gz arxivga zaxiralash | Backup volume to tar.gz
+docker run --rm -v postgres_data:/volume -v $(pwd):/backup alpine   tar -czvf /backup/postgres_backup.tar.gz -C /volume .
+
+# Qayta tiklash | Restore volume
+docker run --rm -v postgres_data:/volume -v $(pwd):/backup alpine   sh -c "rm -rf /volume/* && tar -xzvf /backup/postgres_backup.tar.gz -C /volume"
+```
+
+---
+
+## 75. Docker daemon metrikalarini Prometheus bilan kuzatish / Monitoring Docker Daemon with Prometheus
+
+```json
+// /etc/docker/daemon.json
+{
+  "metrics-addr": "127.0.0.1:9323",
+  "experimental": true
+}
+```
+
+---
+
+## 76. Container Signal Handling (SIGTERM, SIGKILL) va PID 1 bo'lish muammosi
+
+**EN:** If your app runs as PID 1 without an init system, it won't handle SIGTERM gracefully. Use `tini` or `docker run --init`.
+
+**UZB:** Agar ilova konteyner ichida PID 1 sifatida ishlasa, SIGTERM signalini qabul qilmasligi mumkin. Uning uchun `tini` dan foydalaniladi.
+
+```dockerfile
+# Dockerfile ichida tini ishlatish
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+CMD ["python", "app.py"]
+```
+
+---
+
+## 77. Docker Secret Management vs Environment Variables
+
+**EN:** Environment variables can leak via process lists and logs. Docker Secrets (in Swarm/K8s) mount sensitive tokens in memory (`/run/secrets/`).
+
+**UZB:** Muhit o'zgaruvchilari (`ENV`) loglarda ko'rinib qolishi mumkin. Docker Secrets parollarni xotiraga xavfsiz biriktiradi.
+
+---
+
+## 78. Docker User Namespaces (userns-remap) xavfsizlik funksiyasi
+
+**EN:** User namespaces map the root user inside a container to an unprivileged non-root user on the host system.
+
+**UZB:** User namespace konteyner ichidagi root foydalanuvchini host serverdagi oddiy xavfsiz foydalanuvchiga bog'lab qo'yadi.
+
+---
+
+## 79. Docker Compose Watch Mode (Hot Reloading)
+
+**EN:** Docker Compose V2 `watch` feature auto-syncs local file changes to running containers instantly without rebuilding images.
+
+**UZB:** Docker Compose V2 `watch` buyrug'i koddagi o'zgarishlarni real vaqtda konteynerga uzatadi va avtomatik hot-reload qiladi.
+
+```yaml
+services:
+  web:
+    build: .
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+        - action: rebuild
+          path: package.json
+```
+
+---
+
+## 80. Docker Engine API bilan Python (`docker-py`) orqali konteynerlarni boshqarish
+
+```python
+import docker
+
+client = docker.from_env()
+
+# Konteyner yaratish va ishga tushirish
+container = client.containers.run(
+    "nginx:alpine",
+    detach=True,
+    ports={'80/tcp': 8080},
+    name="my_nginx"
+)
+
+print(f"Konteyner ID: {container.short_id}")
+for line in container.logs(stream=True):
+    print(line.strip())
+```
+
+---
+
+## 81. Docker Container Network Performance Optimization (host network mode)
+
+**EN:** `--network host` bypasses Docker network virtualization stack, delivering raw network performance at the expense of isolation.
+
+**UZB:** `--network host` rejimi virtual tarmoq qatlamini chetlab o'tib, eng yuqori tarmoq unumdorligini beradi.
+
+---
+
+## 82. Docker Overlay Filesystem Performance Optimization
+
+---
+
+## 83. Docker Compose Dependencies Condition (service_healthy, service_completed_successfully)
+
+```yaml
+depends_on:
+  db:
+    condition: service_healthy
+  migration:
+    condition: service_completed_successfully
+```
+
+---
+
+## 84. Container Disaster Recovery & High Availability Strategies
+
+---
+
+## 85. Docker Buildkit Cache Exporters (Inline, S3, GitHub Actions Cache)
+
+```bash
+docker buildx build   --cache-to type=gha   --cache-from type=gha   -t myapp:latest --push .
+```
+
+---
+
+## 86. Docker Container Swap Management (--memory-swap)
+
+---
+
+## 87. Docker Container Capability Management (cap-add, cap-drop)
+
+---
+
+## 88. Docker Remote API Security with TLS Mutual Authentication (mTLS)
+
+---
+
+## 89. Docker CLI Extensions and Plugins Architecture
+
+---
+
+## 90. Docker System Architecture: dockerd, containerd, runc, shim explained
+
+**EN:** `dockerd` handles high-level API; `containerd` manages container lifecycle; `runc` executes containers according to OCI specs; `containerd-shim` allows daemonless containers.
+
+**UZB:** `dockerd` API so'rovlarini qabul qiladi; `containerd` hayot tsiklini boshqaradi; `runc` konteynerni ishga tushiradi; `containerd-shim` esa daemon o'chganda ham konteynerni tirik tutadi.
+
+---
+
+## 91. Docker Image Manifest & OCI Image Index Structure
+
+---
+
+## 92. Docker Multi-Arch Cross-Compilation with QEMU vs Native Builders
+
+---
+
+## 93. Docker Container OOM (Out Of Memory) Killer Behavior & OOM Score Adjust
+
+---
+
+## 94. Docker Cgroups v1 vs Cgroups v2 Differences
+
+**EN:** Cgroups v2 provides a unified hierarchy, better resource management (e.g. memory pressure monitoring), and improved rootless support.
+
+**UZB:** Cgroups v2 yagona iyerarxiya va xotira boshqaruvida yuqori unumdorlikni ta'minlaydi.
+
+---
+
+## 95. Docker Overlay2 Lowerdir, Upperdir, Mergedir, Workdir Mechanism
+
+---
+
+## 96. Docker Container Network Isolation: Network Namespaces & veth pairs
+
+---
+
+## 97. Docker Production Zero-Downtime Deployment Patterns (Blue-Green, Canary)
+
+---
+
+## 98. Docker Security Benchmarking with CIS (Center for Internet Security) Docker Benchmark
+
+```bash
+docker run --rm --net host --ipc host --userns host --pid host   --label com.docker.bench.security   -v /etc:/etc:ro -v /usr/bin/docker:/usr/bin/docker:ro   docker/docker-bench-security
+```
+
+---
+
+## 99. Docker Compose Spec Custom Extensions (x-attributes)
+
+```yaml
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+
+services:
+  app:
+    image: myapp
+    logging: *default-logging
+```
+
+---
+
+## 100. Modern Container Ecosystem Summary: Docker, Podman, Rancher, Containerd, WASM
+
+**EN:** Modern containerization extends beyond Docker CLI to OCI standards, rootless daemons like Podman, containerd, and lightweight WebAssembly runtimes.
+
+**UZB:** Zamonaviy konteynerlashtirish Docker'dan tashqari OCI standartlari, Podman kabi rootless vositalar va WebAssembly runtime'larini ham qamrab oladi.
+
+---
+
+*Prepared by | Tayyorlagan: Alyorjon*  
+*Sources | Manbalar: Docker Docs, CNCF, GeeksforGeeks, DataCamp, InterviewBit*

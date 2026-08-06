@@ -167,6 +167,9 @@ SELECT date_trunc('month', created_at) as month,
        SUM(total) as revenue
 FROM orders GROUP BY 1;
 
+-- CONCURRENTLY uchun unique index shart / Required for CONCURRENTLY refresh
+CREATE UNIQUE INDEX ON sales_summary (month);
+
 -- Yangilash / Refresh
 REFRESH MATERIALIZED VIEW CONCURRENTLY sales_summary;
 ```

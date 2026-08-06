@@ -4092,3 +4092,98 @@ TaxSystem.print_breakdown(TaxSystem.bonus_tax(2_000_000))
 > 📝 **Source**: [@CODERSS_WORLD](https://t.me/coderss_world)
 > 💻 **Python Examples added** | **Python misollari qo'shildi**
 > 🇬🇧 **English** + 🇺🇿 **O'zbek** | Bilingual Edition
+
+---
+
+## 96. Modern Event-Driven OOP & Observer Pattern in Python | Zamonaviy Event-Driven OOP va Observer Pattern
+
+**EN:** Event-driven OOP decouples event producers from event consumers using publish-subscribe or observer pattern mechanisms.
+
+**UZB:** Event-driven OOP hodisa chiqaruvchilarni hodisa tinglovchilaridan ajratadi, bu publish-subscribe yoki observer patternlari orqali amalga oshiriladi.
+
+```python
+from typing import Callable, List, Dict
+
+class EventManager:
+    def __init__(self):
+        self._listeners: Dict[str, List[Callable]] = {}
+
+    def subscribe(self, event_type: str, listener: Callable):
+        self._listeners.setdefault(event_type, []).append(listener)
+
+    def notify(self, event_type: str, data: dict):
+        for listener in self._listeners.get(event_type, []):
+            listener(data)
+
+# Misol / Usage
+bus = EventManager()
+bus.subscribe("user_registered", lambda data: print(f"📧 Email yuborildi: {data['email']}"))
+bus.notify("user_registered", {"user_id": 1, "email": "ali@example.com"})
+```
+
+---
+
+## 97. Data Transfer Objects (DTO) and Value Objects in Python | DTO va Value Objects
+
+**EN:** Value Objects are immutable objects defined by their attributes rather than identity. DTOs encapsulate data transferred between software layers.
+
+**UZB:** Value Object'lar o'zgarmas bo'lib, unikal ID bilan emas, balki atributlari bilan ifodalanadi. DTO esa qatlamlar o'rtasida ma'lumot uzatish uchun ishlatiladi.
+
+```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Money:
+    amount: float
+    currency: str = "USD"
+
+    def __post_init__(self):
+        if self.amount < 0:
+            raise ValueError("Amount cannot be negative")
+
+m1 = Money(100.0)
+m2 = Money(100.0)
+print(m1 == m2)  # True - Value Equality!
+```
+
+---
+
+## 98. CQRS (Command Query Responsibility Segregation) Pattern in Python | CQRS Patterni
+
+**EN:** CQRS separates read operations (queries) from write operations (commands) to optimize performance and scalability independently.
+
+**UZB:** CQRS o'qish operatsiyalarini (queries) yozish operatsiyalaridan (commands) ajratib, ularni mustaqil ravishda optimallashtirish imkonini beradi.
+
+---
+
+## 99. Dependency Injection (DI) and Inversion of Control (IoC) | Dependency Injection va IoC
+
+**EN:** DI injects dependencies into a class rather than allowing the class to instantiate dependencies internally, facilitating unit testing and loose coupling.
+
+**UZB:** Dependency Injection qaramliklarni klass ichida yaratish o'rniga tashqaridan uzatishni anglatadi, bu unit testlarni soddalashtiradi.
+
+```python
+class EmailService:
+    def send(self, msg: str):
+        print(f"Sending email: {msg}")
+
+class UserService:
+    def __init__(self, email_service: EmailService):
+        self.email_service = email_service  # Injected dependency!
+
+    def register(self, email: str):
+        self.email_service.send(f"Welcome {email}")
+```
+
+---
+
+## 100. Modern OOP & Clean Architecture Summary | Zamonaviy OOP va Clean Architecture Xulosasi
+
+**EN:** Modern OOP combines object encapsulation with functional immutability, type annotations, interface segregation, and domain-driven design principles.
+
+**UZB:** Zamonaviy OOP enkapsulyatsiyani funksional o'zgarmaslik (immutability), tip annotatsiyalari va Clean Architecture tamoyillari bilan birlashtiradi.
+
+---
+
+*Prepared by | Tayyorlagan: Alyorjon*  
+*Sources | Manbalar: Design Patterns (GoF), Clean Architecture by Robert C. Martin*

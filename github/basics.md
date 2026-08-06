@@ -1152,3 +1152,385 @@ git branch -a                      # All branches | Barcha branchlar
 
 *Prepared by | Tayyorlagan: Alyorjon*  
 *Source | Manba: GIT Interview Q&A*
+
+---
+
+# 🔴 ADVANCED LEVEL (63–80)
+
+---
+
+## 63. Git 2.45+ Sparse-Checkout va Scalar nima? / What is Git 2.45+ Sparse-Checkout and Scalar?
+
+**EN:** Sparse-checkout allows checking out only specific directories in a huge monorepo. `scalar` is a Git tool designed for ultra-large repositories (like Windows or Office codebase).
+
+**UZB:** Sparse-checkout juda katta monorepo loyihalarda faqat kerakli papkalarni yuklab olish imkonini beradi. `scalar` esa gigant repozitoriyalar bilan ishlashni tezlashtiruvchi rasmiy Git vositasidir.
+
+```bash
+# Sparse-checkout ni yoqish | Enable sparse checkout
+git sparse-checkout init --cone
+git sparse-checkout set src/components docs
+```
+
+---
+
+## 64. SSH va GPG kalitlari bilan Commitlarni Raqamli Imzolash / Signing Commits with SSH and GPG Keys
+
+**EN:** Signed commits verify that the commit truly originated from the claimed author and was not spoofed. Modern Git supports signing with SSH keys directly (without GPG setup).
+
+**UZB:** Imzolangan commitlar muallif haqiqatan ham siz ekanligingizni tasdiqlaydi. Zamonaviy Git oddiy SSH kaliti yordamida commitlarni imzolashni qo'llab-quvvatlaydi.
+
+```bash
+# SSH kaliti bilan imzolashni sozlash | Configure SSH commit signing
+git config --global gpg.format ssh
+git config --global user.signingkey ~/.ssh/id_ed25519.pub
+git config --global commit.gpgsign true
+
+# Commit yaratishda imzolanishini ko'rish
+git commit -S -m "Verified secure commit"
+```
+
+---
+
+## 65. GitHub Actions Matrix Build va Parallel Testlar / GitHub Actions Matrix Build & Parallel Testing
+
+**EN:** Matrix builds execute workflow jobs across multiple operating systems, Python/Node versions, and database variants simultaneously.
+
+**UZB:** Matrix qurilishi bitta workflow ichida testlarni bir nechta operatsion tizimlar, til versiyalari va ma'lumotlar bazalarida bir vaqtda parallel ishga tushiradi.
+
+```yaml
+name: Python Tests
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements.txt && pytest
+```
+
+---
+
+## 66. GitHub Actions Reusable Workflows va Composite Actions
+
+**EN:** Reusable workflows reduce DRY code across multiple repositories by calling centralized workflow definitions.
+
+**UZB:** Reusable workflows va Composite actions bir nechta repozitoylar uchun umumiy bo'lgan CI/CD qadamlarini takrorlamasdan bir joydan boshqarish imkonini beradi.
+
+```yaml
+# Calling a reusable workflow
+jobs:
+  call-security-scan:
+    uses: my-org/shared-workflows/.github/workflows/security.yml@v1
+    with:
+      environment: production
+    secrets: inherit
+```
+
+---
+
+## 67. GitHub OIDC (OpenID Connect) Cloud Authentication (AWS, GCP, Azure)
+
+**EN:** OIDC eliminates the need to store long-lived cloud credentials (AWS Access Keys) in GitHub Secrets by using short-lived tokens.
+
+**UZB:** OIDC bulutli xizmatlarga (AWS, GCP, Azure) ulanishda static maxfiy kalitlarni saqlash o'rniga vaqtinchalik xavfsiz tokenlardan foydalanadi.
+
+```yaml
+permissions:
+  id-token: write
+  contents: read
+
+steps:
+  - name: Configure AWS Credentials
+    uses: aws-actions/configure-aws-credentials@v4
+    with:
+      role-to-assume: arn:aws:iam::123456789012:role/GitHubActionsRole
+      aws-region: us-east-1
+```
+
+---
+
+## 68. GitHub CodeQL va Automated Security SAST Scanning
+
+**EN:** CodeQL automatically analyzes code for vulnerabilities (SQL injection, XSS, insecure data deserialization) on every Pull Request.
+
+**UZB:** CodeQL har bir Pull Request yuborilganda koddagi xavfsizlik zaifliklarini avtomatik ravishda statik tahlil qiladi.
+
+---
+
+## 69. GitHub Dependabot va Automated Dependency Updates
+
+**EN:** Dependabot scans `requirements.txt`, `package.json`, or `Go.mod` for vulnerable packages and automatically submits Pull Requests with security patches.
+
+**UZB:** Dependabot loyihangizdagi eskirgan va xavfli kutubxona paketlarini aniqlab, ularni yangilovchi avtomatik Pull Request yuboradi.
+
+---
+
+## 70. Git Reflog va Yo'qolgan Commit yoki Branch'larni Tiklash / Git Reflog and Recovery
+
+**EN:** `git reflog` records every HEAD movement (commits, rebase, resets, checkout), allowing recovery of "lost" commits even after `git reset --hard`.
+
+**UZB:** `git reflog` HEAD ning har bir harakatini yozib boradi. Hatoki `git reset --hard` qilingan taqdirda ham yo'qolgan commitlarni tiklashga yordam beradi.
+
+```bash
+# Reflog ni ko'rish | View reflog
+git reflog
+
+# Yo'qolgan commit holatiga qaytarish | Recover to lost commit
+git reset --hard HEAD@{2}
+```
+
+---
+
+## 71. Git Interactive Rebase (`git rebase -i`) bilan Commitlarni Birlashtirish (Squash)
+
+**EN:** Interactive rebase allows squashing multiple small commits into a clean, single commit before merging into `main`.
+
+**UZB:** Interaktiv rebase bir nechta mayda commitlarni toza bitta commitga birlashtirish (squash) imkonini beradi.
+
+```bash
+# Oxirgi 4 ta commitni tahrirlash | Edit last 4 commits
+git rebase -i HEAD~4
+
+# Ochilgan faylda kerakli commitlarni 'pick', 'squash' (s) deb belgilang
+```
+
+---
+
+## 72. Git Worktree nima va u parallel feature ustida ishlashda qanday yordam beradi? / What is Git Worktree?
+
+**EN:** `git worktree` allows checking out multiple branches simultaneously into separate directories from a single local repo without `git stash` or re-cloning.
+
+**UZB:** `git worktree` bitta repozitoydan bir vaqtning o'zida bir nechta branchlarni alohida papkalarga checkout qilib parallel ishlashga imkon beradi.
+
+```bash
+# Yangi worktree papkasi yaratish | Create worktree folder
+git worktree add ../hotfix-branch hotfix/login-bug
+
+# Ish tugagach o'chirish | Remove worktree
+git worktree remove ../hotfix-branch
+```
+
+---
+
+## 73. Git Submodules vs Git Subtree
+
+**EN:** Submodules keep external git repos as pointers to specific commit hashes. Subtrees embed outer repository files directly into the host repo structure.
+
+**UZB:** Submodule tashqi repozitoriyani commit ko'rsatkichi sifatida tutadi. Subtree esa tashqi repozitoriya kodingizni loyihangiz ichiga to'liq integratsiya qiladi.
+
+---
+
+## 74. Git Hooks va pre-commit framework
+
+**EN:** `pre-commit` framework runs automated linters (Flake8, Black, ESLint) and security checks before any code commit is allowed locally.
+
+**UZB:** `pre-commit` framework kodingiz commit bo mezdan oldin avtomatik ravishda formatlash, linter va testlardan o'tishini majburiy qiladi.
+
+```bash
+# pre-commit o'rnatish | Install pre-commit
+pip install pre-commit
+pre-commit install
+```
+
+---
+
+## 75. GitHub Environments, Protection Rules, va Deployment Concurrency
+
+**EN:** GitHub Environments enforce deployment approval gates, secret scoping, and concurrency limits for staging and production pipelines.
+
+**UZB:** GitHub Environments ishlab chiqarishga chiqarishdan oldin senior muhandislar tasdig'ini (Manual Approval) talab qilish imkonini beradi.
+
+---
+
+## 76. Git Bisect bilan Xatolik Keltirib Chiqargan Commitni Aniqlash / Finding Buggy Commit with Git Bisect
+
+**EN:** `git bisect` uses binary search to pinpoint the exact commit that introduced a bug into the codebase.
+
+**UZB:** `git bisect` binar qidiruv algoritmi orqali koddagi xatoni keltirib chiqargan commitni tezda topib beradi.
+
+```bash
+git bisect start
+git bisect bad                 # Joriy holat xatoli
+git bisect good v1.0.0         # Ishlagan eski versiya
+# Git avtomatik ortadagi commitga otadi, test qilib 'good' yoki 'bad' deb belgilang
+```
+
+---
+
+## 77. Git Cherry-Pick va Konfliktlarni Hal Qilish / Git Cherry-Pick and Conflict Resolution
+
+**EN:** `git cherry-pick <commit-hash>` applies the changes introduced by an existing commit onto your current working branch.
+
+**UZB:** `git cherry-pick` boshqa branchdagi aniq bitta commitni joriy branchga olib o'tish uchun ishlatiladi.
+
+---
+
+## 78. Git LFS (Large File Storage) ishlash mexanizmi / Git LFS Architecture
+
+**EN:** Git LFS replaces large files (videos, ML models, datasets) with text pointers inside Git, storing actual binary data on remote LFS servers.
+
+**UZB:** Git LFS katta fayllarni (videolar, AI modellari) matnli ko'rsatgichga almashtirib, katta fayllarni alohida LFS serverida saqlaydi.
+
+---
+
+## 79. GitHub Branch Protection Rules va Merge Queue
+
+**EN:** Protection rules require status checks to pass, code review approvals, and linear commit history. Merge Queue tests merged PRs in batches to prevent broken main builds.
+
+**UZB:** Protection rules PR'larni kamida 1-2 muhandis ko'rib chiqqach va CI testlar muvaffaqiyatli o'tgachgina main branchga qo'shishni ta'minlaydi.
+
+---
+
+## 80. GitHub Actions Cache (`actions/cache`) Optimizatsiyasi
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: ~/.cache/pip
+    key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+    restore-keys: |
+      ${{ runner.os }}-pip-
+```
+
+---
+
+# ⚫ EXPERT LEVEL (81–100)
+
+---
+
+## 81. Git Objects Architecture: Blobs, Trees, Commits, Annotated Tags
+
+**EN:** Git is a content-addressable filesystem. Blobs store file data, Trees store directory structures, Commits point to top-level trees and parents.
+
+**UZB:** Git — ma'lumotlar manziliga asoslangan fayl tizimi. Blob'lar fayl mazmunini, Tree'lar kataloglarni, Commit'lar esa loyiha holatini saqlaydi.
+
+---
+
+## 82. Git Packfiles va Delta Compression (`git gc`)
+
+**EN:** `git gc` packs individual loose objects into packfiles using delta compression to save repository disk space.
+
+**UZB:** `git gc` ko'plab alohida obyektlarni ixcham packfile'larga va delta siqish algoritmlariga aylantirib, repo hajmini kamaytiradi.
+
+---
+
+## 83. GitHub Actions Runner Management: Self-Hosted vs GitHub-Hosted Runners
+
+---
+
+## 84. Monorepo Git Strategy: Trunk-Based Development vs GitFlow
+
+| Modellari / Models | Trunk-Based Development | GitFlow |
+|---|---|---|
+| Branchlar | Bitta asosiy `main`, qisqa `feature` branchlar | `main`, `develop`, `feature`, `release`, `hotfix` |
+| Merge chastotasi | Kuniga bir necha marta | Haftada yoki oyda bir marta |
+| Mos kelishi | CI/CD, Microservices, Agile | An'anaviy reliz sikllari |
+
+---
+
+## 85. GitHub Copilot Integration for PR Summaries and Code Reviews
+
+---
+
+## 86. Git Filter-Repo bilan Maxfiy Parollarni Git Tarixidan Butunlay O'chirish
+
+```bash
+# Maxfiy token yoki faylni barcha tarix bo'yicha to'liq tozalash
+pip install git-filter-repo
+git filter-repo --invert-paths --path .env
+```
+
+---
+
+## 87. GitHub GraphQL API v4 bilan Repozitoriyalarni Dasturiy Boshqarish
+
+---
+
+## 88. Git Custom Commands va Alias yaratish
+
+```bash
+# Custom alias yaratish
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+```
+
+---
+
+## 89. Git Merge Strategies: Recursive, Ours, Theirs, Octo Strategy
+
+---
+
+## 90. GitHub Actions Security Hardening & Secret Masking
+
+---
+
+## 91. Git Maintenance & Background Optimization (`git maintenance start`)
+
+---
+
+## 92. GitHub Artifacts va Pipeline Outputs boshqaruvi
+
+---
+
+## 93. Git Submodule URLs va Relative Paths best practices
+
+---
+
+## 94. GitHub CLI (`gh`) bilan Terminal orqali PR va Issuelar bilan ishlash
+
+```bash
+# Terminaldan PR yaratish va merge qilish | Create and merge PR from CLI
+gh pr create --title "Fix login bug" --body "Resolves issue #42"
+gh pr merge --auto --squash
+```
+
+---
+
+## 95. Git Object Hash: SHA-1 dan SHA-256 ga o'tish
+
+---
+
+## 96. GitHub Rulesets vs Legacy Branch Protection Rules
+
+---
+
+## 97. Git Partial Clone (`--filter=blob:none`) bilan Tezkor Clone qilish
+
+```bash
+# Faqat commit tarixini yuklash, fayllarni kerak bo'lganda olib kelish
+git clone --filter=blob:none https://github.com/org/huge-repo.git
+```
+
+---
+
+## 98. GitHub Webhooks va Event Driven CI/CD Architectures
+
+---
+
+## 99. Git Rerere (Reuse Recorded Resolution) bilan Takroriy Konfliktlarni Avtomatik Yechish
+
+```bash
+# Rerere ni yoqish | Enable rerere
+git config --global rerere.enabled true
+```
+
+---
+
+## 100. Enterprise Git Infrastructure & Modern CI/CD DevOps Ecosystem
+
+**EN:** Modern enterprise Git workflows leverage Trunk-Based development, OIDC authentication, automated SAST/DAST scanning, self-hosted runners, and AI Copilot automated code reviews.
+
+**UZB:** Zamonaviy korporativ Git ekotizimi Trunk-Based rivojlanish, OIDC xavfsiz ulanishlar, CodeQL statik tahlillar va sun'iy intellekt asosidagi avtomatik kod sharhini o'z ichiga oladi.
+
+---
+
+*Prepared by | Tayyorlagan: Alyorjon*  
+*Sources | Manbalar: Git Docs, GitHub Docs, Pro Git Book*

@@ -1,8 +1,22 @@
-# 🖥️ Backend & Frontend Interview — Tayyorlov Zametkalari / Study Notes
+# 🖥️ Fullstack & Backend Interview Portal — Study Notes & Modules
 
-> **Manba / Source:** 100 Backend/Frontend Interview Q&A (50+50)  
 > **Tillar / Languages:** O'zbek 🇺🇿 | English 🇬🇧  
-> **Maqsad / Goal:** Intervyuga tayyorgarlik uchun qisqacha konspekt / Quick reference for interview prep
+> **Maqsad / Goal:** Software Engineering, System Design, Python, Odoo ERP, Database va DevOps bo'yicha intervyularga to'liq tayyorgarlik.
+
+---
+
+## 🗺️ Maxsus 100-Savolli Modullar / 100-Q&A Modules Index
+
+| Modul / Subject | Tavsif / Description | Fayl / Path | Savollar / Questions |
+|---|---|---|---|
+| 🟣 **Odoo ERP Framework** | Odoo Theory, ORM, OWL JS, QWeb, Security, Controllers, Deployment | [odoo/basics.md](file:///D:/pythons/interviews/odoo/basics.md) | **100 Q&A** (Basic → Expert) |
+| 🏗️ **System Design & Microservices** | High Scalability, Load Balancing, Redis, Kafka, Saga, FAANG Systems | [system_design.md](file:///D:/pythons/interviews/system_design.md) | **100 Q&A** (Basic → Expert) |
+| 🐍 **Python Core & Advanced** | Data Structures, OOP, Generators, Decorators, Async, Memory | [python/basics.md](file:///D:/pythons/interviews/python/basics.md) | **100 Q&A** (Basic → Expert) |
+| 🗄️ **PostgreSQL & Database** | Indexing, EXPLAIN ANALYZE, ACID, Partitioning, Query Optimization | [sql/postgresql_interviews.md](file:///D:/pythons/interviews/sql/postgresql_interviews.md) | **Deep Dive Q&A** |
+| 🐳 **Docker & Containerization** | Dockerfile, Compose, Networking, Volumes, Multi-stage builds | [docker/basics.md](file:///D:/pythons/interviews/docker/basics.md) | **Practical Q&A** |
+| 🐙 **Git & GitHub** | Rebase vs Merge, Branching, Hooks, Workflows, Submodules | [github/basics.md](file:///D:/pythons/interviews/github/basics.md) | **Practical Q&A** |
+| 📊 **Excel Formulas** | VLOOKUP, INDEX-MATCH, SUMIFS, Dynamic Arrays, Advanced Formula Techniques | [excel/basics.md](file:///D:/pythons/interviews/excel/basics.md) · [excel/quiz.md](file:///D:/pythons/interviews/excel/quiz.md) | **101 Formulas + 30 MCQ** |
+| 🤖 **Subagents System & Prompts** | AI Subagents Architecture, Roles, System Prompts, Workflow | [AGENTS.md](file:///D:/pythons/interviews/AGENTS.md) | **Agent System Spec** |
 
 ---
 
