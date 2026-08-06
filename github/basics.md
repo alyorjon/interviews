@@ -1,4 +1,5 @@
 # 🧰 GIT Interview Questions & Answers
+
 # 🧰 GIT Intervyu Savol va Javoblari
 
 > **EN:** Practical Git interview questions with examples.  
@@ -79,10 +80,10 @@ git checkout 9c8b7a6
 
 **UZ:** SVN markazlashgan — serverga doim ulangan bo'lishingiz kerak. Git taqsimlangan — local ishlaysiz, tayyor bo'lganda sinxronlaysiz.
 
-| SVN | GIT |
-|-----|-----|
-| Centralized (Markazlashgan) | Distributed (Taqsimlangan) |
-| Internet required always (Doim internet kerak) | Works offline (Oflayn ishlaydi) |
+| SVN                                                        | GIT                                        |
+| ---------------------------------------------------------- | ------------------------------------------ |
+| Centralized (Markazlashgan)                                | Distributed (Taqsimlangan)                 |
+| Internet required always (Doim internet kerak)             | Works offline (Oflayn ishlaydi)            |
 | Direct server connection (Server bilan to'g'ridan-to'g'ri) | 3 stages: workspace → staging → local repo |
 
 ```bash
@@ -328,11 +329,11 @@ git reset --mixed f4e5d6c
 
 **UZ:** HEAD holatini ma'lum commitga qaytarish.
 
-| Flag | EN | UZ |
-|------|----|----|
-| `--soft` | Changes go to staging | O'zgarishlar staging'ga |
+| Flag      | EN                         | UZ                           |
+| --------- | -------------------------- | ---------------------------- |
+| `--soft`  | Changes go to staging      | O'zgarishlar staging'ga      |
 | `--mixed` | Changes go to working area | O'zgarishlar working area'ga |
-| `--hard` | Changes are deleted ⚠️ | O'zgarishlar o'chadi ⚠️ |
+| `--hard`  | Changes are deleted ⚠️     | O'zgarishlar o'chadi ⚠️      |
 
 ```bash
 git reset --hard HEAD~1   # EN: Deletes last commit completely! | UZ: Oxirgi commitni butunlay o'chiradi!
@@ -699,10 +700,10 @@ git checkout feature/login  # O'tish | Switch to it
 
 **UZ:** Clone — birinchi marta yuklab olish; pull — mavjud local reponi yangilash.
 
-| | git clone | git pull |
-|-|-----------|----------|
-| EN | First time, no local repo | Repo exists, get updates |
-| UZ | Birinchi marta, local repo yo'q | Repo mavjud, yangilanish olish |
+|     | git clone                       | git pull                       |
+| --- | ------------------------------- | ------------------------------ |
+| EN  | First time, no local repo       | Repo exists, get updates       |
+| UZ  | Birinchi marta, local repo yo'q | Repo mavjud, yangilanish olish |
 
 ```bash
 # First time | Birinchi marta
@@ -865,6 +866,7 @@ git merge feature/login
 **EN / UZ:**
 
 ### Feature Branching
+
 ```bash
 # EN: Each feature gets its own branch
 # UZ: Har bir feature o'z branchiga ega
@@ -874,6 +876,7 @@ git merge feature/user-auth  # test o'tgach | after testing
 ```
 
 ### Task Branching
+
 ```bash
 # EN: Branch name includes task/ticket ID
 # UZ: Branch nomida task/ticket ID bo'ladi
@@ -882,6 +885,7 @@ git checkout -b TASK-123-fix-login-bug
 ```
 
 ### Release Branching
+
 ```bash
 # EN: Freeze features, only bugfixes allowed
 # UZ: Featurelar muzlatiladi, faqat bugfix ruxsat beriladi
@@ -963,12 +967,12 @@ git rebase main
 
 **UZ:** Merge tarixni merge commit bilan saqlaydi. Rebase tarixni toza chiziqli qilib qayta yozadi.
 
-| | git merge | git rebase |
-|-|-----------|------------|
-| EN | Adds merge commit | Rewrites commit history |
-| UZ | Merge commit qo'shadi | Commit tarixini qayta yozadi |
-| EN | Preserves full history | Creates linear history |
-| UZ | To'liq tarixni saqlaydi | Chiziqli tarix hosil qiladi |
+|     | git merge               | git rebase                   |
+| --- | ----------------------- | ---------------------------- |
+| EN  | Adds merge commit       | Rewrites commit history      |
+| UZ  | Merge commit qo'shadi   | Commit tarixini qayta yozadi |
+| EN  | Preserves full history  | Creates linear history       |
+| UZ  | To'liq tarixni saqlaydi | Chiziqli tarix hosil qiladi  |
 
 ```bash
 # Merge result | Merge natijasi:
@@ -1049,16 +1053,16 @@ git push origin feature/payment
 
 **UZ:** Git tezroq, oflayn ishlaydi, branching oson va har bir developer to'liq zaxira nusxaga ega.
 
-| Feature | SVN | GIT |
-|---------|-----|-----|
-| EN: Offline work | ❌ No | ✅ Yes |
-| UZ: Oflayn ishlash | ❌ Yo'q | ✅ Ha |
-| EN: Speed | 🐢 Slow | ⚡ Fast |
-| UZ: Tezlik | 🐢 Sekin | ⚡ Tez |
-| EN: Branching | Complex | Simple |
-| UZ: Branching | Murakkab | Oddiy |
-| EN: Full backup | ❌ Server only | ✅ Every developer |
-| UZ: To'liq zaxira | ❌ Faqat server | ✅ Har bir developer |
+| Feature            | SVN             | GIT                  |
+| ------------------ | --------------- | -------------------- |
+| EN: Offline work   | ❌ No           | ✅ Yes               |
+| UZ: Oflayn ishlash | ❌ Yo'q         | ✅ Ha                |
+| EN: Speed          | 🐢 Slow         | ⚡ Fast              |
+| UZ: Tezlik         | 🐢 Sekin        | ⚡ Tez               |
+| EN: Branching      | Complex         | Simple               |
+| UZ: Branching      | Murakkab        | Oddiy                |
+| EN: Full backup    | ❌ Server only  | ✅ Every developer   |
+| UZ: To'liq zaxira  | ❌ Faqat server | ✅ Har bir developer |
 
 ---
 
@@ -1169,8 +1173,8 @@ git branch -a                      # All branches | Barcha branchlar
 
 ---
 
-*Prepared by | Tayyorlagan: Alyorjon*  
-*Source | Manba: GIT Interview Q&A*
+_Prepared by | Tayyorlagan: Alyorjon_  
+_Source | Manba: GIT Interview Q&A_
 
 ---
 
@@ -1226,7 +1230,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.11', '3.12', '3.13']
+        python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -1448,11 +1452,11 @@ git bisect good v1.0.0         # Ishlagan eski versiya
 
 ## 84. Monorepo Git Strategy: Trunk-Based Development vs GitFlow
 
-| Modellari / Models | Trunk-Based Development | GitFlow |
-|---|---|---|
-| Branchlar | Bitta asosiy `main`, qisqa `feature` branchlar | `main`, `develop`, `feature`, `release`, `hotfix` |
-| Merge chastotasi | Kuniga bir necha marta | Haftada yoki oyda bir marta |
-| Mos kelishi | CI/CD, Microservices, Agile | An'anaviy reliz sikllari |
+| Modellari / Models | Trunk-Based Development                        | GitFlow                                           |
+| ------------------ | ---------------------------------------------- | ------------------------------------------------- |
+| Branchlar          | Bitta asosiy `main`, qisqa `feature` branchlar | `main`, `develop`, `feature`, `release`, `hotfix` |
+| Merge chastotasi   | Kuniga bir necha marta                         | Haftada yoki oyda bir marta                       |
+| Mos kelishi        | CI/CD, Microservices, Agile                    | An'anaviy reliz sikllari                          |
 
 ---
 
@@ -1551,5 +1555,5 @@ git config --global rerere.enabled true
 
 ---
 
-*Prepared by | Tayyorlagan: Alyorjon*  
-*Sources | Manbalar: Git Docs, GitHub Docs, Pro Git Book*
+_Prepared by | Tayyorlagan: Alyorjon_  
+_Sources | Manbalar: Git Docs, GitHub Docs, Pro Git Book_

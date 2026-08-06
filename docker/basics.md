@@ -1,4 +1,5 @@
 # 🐳 Docker Interview Questions & Answers
+
 # 🐳 Docker Intervyu Savol va Javoblari
 
 > **EN:** Practical Docker interview questions with real examples — from basics to advanced.  
@@ -91,18 +92,18 @@ Fast start ✅            Slow start ❌
 
 **UZ:** Containerlar host OS kernelini ulashadi va yengildir. VM'lar to'liq guest OS ni o'z ichiga oladi — og'irroq va sekinroq ishga tushadi.
 
-| Feature | Docker Container | Virtual Machine |
-|---------|-----------------|-----------------|
-| EN: OS | Shares host kernel | Full guest OS |
-| UZ: OS | Host kernelni ulashadi | To'liq guest OS |
-| EN: Size | MBs | GBs |
-| UZ: Hajm | MB | GB |
-| EN: Startup | Seconds | Minutes |
-| UZ: Ishga tushish | Soniyalar | Daqiqalar |
-| EN: Performance | Near native | Slower |
-| UZ: Unumdorlik | Deyarli native | Sekinroq |
-| EN: Isolation | Process-level | Hardware-level |
-| UZ: Izolyatsiya | Jarayon darajasida | Hardware darajasida |
+| Feature           | Docker Container       | Virtual Machine     |
+| ----------------- | ---------------------- | ------------------- |
+| EN: OS            | Shares host kernel     | Full guest OS       |
+| UZ: OS            | Host kernelni ulashadi | To'liq guest OS     |
+| EN: Size          | MBs                    | GBs                 |
+| UZ: Hajm          | MB                     | GB                  |
+| EN: Startup       | Seconds                | Minutes             |
+| UZ: Ishga tushish | Soniyalar              | Daqiqalar           |
+| EN: Performance   | Near native            | Slower              |
+| UZ: Unumdorlik    | Deyarli native         | Sekinroq            |
+| EN: Isolation     | Process-level          | Hardware-level      |
+| UZ: Izolyatsiya   | Jarayon darajasida     | Hardware darajasida |
 
 ---
 
@@ -172,14 +173,14 @@ docker run -d -p 80:8000 my-app
 
 **UZ:** Namespace — Docker containerlar orasida izolyatsiyani ta'minlash uchun foydalanadigan Linux kernel xususiyati. Har bir container PID, tarmoq, fayl tizimi, foydalanuvchilar uchun o'z namespace'ini oladi.
 
-| Namespace | EN | UZ |
-|-----------|----|----|
-| PID | Process isolation | Jarayon izolyatsiyasi |
-| NET | Network isolation | Tarmoq izolyatsiyasi |
-| MNT | Filesystem isolation | Fayl tizimi izolyatsiyasi |
-| UTS | Hostname isolation | Hostname izolyatsiyasi |
-| IPC | Inter-process comm. | Jarayonlar aro muloqot |
-| USER | User isolation | Foydalanuvchi izolyatsiyasi |
+| Namespace | EN                   | UZ                          |
+| --------- | -------------------- | --------------------------- |
+| PID       | Process isolation    | Jarayon izolyatsiyasi       |
+| NET       | Network isolation    | Tarmoq izolyatsiyasi        |
+| MNT       | Filesystem isolation | Fayl tizimi izolyatsiyasi   |
+| UTS       | Hostname isolation   | Hostname izolyatsiyasi      |
+| IPC       | Inter-process comm.  | Jarayonlar aro muloqot      |
+| USER      | User isolation       | Foydalanuvchi izolyatsiyasi |
 
 ---
 
@@ -233,14 +234,14 @@ docker inspect nginx
 
 **UZ:** Image — statik shablon (OOP'dagi classga o'xshash). Container — image'ning ishlaydigan nusxasi (objectga o'xshash).
 
-| | Image | Container |
-|-|-------|-----------|
-| EN | Read-only template | Running instance |
-| UZ | Faqat o'qish shabloni | Ishlaydigan nusxa |
-| EN | Static, blueprint | Dynamic, real |
-| UZ | Statik, loyiha | Dinamik, haqiqiy |
-| EN | Stored in registry | Runs on host |
-| UZ | Registry'da saqlanadi | Hostda ishlaydi |
+|     | Image                 | Container         |
+| --- | --------------------- | ----------------- |
+| EN  | Read-only template    | Running instance  |
+| UZ  | Faqat o'qish shabloni | Ishlaydigan nusxa |
+| EN  | Static, blueprint     | Dynamic, real     |
+| UZ  | Statik, loyiha        | Dinamik, haqiqiy  |
+| EN  | Stored in registry    | Runs on host      |
+| UZ  | Registry'da saqlanadi | Hostda ishlaydi   |
 
 ```bash
 # Image'dan container yaratish | Create container from image
@@ -452,22 +453,22 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 **EN / UZ:**
 
-| Instruction | EN | UZ | Example |
-|-------------|----|----|---------|
-| `FROM` | Base image | Asosiy image | `FROM python:3.11` |
-| `RUN` | Execute command during build | Qurish paytida buyruq | `RUN pip install flask` |
-| `CMD` | Default command at runtime | Ishga tushirish buyrug'i | `CMD ["python", "app.py"]` |
-| `ENTRYPOINT` | Fixed executable | Asosiy ijrochi | `ENTRYPOINT ["gunicorn"]` |
-| `COPY` | Copy files from host | Hostdan fayl ko'chirish | `COPY . /app` |
-| `ADD` | Like COPY + URL + tar support | COPY + URL + tar | `ADD archive.tar.gz /app` |
-| `ENV` | Set environment variable | Muhit o'zgaruvchisi | `ENV PORT=8000` |
-| `EXPOSE` | Document port | Port hujjatlash | `EXPOSE 8000` |
-| `WORKDIR` | Set working directory | Ish papkasi | `WORKDIR /app` |
-| `VOLUME` | Create mount point | Ulash nuqtasi | `VOLUME /data` |
-| `ARG` | Build-time variable | Qurish vaqti o'zgaruvchi | `ARG VERSION=1.0` |
-| `LABEL` | Add metadata | Metadata qo'shish | `LABEL env="prod"` |
-| `USER` | Set user | Foydalanuvchi | `USER appuser` |
-| `HEALTHCHECK` | Container health check | Sog'liq tekshiruvi | `HEALTHCHECK CMD curl -f http://localhost/` |
+| Instruction   | EN                            | UZ                       | Example                                     |
+| ------------- | ----------------------------- | ------------------------ | ------------------------------------------- |
+| `FROM`        | Base image                    | Asosiy image             | `FROM python:3.11`                          |
+| `RUN`         | Execute command during build  | Qurish paytida buyruq    | `RUN pip install flask`                     |
+| `CMD`         | Default command at runtime    | Ishga tushirish buyrug'i | `CMD ["python", "app.py"]`                  |
+| `ENTRYPOINT`  | Fixed executable              | Asosiy ijrochi           | `ENTRYPOINT ["gunicorn"]`                   |
+| `COPY`        | Copy files from host          | Hostdan fayl ko'chirish  | `COPY . /app`                               |
+| `ADD`         | Like COPY + URL + tar support | COPY + URL + tar         | `ADD archive.tar.gz /app`                   |
+| `ENV`         | Set environment variable      | Muhit o'zgaruvchisi      | `ENV PORT=8000`                             |
+| `EXPOSE`      | Document port                 | Port hujjatlash          | `EXPOSE 8000`                               |
+| `WORKDIR`     | Set working directory         | Ish papkasi              | `WORKDIR /app`                              |
+| `VOLUME`      | Create mount point            | Ulash nuqtasi            | `VOLUME /data`                              |
+| `ARG`         | Build-time variable           | Qurish vaqti o'zgaruvchi | `ARG VERSION=1.0`                           |
+| `LABEL`       | Add metadata                  | Metadata qo'shish        | `LABEL env="prod"`                          |
+| `USER`        | Set user                      | Foydalanuvchi            | `USER appuser`                              |
+| `HEALTHCHECK` | Container health check        | Sog'liq tekshiruvi       | `HEALTHCHECK CMD curl -f http://localhost/` |
 
 ---
 
@@ -633,7 +634,7 @@ services:
       - db
       - redis
     volumes:
-      - .:/app          # EN: Dev mode live reload | UZ: Dev rejimida tez yangilanish
+      - .:/app # EN: Dev mode live reload | UZ: Dev rejimida tez yangilanish
 
   # PostgreSQL
   db:
@@ -683,8 +684,8 @@ services:
     build: .
     depends_on:
       db:
-        condition: service_healthy    # ← DB tayyor bo'lguncha kut | Wait until DB is healthy
-    
+        condition: service_healthy # ← DB tayyor bo'lguncha kut | Wait until DB is healthy
+
   db:
     image: postgres:15
     healthcheck:
@@ -727,13 +728,13 @@ docker compose ps
 
 **UZ:** Docker bir nechta tarmoq drayverlarini qo'llab-quvvatlaydi: Bridge, Host, None, Overlay, Macvlan.
 
-| Network | EN | UZ | Use case |
-|---------|----|----|----------|
-| **bridge** | Default. Isolated network on single host | Standart. Bitta hostda izolyatsiyalangan | Single host apps |
-| **host** | Shares host network stack | Host tarmoq stekini ulashadi | High performance |
-| **none** | No networking | Tarmoqsiz | Max isolation |
-| **overlay** | Multi-host networking (Swarm) | Ko'p host tarmoqi | Docker Swarm |
-| **macvlan** | Container gets MAC address | Container MAC manzil oladi | Legacy apps |
+| Network     | EN                                       | UZ                                       | Use case         |
+| ----------- | ---------------------------------------- | ---------------------------------------- | ---------------- |
+| **bridge**  | Default. Isolated network on single host | Standart. Bitta hostda izolyatsiyalangan | Single host apps |
+| **host**    | Shares host network stack                | Host tarmoq stekini ulashadi             | High performance |
+| **none**    | No networking                            | Tarmoqsiz                                | Max isolation    |
+| **overlay** | Multi-host networking (Swarm)            | Ko'p host tarmoqi                        | Docker Swarm     |
+| **macvlan** | Container gets MAC address               | Container MAC manzil oladi               | Legacy apps      |
 
 ```bash
 # Tarmoqlarni ko'rish | List networks
@@ -766,7 +767,7 @@ services:
     build: .
     environment:
       # EN: Use service name as hostname | UZ: Service nomini hostname sifatida ishlating
-      - DB_HOST=db          # ← "db" bu yerda container nomi | "db" is container name
+      - DB_HOST=db # ← "db" bu yerda container nomi | "db" is container name
       - REDIS_HOST=redis
   db:
     image: postgres:15
@@ -851,16 +852,16 @@ docker volume prune
 
 **UZ:** Container'ga ma'lumot ulashning uchta usuli, har biri turli hollarda qo'llaniladi.
 
-| | Volume | Bind Mount | tmpfs |
-|-|--------|------------|-------|
-| EN: Managed by | Docker | Host OS | Memory only |
-| UZ: Boshqaruvchi | Docker | Host OS | Faqat xotira |
-| EN: Location | /var/lib/docker/volumes/ | Anywhere on host | RAM |
-| UZ: Joylashuv | /var/lib/docker/volumes/ | Hostda istalgan joy | RAM |
-| EN: Persistence | Persistent | Persistent | Lost on stop |
-| UZ: Doimiylik | Doimiy | Doimiy | To'xtasa yo'qoladi |
-| EN: Use case | Production data | Dev live reload | Secrets, temp data |
-| UZ: Ishlatish | Production data | Dev rejimi | Maxfiy, vaqtinchalik |
+|                  | Volume                   | Bind Mount          | tmpfs                |
+| ---------------- | ------------------------ | ------------------- | -------------------- |
+| EN: Managed by   | Docker                   | Host OS             | Memory only          |
+| UZ: Boshqaruvchi | Docker                   | Host OS             | Faqat xotira         |
+| EN: Location     | /var/lib/docker/volumes/ | Anywhere on host    | RAM                  |
+| UZ: Joylashuv    | /var/lib/docker/volumes/ | Hostda istalgan joy | RAM                  |
+| EN: Persistence  | Persistent               | Persistent          | Lost on stop         |
+| UZ: Doimiylik    | Doimiy                   | Doimiy              | To'xtasa yo'qoladi   |
+| EN: Use case     | Production data          | Dev live reload     | Secrets, temp data   |
+| UZ: Ishlatish    | Production data          | Dev rejimi          | Maxfiy, vaqtinchalik |
 
 ```bash
 # Volume (tavsiya | recommended)
@@ -1083,20 +1084,20 @@ docker node ls
 
 **UZ:** Ikkalasi ham container orkestratsiya vositalari, lekin Kubernetes kuchliroq va murakkabroq.
 
-| Feature | Docker Swarm | Kubernetes |
-|---------|-------------|------------|
-| EN: Complexity | Simple | Complex |
-| UZ: Murakkablik | Oddiy | Murakkab |
-| EN: Setup | Easy (minutes) | Harder (hours) |
-| UZ: O'rnatish | Oson (daqiqalar) | Qiyinroq (soatlar) |
-| EN: Scaling | Manual | Auto-scaling |
-| UZ: Scale | Qo'lda | Avtomatik |
-| EN: Load balancing | Built-in | Needs Ingress |
-| UZ: Load balancing | Ichki | Ingress kerak |
-| EN: Community | Smaller | Huge |
-| UZ: Hamjamiyat | Kichik | Katta |
-| EN: Best for | Small clusters | Large production |
-| UZ: Eng yaxshi | Kichik klaster | Katta production |
+| Feature            | Docker Swarm     | Kubernetes         |
+| ------------------ | ---------------- | ------------------ |
+| EN: Complexity     | Simple           | Complex            |
+| UZ: Murakkablik    | Oddiy            | Murakkab           |
+| EN: Setup          | Easy (minutes)   | Harder (hours)     |
+| UZ: O'rnatish      | Oson (daqiqalar) | Qiyinroq (soatlar) |
+| EN: Scaling        | Manual           | Auto-scaling       |
+| UZ: Scale          | Qo'lda           | Avtomatik          |
+| EN: Load balancing | Built-in         | Needs Ingress      |
+| UZ: Load balancing | Ichki            | Ingress kerak      |
+| EN: Community      | Smaller          | Huge               |
+| UZ: Hamjamiyat     | Kichik           | Katta              |
+| EN: Best for       | Small clusters   | Large production   |
+| UZ: Eng yaxshi     | Kichik klaster   | Katta production   |
 
 ---
 
@@ -1130,12 +1131,12 @@ docker pull localhost:5000/my-app:1.0
 
 **UZ:** Qayta ishga tushirish siyosatlari bilan `--restart` flagi ishlatiladi.
 
-| Policy | EN | UZ |
-|--------|----|----|
-| `no` | Never restart (default) | Hech qachon qayta tushmasin (standart) |
-| `always` | Always restart | Doim qayta tushsin |
-| `on-failure` | Only on non-zero exit | Faqat xato bo'lganda |
-| `unless-stopped` | Always, unless manually stopped | Qo'lda to'xtatilmaguncha |
+| Policy           | EN                              | UZ                                     |
+| ---------------- | ------------------------------- | -------------------------------------- |
+| `no`             | Never restart (default)         | Hech qachon qayta tushmasin (standart) |
+| `always`         | Always restart                  | Doim qayta tushsin                     |
+| `on-failure`     | Only on non-zero exit           | Faqat xato bo'lganda                   |
+| `unless-stopped` | Always, unless manually stopped | Qo'lda to'xtatilmaguncha               |
 
 ```bash
 # Production uchun | For production
@@ -1276,9 +1277,9 @@ services:
   api:
     image: my-app
     env_file:
-      - .env            # ← .gitignore'ga qo'shing! | Add to .gitignore!
+      - .env # ← .gitignore'ga qo'shing! | Add to .gitignore!
     environment:
-      - DEBUG=false     # ← Bu xavfsiz | This is safe (not secret)
+      - DEBUG=false # ← Bu xavfsiz | This is safe (not secret)
 ```
 
 ```bash
@@ -1381,7 +1382,7 @@ services:
       redis:
         condition: service_started
     volumes:
-      - .:/app    # Dev uchun | For dev
+      - .:/app # Dev uchun | For dev
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -1445,8 +1446,8 @@ docker compose down
 
 ---
 
-*Prepared by | Tayyorlagan: Alyorjon*  
-*Sources | Manbalar: Docker Docs, GeeksforGeeks, DataCamp, InterviewBit, Edureka*
+_Prepared by | Tayyorlagan: Alyorjon_  
+_Sources | Manbalar: Docker Docs, GeeksforGeeks, DataCamp, InterviewBit, Edureka_
 
 ---
 
@@ -1597,10 +1598,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.5'
+          cpus: "1.5"
           memory: 1024M
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 256M
 ```
 
@@ -1710,12 +1711,12 @@ HEALTHCHECK --interval=10s --timeout=3s --start-period=30s --retries=3   CMD cur
 
 ## 60. Kubernetes vs Docker Swarm farqlari / Differences between Kubernetes and Docker Swarm
 
-| Xususiyat / Feature | Docker Swarm | Kubernetes (k8s) |
-|---|---|---|
-| O'rnatish / Setup | Juda sodda (Docker ichida o'rnatilgan) | Murakkab, qo'shimcha infratuzilma |
-| Scalability | Kichik va o'rta loyihalar uchun | Cheksiz, enterprise daraja |
-| Ekotizim / Ecosystem | Cheklangan | Juda boy (Helm, Istio, ArgoCD) |
-| Auto-scaling | Qo'lda | HPA (Horizontal Pod Autoscaler) |
+| Xususiyat / Feature  | Docker Swarm                           | Kubernetes (k8s)                  |
+| -------------------- | -------------------------------------- | --------------------------------- |
+| O'rnatish / Setup    | Juda sodda (Docker ichida o'rnatilgan) | Murakkab, qo'shimcha infratuzilma |
+| Scalability          | Kichik va o'rta loyihalar uchun        | Cheksiz, enterprise daraja        |
+| Ekotizim / Ecosystem | Cheklangan                             | Juda boy (Helm, Istio, ArgoCD)    |
+| Auto-scaling         | Qo'lda                                 | HPA (Horizontal Pod Autoscaler)   |
 
 ---
 
@@ -2104,5 +2105,5 @@ services:
 
 ---
 
-*Prepared by | Tayyorlagan: Alyorjon*  
-*Sources | Manbalar: Docker Docs, CNCF, GeeksforGeeks, DataCamp, InterviewBit*
+_Prepared by | Tayyorlagan: Alyorjon_  
+_Sources | Manbalar: Docker Docs, CNCF, GeeksforGeeks, DataCamp, InterviewBit_

@@ -1,4 +1,5 @@
 # 🐍 Python Interview: 100 Savol va Javob
+
 # 🐍 Python Interview: 100 Questions and Answers
 
 > **Bilingual Guide | Ikki tilli qo'llanma** — English 🇬🇧 + O'zbek 🇺🇿  
@@ -37,12 +38,12 @@ asyncio.run(main())
 
 ## �📚 Mundarija / Table of Contents
 
-| Daraja / Level | Savollar / Questions |
-|---|---|
-| 🟢 Basic | 1–25 |
-| 🟡 Intermediate | 26–55 |
-| 🔴 Advanced | 56–80 |
-| ⚫ Expert | 81–100 |
+| Daraja / Level  | Savollar / Questions |
+| --------------- | -------------------- |
+| 🟢 Basic        | 1–25                 |
+| 🟡 Intermediate | 26–55                |
+| 🔴 Advanced     | 56–80                |
+| ⚫ Expert       | 81–100               |
 
 ---
 
@@ -111,11 +112,11 @@ my_dict = {"name": "Ali", "age": 25}
 print(my_dict["name"])  # Ali
 ```
 
-| | List | Tuple | Set | Dict |
-|---|---|---|---|---|
-| Tartibli / Ordered | ✅ | ✅ | ❌ | ✅ |
-| O'zgaruvchan / Mutable | ✅ | ❌ | ✅ | ✅ |
-| Takror / Duplicates | ✅ | ✅ | ❌ | ❌ (keys) |
+|                        | List | Tuple | Set | Dict      |
+| ---------------------- | ---- | ----- | --- | --------- |
+| Tartibli / Ordered     | ✅   | ✅    | ❌  | ✅        |
+| O'zgaruvchan / Mutable | ✅   | ❌    | ✅  | ✅        |
+| Takror / Duplicates    | ✅   | ✅    | ❌  | ❌ (keys) |
 
 ---
 
@@ -5649,12 +5650,12 @@ asyncio.run(demo())
 
 ## 📊 Xulosa / Summary
 
-| Daraja / Level | Mavzular / Topics |
-|---|---|
-| 🟢 **Basic (1-25)** | Tiplar, OOP, Fayllar, Lambda, Exceptions |
+| Daraja / Level              | Mavzular / Topics                                    |
+| --------------------------- | ---------------------------------------------------- |
+| 🟢 **Basic (1-25)**         | Tiplar, OOP, Fayllar, Lambda, Exceptions             |
 | 🟡 **Intermediate (26-55)** | Decorators, Generators, asyncio, dataclasses, typing |
-| 🔴 **Advanced (56-80)** | GIL, Metaclass, Descriptors, AST, Pattern Matching |
-| ⚫ **Expert (81-100)** | CPython internals, DDD, Event Sourcing, C Extensions |
+| 🔴 **Advanced (56-80)**     | GIL, Metaclass, Descriptors, AST, Pattern Matching   |
+| ⚫ **Expert (81-100)**      | CPython internals, DDD, Event Sourcing, C Extensions |
 
 ---
 
@@ -5690,7 +5691,7 @@ def safe_divide(a, b):
 
 ---
 
-*Muvaffaqiyat tilayman, dasturchi! / Good luck, developer!* 🐍🚀
+_Muvaffaqiyat tilayman, dasturchi! / Good luck, developer!_ 🐍🚀
 
 > **GitHub uchun:** Bu faylni `python_interview_qa.md` sifatida repongizga qo'shing.  
 > `git add python_interview_qa.md && git commit -m "Add Python interview Q&A bilingual guide (100 questions)"`

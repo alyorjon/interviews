@@ -1,9 +1,11 @@
 # 💛 JavaScript Full-Stack Guide — 100 Real-World Interview Questions & Theory
+
 ### Ikki tilli qo'llanma / Bilingual Guide (English 🇬🇧 & O'zbek 🇺🇿)
 
-> **Mavzular / Topics:**  
-> - 🟢 **Part 1: Basic JavaScript & Core Syntax** (Data types, Scopes, Closures, Promises, Async/Await, Event Loop, DOM, ES6+)  
-> - 🟩 **Part 2: Backend Development** (Node.js Core, Express.js Middleware, NestJS Architecture, REST APIs, Microservices, Prisma/TypeORM)  
+> **Mavzular / Topics:**
+>
+> - 🟢 **Part 1: Basic JavaScript & Core Syntax** (Data types, Scopes, Closures, Promises, Async/Await, Event Loop, DOM, ES6+)
+> - 🟩 **Part 2: Backend Development** (Node.js Core, Express.js Middleware, NestJS Architecture, REST APIs, Microservices, Prisma/TypeORM)
 > - ⚛️ **Part 3: Modern Frontend** (React.js Core & Hooks, Vite Build System, Next.js App Router, Server Components, SSR/SSG/ISR)
 
 ---
@@ -21,12 +23,12 @@
 - Performance basics: `memo`, lazy loading, code splitting, caching.
 
 ```javascript
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 
 function Example({ items }) {
   const total = useMemo(() => items.reduce((a, b) => a + b, 0), [items]);
   useEffect(() => {
-    console.log('mounted');
+    console.log("mounted");
   }, []);
   return <div>{total}</div>;
 }
@@ -39,7 +41,9 @@ function Example({ items }) {
 ---
 
 ## 1. 🟢 JavaScript Core & Execution Mechanism
+
 JavaScript — bu bir oqimli (single-threaded), interpretatsiya qilinadigan, dinamik tipli dasturlash tili. U **Event Loop** va **Asynchronous Non-blocking I/O** (V8 Engine) mexanizmi orqali ko'p vazifalilikni amalga oshiradi.
+
 - **Event Loop & Call Stack:** Call Stack sinxron kodlarni bajaradi. Asinxron operatsiyalar (Timer, Network) Web API / Node APIs ga o'tkaziladi. Yakunlangach **Microtask Queue** (Promises) va **Macrotask Queue** (`setTimeout`, `setInterval`) orqali Call Stack ga qaytariladi.
 - **Closures:** Funksiya o'zining yaratilish o me rimidagi (Lexical Scope) o'zgaruvchilarni eslab qolish qobiliyati.
 - **Prototypes & Inheritance:** JS ob'ektlari `__proto__` prototip zanjiri orqali meros oladi.
@@ -47,6 +51,7 @@ JavaScript — bu bir oqimli (single-threaded), interpretatsiya qilinadigan, din
 ---
 
 ## 2. 🟩 Backend: Node.js, Express.js & NestJS Architecture
+
 - **Node.js:** Chrome V8 va Libuv kutubxonasi asosidagi JavaScript runtime environment. Libuv Event Loop va Thread Pool (4 ta standart thread) orqali I/O operatsiyalarini asinxron bajaradi.
 - **Express.js:** Yengil va minimalistik web freymvork. U **Middleware Chain** (so'rovlarni ketma-ket qayta ishlash zanjiri) tamoyiliga tayonadi.
 - **NestJS:** Angular me'morchiligidan ilhomlangan, TypeScript bazasidagi enterprise freymvork. U **Dependency Injection (DI)**, **Modules**, **Controllers**, **Services/Providers**, **Guards** (auth), **Interceptors** va **Pipes** (validation) me'morchiligiga ega.
@@ -54,6 +59,7 @@ JavaScript — bu bir oqimli (single-threaded), interpretatsiya qilinadigan, din
 ---
 
 ## 3. ⚛️ Frontend: React.js, Vite & Next.js App Router
+
 - **React.js:** UI qurish uchun deklarativ kutubxona. U **Virtual DOM** va **Reconciliation Algorithm (React Fiber)** orqali faqat o'zgargan komponentlarni real DOM ga qayta chizadi.
 - **Vite:** Esbuild va Native ES Modules (ESM) ga asoslangan o o tda tezkor zamonaviy frontend build tool (Webpack ga nisbatan 10-100x tezroq HMR).
 - **Next.js 14+ (App Router):** React Server Components (RSC) asosidagi Full-Stack framework. U **SSR** (Server-Side Rendering), **SSG** (Static Site Generation), **ISR** (Incremental Static Regeneration) va **Streaming** imkoniyatlarini beradi.
@@ -67,10 +73,12 @@ JavaScript — bu bir oqimli (single-threaded), interpretatsiya qilinadigan, din
 ## 1. JavaScript'da Event Loop qanday ishlaydi va Microtask vs Macrotask farqi nima? / How Event Loop works in JS (Microtasks vs Macrotasks)
 
 **EN:** JavaScript runs single-threaded using Call Stack. Asynchronous callbacks are queued:
+
 - **Microtask Queue:** Promises (`.then`, `await`), `queueMicrotask`, `MutationObserver`. Has higher priority (executes immediately after current stack before render).
 - **Macrotask Queue:** `setTimeout`, `setInterval`, `setImmediate`, I/O operations.
 
 **UZB:** JavaScript bir oqimda ishlaydi. Asinxron vazifalar navbatga qo'yiladi:
+
 - **Microtask Queue:** Promises (`.then`, `await`), `queueMicrotask`. Yuqori ustunlikka ega (Call Stack bo'shashi bilan darhol bajariladi).
 - **Macrotask Queue:** `setTimeout`, `setInterval`, `setImmediate`, I/O amallari.
 
@@ -87,12 +95,12 @@ console.log("4"); // Sinxron
 
 ## 2. `var`, `let` va `const` o'rtasidagi asosiy farqlar (Hoisting & Scope) / Differences between `var`, `let`, and `const`
 
-| Xususiyat / Property | `var` | `let` | `const` |
-|---|---|---|---|
-| Scope | Function Scope | Block Scope (`{}`) | Block Scope (`{}`) |
-| Hoisting | Ha (`undefined` beradi) | Ha (Temporal Dead Zone - TDZ) | Ha (Temporal Dead Zone - TDZ) |
-| Re-declaration | ✅ Mumkin | ❌ Xatolik | ❌ Xatolik |
-| Re-assignment | ✅ Mumkin | ✅ Mumkin | ❌ Taqiqlangan (O'zgarmas) |
+| Xususiyat / Property | `var`                   | `let`                         | `const`                       |
+| -------------------- | ----------------------- | ----------------------------- | ----------------------------- |
+| Scope                | Function Scope          | Block Scope (`{}`)            | Block Scope (`{}`)            |
+| Hoisting             | Ha (`undefined` beradi) | Ha (Temporal Dead Zone - TDZ) | Ha (Temporal Dead Zone - TDZ) |
+| Re-declaration       | ✅ Mumkin               | ❌ Xatolik                    | ❌ Xatolik                    |
+| Re-assignment        | ✅ Mumkin               | ✅ Mumkin                     | ❌ Taqiqlangan (O'zgarmas)    |
 
 ```javascript
 // Temporal Dead Zone (TDZ) misoli
@@ -113,18 +121,18 @@ let b = 10;
 
 ```javascript
 function createCounter() {
-    let count = 0; // Private variable encapsulated by closure
-    return {
-        increment: () => ++count,
-        decrement: () => --count,
-        getValue: () => count
-    };
+  let count = 0; // Private variable encapsulated by closure
+  return {
+    increment: () => ++count,
+    decrement: () => --count,
+    getValue: () => count,
+  };
 }
 
 const counter = createCounter();
 console.log(counter.increment()); // 1
 console.log(counter.increment()); // 2
-console.log(counter.getValue());   // 2
+console.log(counter.getValue()); // 2
 ```
 
 ---
@@ -137,13 +145,13 @@ console.log(counter.getValue());   // 2
 
 ```javascript
 const obj = {
-    name: "Alyorjon",
-    regularFunc: function() {
-        console.log("Regular:", this.name); // Alyorjon
-    },
-    arrowFunc: () => {
-        console.log("Arrow:", this.name); // undefined (Global window/module scope)
-    }
+  name: "Alyorjon",
+  regularFunc: function () {
+    console.log("Regular:", this.name); // Alyorjon
+  },
+  arrowFunc: () => {
+    console.log("Arrow:", this.name); // undefined (Global window/module scope)
+  },
 };
 
 obj.regularFunc();
@@ -157,19 +165,19 @@ obj.arrowFunc();
 ```javascript
 // Promise
 const fetchData = () => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => resolve("Data loaded!"), 1000);
-    });
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve("Data loaded!"), 1000);
+  });
 };
 
 // Async / Await with Error Handling
 async function main() {
-    try {
-        const result = await fetchData();
-        console.log(result);
-    } catch (error) {
-        console.error("Xato yuz berdi:", error);
-    }
+  try {
+    const result = await fetchData();
+    console.log(result);
+  } catch (error) {
+    console.error("Xato yuz berdi:", error);
+  }
 }
 main();
 ```
@@ -191,7 +199,7 @@ const deep = structuredClone(original);
 original.nested.b = 99;
 
 console.log(shallow.nested.b); // 99 (sayoz nusxa o'zgardi!)
-console.log(deep.nested.b);    // 2 (chuqur nusxa o'zgarmadi ✅)
+console.log(deep.nested.b); // 2 (chuqur nusxa o'zgarmadi ✅)
 ```
 
 ---
@@ -219,19 +227,19 @@ console.log(deep.nested.b);    // 2 (chuqur nusxa o'zgarmadi ✅)
 **UZB:** Middleware so'rov-javob siklida ketma-ket bajariladigan funksiyalardir. `next()` funksiyasi boshqaruvni keyingi middleware ga uzatadi.
 
 ```javascript
-const express = require('express');
+const express = require("express");
 const app = express();
 
 // Custom Auth Middleware
 const authMiddleware = (req, res, next) => {
-    const token = req.headers['authorization'];
-    if (!token) return res.status(401).json({ error: "Unauthorized!" });
-    req.user = { id: 1, name: "Ali" };
-    next(); // Pass to next handler
+  const token = req.headers["authorization"];
+  if (!token) return res.status(401).json({ error: "Unauthorized!" });
+  req.user = { id: 1, name: "Ali" };
+  next(); // Pass to next handler
 };
 
-app.get('/api/profile', authMiddleware, (req, res) => {
-    res.json({ message: `Salom, ${req.user.name}` });
+app.get("/api/profile", authMiddleware, (req, res) => {
+  res.json({ message: `Salom, ${req.user.name}` });
 });
 ```
 
@@ -245,27 +253,27 @@ app.get('/api/profile', authMiddleware, (req, res) => {
 
 ```typescript
 // users.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class UsersService {
-    getUsers() {
-        return [{ id: 1, name: 'Alyorjon' }];
-    }
+  getUsers() {
+    return [{ id: 1, name: "Alyorjon" }];
+  }
 }
 
 // users.controller.ts
-import { Controller, Get } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { Controller, Get } from "@nestjs/common";
+import { UsersService } from "./users.service";
 
-@Controller('users')
+@Controller("users")
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
-    @Get()
-    findAll() {
-        return this.usersService.getUsers();
-    }
+  @Get()
+  findAll() {
+    return this.usersService.getUsers();
+  }
 }
 ```
 
@@ -274,27 +282,29 @@ export class UsersController {
 ## 39. NestJS Guards, Interceptors, Pipes va Exception Filters tartibi / NestJS Request Lifecycle Execution Order
 
 **EN:** NestJS request execution lifecycle order:
+
 1. **Middleware** -> 2. **Guards** (Auth/Permissions) -> 3. **Interceptors** (Before) -> 4. **Pipes** (Validation/Transformation) -> 5. **Controller Handler** -> 6. **Interceptors** (After response) -> 7. **Exception Filters** (Error formatting).
 
 **UZB:** NestJS so'rov bajarilish tartibi:
+
 1. Middleware -> 2. Guards (Autentifikatsiya) -> 3. Interceptors (Oldin) -> 4. Pipes (Validatsiya) -> 5. Controller -> 6. Interceptors (Keyin) -> 7. Exception Filters (Xatolarni formatlash).
 
 ---
 
 ## 40. Prisma ORM vs TypeORM va Database Migrations / Prisma vs TypeORM Comparison
 
-| Xususiyat / Feature | Prisma ORM | TypeORM |
-|---|---|---|
-| Schema Ta'rifi | Auto-generated Type-safe DSL (`schema.prisma`) | Class Decorators (`@Entity()`, `@Column()`) |
-| Type Safety | 100% Auto-generated TypeScript types | Qo'lda yoziladigan decorator tiplari |
-| Query Engine | Rust-based binary engine | Pure JS/TS engine |
-| Query Usuli | `prisma.user.findMany()` | Repository Pattern (`repo.find()`) |
+| Xususiyat / Feature | Prisma ORM                                     | TypeORM                                     |
+| ------------------- | ---------------------------------------------- | ------------------------------------------- |
+| Schema Ta'rifi      | Auto-generated Type-safe DSL (`schema.prisma`) | Class Decorators (`@Entity()`, `@Column()`) |
+| Type Safety         | 100% Auto-generated TypeScript types           | Qo'lda yoziladigan decorator tiplari        |
+| Query Engine        | Rust-based binary engine                       | Pure JS/TS engine                           |
+| Query Usuli         | `prisma.user.findMany()`                       | Repository Pattern (`repo.find()`)          |
 
 ```typescript
 // Prisma Query Example
 const users = await prisma.user.findMany({
-    where: { age: { gte: 18 } },
-    include: { posts: true }
+  where: { age: { gte: 18 } },
+  include: { posts: true },
 });
 ```
 
@@ -319,36 +329,42 @@ const users = await prisma.user.findMany({
 ## 72. React Asosiy Hook'lar (`useState`, `useEffect`, `useMemo`, `useCallback`, `useRef`) / Core React Hooks
 
 ```jsx
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 
 function UserProfile({ userId }) {
-    const [user, setUser] = useState(null);
-    const inputRef = useRef(null);
+  const [user, setUser] = useState(null);
+  const inputRef = useRef(null);
 
-    // useEffect for side-effects (API fetch)
-    useEffect(() => {
-        fetch(`/api/users/${userId}`)
-            .then(res => res.json())
-            .then(data => setUser(data));
-    }, [userId]);
+  // useEffect for side-effects (API fetch)
+  useEffect(() => {
+    fetch(`/api/users/${userId}`)
+      .then((res) => res.json())
+      .then((data) => setUser(data));
+  }, [userId]);
 
-    // useMemo for heavy calculations
-    const expensiveCalculation = useMemo(() => {
-        return user ? user.score * 100 : 0;
-    }, [user]);
+  // useMemo for heavy calculations
+  const expensiveCalculation = useMemo(() => {
+    return user ? user.score * 100 : 0;
+  }, [user]);
 
-    // useCallback for memoized function reference
-    const handleClick = useCallback(() => {
-        inputRef.current.focus();
-    }, []);
+  // useCallback for memoized function reference
+  const handleClick = useCallback(() => {
+    inputRef.current.focus();
+  }, []);
 
-    return (
-        <div>
-            <input ref={inputRef} type="text" />
-            <button onClick={handleClick}>Focus Input</button>
-            <p>Score: {expensiveCalculation}</p>
-        </div>
-    );
+  return (
+    <div>
+      <input ref={inputRef} type="text" />
+      <button onClick={handleClick}>Focus Input</button>
+      <p>Score: {expensiveCalculation}</p>
+    </div>
+  );
 }
 ```
 
@@ -365,25 +381,31 @@ function UserProfile({ userId }) {
 ## 74. Next.js 14 App Router: React Server Components (RSC) vs Client Components (`'use client'`) / Server vs Client Components
 
 **EN:**
+
 - **Server Components (Default):** Render on the server only. Zero JS sent to the bundle, direct access to database/backend, highly secure.
 - **Client Components (`'use client'`):** Render on server and hydrate on client. Required for interactivity (`useState`, `useEffect`, onClick handlers).
 
 **UZB:**
+
 - **Server Components (Standart):** Faqat serverda render bo'ladi. Brauzerga ortiqcha JS yubormaydi, MB ga to'g'ridan-to'g'ri ulanadi.
 - **Client Components (`'use client'`):** Brauzerda interaktivlik (`useState`, `useEffect`, hodisalar) uchun ishlatiladi.
 
 ```tsx
 // app/users/page.tsx (Server Component)
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 
 export default async function UsersPage() {
-    const users = await prisma.user.findMany(); // Direct DB query on server!
-    return (
-        <div>
-            <h1>Users List</h1>
-            <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>
-        </div>
-    );
+  const users = await prisma.user.findMany(); // Direct DB query on server!
+  return (
+    <div>
+      <h1>Users List</h1>
+      <ul>
+        {users.map((u) => (
+          <li key={u.id}>{u.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 ```
 
@@ -391,12 +413,12 @@ export default async function UsersPage() {
 
 ## 75. Next.js Data Fetching: SSR, SSG, ISR va Streaming (`Suspense`) / Rendering Strategies in Next.js
 
-| Strategiya / Strategy | Bajarilish Joyi & Vaqti | Qo'llanilishi / Use Case |
-|---|---|---|
-| **SSR (Server-Side Rendering)** | Har bir so'rov kelganda serverda | Dinamik shaxsiy kabinetlar |
-| **SSG (Static Site Generation)** | Build vaqtida 1 marta | Bloglar, Hujjatlar |
+| Strategiya / Strategy                | Bajarilish Joyi & Vaqti                             | Qo'llanilishi / Use Case        |
+| ------------------------------------ | --------------------------------------------------- | ------------------------------- |
+| **SSR (Server-Side Rendering)**      | Har bir so'rov kelganda serverda                    | Dinamik shaxsiy kabinetlar      |
+| **SSG (Static Site Generation)**     | Build vaqtida 1 marta                               | Bloglar, Hujjatlar              |
 | **ISR (Incremental Static Recache)** | Vaqt bo'yicha orqada yangilanadi (`revalidate: 60`) | E-Commerce mahsulotlar katalogi |
-| **Streaming & Suspense** | Komponentlar tayyor bo'lishi bilan uzatiladi | Sekin yuklanuvchi bloklar |
+| **Streaming & Suspense**             | Komponentlar tayyor bo'lishi bilan uzatiladi        | Sekin yuklanuvchi bloklar       |
 
 ---
 
@@ -404,5 +426,5 @@ export default async function UsersPage() {
 
 ---
 
-*Prepared by | Tayyorlagan: Alyorjon*  
-*Sources | Manbalar: JavaScript.info, Node.js Docs, NestJS Docs, React Docs, Next.js Docs*
+_Prepared by | Tayyorlagan: Alyorjon_  
+_Sources | Manbalar: JavaScript.info, Node.js Docs, NestJS Docs, React Docs, Next.js Docs_
