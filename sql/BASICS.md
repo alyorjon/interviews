@@ -6,7 +6,27 @@
 
 ---
 
-## 📌 1. DML — Ma'lumot boshqaruvi / Data Manipulation
+## � Modern SQL interview topics
+
+**EN:** Modern SQL interviews emphasize query performance, indexing, transactions, and practical database design.
+
+**UZ:** Zamonaviy SQL intervyularida so‘rovlarning tezligi, indekslar, tranzaksiyalar va amaliy DB dizayn muhim bo‘ladi.
+
+- `CTE` (`WITH`) — murakkab so‘rovlarni o‘qilishi oson bo‘lgan bo‘laklarga ajratadi.
+- Window functions: `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `SUM() OVER()`.
+- `EXPLAIN ANALYZE` — so‘rov rejasini va real ishlash vaqtini ko‘rish uchun.
+- Transaction isolation levels: `READ COMMITTED`, `REPEATABLE READ`, `SERIALIZABLE`.
+- `pg_stat_statements` (PostgreSQL) — qaysi so‘rovlar sekin ishlayotganini aniqlash uchun.
+
+```sql
+SELECT customer_id, order_id,
+       ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY created_at) AS rn
+FROM orders;
+```
+
+---
+
+## �📌 1. DML — Ma'lumot boshqaruvi / Data Manipulation
 
 > Mavjud ma'lumotlar ustida amal bajaradi / Works on existing data
 

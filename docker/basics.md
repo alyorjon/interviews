@@ -6,7 +6,26 @@
 
 ---
 
-## 📑 Mundarija | Table of Contents
+## � Modern Docker interview topics
+
+**EN:** Real-world Docker interviews now test production concerns like image optimization, health checks, compose best practices, and security.
+
+**UZ:** Amaliy Docker intervyularida endi image optimizatsiyasi, healthcheck, compose best practices va xavfsizlik muammolari ham ko‘proq tekshiriladi.
+
+- Multi-stage builds for smaller images.
+- `HEALTHCHECK` and graceful shutdown with PID 1.
+- `docker compose watch` and service readiness.
+- Rootless containers and least-privilege setups.
+- Image scanning and supply-chain security.
+
+```bash
+docker build -t my-app .
+docker run -d --name my-app --health-cmd="curl -f http://localhost/ || exit 1" my-app
+```
+
+---
+
+## �📑 Mundarija | Table of Contents
 
 1. [Docker asoslari | Docker Basics](#1-asoslar--basics)
 2. [Image va Container](#2-image-va-container)

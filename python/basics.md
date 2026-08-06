@@ -7,7 +7,35 @@
 
 ---
 
-## 📚 Mundarija / Table of Contents
+## � Modern interview topics (2025+)
+
+**EN:** In modern Python interviews, employers often test practical knowledge of concurrency, resource management, packaging, and production readiness.
+
+**UZ:** Zamonaviy Python intervyularida ko‘pincha asinxronlik, resurslarni to‘g‘ri boshqarish, paketlashtirish va production tayyorligi bo‘yicha amaliy bilimlar tekshiriladi.
+
+- `asyncio` vs `threading`: `asyncio` ko‘pincha I/O-bound vazifalar uchun, `threading` esa bir nechta OS thread bilan parallel ishlash uchun ishlatiladi.
+- `context managers` (`with`): fayl, DB ulanish va boshqa resurslarni xavfsiz yopish uchun muhim.
+- `multiprocessing`: CPU-bound hisob-kitoblar uchun ishlatiladi.
+- `type hints` va `pydantic`/`FastAPI`: real-world backend loyihalarida juda tez-tez uchraydi.
+- Packaging: `pyproject.toml`, virtualenv/venv, dependency management.
+
+```python
+import asyncio
+
+async def fetch_data():
+    await asyncio.sleep(1)
+    return "done"
+
+async def main():
+    result = await fetch_data()
+    print(result)
+
+asyncio.run(main())
+```
+
+---
+
+## �📚 Mundarija / Table of Contents
 
 | Daraja / Level | Savollar / Questions |
 |---|---|

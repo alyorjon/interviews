@@ -27,7 +27,7 @@ JavaScript — bu bir oqimli (single-threaded), interpretatsiya qilinadigan, V8 
 **UZB:** Microtask Queue Call Stack bo'shashi bilan darhol bajariladi. Macrotask esa keyingi siklda ishga tushadi.
 
 ```javascript
-console.log('1'); setTimeout(() => console.log('2'), 0); Promise.resolve().then(() => console.log('3')); console.log('4'); // 1, 4, 3, 2
+console.log('1'); setTimeout(() => console.log('2'), 0); Promise.resolve().then(() => console.log('3')); console.log('4'); // Output: 1, 4, 3, 2
 ```
 
 ---
@@ -375,7 +375,7 @@ element.addEventListener('click', handler, { capture: true });
 
 **EN:** Attaching a single event listener to a parent container to manage events for multiple dynamic child elements using `e.target`.
 
-**UZB:** Bitta ota-onaga event listener o me rnatib, barcha bolalar hodisalarini samarali boshqarish.
+**UZB:** Bitta ota-onaga event listener o'rnatib, barcha bolalar hodisalarini samarali boshqarish.
 
 ```javascript
 document.getElementById('parentList').addEventListener('click', e => { if(e.target.tagName==='LI') console.log(e.target.innerText); });
@@ -397,47 +397,46 @@ let timer = setInterval(() => {}, 1000); // Must call clearInterval(timer) when 
 
 ## Q31. JavaScript Data Types: Primitive vs Reference | Primitiv va Reference ma'lumot turlari
 
-**EN:** Primitives (String, Number, Boolean, BigInt, Symbol, null, undefined) are stored by value. Objects are stored by reference in Heap.
+**EN:** Primitives stored in Stack by value. Reference objects stored in Heap by reference address.
 
-**UZB:** Primitiv turlar qiymati bo me yicha stack da saqlanadi. Ob'ektlar esa heap da resurs havolasi bo'yicha saqlanadi.
+**UZB:** Primitiv turlar qiymati bo'yicha Stack da, ob'ektlar esa Heap da havola bo'yicha saqlanadi.
 
 ```javascript
-let a = 10; let b = a; b = 20; // a is still 10
-let obj1 = { val: 10 }; let obj2 = obj1; obj2.val = 20; // obj1.val is 20
+let a = 10; let b = a; b = 20; // a remains 10
 ```
 
 ---
 
-## Q32. BigInt Type for Arbitrary Precision Integers | BigInt ma'lumot turi va yirik sonlar
+## Q32. BigInt Arbitrary Precision Integers | BigInt ma'lumot turi va yirik sonlar
 
-**EN:** BigInt handles integers beyond `Number.MAX_SAFE_INTEGER` (`2^53 - 1`) safely.
+**EN:** BigInt represents integers larger than Number.MAX_SAFE_INTEGER (2^53 - 1).
 
-**UZB:** Number turining maksimal xavfsiz sonidan katta bo me lgan butun sonlar bilan ishlash.
+**UZB:** Number sig'imidan katta bo'lgan butun sonlarni xavfsiz hisoblash.
 
 ```javascript
-const huge = 9007199254740991n + 2n; console.log(huge); // 9007199254740993n
+const big = 9007199254740991n + 5n; console.log(big);
 ```
 
 ---
 
 ## Q33. NaN & Number.isNaN Verification | NaN (Not-a-Number) va Number.isNaN tekshiruvi
 
-**EN:** `NaN` is the only value in JS not equal to itself (`NaN === NaN` is false). `Number.isNaN()` accurately checks for NaN.
+**EN:** NaN is the only JS value not equal to itself. Number.isNaN checks strictly without type coercion.
 
-**UZB:** `NaN` o me ziga teng bo me lmagan yagona qiymatdir. Uni tekshirish uchun `Number.isNaN()` ishlatiladi.
+**UZB:** NaN o'ziga teng bo'lmagan yagona qiymatdir. Number.isNaN uni qat'iy tekshiradi.
 
 ```javascript
-console.log(isNaN('hello')); // true (coerces)
-console.log(Number.isNaN('hello')); // false (strict check)
+console.log(Number.isNaN(NaN)); // true
+console.log(Number.isNaN('hello')); // false
 ```
 
 ---
 
-## Q34. Object.keys, Object.values, and Object.entries | Object.keys, Object.values va Object.entries metodlari
+## Q34. Object.keys, Object.values, Object.entries | Object static metodlari
 
-**EN:** Static methods returning array of keys, values, or `[key, value]` pairs for object iteration.
+**EN:** Iterating object properties as arrays of keys, values, or key-value pairs.
 
-**UZB:** Ob'ekt atributlari, qiymatlari yoki [kalit, qiymat] juftliklarini massiv ko'rinishida olish.
+**UZB:** Ob'ekt atributlari va qiymatlarini massiv ko'rinishida olish.
 
 ```javascript
 const user = { a: 1, b: 2 }; Object.entries(user).forEach(([k, v]) => console.log(k, v));
@@ -445,24 +444,24 @@ const user = { a: 1, b: 2 }; Object.entries(user).forEach(([k, v]) => console.lo
 
 ---
 
-## Q35. Tag Templates & String Interpolation | Tagged Template Literals va matn tayyorlash
+## Q35. Tagged Template Literals | Tagged Template Literals matn tayyorlash
 
-**EN:** Tagged templates allow parsing template literals with a custom function.
+**EN:** Parsing template literals with a custom function for formatting or sanitizing HTML.
 
-**UZB:** Teglangan shablonli matnlar yordamida matnlarni maxsus funksiyada qayta ishlash.
+**UZB:** Matnlarni maxsus funksiya orqali formatlash va qayta ishlash.
 
 ```javascript
-function highlight(strings, ...values) { return strings[0] + '<b>' + values[0] + '</b>'; }
-highlight`Hello ${'World'}`
+function format(strings, ...vals) { return strings[0] + vals[0].toUpperCase(); }
+format`hello ${'world'}`
 ```
 
 ---
 
-## Q36. Rest Parameters vs Arguments Object | Rest Parameters (...args) va Arguments obyekti
+## Q36. Rest Parameters vs Arguments Object | Rest parameters (...args) va Arguments
 
-**EN:** Rest parameters `(...args)` create a true Array. `arguments` is an array-like object missing array methods and unavailable in arrow functions.
+**EN:** Rest parameters create a real array. Arguments is an array-like object missing array methods.
 
-**UZB:** Rest parametrlar haqiqiy massiv beradi. `arguments` esa massivga o'xshash obyekt bo'lib arrow funksiyalarda ishlamaydi.
+**UZB:** Rest parametrlar haqiqiy massiv beradi. Arguments esa massivsimon ob'ektdir.
 
 ```javascript
 const sum = (...nums) => nums.reduce((a, b) => a + b, 0);
@@ -470,47 +469,47 @@ const sum = (...nums) => nums.reduce((a, b) => a + b, 0);
 
 ---
 
-## Q37. Spread Operator in Arrays and Objects | Spread Operator (...) dan foydalanish
+## Q37. Spread Operator in Arrays and Objects | Spread Operator (...) amaliyotda
 
-**EN:** Spreading elements of an array or properties of an object into new structures.
+**EN:** Expanding elements of an array or object properties into new literal structures.
 
-**UZB:** Massiv yoki ob'ekt elementlarini yangi strukturalarga yoyish.
+**UZB:** Massiv yoki ob'ekt elementlarini yoyib yangisiga biriktirish.
 
 ```javascript
-const arr1 = [1, 2]; const arr2 = [...arr1, 3, 4];
+const merged = { ...obj1, ...obj2 };
 ```
 
 ---
 
 ## Q38. Destructuring Assignment with Default Values | Destrukturizatsiya va Boshlang'ich Qiymatlar
 
-**EN:** Extracting values from arrays/objects with fallback default values if undefined.
+**EN:** Extracting variables from objects/arrays with fallback default values if undefined.
 
-**UZB:** Massiv va ob'ektlardan qiymatlarni oson ajratib olish va standart qiymat berish.
+**UZB:** Ob'ektlardan qiymatlarni ajratishda boshlang'ich qiymat biriktirish.
 
 ```javascript
-const { name, role = 'User' } = { name: 'Alyor' };
+const { role = 'Guest' } = user;
 ```
 
 ---
 
 ## Q39. Array.prototype.flat and flatMap | flat va flatMap metodlari
 
-**EN:** `flat(depth)` flattens nested arrays. `flatMap()` maps elements then flattens result by depth 1.
+**EN:** Flattening nested arrays by depth and mapping elements in a single pass.
 
-**UZB:** `flat` ichma-ich massivlarni yoyadi. `flatMap` esa har bir elementni o'zgartirib darhol yoyadi.
+**UZB:** Ichma-ich massivlarni yoyish va elementlarini o'zgartirish.
 
 ```javascript
-const arr = [1, [2, [3]]]; console.log(arr.flat(2)); // [1, 2, 3]
+const arr = [1, [2, 3]].flat(); // [1, 2, 3]
 ```
 
 ---
 
 ## Q40. Array.from vs Array.of | Array.from va Array.of metodlari
 
-**EN:** `Array.from()` creates array from iterable or array-like object. `Array.of()` creates array from arguments.
+**EN:** Creating arrays from iterables or arguments list cleanly.
 
-**UZB:** `Array.from` iterable yoki massivsimon ob'ektlardan yangi massiv yaratadi.
+**UZB:** Iterable ob'ektlardan yoki argumentlardan massiv yaratish.
 
 ```javascript
 const chars = Array.from('hello'); // ['h','e','l','l','o']
@@ -518,84 +517,71 @@ const chars = Array.from('hello'); // ['h','e','l','l','o']
 
 ---
 
-## Q41. Object.defineProperty & Property Descriptors | Object.defineProperty va Property Descriptors
+## Q41. Object.defineProperty & Descriptors | Object.defineProperty va atribut qoidalari
 
-**EN:** Defining properties with custom descriptors: `writable`, `enumerable`, `configurable`, `get`, `set`.
+**EN:** Defining object properties with writable, enumerable, and configurable attributes.
 
-**UZB:** Ob'ekt atributlarining yozilishi, ko'rinishi va o'chirilish ruxsatlarini boshqarish.
+**UZB:** Ob'ekt atributlarini yozish va o'chirish ruxsatlarini sozlash.
 
 ```javascript
-Object.defineProperty(obj, 'key', { value: 42, writable: false });
+Object.defineProperty(obj, 'id', { value: 1, writable: false });
 ```
 
 ---
 
-## Q42. SetTimeout vs SetImmediate vs Process.nextTick | setTimeout, setImmediate va process.nextTick farqlari
+## Q42. process.nextTick vs setImmediate vs setTimeout | process.nextTick, setImmediate va setTimeout ijro tartibi
 
-**EN:** `process.nextTick` executes immediately after current sync code before microtasks. `setImmediate` runs on check phase of Event Loop.
+**EN:** process.nextTick fires before any microtasks or timers. setImmediate fires on Event Loop check phase.
 
-**UZB:** process.nextTick barcha mikro-vazifalardan oldin bajariladi. setImmediate esa Event Loop tekshiruv bosqichida ishlaydi.
+**UZB:** process.nextTick barcha mikro-vazifalardan oldin, setImmediate esa Event Loop tekshiruv bosqichida ishlaydi.
 
 ```javascript
-process.nextTick(() => console.log('nextTick'));
+process.nextTick(() => console.log('Tick'));
 ```
 
 ---
 
-## Q43. Strict Equality (`===`) vs Loose Equality (`==`) Type Coercion | Katt'iy tenglik (===) va Yumshoq tenglik (==) farqi
+## Q43. Logical Assignment Operators (`&&=`, `||=`, `??=`) | Mantiqiy o'zlashtirish operatorlari
 
-**EN:** `==` performs implicit type coercion. `===` checks both value and type without coercion.
-
-**UZB:** `==` tiplarni mantiqan avtomatik o me tkazadi. `===` esa tip va qiymatni birdek tekshiradi.
-
-```javascript
-console.log(0 == '0'); // true
-console.log(0 === '0'); // false
-```
-
----
-
-## Q44. Logical Assignment Operators (`&&=`, `||=`, `??=`) | Mantiqiy o'zlashtirish operatorlari
-
-**EN:** Short-circuit logical assignment operators introduced in ES2021.
+**EN:** ES2021 logical assignment short-circuits to assign values conditionally.
 
 **UZB:** Qisqartirilgan mantiqiy o'zlashtirish operatorlari.
 
 ```javascript
-let a = null; a ??= 'default'; console.log(a); // 'default'
+let x = null; x ??= 'default';
 ```
 
 ---
 
-## Q45. Private Class Fields (`#field`) | Sinf xususiy maydonlari (#field)
+## Q44. Private Class Fields (`#field`) | Class xususiy maydonlari (#field)
 
-**EN:** Hard private class fields declared with `#` prefix enforced natively by JS engine.
+**EN:** Enforcing hard private class members using native `#` syntax.
 
-**UZB:** Klasslar ichida `#` belgisi bilan e'lon qilinadigan xususiy xususiyatlar.
+**UZB:** Klasslar ichida `#` belgisi bilan xususiy maydonlar yaratish.
 
 ```javascript
-class BankAccount { #balance = 100; getBalance() { return this.#balance; } }
+class Bank { #balance = 0; get balance() { return this.#balance; } }
 ```
 
 ---
 
-## Q46. Static Methods and Properties in Classes | Sinflardagi Static metod va atributlar
+## Q45. Static Class Methods and Properties | Sinflardagi Static metod va atributlar
 
-**EN:** Static members belong to the class constructor function itself rather than instance objects.
+**EN:** Attaching methods to the class constructor function directly instead of instance prototype.
 
-**UZB:** Static a'zolar sinf instansiyasiga emas, to'g'ridan-to'g'ri sinfning o'ziga biriktiriladi.
+**UZB:** Static metodlar instansiyaga emas, sinf konstruktoriga biriktiriladi.
 
 ```javascript
-class MathUtils { static square(x) { return x * x; } } MathUtils.square(4);
+class MathUtil { static add(a, b) { return a + b; } }
 ```
 
 ---
 
-## Q47. Class Inheritance and `super()` Keyword | Sinflarda Merosxo'rlik va super() kalit so'zi
+## Q46. Class Inheritance & `super()` Keyword | Sinflarda Merosxo'rlik va super()
 
-**EN:** Extending classes and invoking parent constructor via `super()`.
+**EN:** Extending parent classes and calling parent constructor via `super()`.
 
-**UZB:** Sinflardan meros olish va ota sinf konstruktorini `super()` orqali chaqirish.
+**UZB:** Sinflardan meros olish va ota sinf konstruktorini chaqirish.
 
 ```javascript
 class Dog extends Animal { constructor(name) { super(name); } }
@@ -603,35 +589,35 @@ class Dog extends Animal { constructor(name) { super(name); } }
 
 ---
 
-## Q48. Symbol.iterator & Custom Iterables | Symbol.iterator va Shaxsiy Iterable ob'ektlar
+## Q47. Custom Iterators & `Symbol.iterator` | Shaxsiy Iterable ob'ektlar yaratish
 
-**EN:** Implementing `[Symbol.iterator]()` to make custom objects usable in `for...of` loops.
+**EN:** Implementing `[Symbol.iterator]()` to make objects iterable in `for...of` loops.
 
 **UZB:** Ob'ektni `for...of` siklida aylanadigan iterable holatga keltirish.
 
 ```javascript
-const range = { from: 1, to: 3, [Symbol.iterator]() { let curr=this.from; return { next: () => curr<=this.to ? {value: curr++, done: false} : {done: true} }; } };
+const range = { [Symbol.iterator]() { return { next: () => ({ done: true }) }; } };
 ```
 
 ---
 
-## Q49. Web Workers & Multithreading in Browser | Web Workers va brauzerda ko'p oqimlilik
+## Q48. Web Workers Multithreading | Web Workers va ko'p oqimlilik
 
-**EN:** Running heavy scripts in background threads without blocking UI main thread.
+**EN:** Executing CPU-intensive logic in background thread without freezing main UI thread.
 
-**UZB:** Asosiy UI oqimini qotirib qo'ymaslik uchun og'ir kodingizni Web Worker oqimida bajarish.
+**UZB:** Asosiy UI oqimini qotirib qo'ymaslik uchun og'ir vazifani Web Worker oqimida bajarish.
 
 ```javascript
-const worker = new Worker('worker.js'); worker.postMessage('start'); worker.onmessage = e => {};
+const worker = new Worker('w.js'); worker.postMessage('start');
 ```
 
 ---
 
-## Q50. Service Workers and PWA Caching | Service Workers va PWA kesh tizimi
+## Q49. Service Workers Caching | Service Workers va PWA kesh tizimi
 
-**EN:** Proxy script acting between browser and network for offline caching and push notifications.
+**EN:** Proxying network requests and caching assets for offline Web Application support.
 
-**UZB:** Tarmoq so'rovlarini tutib qolib, oflayn rejim uchun keshlashni ta'minlaydigan servis.
+**UZB:** Tarmoq so'rovlarini tutib qolib, oflayn rejim uchun keshlash.
 
 ```javascript
 navigator.serviceWorker.register('/sw.js');
@@ -639,700 +625,616 @@ navigator.serviceWorker.register('/sw.js');
 
 ---
 
-## Q51. Advanced Core JS Engine Rule 51 | Ilg'or JS Dvigatel Qoidasi 51
+## Q50. Fetch API & AbortController | Fetch API va AbortController so'rovni bekor qilish
 
-**EN:** Detailed technical examination of JavaScript engine rule #51 regarding optimization, parsing, and execution.
+**EN:** Canceling ongoing HTTP requests using AbortController signal.
 
-**UZB:** JavaScript dvigatelining #51-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Bajarilayotgan HTTP so'rovni AbortController bilan bekor qilish.
 
 ```javascript
-// JS Engine Advanced Concept #51
-const fn51 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn51([1, 0, 2, false, 3]));
+const controller = new AbortController(); fetch(url, { signal: controller.signal }); controller.abort();
 ```
 
 ---
 
-## Q52. Advanced Core JS Engine Rule 52 | Ilg'or JS Dvigatel Qoidasi 52
+## Q51. Async Generators & `for await...of` | Async Generators va for await...of sikli
 
-**EN:** Detailed technical examination of JavaScript engine rule #52 regarding optimization, parsing, and execution.
+**EN:** Iterating over asynchronous data streams sequentially using async generator functions.
 
-**UZB:** JavaScript dvigatelining #52-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Asinxron ma'lumotlar oqimini `for await...of` siklida aylanib chiqish.
 
 ```javascript
-// JS Engine Advanced Concept #52
-const fn52 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn52([1, 0, 2, false, 3]));
+async function* fetchStream() { yield await fetch('/chunk1'); }
+for await (const chunk of fetchStream()) {}
 ```
 
 ---
 
-## Q53. Advanced Core JS Engine Rule 53 | Ilg'or JS Dvigatel Qoidasi 53
+## Q52. JavaScript Memory Heap vs Call Stack | Memory Heap va Call Stack arxitekturasi
 
-**EN:** Detailed technical examination of JavaScript engine rule #53 regarding optimization, parsing, and execution.
+**EN:** Call Stack executes synchronous frame executions. Memory Heap stores dynamically allocated objects.
 
-**UZB:** JavaScript dvigatelining #53-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Call Stack sinxron funksiyalarni bajaradi. Memory Heap esa ob'ektlarni saqlaydi.
 
 ```javascript
-// JS Engine Advanced Concept #53
-const fn53 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn53([1, 0, 2, false, 3]));
+function foo() { const obj = {}; } // Reference on stack, object in heap
 ```
 
 ---
 
-## Q54. Advanced Core JS Engine Rule 54 | Ilg'or JS Dvigatel Qoidasi 54
+## Q53. Function Tail Call Optimization (TCO) | Tail Call Optimization (TCO) resurs tejamkorligi
 
-**EN:** Detailed technical examination of JavaScript engine rule #54 regarding optimization, parsing, and execution.
+**EN:** ES6 engine feature reusing stack frames for recursive functions calling themselves at tail position.
 
-**UZB:** JavaScript dvigatelining #54-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Rekursiya oxirgi qatorda chaqirilganda stack xotirasini qayta ishlatish.
 
 ```javascript
-// JS Engine Advanced Concept #54
-const fn54 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn54([1, 0, 2, false, 3]));
+function fact(n, acc = 1) { if (n <= 1) return acc; return fact(n - 1, n * acc); }
 ```
 
 ---
 
-## Q55. Advanced Core JS Engine Rule 55 | Ilg'or JS Dvigatel Qoidasi 55
+## Q54. WeakRef & FinalizationRegistry | WeakRef va FinalizationRegistry kesh xotirasi
 
-**EN:** Detailed technical examination of JavaScript engine rule #55 regarding optimization, parsing, and execution.
+**EN:** Creating weak references to objects and receiving cleanup callbacks when objects are garbage collected.
 
-**UZB:** JavaScript dvigatelining #55-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Ob'ektlarga kuchsiz havola berish va ular xotiradan o'chirilganda callback eshitish.
 
 ```javascript
-// JS Engine Advanced Concept #55
-const fn55 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn55([1, 0, 2, false, 3]));
+const ref = new WeakRef(obj); const registry = new FinalizationRegistry(key => console.log('GCed', key));
 ```
 
 ---
 
-## Q56. Advanced Core JS Engine Rule 56 | Ilg'or JS Dvigatel Qoidasi 56
+## Q55. GlobalThis Universal Global Object | globalThis universal obyekti
 
-**EN:** Detailed technical examination of JavaScript engine rule #56 regarding optimization, parsing, and execution.
+**EN:** Standardized global object reference accessible identically across Browser (`window`), Node.js (`global`), and Web Workers.
 
-**UZB:** JavaScript dvigatelining #56-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Brauzer va Node.js da birdek ishlaydigan universal global ob'ekt.
 
 ```javascript
-// JS Engine Advanced Concept #56
-const fn56 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn56([1, 0, 2, false, 3]));
+console.log(globalThis.setTimeout === setTimeout); // true
 ```
 
 ---
 
-## Q57. Advanced Core JS Engine Rule 57 | Ilg'or JS Dvigatel Qoidasi 57
+## Q56. Intl API for Internationalization | Intl API (Valyuta va Sanalarni mahalliy formatlash)
 
-**EN:** Detailed technical examination of JavaScript engine rule #57 regarding optimization, parsing, and execution.
+**EN:** Formatting currency, numbers, and dates natively according to user locale.
 
-**UZB:** JavaScript dvigatelining #57-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Valyuta va sanalarni foydalanuvchi mamlakatiga moslab avtomatik formatlash.
 
 ```javascript
-// JS Engine Advanced Concept #57
-const fn57 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn57([1, 0, 2, false, 3]));
+new Intl.NumberFormat('uz-UZ', { style: 'currency', currency: 'UZS' }).format(1500000);
 ```
 
 ---
 
-## Q58. Advanced Core JS Engine Rule 58 | Ilg'or JS Dvigatel Qoidasi 58
+## Q57. Promise.all vs Promise.allSettled vs Promise.race vs Promise.any | Promise kombinatsiya metodlari farqi
 
-**EN:** Detailed technical examination of JavaScript engine rule #58 regarding optimization, parsing, and execution.
+**EN:** Promise.all fails fast on 1 error. Promise.allSettled waits for all results. Promise.race returns first settled. Promise.any returns first fulfilled.
 
-**UZB:** JavaScript dvigatelining #58-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Promise.all bitta xatoda to'xtaydi. Promise.allSettled barchasini kutadi. Promise.any birinchi muvaffaqiyatlisini oladi.
 
 ```javascript
-// JS Engine Advanced Concept #58
-const fn58 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn58([1, 0, 2, false, 3]));
+Promise.allSettled([p1, p2]).then(results => console.log(results));
 ```
 
 ---
 
-## Q59. Advanced Core JS Engine Rule 59 | Ilg'or JS Dvigatel Qoidasi 59
+## Q58. Microtask Starvation Problem | Microtask Starvation (Macrotask block bo'lib qolishi) muammosi
 
-**EN:** Detailed technical examination of JavaScript engine rule #59 regarding optimization, parsing, and execution.
+**EN:** Infinite recursive microtask scheduling blocks Macrotask queue and UI rendering thread completely.
 
-**UZB:** JavaScript dvigatelining #59-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Cheksiz rekurtsiv mikro-vazifalar UI rendering va setTimeout larni bloklab qo'yishi.
 
 ```javascript
-// JS Engine Advanced Concept #59
-const fn59 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn59([1, 0, 2, false, 3]));
+function loop() { Promise.resolve().then(loop); } // Freezes browser!
 ```
 
 ---
 
-## Q60. Advanced Core JS Engine Rule 60 | Ilg'or JS Dvigatel Qoidasi 60
+## Q59. Encapsulation via Symbols vs Closures | Symbol va Closure yordamida inkapsulyatsiya
 
-**EN:** Detailed technical examination of JavaScript engine rule #60 regarding optimization, parsing, and execution.
+**EN:** Comparing private property privacy mechanisms in JavaScript objects.
 
-**UZB:** JavaScript dvigatelining #60-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** JS da ob'ekt maydonlarini inkapsulyatsiya qilish usullari.
 
 ```javascript
-// JS Engine Advanced Concept #60
-const fn60 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn60([1, 0, 2, false, 3]));
+const _private = Symbol('private'); class User { [_private] = 42; }
 ```
 
 ---
 
-## Q61. Advanced Core JS Engine Rule 61 | Ilg'or JS Dvigatel Qoidasi 61
+## Q60. Array Buffer & DataView Binary Manipulation | ArrayBuffer va DataView yordamida binar ma'lumotlar
 
-**EN:** Detailed technical examination of JavaScript engine rule #61 regarding optimization, parsing, and execution.
+**EN:** Reading and writing binary data fields with explicit byte order (Little Endian vs Big Endian).
 
-**UZB:** JavaScript dvigatelining #61-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Binar ma'lumotlar baytlarini to'g'ridan-to'g me ri o'qish va yozish.
 
 ```javascript
-// JS Engine Advanced Concept #61
-const fn61 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn61([1, 0, 2, false, 3]));
+const buf = new ArrayBuffer(16); const view = new DataView(buf); view.setInt32(0, 42, true);
 ```
 
 ---
 
-## Q62. Advanced Core JS Engine Rule 62 | Ilg'or JS Dvigatel Qoidasi 62
+## Q61. Object.is vs Strict Equality (`===`) | Object.is va Katt'iy tenglik (===) farqlari
 
-**EN:** Detailed technical examination of JavaScript engine rule #62 regarding optimization, parsing, and execution.
+**EN:** Object.is treats `+0` and `-0` as unequal, and `NaN` as equal to `NaN` (unlike `===`).
 
-**UZB:** JavaScript dvigatelining #62-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Object.is `+0` va `-0` ni har xil deb biladi va `NaN === NaN` xatosini to'g'rilaydi.
 
 ```javascript
-// JS Engine Advanced Concept #62
-const fn62 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn62([1, 0, 2, false, 3]));
+console.log(Object.is(NaN, NaN)); // true
+console.log(Object.is(+0, -0)); // false
 ```
 
 ---
 
-## Q63. Advanced Core JS Engine Rule 63 | Ilg'or JS Dvigatel Qoidasi 63
+## Q62. Currying & Partial Application | Currying va Partial Application amaliyotda
 
-**EN:** Detailed technical examination of JavaScript engine rule #63 regarding optimization, parsing, and execution.
+**EN:** Fixing a subset of function arguments to produce a new specialized function.
 
-**UZB:** JavaScript dvigatelining #63-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Funksiya argumentlarining bir qismini biriktirib yangi maxsus funksiya hosil qilish.
 
 ```javascript
-// JS Engine Advanced Concept #63
-const fn63 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn63([1, 0, 2, false, 3]));
+const add = (a, b) => a + b; const addFive = add.bind(null, 5); console.log(addFive(10)); // 15
 ```
 
 ---
 
-## Q64. Advanced Core JS Engine Rule 64 | Ilg'or JS Dvigatel Qoidasi 64
+## Q63. Dynamic Import (`import()`) & Code Splitting | Dynamic Import () va kodni bo'laklash
 
-**EN:** Detailed technical examination of JavaScript engine rule #64 regarding optimization, parsing, and execution.
+**EN:** Loading JavaScript modules asynchronously on demand to reduce initial page bundle size.
 
-**UZB:** JavaScript dvigatelining #64-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Boshlang'ich yuklanishni tezlashtirish uchun modullarni dinamik import qilish.
 
 ```javascript
-// JS Engine Advanced Concept #64
-const fn64 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn64([1, 0, 2, false, 3]));
+const module = await import('./largeModule.js'); module.doSomething();
 ```
 
 ---
 
-## Q65. Advanced Core JS Engine Rule 65 | Ilg'or JS Dvigatel Qoidasi 65
+## Q64. Canvas API & 2D Context Rendering | Canvas API va 2D rendering
 
-**EN:** Detailed technical examination of JavaScript engine rule #65 regarding optimization, parsing, and execution.
+**EN:** Drawing shapes, images, and charts programmatically on HTML5 `<canvas>` element.
 
-**UZB:** JavaScript dvigatelining #65-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** HTML5 Canvas elementida shakllar va grafiklar chizish.
 
 ```javascript
-// JS Engine Advanced Concept #65
-const fn65 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn65([1, 0, 2, false, 3]));
+const ctx = canvas.getContext('2d'); ctx.fillStyle = 'red'; ctx.fillRect(0, 0, 100, 100);
 ```
 
 ---
 
-## Q66. Advanced Core JS Engine Rule 66 | Ilg'or JS Dvigatel Qoidasi 66
+## Q65. Blob & File API Manipulation | Blob va File API bilan ishlash
 
-**EN:** Detailed technical examination of JavaScript engine rule #66 regarding optimization, parsing, and execution.
+**EN:** Creating binary Blob objects in browser and generating downloadable object URLs.
 
-**UZB:** JavaScript dvigatelining #66-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Brauzerda binar fayllar yaratish va ularni yuklab olish havolasiga o'tkazish.
 
 ```javascript
-// JS Engine Advanced Concept #66
-const fn66 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn66([1, 0, 2, false, 3]));
+const blob = new Blob(['Hello World'], { type: 'text/plain' }); const url = URL.createObjectURL(blob);
 ```
 
 ---
 
-## Q67. Advanced Core JS Engine Rule 67 | Ilg'or JS Dvigatel Qoidasi 67
+## Q66. URLSearchParams & Query String Parsing | URLSearchParams orqali URL parametrlarini o'qish
 
-**EN:** Detailed technical examination of JavaScript engine rule #67 regarding optimization, parsing, and execution.
+**EN:** Parsing and manipulating browser address bar query strings cleanly.
 
-**UZB:** JavaScript dvigatelining #67-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** URL manzilidagi `?search=test&page=1` parametrlarini oson o me qish.
 
 ```javascript
-// JS Engine Advanced Concept #67
-const fn67 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn67([1, 0, 2, false, 3]));
+const params = new URLSearchParams(window.location.search); console.log(params.get('search'));
 ```
 
 ---
 
-## Q68. Advanced Core JS Engine Rule 68 | Ilg'or JS Dvigatel Qoidasi 68
+## Q67. BroadcastChannel API for Cross-Tab Communication | BroadcastChannel API (Varaqlararo aloqa)
 
-**EN:** Detailed technical examination of JavaScript engine rule #68 regarding optimization, parsing, and execution.
+**EN:** Communicating between multiple open browser tabs/windows of the same origin in real-time.
 
-**UZB:** JavaScript dvigatelining #68-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Bitta saytning o'chirilmagan turli tablari o'rtasida real-vaqt rejimida xabar almashish.
 
 ```javascript
-// JS Engine Advanced Concept #68
-const fn68 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn68([1, 0, 2, false, 3]));
+const channel = new BroadcastChannel('app_state'); channel.postMessage('logout');
 ```
 
 ---
 
-## Q69. Advanced Core JS Engine Rule 69 | Ilg'or JS Dvigatel Qoidasi 69
+## Q68. IndexedDB Client-Side Database Storage | IndexedDB brauzer ma'lumotlar bazasi
 
-**EN:** Detailed technical examination of JavaScript engine rule #69 regarding optimization, parsing, and execution.
+**EN:** Storing large structured datasets on client side asynchronously using NoSQL Object Store.
 
-**UZB:** JavaScript dvigatelining #69-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Brauzer ichida katta hajmdagi NoSQL ma'lumotlarni saqlash.
 
 ```javascript
-// JS Engine Advanced Concept #69
-const fn69 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn69([1, 0, 2, false, 3]));
+const req = indexedDB.open('myDB', 1); req.onsuccess = e => { const db = e.target.result; };
 ```
 
 ---
 
-## Q70. Advanced Core JS Engine Rule 70 | Ilg'or JS Dvigatel Qoidasi 70
+## Q69. Performance API & High-Resolution Timestamps | Performance API va vaqtni o'lchash (performance.now)
 
-**EN:** Detailed technical examination of JavaScript engine rule #70 regarding optimization, parsing, and execution.
+**EN:** Measuring precise execution time of scripts with sub-millisecond precision.
 
-**UZB:** JavaScript dvigatelining #70-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Skript bajarilish tezligini millisekund aniqlikda o'lchash.
 
 ```javascript
-// JS Engine Advanced Concept #70
-const fn70 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn70([1, 0, 2, false, 3]));
+const t0 = performance.now(); doWork(); const t1 = performance.now(); console.log(`${t1 - t0} ms`);
 ```
 
 ---
 
-## Q71. Advanced Core JS Engine Rule 71 | Ilg'or JS Dvigatel Qoidasi 71
+## Q70. Console API Advanced Features (`table`, `group`, `time`) | Console API (console.table, console.group)
 
-**EN:** Detailed technical examination of JavaScript engine rule #71 regarding optimization, parsing, and execution.
+**EN:** Formatting output debugging logs visually using table views and collapsible timer groups.
 
-**UZB:** JavaScript dvigatelining #71-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Konsolga ma'lumotlarni jadval va vaqt guruhlari ko'rinishida chiqarish.
 
 ```javascript
-// JS Engine Advanced Concept #71
-const fn71 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn71([1, 0, 2, false, 3]));
+console.table([{ id: 1, name: 'Ali' }, { id: 2, name: 'Vali' }]);
 ```
 
 ---
 
-## Q72. Advanced Core JS Engine Rule 72 | Ilg'or JS Dvigatel Qoidasi 72
+## Q71. DOM Exception Handling & Custom Errors | DOM Exception va Shaxsiy Error sinflari
 
-**EN:** Detailed technical examination of JavaScript engine rule #72 regarding optimization, parsing, and execution.
+**EN:** Extending native `Error` class to create domain-specific application errors.
 
-**UZB:** JavaScript dvigatelining #72-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Standart Error sinfidan meros olib shaxsiy xatolik turlarini yaratish.
 
 ```javascript
-// JS Engine Advanced Concept #72
-const fn72 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn72([1, 0, 2, false, 3]));
+class ValidationError extends Error { constructor(msg) { super(msg); this.name = 'ValidationError'; } }
 ```
 
 ---
 
-## Q73. Advanced Core JS Engine Rule 73 | Ilg'or JS Dvigatel Qoidasi 73
+## Q72. Strict Equality & Primitive Auto-Boxing | Primitiv turlarning avtomatik ob'ektga o'tishi (Auto-Boxing)
 
-**EN:** Detailed technical examination of JavaScript engine rule #73 regarding optimization, parsing, and execution.
+**EN:** Temporary wrapping of primitives into object wrappers when accessing properties (e.g. `'str'.length`).
 
-**UZB:** JavaScript dvigatelining #73-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Primitiv turdagi atributlarga murojaat qilinganda avtomatik ob'ektga o me tishi.
 
 ```javascript
-// JS Engine Advanced Concept #73
-const fn73 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn73([1, 0, 2, false, 3]));
+const str = 'hello'; console.log(str.toUpperCase()); // Auto-boxed to String object
 ```
 
 ---
 
-## Q74. Advanced Core JS Engine Rule 74 | Ilg'or JS Dvigatel Qoidasi 74
+## Q73. Function Constructor (`new Function()`) Security Risks | new Function() va eval xavflari
 
-**EN:** Detailed technical examination of JavaScript engine rule #74 regarding optimization, parsing, and execution.
+**EN:** Evaluating dynamic code strings with security implications similar to `eval()`.
 
-**UZB:** JavaScript dvigatelining #74-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Dinamik matnli kodlarni ijro etish va uning xavfsizlik risklari.
 
 ```javascript
-// JS Engine Advanced Concept #74
-const fn74 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn74([1, 0, 2, false, 3]));
+const sum = new Function('a', 'b', 'return a + b'); console.log(sum(2, 3));
 ```
 
 ---
 
-## Q75. Advanced Core JS Engine Rule 75 | Ilg'or JS Dvigatel Qoidasi 75
+## Q74. JavaScript Memory Profiling & Heap Snapshots | Xotira Diagnostikasi (Heap Snapshots)
 
-**EN:** Detailed technical examination of JavaScript engine rule #75 regarding optimization, parsing, and execution.
+**EN:** Profiling Chrome DevTools Heap Snapshots to isolate detached DOM node memory leaks.
 
-**UZB:** JavaScript dvigatelining #75-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Chrome DevTools yordamida xotira sizib chiqishlarini (Detached DOM) topish.
 
 ```javascript
-// JS Engine Advanced Concept #75
-const fn75 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn75([1, 0, 2, false, 3]));
+DevTools -> Memory -> Take Heap Snapshot -> Filter 'Detached'
 ```
 
 ---
 
-## Q76. Advanced Core JS Engine Rule 76 | Ilg'or JS Dvigatel Qoidasi 76
+## Q75. Strict Equality & Prototype Pollution Defense | Prototype Pollution va uning oldini olish
 
-**EN:** Detailed technical examination of JavaScript engine rule #76 regarding optimization, parsing, and execution.
+**EN:** Preventing malicious property injection into `Object.prototype` by freezing or using `Object.create(null)`.
 
-**UZB:** JavaScript dvigatelining #76-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Ob'ekt prototipiga ziddiyatli kodlar quyilishining oldini olish.
 
 ```javascript
-// JS Engine Advanced Concept #76
-const fn76 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn76([1, 0, 2, false, 3]));
+const safeObj = Object.create(null); // No prototype to pollute!
 ```
 
 ---
 
-## Q77. Advanced Core JS Engine Rule 77 | Ilg'or JS Dvigatel Qoidasi 77
+## Q76. JavaScript Module Execution Spec & Deferred Scripting | script defer vs async yuklanish tartibi
 
-**EN:** Detailed technical examination of JavaScript engine rule #77 regarding optimization, parsing, and execution.
+**EN:** `async` scripts execute immediately after download. `defer` scripts execute sequentially after HTML parsing.
 
-**UZB:** JavaScript dvigatelining #77-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** async skript yuklanishi bilan darhol bajariladi. defer esa HTML parse bo'lgach tartib bilan ishlaydi.
 
 ```javascript
-// JS Engine Advanced Concept #77
-const fn77 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn77([1, 0, 2, false, 3]));
+<script src='app.js' defer></script>
 ```
 
 ---
 
-## Q78. Advanced Core JS Engine Rule 78 | Ilg'or JS Dvigatel Qoidasi 78
+## Q77. JavaScript Garbage Collection Mark-and-Sweep Algorithm | Mark-and-Sweep GC algoritmi
 
-**EN:** Detailed technical examination of JavaScript engine rule #78 regarding optimization, parsing, and execution.
+**EN:** Traversing roots to mark reachable objects and sweeping unreachable objects from memory heap.
 
-**UZB:** JavaScript dvigatelining #78-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Root havolalardan yetib bo'lmaydigan ob'ektlarni aniqlab xotiradan o'chirish.
 
 ```javascript
-// JS Engine Advanced Concept #78
-const fn78 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn78([1, 0, 2, false, 3]));
+Root (window) -> References -> Reachable (Keep) / Unreachable (Sweep)
 ```
 
 ---
 
-## Q79. Advanced Core JS Engine Rule 79 | Ilg'or JS Dvigatel Qoidasi 79
+## Q78. Web Crypto API for Secure Hashing | Web Crypto API va xavfsiz heshlash
 
-**EN:** Detailed technical examination of JavaScript engine rule #79 regarding optimization, parsing, and execution.
+**EN:** Generating cryptographic SHA-256 hashes natively inside browser environment.
 
-**UZB:** JavaScript dvigatelining #79-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Brauzerda SHA-256 va AES kriptografik amallarni bajarish.
 
 ```javascript
-// JS Engine Advanced Concept #79
-const fn79 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn79([1, 0, 2, false, 3]));
+const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('secret'));
 ```
 
 ---
 
-## Q80. Advanced Core JS Engine Rule 80 | Ilg'or JS Dvigatel Qoidasi 80
+## Q79. Custom Element Custom Web Components | Web Components va Custom Elements
 
-**EN:** Detailed technical examination of JavaScript engine rule #80 regarding optimization, parsing, and execution.
+**EN:** Defining encapsulated native HTML elements using `customElements.define()`.
 
-**UZB:** JavaScript dvigatelining #80-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Brauzerda shaxsiy HTML teglarini yaratish va ro'yxatdan o'tkazish.
 
 ```javascript
-// JS Engine Advanced Concept #80
-const fn80 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn80([1, 0, 2, false, 3]));
+class MyButton extends HTMLElement { connectedCallback() { this.innerHTML = '<button>Click</button>'; } }
+customElements.define('my-button', MyButton);
 ```
 
 ---
 
-## Q81. Advanced Core JS Engine Rule 81 | Ilg'or JS Dvigatel Qoidasi 81
+## Q80. Shadow DOM Encapsulation | Shadow DOM va CSS inkapsulyatsiyasi
 
-**EN:** Detailed technical examination of JavaScript engine rule #81 regarding optimization, parsing, and execution.
+**EN:** Isolating component DOM subtrees and CSS styles from main document leakage.
 
-**UZB:** JavaScript dvigatelining #81-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Komponent DOM va CSS uslublarini tashqi hujjatdan butunlay ajratish.
 
 ```javascript
-// JS Engine Advanced Concept #81
-const fn81 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn81([1, 0, 2, false, 3]));
+const shadow = this.attachShadow({ mode: 'closed' }); shadow.innerHTML = '<style>p{color:red}</style><p>Private</p>';
 ```
 
 ---
 
-## Q82. Advanced Core JS Engine Rule 82 | Ilg'or JS Dvigatel Qoidasi 82
+## Q81. HTML5 Drag and Drop API | Drag and Drop API hodisalari
 
-**EN:** Detailed technical examination of JavaScript engine rule #82 regarding optimization, parsing, and execution.
+**EN:** Managing element drag and drop interaction events natively across DOM.
 
-**UZB:** JavaScript dvigatelining #82-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** DOM elementlarini surish va tashlash hodisalarini boshqarish.
 
 ```javascript
-// JS Engine Advanced Concept #82
-const fn82 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn82([1, 0, 2, false, 3]));
+elem.addEventListener('dragstart', e => e.dataTransfer.setData('text', e.target.id));
 ```
 
 ---
 
-## Q83. Advanced Core JS Engine Rule 83 | Ilg'or JS Dvigatel Qoidasi 83
+## Q82. WebSockets Bi-Directional Protocol | WebSockets protokoli va real-vaqt aloqasi
 
-**EN:** Detailed technical examination of JavaScript engine rule #83 regarding optimization, parsing, and execution.
+**EN:** Establishing full-duplex persistent TCP connection between client and server.
 
-**UZB:** JavaScript dvigatelining #83-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Server va mijoz o'rtasida uzluksiz ikki tomonlama aloqa o'rnatish.
 
 ```javascript
-// JS Engine Advanced Concept #83
-const fn83 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn83([1, 0, 2, false, 3]));
+const ws = new WebSocket('wss://api.example.com'); ws.onmessage = e => console.log(e.data);
 ```
 
 ---
 
-## Q84. Advanced Core JS Engine Rule 84 | Ilg'or JS Dvigatel Qoidasi 84
+## Q83. IndexedDB Cursor Iteration | IndexedDB Cursor yordamida ma'lumotlarni o me qish
 
-**EN:** Detailed technical examination of JavaScript engine rule #84 regarding optimization, parsing, and execution.
+**EN:** Iterating over large IndexedDB recordsets efficiently using cursors.
 
-**UZB:** JavaScript dvigatelining #84-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** IndexedDB ma'lumotlar bazasini cursor bilan bosqichma-bosqich o me qish.
 
 ```javascript
-// JS Engine Advanced Concept #84
-const fn84 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn84([1, 0, 2, false, 3]));
+store.openCursor().onsuccess = e => { const cursor = e.target.result; if (cursor) cursor.continue(); };
 ```
 
 ---
 
-## Q85. Advanced Core JS Engine Rule 85 | Ilg'or JS Dvigatel Qoidasi 85
+## Q84. Server-Sent Events (SSE) vs WebSockets | Server-Sent Events (SSE) va WebSockets farqlari
 
-**EN:** Detailed technical examination of JavaScript engine rule #85 regarding optimization, parsing, and execution.
+**EN:** SSE provides lightweight unidirectional real-time event streaming over standard HTTP.
 
-**UZB:** JavaScript dvigatelining #85-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** SSE standart HTTP orqali bir tomonlama (serverdan mijozga) real-vaqt ma'lumot yuboradi.
 
 ```javascript
-// JS Engine Advanced Concept #85
-const fn85 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn85([1, 0, 2, false, 3]));
+const evtSource = new EventSource('/events'); evtSource.onmessage = e => console.log(e.data);
 ```
 
 ---
 
-## Q86. Advanced Core JS Engine Rule 86 | Ilg'or JS Dvigatel Qoidasi 86
+## Q85. Page Visibility API for Resource Saving | Page Visibility API va resurslarni tejash
 
-**EN:** Detailed technical examination of JavaScript engine rule #86 regarding optimization, parsing, and execution.
+**EN:** Pausing video playback or timers when user switches browser tabs.
 
-**UZB:** JavaScript dvigatelining #86-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Foydalanuvchi boshqa tabga o me tganda videoni to me xtatish yoki timerlarni pauza qilish.
 
 ```javascript
-// JS Engine Advanced Concept #86
-const fn86 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn86([1, 0, 2, false, 3]));
+document.addEventListener('visibilitychange', () => { if (document.hidden) pauseApp(); });
 ```
 
 ---
 
-## Q87. Advanced Core JS Engine Rule 87 | Ilg'or JS Dvigatel Qoidasi 87
+## Q86. Navigator Online/Offline Status Monitoring | Navigator Online/Offline tarmoq holatini kuzatish
 
-**EN:** Detailed technical examination of JavaScript engine rule #87 regarding optimization, parsing, and execution.
+**EN:** Detecting internet connection status changes in browser application.
 
-**UZB:** JavaScript dvigatelining #87-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Internet tarmog me i uzilganini yoki qayta yoqilganini aniqlash.
 
 ```javascript
-// JS Engine Advanced Concept #87
-const fn87 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn87([1, 0, 2, false, 3]));
+window.addEventListener('offline', () => alert('Internet uzildi!'));
 ```
 
 ---
 
-## Q88. Advanced Core JS Engine Rule 88 | Ilg'or JS Dvigatel Qoidasi 88
+## Q87. Clipboard API for Copying Text | Clipboard API orqali matn nusxalash
 
-**EN:** Detailed technical examination of JavaScript engine rule #88 regarding optimization, parsing, and execution.
+**EN:** Reading and writing text to user system clipboard asynchronously with permission.
 
-**UZB:** JavaScript dvigatelining #88-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Matnlarni tizim buferiga (clipboard) asinxron nusxalash.
 
 ```javascript
-// JS Engine Advanced Concept #88
-const fn88 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn88([1, 0, 2, false, 3]));
+await navigator.clipboard.writeText('Nusxalandi!');
 ```
 
 ---
 
-## Q89. Advanced Core JS Engine Rule 89 | Ilg'or JS Dvigatel Qoidasi 89
+## Q88. Web Audio API Audio Context Synthesizer | Web Audio API va ovoz sintezi
 
-**EN:** Detailed technical examination of JavaScript engine rule #89 regarding optimization, parsing, and execution.
+**EN:** Generating dynamic sound synthesis and audio processing graph programmatically.
 
-**UZB:** JavaScript dvigatelining #89-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Dasturiy ravishda ovoz effektlari va sintezator yaratish.
 
 ```javascript
-// JS Engine Advanced Concept #89
-const fn89 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn89([1, 0, 2, false, 3]));
+const audioCtx = new AudioContext(); const osc = audioCtx.createOscillator(); osc.connect(audioCtx.destination); osc.start();
 ```
 
 ---
 
-## Q90. Advanced Core JS Engine Rule 90 | Ilg'or JS Dvigatel Qoidasi 90
+## Q89. Battery Status API Monitoring | Battery Status API yordamida batareya holati
 
-**EN:** Detailed technical examination of JavaScript engine rule #90 regarding optimization, parsing, and execution.
+**EN:** Monitoring user device battery level and charging state to optimize background tasks.
 
-**UZB:** JavaScript dvigatelining #90-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Qurilma quvvati kamayganda fon vazifalarini kamaytirish.
 
 ```javascript
-// JS Engine Advanced Concept #90
-const fn90 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn90([1, 0, 2, false, 3]));
+const battery = await navigator.getBattery(); console.log(battery.level * 100 + '%');
 ```
 
 ---
 
-## Q91. Advanced Core JS Engine Rule 91 | Ilg'or JS Dvigatel Qoidasi 91
+## Q90. V8 Engine JIT (Just-In-Time) Compilation Phases | V8 Engine JIT (Ignition & TurboFan) bosqichlari
 
-**EN:** Detailed technical examination of JavaScript engine rule #91 regarding optimization, parsing, and execution.
+**EN:** Understanding Ignition bytecode interpreter and TurboFan optimizing compiler in V8.
 
-**UZB:** JavaScript dvigatelining #91-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** V8 dvigatelida Ignition bayt-kod interpreter va TurboFan optomizatorining ishlash prinsiplari.
 
 ```javascript
-// JS Engine Advanced Concept #91
-const fn91 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn91([1, 0, 2, false, 3]));
+Source Code -> AST -> Ignition Bytecode -> TurboFan Machine Code (Optimized)
 ```
 
 ---
 
-## Q92. Advanced Core JS Engine Rule 92 | Ilg'or JS Dvigatel Qoidasi 92
+## Q91. Hidden Classes & Inline Caching in V8 Engine | V8 Hidden Classes va Inline Caching optimizatsiyasi
 
-**EN:** Detailed technical examination of JavaScript engine rule #92 regarding optimization, parsing, and execution.
+**EN:** Structuring object properties consistently to allow V8 engine to reuse hidden shape classes.
 
-**UZB:** JavaScript dvigatelining #92-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** V8 dvigateli ob'ekt atributlarini tezkor o me qishi uchun konstruktorda bir xil tartibda e'lon qilish.
 
 ```javascript
-// JS Engine Advanced Concept #92
-const fn92 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn92([1, 0, 2, false, 3]));
+function User(a, b) { this.a = a; this.b = b; } // Consistent hidden class shape!
 ```
 
 ---
 
-## Q93. Advanced Core JS Engine Rule 93 | Ilg'or JS Dvigatel Qoidasi 93
+## Q92. JavaScript Memory Leak: Detached DOM Elements | Detached DOM Elements va xotira sizishi
 
-**EN:** Detailed technical examination of JavaScript engine rule #93 regarding optimization, parsing, and execution.
+**EN:** Holding references to DOM nodes in JS array after node is removed from document body.
 
-**UZB:** JavaScript dvigatelining #93-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** DOM dan o'chirilgan elementga JS massivida silka saqlanib qolishi sababli xotira sizishi.
 
 ```javascript
-// JS Engine Advanced Concept #93
-const fn93 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn93([1, 0, 2, false, 3]));
+let detached = document.getElementById('btn'); document.body.removeChild(detached); // Detached leak if referenced!
 ```
 
 ---
 
-## Q94. Advanced Core JS Engine Rule 94 | Ilg'or JS Dvigatel Qoidasi 94
+## Q93. Strict Equality Type Coercion Abstract Rules | Abstract Relational Comparison qoidalari
 
-**EN:** Detailed technical examination of JavaScript engine rule #94 regarding optimization, parsing, and execution.
+**EN:** Understanding implicit type coercion steps during relational comparison operators (`<`, `>`).
 
-**UZB:** JavaScript dvigatelining #94-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Relatsion taqqoslashda tiplarning avtomatik o me tkazilish tartibi.
 
 ```javascript
-// JS Engine Advanced Concept #94
-const fn94 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn94([1, 0, 2, false, 3]));
+console.log('10' > 2); // true (coerces to number)
+console.log('10' > '2'); // false (string comparison)
 ```
 
 ---
 
-## Q95. Advanced Core JS Engine Rule 95 | Ilg'or JS Dvigatel Qoidasi 95
+## Q94. JS Execution Context: Creation Phase vs Execution Phase | Execution Context yaratilish va bajarilish bosqichlari
 
-**EN:** Detailed technical examination of JavaScript engine rule #95 regarding optimization, parsing, and execution.
+**EN:** Creation phase sets up Variable Object (VO), Scope Chain, and `this` binding before execution.
 
-**UZB:** JavaScript dvigatelining #95-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Execution Context yaratilganda o'zgaruvchilar va scope zanjiri tayyorlanishi.
 
 ```javascript
-// JS Engine Advanced Concept #95
-const fn95 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn95([1, 0, 2, false, 3]));
+Creation Phase (Hoisting & Scope setup) -> Execution Phase (Code run)
 ```
 
 ---
 
-## Q96. Advanced Core JS Engine Rule 96 | Ilg'or JS Dvigatel Qoidasi 96
+## Q95. Function Arity and `length` Property | Funksiya Arity va length atributi
 
-**EN:** Detailed technical examination of JavaScript engine rule #96 regarding optimization, parsing, and execution.
+**EN:** Inspecting number of expected arguments declared in function signature.
 
-**UZB:** JavaScript dvigatelining #96-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Funksiya nechta parametr kutayotganini `.length` bilan aniqlash.
 
 ```javascript
-// JS Engine Advanced Concept #96
-const fn96 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn96([1, 0, 2, false, 3]));
+function fn(a, b, c = 1) {} console.log(fn.length); // 2 (default params excluded)
 ```
 
 ---
 
-## Q97. Advanced Core JS Engine Rule 97 | Ilg'or JS Dvigatel Qoidasi 97
+## Q96. Object Prototype Pollution Defense via `Object.freeze` | Object.freeze bilan Prototype Pollution oldini olish
 
-**EN:** Detailed technical examination of JavaScript engine rule #97 regarding optimization, parsing, and execution.
+**EN:** Freezing `Object.prototype` to prevent malicious runtime base object pollution.
 
-**UZB:** JavaScript dvigatelining #97-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Asosiy Ob'ekt prototipini muzlatib ziddiyatli o'zgarishlardan himoyalash.
 
 ```javascript
-// JS Engine Advanced Concept #97
-const fn97 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn97([1, 0, 2, false, 3]));
+Object.freeze(Object.prototype);
 ```
 
 ---
 
-## Q98. Advanced Core JS Engine Rule 98 | Ilg'or JS Dvigatel Qoidasi 98
+## Q97. Tail Call Optimization Recursion Guard | TCO bilan cheksiz rekursiyadan saqlanish
 
-**EN:** Detailed technical examination of JavaScript engine rule #98 regarding optimization, parsing, and execution.
+**EN:** Reusing stack frames for tail-recursive functions in compliant JS engines.
 
-**UZB:** JavaScript dvigatelining #98-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Stack xotira to me lib ketishining oldini oluvchi tail-call rekursiya.
 
 ```javascript
-// JS Engine Advanced Concept #98
-const fn98 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn98([1, 0, 2, false, 3]));
+function sum(n, acc=0) { if(n===0) return acc; return sum(n-1, acc+n); }
 ```
 
 ---
 
-## Q99. Advanced Core JS Engine Rule 99 | Ilg'or JS Dvigatel Qoidasi 99
+## Q98. Strict Mode Global Variable Protection | Strict Mode va global o'zgaruvchilar taqiqi
 
-**EN:** Detailed technical examination of JavaScript engine rule #99 regarding optimization, parsing, and execution.
+**EN:** Catching implicit global variable creations and throwing ReferenceError.
 
-**UZB:** JavaScript dvigatelining #99-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** E'lon qilinmagan o'zgaruvchilarni taqiqlash.
 
 ```javascript
-// JS Engine Advanced Concept #99
-const fn99 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn99([1, 0, 2, false, 3]));
+'use strict'; function test() { bad = 1; } // Throws ReferenceError!
 ```
 
 ---
 
-## Q100. Advanced Core JS Engine Rule 100 | Ilg'or JS Dvigatel Qoidasi 100
+## Q99. Dynamic Script Injection Loading Pattern | Dinamik script tegi ulash patterni
 
-**EN:** Detailed technical examination of JavaScript engine rule #100 regarding optimization, parsing, and execution.
+**EN:** Creating `<script>` element dynamically in JS to load third-party SDKs asynchronously.
 
-**UZB:** JavaScript dvigatelining #100-raqamli nazariy va amaliy mantiqiy savolining mukammal izohi.
+**UZB:** Tashqi kutubxona va SDK larni dinamik script tegi bilan asinxron yuklash.
 
 ```javascript
-// JS Engine Advanced Concept #100
-const fn100 = (arr) => arr.filter(Boolean).map(x => x ** 2);
-console.log(fn100([1, 0, 2, false, 3]));
+const s = document.createElement('script'); s.src = 'https://sdk.com/api.js'; document.head.appendChild(s);
+```
+
+---
+
+## Q100. JavaScript Custom Iterator Protocol Final Check | Iterator Protokoli yakuniy qoidalar
+
+**EN:** Implementing custom `next()` method returning `{ value, done }` objects.
+
+**UZB:** Shaxsiy Iterator yaratib `{ value, done }` qaytaruvchi protokolni hosil qilish.
+
+```javascript
+const it = { next: () => ({ value: 42, done: false }) };
 ```

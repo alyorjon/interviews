@@ -8,6 +8,32 @@
 
 ---
 
+## 🔥 Modern interview themes (2025+)
+
+**EN:** Current interviews often focus on React/Next.js performance, async behavior, and architecture trade-offs.
+
+**UZ:** Zamonaviy intervyularda React/Next.js tezligi, asinxronlik va arxitektura tanlovlari ko‘proq ko‘riladi.
+
+- `useEffect` with empty dependency array vs dependencies: when it runs and why it matters.
+- `hydration` in Next.js: server-rendered HTML becomes interactive on the client.
+- `useMemo` and `useCallback`: memoization for expensive calculations and stable references.
+- Server Components vs Client Components in Next.js.
+- Performance basics: `memo`, lazy loading, code splitting, caching.
+
+```javascript
+import { useEffect, useMemo, useState } from 'react';
+
+function Example({ items }) {
+  const total = useMemo(() => items.reduce((a, b) => a + b, 0), [items]);
+  useEffect(() => {
+    console.log('mounted');
+  }, []);
+  return <div>{total}</div>;
+}
+```
+
+---
+
 # 📚 CHUQUR NAZARIYA VA ARXITEKTURA / COMPREHENSIVE THEORY
 
 ---

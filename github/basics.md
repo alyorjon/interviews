@@ -6,6 +6,25 @@
 
 ---
 
+## 🔥 Modern Git & GitHub interview topics
+
+**EN:** Today’s Git interviews often focus on collaboration workflow, history cleanup, and CI/CD automation.
+
+**UZ:** Bugungi Git intervyularida hamkorlik ishlanmalari, tarixni tozalash va CI/CD avtomatlashtirish ko‘proq ko‘riladi.
+
+- `git rebase -i` and squashing commits.
+- `git worktree` for parallel branch work.
+- `git bisect` for debugging regressions.
+- Trunk-based development vs GitFlow.
+- GitHub Actions matrix builds and OIDC-based authentication.
+
+```bash
+git rebase -i HEAD~3
+git worktree add ../feature-x feature/x
+```
+
+---
+
 ## 1. What is GIT? | GIT nima?
 
 **EN:** GIT is a distributed version control system (DVCS) designed to handle projects of any size with speed and efficiency.
