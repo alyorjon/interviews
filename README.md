@@ -17,6 +17,8 @@
 | 🐍 Python Core Fundamentals | Data Structures, OOP asoslari, Generators, Decorators, Async, Memory | [python/basics.md](python/basics.md) |
 | 🔷 Python OOP Concepts | Classes, Inheritance, Dunder methods, Design Patterns | [python/oop.md](python/oop.md) |
 | 🚀 FastAPI & RESTful API | Pydantic, Dependency Injection, Auth, Async endpoints, Deployment | [python/restfullapi.md](python/restfullapi.md) |
+| 🎥 FastAPI YouTube Q&A | Video-asosidagi qisqa FastAPI intervyu savol-javoblari | [python/fastapi_youtube_qna.md](python/fastapi_youtube_qna.md) |
+| 🎥 Python YouTube Q&A | Video-asosidagi Python intervyu savol-javoblari | [python/youtube_qna.md](python/youtube_qna.md) |
 | 🧪 Python Quiz Suite | Self-test MCQ | [python/quiz.md](python/quiz.md) |
 | 🤖 AI & Prompt Engineering | LLM asoslari, Prompt Engineering, RAG, Agents | [ai_engineering/basics.md](ai_engineering/basics.md) |
 | 🧩 Data Structures & Algorithms | Arrays, Trees, Graphs, DP — masala va yechimlar | [dsa.md](dsa.md) |
@@ -39,6 +41,7 @@
 | 🗄️ SQL Commands & Syntax | DDL, DML, Joins, Window functions | [sql/BASICS.md](sql/BASICS.md) |
 | 🐘 PostgreSQL Deep Dive | Indexing, EXPLAIN ANALYZE, ACID, Partitioning | [sql/postgresql_interviews.md](sql/postgresql_interviews.md) |
 | 📝 SQL Practice Problems | Amaliy masalalar | [sql/practice_problems.md](sql/practice_problems.md) |
+| 🎥 SQL / PostgreSQL YouTube Q&A | Video-asosidagi SQL va PostgreSQL intervyu savol-javoblari | [sql/youtube_qna.md](sql/youtube_qna.md) |
 | 🧪 SQL Quiz Suite | Self-test MCQ | [sql/quiz.md](sql/quiz.md) |
 
 ### 🏗️ System Design & DevOps
@@ -61,6 +64,7 @@
 | 🟣 Odoo UI & Functional Admin | Functional/admin oqimlar | [odoo/functional_admin.md](odoo/functional_admin.md) |
 | 🧪 Odoo ERP Quiz Suite | Self-test MCQ | [odoo/quiz.md](odoo/quiz.md) |
 | 🏢 SAP B1 Enterprise | SAP Business One asoslari | [sap/basics.md](sap/basics.md) |
+| 🎥 SAP YouTube Q&A | Video-asosidagi SAP B1/BO/FI-CO-MM-SD intervyu savol-javoblari | [sap/youtube_qna.md](sap/youtube_qna.md) |
 | 🧪 SAP B1 Quiz Suite | Self-test MCQ | [sap/quiz.md](sap/quiz.md) |
 
 ### 📊 Spreadsheets & Data Analysis
@@ -70,6 +74,7 @@
 | 📊 Excel 2021 & Google Sheets Masterclass | XLOOKUP, Dynamic Arrays, 100 Q&A | [spreadsheet/basics.md](spreadsheet/basics.md) |
 | 📊 Data Analyst Masterclass | Excel 365, Power Query, DAX, Power Pivot | [spreadsheet/data_analyst_masterclass.md](spreadsheet/data_analyst_masterclass.md) |
 | 🔥 2026 Data Analyst Real Interviews | Modern Data Stack, Polars, A/B Testing, RFM | [spreadsheet/data_analyst_2026_interviews.md](spreadsheet/data_analyst_2026_interviews.md) |
+| 🇺🇿 2026 O'zbekiston Real Intervyular | Excel/Sheets/SQL/DB, mahalliy bozor case-study | [spreadsheet/uzbekiston_2026_real_interviews.md](spreadsheet/uzbekiston_2026_real_interviews.md) |
 | 📊 Excel Core Reference | 101 formulalar tezkor spravochnik | [excel/basics.md](excel/basics.md) |
 | 🧪 Spreadsheets & Excel Quiz Suites | Self-test MCQ | [spreadsheet/quiz.md](spreadsheet/quiz.md) · [excel/quiz.md](excel/quiz.md) |
 
