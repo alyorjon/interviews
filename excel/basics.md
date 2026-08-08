@@ -204,6 +204,26 @@ range_lookup=TRUE (yoki bo'sh) → taqribiy moslik, saralangan jadval talab qila
 
 ---
 
+## 📌 11. PRACTICAL EXAMPLE — Xodim maoshini INDEX+MATCH bilan topish
+
+> **Vaziyat / Scenario:** Xodimlar ro'yxati bor — A ustunda ID (101, 102...), B ustunda Ism (Ali, Vali, Laylo...), C ustunda Maosh (500$, 700$, 600$...). Maqsad: Ism bo'yicha (B ustuni) Maoshni (C ustuni) topish.
+
+| Qadam / Step | O'zbek / Uzbek | English |
+|---|---|---|
+| 1 | Natija chiqishi kerak bo'lgan bo'sh katakni tanlang | Select the empty cell where the result should appear |
+| 2 | Formulani kiriting: `=INDEX(C2:C10, MATCH("Vali", B2:B10, 0))` | Enter the formula: `=INDEX(C2:C10, MATCH("Vali", B2:B10, 0))` |
+| 3 | Matnli qismni katak havolasiga almashtiring (ismni masalan E1 katagiga yozib): `=INDEX(C2:C10, MATCH(E1, B2:B10, 0))` | Replace the hardcoded text with a cell reference (type the name in, e.g., E1): `=INDEX(C2:C10, MATCH(E1, B2:B10, 0))` |
+
+**Formulaning ishlash mantig'i / How it works:**
+- `MATCH(E1, B2:B10, 0)` — "Vali" ismini `B2:B10` oralig'idan qidiradi va u nechinchi qatorda turganini aniqlaydi (natija: `2`) | Searches for "Vali" within `B2:B10` and finds its relative position (result: `2`)
+- `INDEX(C2:C10, 2)` — `C2:C10` oralig'idagi 2-o'rindagi qiymatni qaytaradi (Vali oladigan maosh) | Returns the value at position 2 within `C2:C10` (the salary Vali earns)
+
+**Asosiy afzalliklari / Key advantages:**
+- **Moslashuvchanlik / Flexibility** — qidirilayotgan ustun jadvalning istalgan joyida (chapda yoki o'ngda) bo'lishidan qat'i nazar ishlayveradi | Works regardless of whether the lookup column is to the left or right of the result column
+- **Xavfsizlik / Robustness** — jadvalga yangi ustun qo'shilsa yoki o'chirilsa ham formula buzilmaydi (`VLOOKUP`da ustun raqami o'zgarganda xatolik berishi mumkin) | Stays intact even if columns are added or removed (`VLOOKUP`'s hardcoded column number can break)
+
+---
+
 ## 💡 Eslatmalar / Notes
 
 > **🔑 Eng ko'p so'raladigan intervyu formulalari / Most commonly asked in interviews:**
