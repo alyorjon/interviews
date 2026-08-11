@@ -76,6 +76,7 @@
 | 🔥 2026 Data Analyst Real Interviews | Modern Data Stack, Polars, A/B Testing, RFM | [spreadsheet/data_analyst_2026_interviews.md](spreadsheet/data_analyst_2026_interviews.md) |
 | 🇺🇿 2026 O'zbekiston Real Intervyular | Excel/Sheets/SQL/DB, mahalliy bozor case-study | [spreadsheet/uzbekiston_2026_real_interviews.md](spreadsheet/uzbekiston_2026_real_interviews.md) |
 | 📊 Excel Core Reference | 101 formulalar tezkor spravochnik | [excel/basics.md](excel/basics.md) |
+| 🧩 Excel Interview Challenges | @sqlspecialist kanalidan 2-daqiqalik amaliy masalalar | [excel/interview_challenges.md](excel/interview_challenges.md) |
 | 🧪 Spreadsheets & Excel Quiz Suites | Self-test MCQ | [spreadsheet/quiz.md](spreadsheet/quiz.md) · [excel/quiz.md](excel/quiz.md) |
 
 ### 🧠 Soft Skills & Meta

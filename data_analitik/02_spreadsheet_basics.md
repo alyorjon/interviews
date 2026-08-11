@@ -1251,3 +1251,116 @@ function MULTIPLY_BY_TWO(input) {
    HSTACK("Jami Daromad", TEXT(SUM(Sales[Amount]), "$#,##0"), "$1,000,000", TEXT(SUM(Sales[Amount])/1000000, "0.0%"))
 )
 ```
+
+---
+
+## Q101. Nested QUERY with Dynamic Dates and Ratio Columns | Ichma-ich QUERY: dinamik sana va nisbat ustunlari
+
+**EN:** When an aggregate ratio (e.g. average price = sum/quantity) can't be computed inside a single `QUERY`, wrap two `QUERY` calls: the inner one filters by a dynamic date range and groups/sums, the outer one references the inner result by `ColN` and computes the ratio.
+
+**UZB:** `SUM(H)/SUM(F)` kabi nisbatni bitta `QUERY`da bevosita hisoblab bo'lmaydi — ichki `QUERY` sana bo'yicha filtrlab yig'indilarni chiqaradi, tashqi `QUERY` esa ichki natijaning ustunlariga (`Col1`, `Col2`, ...) murojaat qilib nisbatni hisoblaydi.
+
+```excel
+=QUERY(QUERY(Sement!$A$2:$J; "SELECT I, SUM(F), SUM(H) WHERE A >= date '" & TEXT($A$1; "yyyy-mm-dd") & "' AND A <= date '" & TEXT($B$1; "yyyy-mm-dd") & "' GROUP BY I ORDER BY I ASC LABEL I 'nomi', SUM(F) 'kg', SUM(H) 'summa'"; 1); "SELECT Col1, Col2, Col3, Col3/Col2 WHERE Col3 > " & K1 & " LABEL Col3/Col2 'O''rtacha narx'"; 1)
+```
+
+**5 ta asosiy qoida:**
+
+1. **Sana sintaksisi:** `date 'yyyy-mm-dd'` — `date '` dan keyin ortiqcha probel bo'lmasligi kerak; `& TEXT($A$1; "yyyy-mm-dd") &` orqali to'g'ri ulanadi.
+2. **Ichki vs tashqi ustun nomlari:** Ichki `QUERY`da manba ustunlari harf bilan (`A`, `F`, `H`) chaqiriladi; tashqi `QUERY` esa ichki natijaning ustunlariga faqat `Col1`, `Col2`, `Col3`... shaklida murojaat qiladi (harf yoki tartib raqami emas).
+3. **Agregatni ikki bosqichda bo'lish:** Yig'indi (`SUM`) ichki `QUERY`da, nisbat (`Col3/Col2`) tashqi `QUERY`da hisoblanadi — ikkalasini bitta so'rovda birlashtirib bo'lmaydi.
+4. **Dinamik WHERE shart:** Katak qiymatini shartga ulashda belgi bilan tirnoq orasida probel qoldiring: `"WHERE Col3 > " & K1`.
+5. **Header/LABEL boshqaruvi:** Ichki va tashqi `QUERY`ning oxirgi argumenti (`header`) `1` qilib belgilanadi, sarlavhalar esa `LABEL` bilan tozalanadi/nomlanadi (masalan `LABEL Col3/Col2 'O''rtacha narx'` — ichki tirnoqni ikkilantirib qochiriladi).
+
+**Amaliy vazifalar:**
+
+1. `Sement!A:J` jadvalida `A1`/`B1` katakchalarga boshlanish/tugash sanalarini kiriting, ichki `QUERY` orqali har bir mahsulot (`I` ustuni) bo'yicha `F` (miqdor, kg) va `H` (summa) ustunlarini yig'indilab chiqaring.
+2. Tashqi `QUERY` yordamida har bir mahsulot uchun o'rtacha narxni (`summa/miqdor`) hisoblab, natijani `K1` katakchadagi chegaradan katta bo'lganlar bilan filtrlang.
+3. `LABEL`dan foydalanib barcha ustun sarlavhalarini o'zbek tilida chiroyli qilib chiqaring (`nomi`, `kg`, `summa`, `O'rtacha narx`).
+4. Sana oralig'ini `A1`/`B1` orqali emas, balki `TODAY()-30` va `TODAY()` yordamida "oxirgi 30 kun" hisobotiga o'zgartiring.
+5. Xuddi shu shablonni ikkinchi bir varaq (masalan `Kabel!A:J`) uchun moslashtiring va ikkala natijani `{...}` massiv qavslari bilan bitta jadvalga birlashtiring (Q86 ga qarang).
+
+---
+
+## Q102. FILTER: Multi-Criteria AND/OR Logic and Error Handling | FILTER: ko'p shartli AND/OR mantiq va xatoliklarni boshqarish
+
+**EN:** `FILTER` combines multiple boolean arrays with `*` (AND) or `+` (OR) instead of nesting `IF`. Because a spill formula errors out entirely with `#N/A` when zero rows match, every production `FILTER` should be wrapped in `IFERROR`, and column selection should stay dynamic via `CHOOSECOLS`/`INDEX` rather than hardcoded ranges.
+
+**UZB:** `FILTER`da bir nechta shartni birlashtirish uchun `IF` ichma-ich yozish shart emas — massivlarni `*` (VA/AND) yoki `+` (YOKI/OR) bilan ko'paytirish yetarli. Hech qanday satr mos kelmasa butun formula `#N/A` xatosini beradi, shuning uchun ishlab chiqarish formulalarini har doim `IFERROR` bilan o'rab qo'ying; ustunlarni qattiq diapazon emas, `CHOOSECOLS`/`INDEX` orqali dinamik tanlang.
+
+```excel
+=IFERROR(FILTER(A2:D500, (B2:B500="Tashkent")*(C2:C500>=1000000)+(D2:D500="VIP")), "Mos yozuv topilmadi")
+```
+
+**5 ta asosiy qoida:**
+
+1. **AND mantiq:** Ikki yoki undan ko'p shartning barchasi bajarilishi kerak bo'lsa, boolean massivlarni `*` bilan ko'paytiring: `(B2:B500="Tashkent")*(C2:C500>=1000000)`.
+2. **OR mantiq:** Shartlardan kamida bittasi yetarli bo'lsa, `+` bilan qo'shing: `(B2:B500="VIP")+(D2:D500="Premium")`. AND va OR ni birlashtirsangiz, qavslar bilan guruhlang.
+3. **Bo'sh natija xatosi:** Bironta satr shartga mos kelmasa, `FILTER` butunlay `#N/A` qaytaradi — bu jadval o'rniga tushib qolgan xatoni oldini olish uchun formulani `IFERROR(FILTER(...), "xabar")` bilan o'rang.
+4. **Diapazon uzunliklari:** Barcha massiv argumentlari (`include`) bir xil satr sonida bo'lishi shart — masalan `A2:D500` va `B2:B500` uzunligi mos kelmasa `#VALUE!` chiqadi.
+5. **Ustun tanlash:** Faqat ba'zi ustunlarni chiqarish kerak bo'lsa, butun diapazonni filtrlab keyin `CHOOSECOLS(FILTER(...), 1, 3)` bilan kesib oling — bu qattiq yozilgan ustun indeksidan ko'ra o'zgaruvchan jadvallar bilan ishonchliroq ishlaydi.
+
+**Amaliy vazifalar:**
+
+1. `A2:D500` jadvalidan shahri `"Tashkent"` bo'lgan VA summasi `1,000,000` dan katta bo'lgan qatorlarni chiqaring.
+2. Yuqoridagi shartga `D` ustunida `"VIP"` statusi bo'lganlarni OR mantiq bilan qo'shing.
+3. Hech qanday mos yozuv topilmasa, `"Mos yozuv topilmadi"` degan xabar chiqishini `IFERROR` bilan ta'minlang.
+4. Natijadan faqat ism va summa ustunlarini (`CHOOSECOLS`) ajratib chiqaring.
+5. `FILTER` natijasini `SORT` bilan birlashtirib, eng katta summadan boshlab kamayish tartibida chiqaring.
+
+---
+
+## Q103. INDEX: 2D Lookup, Row 0 / Column 0 va Dynamic Column Selection | INDEX: ikki o'lchamli qidiruv va dinamik ustun tanlash
+
+**EN:** `INDEX(range, row_num, col_num)` can return a single cell, an entire row (`row_num=0`), an entire column (`col_num=0`), or — combined with a second `MATCH` on the header row — a fully dynamic 2D lookup where both the row and the column are found by name instead of a fixed position.
+
+**UZB:** `INDEX(diapazon, satr_raqami, ustun_raqami)` bitta katakchani, butun satrni (`satr_raqami=0`), butun ustunni (`ustun_raqami=0`) yoki — sarlavha qatoridagi ikkinchi `MATCH` bilan birga — satr ham, ustun ham nom bo'yicha topiladigan to'liq dinamik ikki o'lchamli qidiruvni qaytarishi mumkin.
+
+```excel
+=INDEX(B2:F100, MATCH(H1, A2:A100, 0), MATCH(H2, B1:F1, 0))
+```
+
+**5 ta asosiy qoida:**
+
+1. **Bitta katakcha:** `INDEX(diapazon, satr, ustun)` — ikkala argument berilsa, aniq kesishmadagi qiymat qaytadi.
+2. **Butun satr/ustun:** `col_num`ni `0` qilib qoldirsangiz butun satr, `row_num`ni `0` qilsangiz butun ustun massiv sifatida qaytadi — bu `SUM`, `TEXTJOIN` kabi funksiyalarga to'g'ridan-to'g'ri uzatish uchun qulay.
+3. **Ikki o'lchamli dinamik qidiruv:** Ikkala `MATCH`ni ham `INDEX` ichiga joylashtirsangiz, foydalanuvchi ham satr (masalan mahsulot nomi), ham ustun (masalan oy nomi) tanlovini o'zgartirganda natija avtomatik yangilanadi — bu klassik "matritsa qidiruvi" (matrix lookup).
+4. **Diapazon mos kelishi:** `INDEX` diapazoni (`B2:F100`) va ikkinchi `MATCH`ning qidiruv qatori (`B1:F1`) bir xil ustunlardan boshlanishi kerak, aks holda natija bir ustunga siljib xato chiqadi.
+5. **VLOOKUP dan farqi:** `INDEX`/`MATCH` chapga qidirish imkonini beradi (natija ustuni qidiruv ustunidan chapda bo'lishi mumkin) va ustun qo'shilib-o'chirilganda `VLOOKUP`dagi kabi qattiq ustun raqamiga bog'liq bo'lmaydi.
+
+**Amaliy vazifalar:**
+
+1. `B2:F100` jadvalida `H1` katakchaga mahsulot nomini, `H2` katakchaga oy nomini yozib, ikkalasiga mos sotuv summasini `INDEX`+ikki `MATCH` bilan toping.
+2. Tanlangan mahsulotning barcha oylardagi summalarini (`row_num=0`) bitta massiv sifatida chiqarib, `SUM` bilan yig'indisini hisoblang.
+3. Tanlangan oyning barcha mahsulotlar bo'yicha summalarini (`col_num=0`) chiqarib, `MAX` bilan eng yuqori qiymatni toping.
+4. Jadvalga yangi ustun (yangi oy) qo'shib, formulaning hech qanday o'zgarishsiz to'g'ri ishlashini tekshiring (VLOOKUP bilan solishtiring).
+5. Topilmagan nom/oy kiritilganda `#N/A` o'rniga `"Topilmadi"` xabarini chiqaradigan qilib `IFNA` bilan o'rang.
+
+---
+
+## Q104. MATCH: Match Type 0/1/-1 va Wildcard Qidiruv | MATCH: mos kelish turlari va wildcard qidiruv
+
+**EN:** `MATCH(value, range, match_type)`'s third argument controls the search mode: `0` requires an exact match (any order, ideal for lookups), `1` finds the largest value ≤ the search value in an **ascending**-sorted range (approximate/"closest below"), and `-1` finds the smallest value ≥ it in a **descending**-sorted range. Exact match also supports `?`/`*` wildcards.
+
+**UZB:** `MATCH(qiymat, diapazon, mos_kelish_turi)`ning uchinchi argumenti qidiruv rejimini belgilaydi: `0` — aniq mos kelish (tartib muhim emas, qidiruvlar uchun ideal), `1` — **o'sish tartibida** saralangan diapazonda qiymatdan kichik yoki teng bo'lgan eng kattasini topadi (masalan soliq stavkalari jadvali), `-1` — **kamayish tartibida** saralangan diapazonda qiymatdan katta yoki teng bo'lgan eng kichigini topadi. Aniq mos kelishda `?`/`*` wildcard belgilaridan ham foydalanish mumkin.
+
+```excel
+=MATCH(85, {0;60;70;80;90}, 1)
+=MATCH("Ali*", A2:A100, 0)
+```
+
+**5 ta asosiy qoida:**
+
+1. **`match_type=0` (aniq):** Eng ko'p ishlatiladigan rejim — `INDEX`/`MATCH` qidiruvlarida deyarli har doim `0` yoziladi, chunki ma'lumot saralangan bo'lishi shart emas.
+2. **`match_type=1` (taxminiy, o'sish tartibi):** Diapazon albatta o'sish tartibida saralangan bo'lishi kerak; aks holda noto'g'ri natija (jimgina, xatosiz) qaytadi. Baholash jadvallari (masalan ball → baho) uchun ishlatiladi.
+3. **`match_type=-1` (taxminiy, kamayish tartibi):** Diapazon kamayish tartibida saralangan bo'lishi shart; komissiya/chegirma pog'onalari kabi teskari jadvallarda qo'llaniladi.
+4. **Wildcard qidiruv:** `match_type=0` bilan `?` (bitta belgi) va `*` (istalgan sondagi belgi) ishlaydi — masalan `"Ali*"` "Ali" bilan boshlangan barcha qiymatlarga mos keladi.
+5. **Xato holatlari:** Mos topilmasa `#N/A` qaytadi — bu ataylab shunday, chunki `IFERROR`/`IFNA` bilan aniq boshqarish kerak; noto'g'ri saralangan diapazonda `1`/`-1` xatosiz lekin noto'g'ri natija berishi eng ko'p uchraydigan xato manbai.
+
+**Amaliy vazifalar:**
+
+1. `{0;60;70;80;90}` ball chegaralari va `{"F";"D";"C";"B";"A"}` baholar jadvali asosida, kiritilgan balga mos bahoni `MATCH(...,1)` + `INDEX` bilan toping.
+2. Xuddi shu vazifani diapazonni ataylab noto'g'ri (kamayish) tartibda saralab sinab ko'ring va natija qanday noto'g'ri chiqishini kuzating.
+3. `A2:A100` ustunidagi ismlar orasidan `"Ali"` bilan boshlanadigan birinchi yozuvni wildcard (`"Ali*"`) yordamida toping.
+4. Mos topilmagan holatda `#N/A` o'rniga `"Chegara topilmadi"` xabarini `IFNA` bilan chiqaring.
+5. `MATCH` natijasini `OFFSET` yoki `INDEX` bilan birlashtirib, topilgan qatordan yon tomondagi qo'shimcha ustun qiymatini (masalan izoh) ham chiqarib bering.
