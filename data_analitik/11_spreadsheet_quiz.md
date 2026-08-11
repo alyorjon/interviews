@@ -218,7 +218,7 @@ D) `MAX` va `MIN` funksiyalariga tayanib ikki sana oralig'ining ustma-ust tushga
 - 27–30 to'g'ri: Ekspert daraja 🏆 / Expert level
 - 21–26 to'g'ri: Ilg'or daraja 🔴 / Advanced level
 - 14–20 to'g'ri: O'rta daraja 🟡 / Intermediate level
-- <14 to'g'ri: `spreadsheet/basics.md` ni qayta ko'rib chiqing 🟢 / Review `spreadsheet/basics.md`
+- <14 to'g'ri: `02_spreadsheet_basics.md` ni qayta ko'rib chiqing 🟢 / Review `02_spreadsheet_basics.md`
 
 ---
 

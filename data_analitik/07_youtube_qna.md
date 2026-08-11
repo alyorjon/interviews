@@ -1,6 +1,6 @@
 # Excel — YouTube Video Savol-Javoblari
 
-> YouTube'dagi Excel maslahatlari videolaridan olingan amaliy mavzular, formulalar va tushuntirishlar bilan. Umumiy Excel asoslari uchun `spreadsheet/basics.md`, intervyu savollari uchun `spreadsheet/uzbekiston_2026_real_interviews.md` fayllariga ham qarang.
+> YouTube'dagi Excel maslahatlari videolaridan olingan amaliy mavzular, formulalar va tushuntirishlar bilan. Umumiy Excel asoslari uchun `02_spreadsheet_basics.md`, intervyu savollari uchun `06_uzbekiston_2026_real_interviews.md` fayllariga ham qarang.
 
 ---
 

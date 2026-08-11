@@ -2,7 +2,7 @@
 
 > **Manba / Source:** @sqlspecialist Telegram kanali (2023–2026 postlari), 1957 ta xabar orasidan Excel formulalariga oid ~44 ta post tahlil qilinib, takrorlanganlari birlashtirilgan holda tuzildi.
 > **Format:** Har bir savol haqiqiy ma'lumot jadvali + yechim formula + tushuntirish + "bonus" (muqobil/eskiroq Excel versiyasi uchun formula) + shu mavzudagi tegishli funksiyalar ro'yxati bilan beriladi — bu format klassik intervyu "live coding" savoliga o'xshaydi.
-> **Diqqat:** [excel/basics.md](basics.md) — 101 formulaning to'liq spravochnigi. Ushbu fayl esa **amaliy, hikoya-asosidagi** intervyu savollariga qaratilgan — ikkalasi bir-birini to'ldiradi.
+> **Diqqat:** [01_excel_basics.md](01_excel_basics.md) — 101 formulaning to'liq spravochnigi. Ushbu fayl esa **amaliy, hikoya-asosidagi** intervyu savollariga qaratilgan — ikkalasi bir-birini to'ldiradi.
 
 ---
 
@@ -217,4 +217,4 @@ Natija masalan: `4 Years 6 Months`. `TODAY()` dinamik bo'lgani uchun natija vaqt
 
 ---
 
-*Manba: @sqlspecialist Telegram kanali tahlili (2026-08-08 holatiga). Qarang: [telegram_kanal_tahlili.md](../telegram_kanal_tahlili.md), [excel/basics.md](basics.md), [spreadsheet/basics.md](../spreadsheet/basics.md)*
+*Manba: @sqlspecialist Telegram kanali tahlili (2026-08-08 holatiga). Qarang: [telegram_kanal_tahlili.md](../telegram_kanal_tahlili.md), [01_excel_basics.md](01_excel_basics.md), [02_spreadsheet_basics.md](02_spreadsheet_basics.md)*

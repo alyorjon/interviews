@@ -71,13 +71,16 @@
 
 | Modul / Subject | Tavsif / Description | Fayl / Path |
 |---|---|---|
-| 📊 Excel 2021 & Google Sheets Masterclass | XLOOKUP, Dynamic Arrays, 100 Q&A | [spreadsheet/basics.md](spreadsheet/basics.md) |
-| 📊 Data Analyst Masterclass | Excel 365, Power Query, DAX, Power Pivot | [spreadsheet/data_analyst_masterclass.md](spreadsheet/data_analyst_masterclass.md) |
-| 🔥 2026 Data Analyst Real Interviews | Modern Data Stack, Polars, A/B Testing, RFM | [spreadsheet/data_analyst_2026_interviews.md](spreadsheet/data_analyst_2026_interviews.md) |
-| 🇺🇿 2026 O'zbekiston Real Intervyular | Excel/Sheets/SQL/DB, mahalliy bozor case-study | [spreadsheet/uzbekiston_2026_real_interviews.md](spreadsheet/uzbekiston_2026_real_interviews.md) |
-| 📊 Excel Core Reference | 101 formulalar tezkor spravochnik | [excel/basics.md](excel/basics.md) |
-| 🧩 Excel Interview Challenges | @sqlspecialist kanalidan 2-daqiqalik amaliy masalalar | [excel/interview_challenges.md](excel/interview_challenges.md) |
-| 🧪 Spreadsheets & Excel Quiz Suites | Self-test MCQ | [spreadsheet/quiz.md](spreadsheet/quiz.md) · [excel/quiz.md](excel/quiz.md) |
+| 📊 Excel Core Reference | 101 formulalar tezkor spravochnik | [data_analitik/01_excel_basics.md](data_analitik/01_excel_basics.md) |
+| 📊 Excel 2021 & Google Sheets Masterclass | XLOOKUP, Dynamic Arrays, 100 Q&A | [data_analitik/02_spreadsheet_basics.md](data_analitik/02_spreadsheet_basics.md) |
+| 📊 Data Analyst Masterclass | Excel 365, Power Query, DAX, Power Pivot | [data_analitik/03_data_analyst_masterclass.md](data_analitik/03_data_analyst_masterclass.md) |
+| 🧩 Excel Interview Challenges | @sqlspecialist kanalidan 2-daqiqalik amaliy masalalar | [data_analitik/04_interview_challenges.md](data_analitik/04_interview_challenges.md) |
+| 🔥 2026 Data Analyst Real Interviews | Modern Data Stack, Polars, A/B Testing, RFM | [data_analitik/05_data_analyst_2026_interviews.md](data_analitik/05_data_analyst_2026_interviews.md) |
+| 🇺🇿 2026 O'zbekiston Real Intervyular | Excel/Sheets/SQL/DB, mahalliy bozor case-study | [data_analitik/06_uzbekiston_2026_real_interviews.md](data_analitik/06_uzbekiston_2026_real_interviews.md) |
+| 📊 Excel — YouTube Video Savol-Javoblari | YouTube video-asosidagi amaliy Excel savol-javoblari | [data_analitik/07_youtube_qna.md](data_analitik/07_youtube_qna.md) |
+| 📊 Excel Makroslar (VBA) — To'liq Instruksiya | Complete Macro Guide | [data_analitik/08_macros_guide.md](data_analitik/08_macros_guide.md) |
+| 🧪 Excel Makroslar (VBA) — Nazariy va Amaliy Savollar | Self-test MCQ | [data_analitik/09_macros_quiz.md](data_analitik/09_macros_quiz.md) |
+| 🧪 Spreadsheets & Excel Quiz Suites | Self-test MCQ | [data_analitik/10_excel_quiz.md](data_analitik/10_excel_quiz.md) · [data_analitik/11_spreadsheet_quiz.md](data_analitik/11_spreadsheet_quiz.md) |
 
 ### 🧠 Soft Skills & Meta
 

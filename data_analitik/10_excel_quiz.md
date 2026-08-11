@@ -219,7 +219,7 @@ D) `VLOOKUP` avtomatik ravishda bir nechta shartni qo'llab-quvvatlaydi / `VLOOKU
 - 27–30 to'g'ri: Ekspert daraja 🏆 / Expert level
 - 21–26 to'g'ri: Ilg'or daraja 🔴 / Advanced level
 - 14–20 to'g'ri: O'rta daraja 🟡 / Intermediate level
-- <14 to'g'ri: `excel/basics.md` ni qayta ko'rib chiqing 🟢 / Review `excel/basics.md`
+- <14 to'g'ri: `01_excel_basics.md` ni qayta ko'rib chiqing 🟢 / Review `01_excel_basics.md`
 
 ---
 
