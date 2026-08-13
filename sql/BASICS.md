@@ -295,6 +295,63 @@ SELECT name, salary, department,
 FROM employees;
 ```
 
+### 🔎 LAG() / LEAD() — chuqur tushuntirish / Deep dive
+
+**Sintaksis:**
+
+```sql
+LAG(ustun, n, standart_qiymat) OVER (
+    [PARTITION BY guruh_ustuni]
+    ORDER BY tartib_ustuni
+)
+```
+
+- `ustun` — qaysi ustunning oldingi (LAG) yoki keyingi (LEAD) qiymatini olish kerak
+- `n` — necha qator orqaga/oldinga siljish (standart holda `1`)
+- `standart_qiymat` — mos qator topilmasa qaytariladigan qiymat (standart holda `NULL`)
+- `ORDER BY` — **majburiy**: "oldingi/keyingi" degani fizik jadval tartibi emas, balki shu `ORDER BY` bo'yicha tartib
+- `PARTITION BY` — ixtiyoriy, guruhlarni bir-biriga aralashtirmaydi (masalan har bir kategoriya o'z holicha hisoblansin desangiz)
+
+**Misol (oylik ko'rishlar):**
+
+```sql
+SELECT
+    oy,
+    jami_views,
+    LAG(jami_views) OVER (ORDER BY oy) AS oldingi_oy,
+    LEAD(jami_views) OVER (ORDER BY oy) AS keyingi_oy
+FROM monthly
+ORDER BY oy;
+```
+
+Birinchi qatorda `oldingi_oy` — `NULL` (chunki undan oldin qator yo'q); oxirgi qatorda `keyingi_oy` — `NULL`.
+
+**O'sish foizini hisoblash:**
+
+```sql
+ROUND(
+    100.0 * (jami_views - LAG(jami_views) OVER (ORDER BY oy))
+    / NULLIF(LAG(jami_views) OVER (ORDER BY oy), 0),
+    2
+) AS osish_foizi
+```
+
+**Window function turlari orasida o'rni:** LAG/LEAD — *offset (value) functions* guruhiga kiradi (`FIRST_VALUE`, `LAST_VALUE`, `NTH_VALUE` bilan birga), `ROW_NUMBER`/`RANK` kabi *ranking* funksiyalardan va `SUM() OVER()` kabi *aggregate window* funksiyalardan farqli. Frame clause (`ROWS BETWEEN ... AND ...`) LAG/LEAD uchun shart emas — ular frame emas, `PARTITION BY` ichidagi to'liq tartiblangan ro'yxat bo'yicha "n-qator narida"gi qiymatni topadi.
+
+**LAG vs self-JOIN:** Avval xuddi shu natija self-JOIN bilan olinardi (`... LEFT JOIN table b ON b.date = a.date - INTERVAL '1 day'`). LAG buni bitta single-pass sort bilan, JOIN sharti yozmasdan va sana uzilishlaridan xatoga tushmasdan hal qiladi.
+
+**Keng tarqalgan xato:** LAG/LEAD natijasi `WHERE` bandida to'g'ridan-to'g'ri ishlatilmaydi, chunki window funksiyalar `WHERE`dan keyin hisoblanadi (bajarilish tartibi: `FROM → WHERE → GROUP BY → HAVING → SELECT(window funcs) → ORDER BY`). Filtrlash kerak bo'lsa, subquery/CTE ichiga olib tashqarida `WHERE` yoziladi:
+
+```sql
+SELECT * FROM (
+    SELECT *, LAG(status) OVER (PARTITION BY user_id ORDER BY created_at) AS prev_status
+    FROM events
+) t
+WHERE status != prev_status OR prev_status IS NULL;
+```
+
+**Amaliy qo'llanishlar:** status o'zgargan nuqtani topish, ketma-ket sanalar orasidagi uzilishlarni (gap) aniqlash, sessiya chegarasini belgilash, oldingi qator bilan solishtirib dublikatlarni topish.
+
 ---
 
 ## 📌 12. CTE & Subquery
