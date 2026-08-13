@@ -352,6 +352,96 @@ WHERE status != prev_status OR prev_status IS NULL;
 
 **Amaliy qo'llanishlar:** status o'zgargan nuqtani topish, ketma-ket sanalar orasidagi uzilishlarni (gap) aniqlash, sessiya chegarasini belgilash, oldingi qator bilan solishtirib dublikatlarni topish.
 
+### 🔢 Ranking funksiyalar: ROW_NUMBER() / RANK() / DENSE_RANK() / NTILE()
+
+Bularning barchasi bir xil savolga javob beradi — "bu qator guruh ichida nechinchi o'rinda?" — lekin **teng qiymatlarni (tie) qanday hal qilishida** farqlanadi.
+
+```sql
+SELECT
+    name, department, salary,
+    ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS rn,
+    RANK()       OVER (PARTITION BY department ORDER BY salary DESC) AS rnk,
+    DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS drnk
+FROM employees;
+```
+
+| department | salary | rn | rnk | drnk | Izoh |
+|---|---|---|---|---|---|
+| IT | 9000 | 1 | 1 | 1 | |
+| IT | 8000 | 2 | 2 | 2 | |
+| IT | 8000 | 3 | 2 | 2 | **teng qiymat**: RANK/DENSE_RANK bir xil rank beradi, ROW_NUMBER esa hech qachon takrorlanmaydi |
+| IT | 7000 | 4 | 4 | 3 | RANK keyingi raqamni **tashlab ketadi** (3 yo'q, to'g'ridan-to'g'ri 4), DENSE_RANK **ketma-ket davom etadi** |
+
+- **`ROW_NUMBER()`** — teng qiymatlar bo'lsa ham har doim noyob, ketma-ket raqam beradi (1,2,3,4...). Odatda **"har guruhdan faqat eng yaxshi N tasi"** kabi so'rovlarda ishlatiladi:
+```sql
+-- Har bir bo'lim bo'yicha eng yuqori maoshli 3 nafar xodim
+SELECT * FROM (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS rn
+    FROM employees
+) t WHERE rn <= 3;
+```
+- **`RANK()`** — teng qiymatlarga bir xil rank beradi, lekin keyingi rankni **tashlab ketadi** (1,2,2,4). Sport reytingiga o'xshaydi: ikkita 2-o'rin bo'lsa, uchinchisi yo'q.
+- **`DENSE_RANK()`** — teng qiymatlarga bir xil rank beradi, lekin **tashlab ketmaydi** (1,2,2,3). "Nechta **turli** daraja bor" degan savolga mos.
+- **`NTILE(n)`** — natija to'plamini `n` ta teng (yoki imkon qadar teng) guruhga bo'ladi — masalan foydalanuvchilarni maosh bo'yicha 4 ta kvartilga (quartile) ajratish:
+```sql
+SELECT name, salary, NTILE(4) OVER (ORDER BY salary DESC) AS quartile
+FROM employees;
+```
+
+**Muhim farq:** `RANK`/`DENSE_RANK`/`ROW_NUMBER` — real vaqtda tez-tez chalkashtiriladi. Agar savol "N-o'rindagi eng katta qiymatni top" bo'lsa (masalan 2-eng katta maosh, dublikatlar bilan ham noyob bo'lishi kerak bo'lsa) — `DENSE_RANK` to'g'ri tanlov, chunki `LIMIT`/`OFFSET` yoki `ROW_NUMBER` dublikat qiymatlarda xato beradi.
+
+### 🎯 FIRST_VALUE() / LAST_VALUE() / NTH_VALUE()
+
+LAG/LEAD kabi *offset (value) functions* guruhiga kiradi, lekin "n-qator narida" emas, **butun window freymi ichidagi birinchi/oxirgi/n-chi qiymatni** qaytaradi.
+
+```sql
+SELECT
+    name, department, salary,
+    FIRST_VALUE(name) OVER (PARTITION BY department ORDER BY salary DESC) AS eng_yuqori_maosh_xodim,
+    LAST_VALUE(name)  OVER (
+        PARTITION BY department ORDER BY salary DESC
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+    ) AS eng_past_maosh_xodim
+FROM employees;
+```
+
+**Diqqat — `LAST_VALUE` bilan bog'liq eng keng tarqalgan xato:** standart window freymi `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` bo'lgani uchun, `ROWS BETWEEN ... AND UNBOUNDED FOLLOWING` ni aniq yozmasangiz, `LAST_VALUE` har doim **joriy qatorning o'zini** qaytaradi (chunki frame "hozirgacha" bilan tugaydi), butun guruhning oxirgisini emas. Shu sababli `LAST_VALUE` ishlatilganda deyarli har doim frame'ni qo'lda kengaytirish kerak bo'ladi.
+
+`NTH_VALUE(ustun, n)` — freym ichidagi n-chi qiymatni qaytaradi (masalan `NTH_VALUE(salary, 2) OVER (...)` — guruhdagi 2-eng katta maosh).
+
+### ➕ Aggregate window funksiyalar: SUM() / AVG() / COUNT() OVER()
+
+Har qanday agregat funksiyani `OVER()` bilan ishlatish mumkin — bu holda u qatorlarni bitta natijaga yig'ib qo'ymaydi (GROUP BY kabi), balki **har bir qatorda o'sha oyingacha/guruh bo'yicha yig'indini** ko'rsatadi:
+
+```sql
+SELECT
+    oy, jami_views,
+    SUM(jami_views) OVER (ORDER BY oy) AS running_total,
+    AVG(jami_views) OVER (ORDER BY oy ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS moving_avg_3oy,
+    SUM(jami_views) OVER (PARTITION BY category) AS category_total,
+    COUNT(*)        OVER () AS jami_qatorlar_soni
+FROM monthly;
+```
+
+- `SUM() OVER (ORDER BY oy)` — **running total / cumulative sum**: har qator o'zigacha bo'lgan barcha qiymatlar yig'indisini ko'rsatadi.
+- `AVG() OVER (... ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)` — **moving average**: joriy qator + oldingi 2 qator (jami 3 qator) bo'yicha o'rtacha — vaqt qatorlarini silliqlashda (trend ko'rish) juda keng qo'llaniladi.
+- `PARTITION BY` bilan (lekin `ORDER BY`siz) — guruh bo'yicha umumiy yig'indi, har qatorga takrorlanib yoziladi (masalan "bu qatorning umumiy kategoriya bo'yicha ulushi" hisoblashda foydali: `jami_views / category_total`).
+- `OVER ()` — bo'sh, hech qanday partition/order bo'lmasa — butun natija to'plami bo'yicha, masalan umumiy qatorlar sonini har qatorga qo'shib chiqarish uchun.
+
+### 🖼️ Frame clause: ROWS vs RANGE vs GROUPS
+
+`ROWS BETWEEN ... AND ...` window freymini **fizik qator soni** bo'yicha belgilaydi, `RANGE` esa **qiymat** bo'yicha (ORDER BY ustunidagi teng qiymatlarni bitta freymga qo'shadi):
+
+```sql
+-- ROWS: aniq 3 ta qator (joriy + oldingi 2), teng sanalar bo'lsa ham
+AVG(salary) OVER (ORDER BY hire_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)
+
+-- RANGE: hire_date qiymati bir xil bo'lgan barcha qatorlar bitta freymga kiradi
+AVG(salary) OVER (ORDER BY hire_date RANGE BETWEEN 2 PRECEDING AND CURRENT ROW)
+```
+
+Frame chegaralari uchun kalit so'zlar: `UNBOUNDED PRECEDING` (guruh boshidan), `N PRECEDING`, `CURRENT ROW`, `N FOLLOWING`, `UNBOUNDED FOLLOWING` (guruh oxirigacha). `ORDER BY` yozilmasa standart freym butun partition bo'ladi; `ORDER BY` yozilsa-yu frame aniq ko'rsatilmasa, standart holda `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` qo'llaniladi — aynan shu narsa yuqoridagi `LAST_VALUE` xatosining sababi.
+
 ---
 
 ## 📌 12. CTE & Subquery
