@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: interviews-study-portal:local
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:4173:4173"
+    environment:
+      BOT_TOKEN: "${BOT_TOKEN:-}"
+      ALLOWED_TELEGRAM_USER_ID: "${ALLOWED_TELEGRAM_USER_ID:-}"
+      PUBLIC_URL: "${PUBLIC_URL:-}"
+      PUBLIC_HOSTNAME: "${PUBLIC_HOSTNAME:-}"
+      AUTH_BYPASS: "${AUTH_BYPASS:-false}"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4173/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

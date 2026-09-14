@@ -141,1530 +141,542 @@ export function middleware(req) { if(!req.cookies.has('token')) return NextRespo
 
 ---
 
-## Q11. React & Next.js Frontend Architecture Concept #11 | React va Next.js Frontend Savoli #11
+## Q11. React: browser print dialogi ochilganda print-only holat DOMga kech tushib, noto'g'ri sahifa chop etilmoqda?
 
-**EN:** Advanced frontend scenario #11 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** `beforeprint` kabi DOMni callback tugashidan oldin ko'radigan browser API bilan integratsiyada state update'ni `flushSync` ichida bajaring: `flushSync(() => setIsPrinting(true))`; `afterprint`da holatni qaytaring. Bu sinxron flush performancega zarar qilishi mumkin, shuning uchun oddiy React oqimida emas, faqat shu integratsiya chegarasida ishlating. Print dialog ochilgan paytda print-only element DOMda borligini browser test bilan tekshiring. [Rasmiy manba](https://react.dev/reference/react-dom/flushSync).
 
-**UZB:** Frontend muhandisligi bo'yicha #11-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #11
-import React from 'react';
-
-export default function Component11() {
-  return <div>Frontend Component #11</div>;
-}
-```
-
 ---
-
-## Q12. React & Next.js Frontend Architecture Concept #12 | React va Next.js Frontend Savoli #12
 
-**EN:** Advanced frontend scenario #12 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q12. React: setInterval callbacki ekrandagi eski count qiymatini doim ko'rmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #12-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Intervalni har countda qayta yaratish o'rniga functional updater ishlating; callback oldingi committed qiymatdan keyingisini hisoblaydi. Masalan, `setCount(current => current + 1)`. [Rasmiy manba](https://react.dev/reference/react/useState#updating-state-based-on-the-previous-state).
 
-```tsx
-// Frontend Component Snippet #12
-import React from 'react';
-
-export default function Component12() {
-  return <div>Frontend Component #12</div>;
-}
-```
-
 ---
-
-## Q13. React & Next.js Frontend Architecture Concept #13 | React va Next.js Frontend Savoli #13
-
-**EN:** Advanced frontend scenario #13 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #13-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q13. React: tez almashgan userId uchun avvalgi fetch kech kelib yangi profilni bosmoqda?
 
-```tsx
-// Frontend Component Snippet #13
-import React from 'react';
+**UZB:** Effect cleanupida eski so'rovni bekor qiling yoki ignore flag qo'ying; faqat faol request natijasi state yozsin. Masalan, `const c = new AbortController(); fetch(url, { signal: c.signal }); return () => c.abort()`. [Rasmiy manba](https://react.dev/reference/react/useEffect#fetching-data-with-effects).
 
-export default function Component13() {
-  return <div>Frontend Component #13</div>;
-}
-```
-
 ---
-
-## Q14. React & Next.js Frontend Architecture Concept #14 | React va Next.js Frontend Savoli #14
-
-**EN:** Advanced frontend scenario #14 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #14-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #14
-import React from 'react';
+## Q14. React: firstName va lastNamedan fullName state saqlanib, ayrim update'da eskirib qolmoqda?
 
-export default function Component14() {
-  return <div>Frontend Component #14</div>;
-}
-```
+**UZB:** Renderdan hosil bo'ladigan qiymatni alohida state/Effectga ko'chirmang; source state'lardan bevosita hisoblang. Masalan, `const fullName = firstName + ' ' + lastName`. [Rasmiy manba](https://react.dev/learn/you-might-not-need-an-effect).
 
 ---
 
-## Q15. React & Next.js Frontend Architecture Concept #15 | React va Next.js Frontend Savoli #15
+## Q15. React: saralangan jadvalda input qiymati boshqa qatorga ko'chib ketmoqda?
 
-**EN:** Advanced frontend scenario #15 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Array index emas, recordning barqaror domain identifikatorini key qiling; React shunda element identitysini reorderda saqlaydi. Masalan, `rows.map(row => <Row key={row.id} row={row} />)`. [Rasmiy manba](https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key).
 
-**UZB:** Frontend muhandisligi bo'yicha #15-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #15
-import React from 'react';
-
-export default function Component15() {
-  return <div>Frontend Component #15</div>;
-}
-```
-
 ---
-
-## Q16. React & Next.js Frontend Architecture Concept #16 | React va Next.js Frontend Savoli #16
 
-**EN:** Advanced frontend scenario #16 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q16. React: theme context o'zgarmasa ham yuzlab consumer har parent renderida yangilanmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #16-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Providerga beriladigan object va callback identitysini barqaror qiling, keyin Profilerda commitlarni qayta o'lchang. Masalan, `const value = useMemo(() => ({ theme, toggle }), [theme, toggle])`. [Rasmiy manba](https://react.dev/reference/react/useContext#optimizing-re-renders-when-passing-objects-and-functions).
 
-```tsx
-// Frontend Component Snippet #16
-import React from 'react';
-
-export default function Component16() {
-  return <div>Frontend Component #16</div>;
-}
-```
-
 ---
-
-## Q17. React & Next.js Frontend Architecture Concept #17 | React va Next.js Frontend Savoli #17
-
-**EN:** Advanced frontend scenario #17 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #17-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q17. React: checkout formidagi ko'p boolean state imkonsiz kombinatsiyalarga kirib qolmoqda?
 
-```tsx
-// Frontend Component Snippet #17
-import React from 'react';
+**UZB:** Holat o'tishlarini reducer eventlariga aylantiring; reducer har event uchun yagona yangi state qaytarsin va invariantlar unit test qilinsin. Masalan, `const [state, dispatch] = useReducer(checkoutReducer, initialState)`. [Rasmiy manba](https://react.dev/learn/extracting-state-logic-into-a-reducer).
 
-export default function Component17() {
-  return <div>Frontend Component #17</div>;
-}
-```
-
 ---
-
-## Q18. React & Next.js Frontend Architecture Concept #18 | React va Next.js Frontend Savoli #18
-
-**EN:** Advanced frontend scenario #18 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #18-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #18
-import React from 'react';
+## Q18. React: qimmat chart memo qo'shilganiga qaramay sekinligicha qolmoqda?
 
-export default function Component18() {
-  return <div>Frontend Component #18</div>;
-}
-```
+**UZB:** Avval React Profiler bilan qaysi commit qimmatligini toping; faqat props barqaror bo'lsa memo qo'llang va taqqoslash xarajatini ham hisobga oling. Masalan, `const Chart = memo(ChartView)`. [Rasmiy manba](https://react.dev/reference/react/memo).
 
 ---
 
-## Q19. React & Next.js Frontend Architecture Concept #19 | React va Next.js Frontend Savoli #19
+## Q19. React: video tabini yashirib qayta ochganda timecode yo'qolmasin, ammo yashirin tabdagi ovoz darhol to'xtasin?
 
-**EN:** Advanced frontend scenario #19 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Tabni unmount qilish o'rniga `<Activity mode={active ? 'visible' : 'hidden'}>` bilan yashiring: React ichki state va DOMni saqlaydi, Effectlarni esa hidden holatda cleanup qiladi. Video ref uchun `useLayoutEffect(() => () => videoRef.current?.pause(), [])` cleanup qo'shing; tab qaytganda timecode saqlanishi va yashirilganda audio to'xtashini integration testda tekshiring. [Rasmiy manba](https://react.dev/reference/react/Activity).
 
-**UZB:** Frontend muhandisligi bo'yicha #19-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #19
-import React from 'react';
-
-export default function Component19() {
-  return <div>Frontend Component #19</div>;
-}
-```
-
 ---
-
-## Q20. React & Next.js Frontend Architecture Concept #20 | React va Next.js Frontend Savoli #20
 
-**EN:** Advanced frontend scenario #20 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q20. React: tooltip o'lchami paintdan keyin hisoblanib ko'rinadigan sakrash bermoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #20-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** DOM o'lchovi keyingi paintdan oldin layoutga ta'sir qilishi shart bo'lsa useLayoutEffect ishlating; server renderda fallbackni saqlang. Masalan, `useLayoutEffect(() => setHeight(ref.current.getBoundingClientRect().height), [])`. [Rasmiy manba](https://react.dev/reference/react/useLayoutEffect).
 
-```tsx
-// Frontend Component Snippet #20
-import React from 'react';
-
-export default function Component20() {
-  return <div>Frontend Component #20</div>;
-}
-```
-
 ---
-
-## Q21. React & Next.js Frontend Architecture Concept #21 | React va Next.js Frontend Savoli #21
-
-**EN:** Advanced frontend scenario #21 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #21-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #21
-import React from 'react';
+## Q21. React: parent custom video playerga play buyrug'ini DOM tafsilotlarini bilmasdan bera olmayapti?
 
-export default function Component21() {
-  return <div>Frontend Component #21</div>;
-}
-```
+**UZB:** Imperative yuzani minimal saqlab useImperativeHandle orqali faqat kerakli metodlarni oching; oddiy data flow uchun props afzal. Masalan, `useImperativeHandle(ref, () => ({ play: () => video.current.play() }), [])`. [Rasmiy manba](https://react.dev/reference/react/useImperativeHandle).
 
 ---
 
-## Q22. React & Next.js Frontend Architecture Concept #22 | React va Next.js Frontend Savoli #22
+## Q22. React: browser online holatini oddiy Effect bilan o'qish concurrent renderda tearing bermoqda?
 
-**EN:** Advanced frontend scenario #22 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** External store uchun subscribe/getSnapshot kontraktini useSyncExternalStorega bering; server snapshot hydration bilan mos bo'lsin. Masalan, `useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)`. [Rasmiy manba](https://react.dev/reference/react/useSyncExternalStore).
 
-**UZB:** Frontend muhandisligi bo'yicha #22-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #22
-import React from 'react';
-
-export default function Component22() {
-  return <div>Frontend Component #22</div>;
-}
-```
-
 ---
-
-## Q23. React & Next.js Frontend Architecture Concept #23 | React va Next.js Frontend Savoli #23
 
-**EN:** Advanced frontend scenario #23 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q23. React: katta filter hisoblanayotganda qidiruv inputi lag qilmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #23-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Inputning urgent update'ini darhol qoldirib, natija ro'yxati update'ini Transitionga o'tkazing; pending holatini UI'da ko'rsating. Masalan, `startTransition(() => setFilter(nextFilter))`. [Rasmiy manba](https://react.dev/reference/react/useTransition).
 
-```tsx
-// Frontend Component Snippet #23
-import React from 'react';
-
-export default function Component23() {
-  return <div>Frontend Component #23</div>;
-}
-```
-
 ---
-
-## Q24. React & Next.js Frontend Architecture Concept #24 | React va Next.js Frontend Savoli #24
-
-**EN:** Advanced frontend scenario #24 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #24-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q24. React: parentdan kelgan query tez o'zgarib og'ir result subtree har safar bloklamoqda?
 
-```tsx
-// Frontend Component Snippet #24
-import React from 'react';
+**UZB:** useDeferredValue bilan subtreega kechikishi mumkin bo'lgan snapshot bering; stale natijani vizual belgilab, network requestni bu bilan boshqarmang. Masalan, `const deferredQuery = useDeferredValue(query)`. [Rasmiy manba](https://react.dev/reference/react/useDeferredValue).
 
-export default function Component24() {
-  return <div>Frontend Component #24</div>;
-}
-```
-
 ---
-
-## Q25. React & Next.js Frontend Architecture Concept #25 | React va Next.js Frontend Savoli #25
-
-**EN:** Advanced frontend scenario #25 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #25-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #25
-import React from 'react';
+## Q25. React: admin editor barcha foydalanuvchilar uchun boshlang'ich bundle hajmini oshirdi?
 
-export default function Component25() {
-  return <div>Frontend Component #25</div>;
-}
-```
+**UZB:** Editor komponentini lazy import qiling va Suspense fallbackni uning eng yaqin chegarasiga qo'ying; chunk load errorini ham kuzating. Masalan, `const AdminEditor = lazy(() => import('./AdminEditor.js'))`. [Rasmiy manba](https://react.dev/reference/react/lazy).
 
 ---
 
-## Q26. React & Next.js Frontend Architecture Concept #26 | React va Next.js Frontend Savoli #26
+## Q26. React: bitta widget render exceptioni butun sahifani oq ekranga aylantirmoqda?
 
-**EN:** Advanced frontend scenario #26 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Mustaqil widget atrofiga Error Boundary qo'ying; expected validation xatolarini throw qilmay oddiy state sifatida ko'rsating. Masalan, `<ErrorBoundary fallback={<WidgetError />}><AnalyticsWidget /></ErrorBoundary>`. [Rasmiy manba](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
 
-**UZB:** Frontend muhandisligi bo'yicha #26-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #26
-import React from 'react';
-
-export default function Component26() {
-  return <div>Frontend Component #26</div>;
-}
-```
-
 ---
-
-## Q27. React & Next.js Frontend Architecture Concept #27 | React va Next.js Frontend Savoli #27
-
-**EN:** Advanced frontend scenario #27 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #27-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q27. React: server HTMLdagi vaqt client render vaqtiga teng kelmay hydration warning chiqmoqda?
 
-```tsx
-// Frontend Component Snippet #27
-import React from 'react';
+**UZB:** Birinchi client render server markup bilan aynan mos bo'lsin; browser-only qiymatni Effectdan keyin yangilang yoki aniq suppressionni juda tor joyda ishlating. Masalan, `const [mounted, setMounted] = useState(false); useEffect(() => setMounted(true), [])`. [Rasmiy manba](https://react.dev/reference/react-dom/client/hydrateRoot#handling-different-client-and-server-content).
 
-export default function Component27() {
-  return <div>Frontend Component #27</div>;
-}
-```
-
 ---
-
-## Q28. React & Next.js Frontend Architecture Concept #28 | React va Next.js Frontend Savoli #28
-
-**EN:** Advanced frontend scenario #28 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #28-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #28
-import React from 'react';
+## Q28. React: like tugmasi server javobini kutguncha sust ko'rinadi, xatoda esa optimistic qiymat qaytishi kerak?
 
-export default function Component28() {
-  return <div>Frontend Component #28</div>;
-}
-```
+**UZB:** useOptimistic setterini Action yoki Transition ichida chaqiring; server rad etsa canonical prop state optimistic ko'rinishni avtomatik almashtiradi. Masalan, `startTransition(async () => { addOptimistic(1); await saveLike() })`. [Rasmiy manba](https://react.dev/reference/react/useOptimistic).
 
 ---
 
-## Q29. React & Next.js Frontend Architecture Concept #29 | React va Next.js Frontend Savoli #29
+## Q29. React: server action validation xatosi formaga qaytmay, faqat console'da ko'rinmoqda?
 
-**EN:** Advanced frontend scenario #29 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Known validation natijasini useActionState reducer state sifatida qaytaring; unknown exception nearest Error Boundaryga o'tsin. Masalan, `const [result, submit, pending] = useActionState(saveProfile, initialResult)`. [Rasmiy manba](https://react.dev/reference/react/useActionState).
 
-**UZB:** Frontend muhandisligi bo'yicha #29-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #29
-import React from 'react';
-
-export default function Component29() {
-  return <div>Frontend Component #29</div>;
-}
-```
-
 ---
-
-## Q30. React & Next.js Frontend Architecture Concept #30 | React va Next.js Frontend Savoli #30
 
-**EN:** Advanced frontend scenario #30 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q30. React: yuzlab inputli forma har keystrokda state objectini nusxalab sekinlashmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #30-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Submit vaqtida o'qiladigan oddiy maydonlarni uncontrolled qoldiring; FormData orqali qiymatlarni chegarada oling va serverda qayta tekshiring. Masalan, `const data = new FormData(event.currentTarget)`. [Rasmiy manba](https://react.dev/reference/react-dom/components/form).
 
-```tsx
-// Frontend Component Snippet #30
-import React from 'react';
-
-export default function Component30() {
-  return <div>Frontend Component #30</div>;
-}
-```
-
 ---
-
-## Q31. React & Next.js Frontend Architecture Concept #31 | React va Next.js Frontend Savoli #31
-
-**EN:** Advanced frontend scenario #31 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #31-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q31. React: state ichidagi product object bevosita o'zgartirilgani uchun UI yangilanmayapti?
 
-```tsx
-// Frontend Component Snippet #31
-import React from 'react';
+**UZB:** State'ni read-only snapshot deb ko'rib, o'zgargan path uchun yangi object yarating; eski objectni mutatsiya qiluvchi kodni olib tashlang. Masalan, `setProduct(current => ({ ...current, price: nextPrice }))`. [Rasmiy manba](https://react.dev/learn/updating-objects-in-state).
 
-export default function Component31() {
-  return <div>Frontend Component #31</div>;
-}
-```
-
 ---
-
-## Q32. React & Next.js Frontend Architecture Concept #32 | React va Next.js Frontend Savoli #32
 
-**EN:** Advanced frontend scenario #32 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q32. React: Effect dependencydagi inline options object connectionni har renderda qayta boshlatmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #32-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Objectni Effect ichida yarating yoki primitive dependencylarni ajrating; linter dependencylarini yashirmang. Masalan, `useEffect(() => { const options = { roomId }; return connect(options) }, [roomId])`. [Rasmiy manba](https://react.dev/reference/react/useEffect#removing-unnecessary-object-dependencies).
 
-```tsx
-// Frontend Component Snippet #32
-import React from 'react';
-
-export default function Component32() {
-  return <div>Frontend Component #32</div>;
-}
-```
-
 ---
-
-## Q33. React & Next.js Frontend Architecture Concept #33 | React va Next.js Frontend Savoli #33
 
-**EN:** Advanced frontend scenario #33 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q33. React: custom Hook faqat enabled bo'lsa chaqirilib hook order productionda buzilmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #33-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Hookni har render top-levelda bir xil tartibda chaqiring; disabled holatini hook argumenti yoki ichki Effect sharti bilan ifodalang. Masalan, `const result = useSubscription(enabled ? topic : null)`. [Rasmiy manba](https://react.dev/reference/rules/rules-of-hooks).
 
-```tsx
-// Frontend Component Snippet #33
-import React from 'react';
-
-export default function Component33() {
-  return <div>Frontend Component #33</div>;
-}
-```
-
 ---
-
-## Q34. React & Next.js Frontend Architecture Concept #34 | React va Next.js Frontend Savoli #34
-
-**EN:** Advanced frontend scenario #34 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #34-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q34. React: modal portal orqali bodyga render bo'lsa ham parent click handleri kutilmaganda ishlamoqda?
 
-```tsx
-// Frontend Component Snippet #34
-import React from 'react';
+**UZB:** Portal DOM joylashuvini emas React tree event bubblingini saqlashini hisobga oling; dialog ichida propagationni boshqaring yoki handlerni qayta joylashtiring. Masalan, `createPortal(<Dialog onClick={e => e.stopPropagation()} />, document.body)`. [Rasmiy manba](https://react.dev/reference/react-dom/createPortal).
 
-export default function Component34() {
-  return <div>Frontend Component #34</div>;
-}
-```
-
 ---
-
-## Q35. React & Next.js Frontend Architecture Concept #35 | React va Next.js Frontend Savoli #35
-
-**EN:** Advanced frontend scenario #35 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #35-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #35
-import React from 'react';
+## Q35. React: bir sahifada ko'p accordion label va panel idlari SSRda collision bermoqda?
 
-export default function Component35() {
-  return <div>Frontend Component #35</div>;
-}
-```
+**UZB:** useId bilan component instansiyasiga barqaror accessibility prefix yarating; list key yoki cache key sifatida useId ishlatmang. Masalan, `const id = useId(); return <button aria-controls={id + '-panel'} />`. [Rasmiy manba](https://react.dev/reference/react/useId).
 
 ---
 
-## Q36. React & Next.js Frontend Architecture Concept #36 | React va Next.js Frontend Savoli #36
+## Q36. React: komponent testi clickdan keyin state commit bo'lishidan oldin assertion qilmoqda?
 
-**EN:** Advanced frontend scenario #36 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Render va interaction update'larini act bilan flush qiling; internal state emas, foydalanuvchi ko'radigan DOM natijasini tasdiqlang. Masalan, `await act(async () => { submitButton.click() })`. [Rasmiy manba](https://react.dev/reference/react/act).
 
-**UZB:** Frontend muhandisligi bo'yicha #36-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #36
-import React from 'react';
-
-export default function Component36() {
-  return <div>Frontend Component #36</div>;
-}
-```
-
 ---
-
-## Q37. React & Next.js Frontend Architecture Concept #37 | React va Next.js Frontend Savoli #37
 
-**EN:** Advanced frontend scenario #37 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q37. React: ikki sibling komponent bir xil tanlangan itemni turlicha saqlab desync bo'lmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #37-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Shared state'ni eng yaqin umumiy parentga ko'taring va childlarga value hamda event callback bering. Masalan, `<List selectedId={selectedId} onSelect={setSelectedId} />`. [Rasmiy manba](https://react.dev/learn/sharing-state-between-components).
 
-```tsx
-// Frontend Component Snippet #37
-import React from 'react';
-
-export default function Component37() {
-  return <div>Frontend Component #37</div>;
-}
-```
-
 ---
-
-## Q38. React & Next.js Frontend Architecture Concept #38 | React va Next.js Frontend Savoli #38
-
-**EN:** Advanced frontend scenario #38 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #38-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #38
-import React from 'react';
+## Q38. React: reset tugmasi editorning ichki state'ini to'liq boshlang'ich holatga qaytarmayapti?
 
-export default function Component38() {
-  return <div>Frontend Component #38</div>;
-}
-```
+**UZB:** Editor identitysini key bilan almashtiring; key o'zgarsa React eski subtree state'ini tashlab yangi instansiya yaratadi. Masalan, `<ProfileEditor key={profileId} profile={profile} />`. [Rasmiy manba](https://react.dev/learn/preserving-and-resetting-state#resetting-a-form-with-a-key).
 
 ---
 
-## Q39. React & Next.js Frontend Architecture Concept #39 | React va Next.js Frontend Savoli #39
+## Q39. React: memo custom comparator yangi callback ichidagi eski propsni yashirib qo'ymoqda?
 
-**EN:** Advanced frontend scenario #39 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Comparator barcha prop, jumladan functionlarni solishtirsin; comparator renderdan qimmat bo'lmasligini Performance panelda o'lchang. Masalan, `memo(Row, (prev, next) => prev.item === next.item && prev.onOpen === next.onOpen)`. [Rasmiy manba](https://react.dev/reference/react/memo#specifying-a-custom-comparison-function).
 
-**UZB:** Frontend muhandisligi bo'yicha #39-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #39
-import React from 'react';
-
-export default function Component39() {
-  return <div>Frontend Component #39</div>;
-}
-```
-
 ---
-
-## Q40. React & Next.js Frontend Architecture Concept #40 | React va Next.js Frontend Savoli #40
 
-**EN:** Advanced frontend scenario #40 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q40. React: API'dan kelgan HTMLni dangerouslySetInnerHTML bilan chiqarish XSS xavfini tug'dirmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #40-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Faqat ishonchli va sanitizatsiya qilingan HTMLga ruxsat bering; odatiy user matnini JSX text sifatida render qiling. Masalan, `return <p>{userComment}</p>`. [Rasmiy manba](https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html).
 
-```tsx
-// Frontend Component Snippet #40
-import React from 'react';
-
-export default function Component40() {
-  return <div>Frontend Component #40</div>;
-}
-```
-
 ---
-
-## Q41. React & Next.js Frontend Architecture Concept #41 | React va Next.js Frontend Savoli #41
-
-**EN:** Advanced frontend scenario #41 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #41-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q41. Next.js: interaktiv widget sabab butun page Client Componentga aylantirilib bundle kattalashdi?
 
-```tsx
-// Frontend Component Snippet #41
-import React from 'react';
+**UZB:** Page va data fetchni Server Componentda qoldiring, faqat event handler kerak bo'lgan leafga use client chegarasini tushiring. Masalan, `'use client'; export function FilterButton() { /* interaction */ }`. [Rasmiy manba](https://nextjs.org/docs/app/getting-started/server-and-client-components).
 
-export default function Component41() {
-  return <div>Frontend Component #41</div>;
-}
-```
-
 ---
-
-## Q42. React & Next.js Frontend Architecture Concept #42 | React va Next.js Frontend Savoli #42
-
-**EN:** Advanced frontend scenario #42 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #42-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #42
-import React from 'react';
+## Q42. Next.js: Client Componentga database client yoki function prop uzatilganda build serialization xatosi chiqdi?
 
-export default function Component42() {
-  return <div>Frontend Component #42</div>;
-}
-```
+**UZB:** Client boundary orqali faqat serializable data uzating; server amallarini Server Function yoki Route Handler ortida saqlang. Masalan, `<ClientChart points={plainPoints} />`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/directives/use-client).
 
 ---
 
-## Q43. React & Next.js Frontend Architecture Concept #43 | React va Next.js Frontend Savoli #43
+## Q43. Next.js: private API kaliti import zanjiri orqali client bundlega chiqishi mumkin?
 
-**EN:** Advanced frontend scenario #43 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Maxfiy modul boshiga server-only import qo'shing va public browser configda secret saqlamang. Masalan, `import 'server-only'`. [Rasmiy manba](https://nextjs.org/docs/app/getting-started/server-and-client-components#preventing-environment-poisoning).
 
-**UZB:** Frontend muhandisligi bo'yicha #43-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #43
-import React from 'react';
-
-export default function Component43() {
-  return <div>Frontend Component #43</div>;
-}
-```
-
 ---
-
-## Q44. React & Next.js Frontend Architecture Concept #44 | React va Next.js Frontend Savoli #44
-
-**EN:** Advanced frontend scenario #44 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #44-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q44. Next.js: Server Action client yuborgan userId bilan boshqa hisobni tahrir qila olyapti?
 
-```tsx
-// Frontend Component Snippet #44
-import React from 'react';
+**UZB:** Har actionni public endpoint deb ko'rib sessionni serverda tekshiring, resource ownershipni database query shartiga qo'shing. Masalan, `await db.note.update({ where: { id, ownerId: session.user.id }, data })`. [Rasmiy manba](https://nextjs.org/docs/app/guides/authentication#authorization).
 
-export default function Component44() {
-  return <div>Frontend Component #44</div>;
-}
-```
-
 ---
-
-## Q45. React & Next.js Frontend Architecture Concept #45 | React va Next.js Frontend Savoli #45
-
-**EN:** Advanced frontend scenario #45 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #45-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #45
-import React from 'react';
+## Q45. Next.js: Route Handler audit log yozilishini kutgani uchun foydalanuvchiga javob keragidan kech qaytmoqda?
 
-export default function Component45() {
-  return <div>Frontend Component #45</div>;
-}
-```
+**UZB:** Asosiy mutation natijasini tayyorlagach, bloklamaydigan audit/analytics ishini `after(() => writeAudit(event))` bilan response tugaganidan keyinga rejalashtiring. Requestdan kerakli qiymatlarni callbackdan oldin o'qib, closurega faqat zarur snapshotni bering; callback platformaning `maxDuration` chegarasida tugashini failure testi bilan tekshiring. Transactional majburiy yozuvni `after`ga ko'chirmang. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/functions/after).
 
 ---
 
-## Q46. React & Next.js Frontend Architecture Concept #46 | React va Next.js Frontend Savoli #46
+## Q46. Next.js: layout va page bir requestda bir xil userni ikki marta database'dan o'qimoqda?
 
-**EN:** Advanced frontend scenario #46 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Non-fetch data loaderni React cache bilan request doirasida memoize qiling; bu natijani userlar orasida persistent cache deb qabul qilmang. Masalan, `export const getUser = cache(async () => db.user.findUnique(...))`. [Rasmiy manba](https://nextjs.org/docs/app/getting-started/fetching-data#deduplicate-requests-and-cache-data).
 
-**UZB:** Frontend muhandisligi bo'yicha #46-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #46
-import React from 'react';
-
-export default function Component46() {
-  return <div>Frontend Component #46</div>;
-}
-```
-
 ---
-
-## Q47. React & Next.js Frontend Architecture Concept #47 | React va Next.js Frontend Savoli #47
 
-**EN:** Advanced frontend scenario #47 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q47. Next.js: GET Route Handler yangi versiyada kutilmaganda cache qilinmay, backend yukini oshirdi?
 
-**UZB:** Frontend muhandisligi bo'yicha #47-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Route uchun freshness talabini aniq belgilang; static javob bo'lsa force-static, userga bog'liq bo'lsa dynamic holda qoldiring. Masalan, `export const dynamic = 'force-static'`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/file-conventions/route#caching).
 
-```tsx
-// Frontend Component Snippet #47
-import React from 'react';
-
-export default function Component47() {
-  return <div>Frontend Component #47</div>;
-}
-```
-
 ---
-
-## Q48. React & Next.js Frontend Architecture Concept #48 | React va Next.js Frontend Savoli #48
-
-**EN:** Advanced frontend scenario #48 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #48-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q48. Next.js: dynamic page eski sync params usuli bilan TypeScript xatosi bermoqda?
 
-```tsx
-// Frontend Component Snippet #48
-import React from 'react';
+**UZB:** App Router page kontraktidagi params Promiseni await qiling va notanish slugni notFound bilan yakunlang. Masalan, `const { slug } = await params`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/file-conventions/dynamic-routes).
 
-export default function Component48() {
-  return <div>Frontend Component #48</div>;
-}
-```
-
 ---
-
-## Q49. React & Next.js Frontend Architecture Concept #49 | React va Next.js Frontend Savoli #49
 
-**EN:** Advanced frontend scenario #49 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q49. Next.js: sekin recommendations so'rovi butun product HTMLini kutdirib qo'ydi?
 
-**UZB:** Frontend muhandisligi bo'yicha #49-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Asosiy productni darhol render qiling, sekin subtreeni Suspense boundary bilan stream qiling. Masalan, `<Suspense fallback={<RecommendationsSkeleton />}><Recommendations id={id} /></Suspense>`. [Rasmiy manba](https://nextjs.org/docs/app/getting-started/linking-and-navigating#streaming).
 
-```tsx
-// Frontend Component Snippet #49
-import React from 'react';
-
-export default function Component49() {
-  return <div>Frontend Component #49</div>;
-}
-```
-
 ---
-
-## Q50. React & Next.js Frontend Architecture Concept #50 | React va Next.js Frontend Savoli #50
 
-**EN:** Advanced frontend scenario #50 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q50. Next.js: report widget exceptioni butun route segmentni yiqitmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #50-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Segmentga error.tsx qo'shib recoverable reset bering; xatoni observabilityga yuboring, sensitive detailni UIga chiqarmang. Masalan, `export default function Error({ reset }) { return <button onClick={reset}>Retry</button> }`. [Rasmiy manba](https://nextjs.org/docs/app/getting-started/error-handling).
 
-```tsx
-// Frontend Component Snippet #50
-import React from 'react';
-
-export default function Component50() {
-  return <div>Frontend Component #50</div>;
-}
-```
-
 ---
-
-## Q51. React & Next.js Frontend Architecture Concept #51 | React va Next.js Frontend Savoli #51
-
-**EN:** Advanced frontend scenario #51 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #51-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q51. Next.js: yo'q blog posti null sahifa yoki 200 status bilan qaytmoqda?
 
-```tsx
-// Frontend Component Snippet #51
-import React from 'react';
+**UZB:** Data loader post topmasa notFound chaqirsin; not-found.tsx foydalanuvchi holatini ko'rsatsin. Masalan, `if (!post) notFound()`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/functions/not-found).
 
-export default function Component51() {
-  return <div>Frontend Component #51</div>;
-}
-```
-
 ---
-
-## Q52. React & Next.js Frontend Architecture Concept #52 | React va Next.js Frontend Savoli #52
-
-**EN:** Advanced frontend scenario #52 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #52-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #52
-import React from 'react';
+## Q52. Next.js: dashboard sloti topilmaganda hard refresh 404, client navigationda esa eski state ko'rsatmoqda?
 
-export default function Component52() {
-  return <div>Frontend Component #52</div>;
-}
-```
+**UZB:** Har parallel route slotiga default.tsx fallback qo'shing va unmatched holatini ataylab belgilang. Masalan, `export default function Default() { return null }`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/file-conventions/parallel-routes#defaultjs).
 
 ---
 
-## Q53. React & Next.js Frontend Architecture Concept #53 | React va Next.js Frontend Savoli #53
+## Q53. Next.js: photo modal direct URLda alohida page, gallerydan o'tganda overlay bo'lishi kerak?
 
-**EN:** Advanced frontend scenario #53 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Intercepting route convention bilan soft navigationni modalga tuting, canonical full page route'ni ham saqlang. Masalan, `app/@modal/(.)photo/[id]/page.tsx`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/file-conventions/intercepting-routes).
 
-**UZB:** Frontend muhandisligi bo'yicha #53-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #53
-import React from 'react';
-
-export default function Component53() {
-  return <div>Frontend Component #53</div>;
-}
-```
-
 ---
-
-## Q54. React & Next.js Frontend Architecture Concept #54 | React va Next.js Frontend Savoli #54
 
-**EN:** Advanced frontend scenario #54 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q54. Next.js: har product uchun title va Open Graph ma'lumoti database'dan keladi?
 
-**UZB:** Frontend muhandisligi bo'yicha #54-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** generateMetadata ichida validated paramsdan data oling; topilmagan recordni va absolute metadataBase'ni tekshiring. Masalan, `export async function generateMetadata({ params }) { const { id } = await params; return { title: await titleFor(id) } }`. [Rasmiy manba](https://nextjs.org/docs/app/getting-started/metadata-and-og-images).
 
-```tsx
-// Frontend Component Snippet #54
-import React from 'react';
-
-export default function Component54() {
-  return <div>Frontend Component #54</div>;
-}
-```
-
 ---
-
-## Q55. React & Next.js Frontend Architecture Concept #55 | React va Next.js Frontend Savoli #55
-
-**EN:** Advanced frontend scenario #55 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #55-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #55
-import React from 'react';
+## Q55. Next.js: responsive hero rasmi LCPni yomonlashtirib layout shift bermoqda?
 
-export default function Component55() {
-  return <div>Frontend Component #55</div>;
-}
-```
+**UZB:** Imagega intrinsic o'lcham yoki fill container bering, real viewportlarga mos sizes yozing va faqat haqiqiy LCP rasmga priority/preload qo'llang. Masalan, `<Image src={hero} alt='' width={1200} height={630} sizes='(max-width: 768px) 100vw, 50vw' />`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/components/image).
 
 ---
 
-## Q56. React & Next.js Frontend Architecture Concept #56 | React va Next.js Frontend Savoli #56
+## Q56. Next.js: custom font har route'da tashqi serverdan kech yuklanib CLS bermoqda?
 
-**EN:** Advanced frontend scenario #56 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** next/font orqali fontni self-host qiling, kerakli subset/weightni tanlang va CSS variable bilan scope qiling. Masalan, `const inter = Inter({ subsets: ['latin'], display: 'swap' })`. [Rasmiy manba](https://nextjs.org/docs/app/getting-started/fonts).
 
-**UZB:** Frontend muhandisligi bo'yicha #56-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #56
-import React from 'react';
-
-export default function Component56() {
-  return <div>Frontend Component #56</div>;
-}
-```
-
 ---
-
-## Q57. React & Next.js Frontend Architecture Concept #57 | React va Next.js Frontend Savoli #57
 
-**EN:** Advanced frontend scenario #57 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q57. Next.js: analytics script hydrationdan oldin main threadni band qilyapti?
 
-**UZB:** Frontend muhandisligi bo'yicha #57-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** next/script strategy'ni dependencyga qarab tanlang; worker yoki lazyOnloadga ko'chirishdan oldin scriptning browser talabini tekshiring. Masalan, `<Script src='/analytics.js' strategy='lazyOnload' />`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/components/script).
 
-```tsx
-// Frontend Component Snippet #57
-import React from 'react';
-
-export default function Component57() {
-  return <div>Frontend Component #57</div>;
-}
-```
-
 ---
-
-## Q58. React & Next.js Frontend Architecture Concept #58 | React va Next.js Frontend Savoli #58
-
-**EN:** Advanced frontend scenario #58 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #58-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q58. Next.js: nonce bilan CSP yoqilganda inline framework scriptlari bloklanmoqda?
 
-```tsx
-// Frontend Component Snippet #58
-import React from 'react';
+**UZB:** Har requestda nonce yarating, CSP headerga va Script komponentlariga bir xil qiymatni uzating; static caching trade-offini qayta baholang. Masalan, `<Script nonce={nonce} src='/trusted.js' />`. [Rasmiy manba](https://nextjs.org/docs/app/guides/content-security-policy).
 
-export default function Component58() {
-  return <div>Frontend Component #58</div>;
-}
-```
-
 ---
-
-## Q59. React & Next.js Frontend Architecture Concept #59 | React va Next.js Frontend Savoli #59
-
-**EN:** Advanced frontend scenario #59 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #59-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #59
-import React from 'react';
+## Q59. Next.js: proxy fayli har asset requestda auth tekshiruvini bajarib latency qo'shmoqda?
 
-export default function Component59() {
-  return <div>Frontend Component #59</div>;
-}
-```
+**UZB:** Matcher bilan static, image va metadata yo'llarini chiqarib tashlang; proxyda faqat optimistic redirect, secure checkni data qatlamida bajaring. Masalan, `export const config = { matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'] }`. [Rasmiy manba](https://nextjs.org/docs/app/getting-started/proxy).
 
 ---
 
-## Q60. React & Next.js Frontend Architecture Concept #60 | React va Next.js Frontend Savoli #60
+## Q60. Next.js: user kiritgan returnTo qiymati open redirectga sabab bo'lishi mumkin?
 
-**EN:** Advanced frontend scenario #60 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Client yuborgan to'liq URLni bevosita `redirect()`ga bermang. Eng xavfsiz yo'l — serverdagi kalitdan oldindan belgilangan relative pathga mapping; erkin path kerak bo'lsa `new URL(returnTo, origin)` bilan parse qilib origin aynan o'z domeningiz ekanini va pathname same-origin allowlist ichida ekanini tekshiring, aks holda `/dashboard`ga qayting. Tashqi URL va `//evil.example` uchun negative test yozing. [Next.js `redirect`](https://nextjs.org/docs/app/api-reference/functions/redirect), [OWASP redirect himoyasi](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html).
 
-**UZB:** Frontend muhandisligi bo'yicha #60-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #60
-import React from 'react';
-
-export default function Component60() {
-  return <div>Frontend Component #60</div>;
-}
-```
-
 ---
-
-## Q61. React & Next.js Frontend Architecture Concept #61 | React va Next.js Frontend Savoli #61
 
-**EN:** Advanced frontend scenario #61 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q61. Next.js: ikki self-hosted replica ISR yangilanishini turlicha ko'rsatmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #61-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Default disk cache per-instance ekanini hisobga olib shared cache handler va deployment-wide invalidation channel belgilang. Masalan, `cacheHandlers: { remote: require.resolve('./shared-cache.js') }`. [Rasmiy manba](https://nextjs.org/docs/app/guides/self-hosting#caching-and-isr).
 
-```tsx
-// Frontend Component Snippet #61
-import React from 'react';
-
-export default function Component61() {
-  return <div>Frontend Component #61</div>;
-}
-```
-
 ---
-
-## Q62. React & Next.js Frontend Architecture Concept #62 | React va Next.js Frontend Savoli #62
-
-**EN:** Advanced frontend scenario #62 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #62-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q62. Next.js: standalone container serveri ishlaydi, lekin CSS va public rasmlar 404?
 
-```tsx
-// Frontend Component Snippet #62
-import React from 'react';
+**UZB:** Builddan keyin public va .next/static kataloglarini standalone artefaktga nusxalang; runtime image ichida URLlarni smoke-test qiling. Masalan, `cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/config/next-config-js/output).
 
-export default function Component62() {
-  return <div>Frontend Component #62</div>;
-}
-```
-
 ---
-
-## Q63. React & Next.js Frontend Architecture Concept #63 | React va Next.js Frontend Savoli #63
-
-**EN:** Advanced frontend scenario #63 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #63-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #63
-import React from 'react';
+## Q63. Next.js: NEXT_PUBLIC prefiksli qiymat runtime container env bilan almashadi deb kutilgan?
 
-export default function Component63() {
-  return <div>Frontend Component #63</div>;
-}
-```
+**UZB:** Public qiymatlar build vaqtida browser bundlega inline bo'lishini qabul qiling; runtime config kerak bo'lsa server endpoint yoki dynamic renderdan bering. Masalan, `const publicApi = process.env.NEXT_PUBLIC_API_URL`. [Rasmiy manba](https://nextjs.org/docs/app/guides/environment-variables#bundling-environment-variables-for-the-browser).
 
 ---
 
-## Q64. React & Next.js Frontend Architecture Concept #64 | React va Next.js Frontend Savoli #64
+## Q64. Next.js: productiondagi sekin server render qaysi route va querydan kelgani ko'rinmayapti?
 
-**EN:** Advanced frontend scenario #64 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** instrumentation.ts register va onRequestError hookida trace/error atributlarini observability backendga yuboring. Masalan, `export async function register() { await import('./instrumentation.node.js') }`. [Rasmiy manba](https://nextjs.org/docs/app/guides/instrumentation).
 
-**UZB:** Frontend muhandisligi bo'yicha #64-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #64
-import React from 'react';
-
-export default function Component64() {
-  return <div>Frontend Component #64</div>;
-}
-```
-
 ---
-
-## Q65. React & Next.js Frontend Architecture Concept #65 | React va Next.js Frontend Savoli #65
 
-**EN:** Advanced frontend scenario #65 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q65. Next.js: katta CSV Route Handler RAMga to'liq yig'ilib serverni bosmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #65-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** ReadableStream qaytaring, content type/dispositionni belgilang va client disconnect cancellationini downstreamga uzating. Masalan, `return new Response(stream, { headers: { 'content-type': 'text/csv' } })`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/file-conventions/route#streaming).
 
-```tsx
-// Frontend Component Snippet #65
-import React from 'react';
-
-export default function Component65() {
-  return <div>Frontend Component #65</div>;
-}
-```
-
 ---
-
-## Q66. React & Next.js Frontend Architecture Concept #66 | React va Next.js Frontend Savoli #66
-
-**EN:** Advanced frontend scenario #66 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #66-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #66
-import React from 'react';
+## Q66. Next.js: JavaScript o'chirilgan browserda form submit bo'lmayapti, hydrated holatda esa yuborish jarayoni ko'rinmayapti?
 
-export default function Component66() {
-  return <div>Frontend Component #66</div>;
-}
-```
+**UZB:** Server Componentdagi `<form action={createOrder}>`ga Server Actionni to'g'ridan-to'g'ri bering — bu progressive enhancement orqali client JavaScript yuklanmasa ham submit qiladi. Hydrated Client Componentda `const [state, formAction, pending] = useActionState(createOrder, initialState)` ishlatib formga `action={formAction}` bering va `pending` rost paytda “Yuborilmoqda…” holatini chiqaring. JavaScript o'chirilganda action chaqirilishini, yoqilganda esa `pending` almashishini browser testda tekshiring. [Rasmiy manba](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations).
 
 ---
 
-## Q67. React & Next.js Frontend Architecture Concept #67 | React va Next.js Frontend Savoli #67
+## Q67. Next.js: mutationdan keyin faqat joriy path emas, shu product ishlatilgan boshqa sahifalar ham eskirdi?
 
-**EN:** Advanced frontend scenario #67 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Resource fetchni taglang va actiondan shu tagni revalidate qiling; path-based invalidationni faqat routega xos data uchun qoldiring. Masalan, `revalidateTag('product-' + id)`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/functions/revalidateTag).
 
-**UZB:** Frontend muhandisligi bo'yicha #67-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #67
-import React from 'react';
-
-export default function Component67() {
-  return <div>Frontend Component #67</div>;
-}
-```
-
 ---
-
-## Q68. React & Next.js Frontend Architecture Concept #68 | React va Next.js Frontend Savoli #68
 
-**EN:** Advanced frontend scenario #68 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q68. Next.js: cookies o'qilgan component static shell ichida build vaqtida render bo'la olmayapti?
 
-**UZB:** Frontend muhandisligi bo'yicha #68-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Request-time API ishlatadigan subtreeni Suspense bilan dynamic chegaraga ajrating yoki cache qilinmaydigan route sifatida ataylab belgilang. Masalan, `const cookieStore = await cookies()`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/functions/cookies).
 
-```tsx
-// Frontend Component Snippet #68
-import React from 'react';
-
-export default function Component68() {
-  return <div>Frontend Component #68</div>;
-}
-```
-
 ---
-
-## Q69. React & Next.js Frontend Architecture Concept #69 | React va Next.js Frontend Savoli #69
-
-**EN:** Advanced frontend scenario #69 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #69-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q69. Next.js: static exportga o'tganda dynamic server route va image optimizer ishlamay qoldi?
 
-```tsx
-// Frontend Component Snippet #69
-import React from 'react';
+**UZB:** Export cheklovlarini oldindan inventarizatsiya qiling; server feature kerak bo'lsa Node deploymentda qoling, aks holda dynamic paramsni buildda yarating. Masalan, `const nextConfig = { output: 'export' }`. [Rasmiy manba](https://nextjs.org/docs/app/guides/static-exports).
 
-export default function Component69() {
-  return <div>Frontend Component #69</div>;
-}
-```
-
 ---
-
-## Q70. React & Next.js Frontend Architecture Concept #70 | React va Next.js Frontend Savoli #70
-
-**EN:** Advanced frontend scenario #70 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #70-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #70
-import React from 'react';
+## Q70. Next.js: server bundlega katta optional SDKlar kirib cold startni oshirmoqda?
 
-export default function Component70() {
-  return <div>Frontend Component #70</div>;
-}
-```
+**UZB:** Package importini routega yaqinlashtiring, optimizePackageImports/serverExternalPackages variantlarini bundle analyzer va runtime compatibility bilan tekshiring. Masalan, `const nextConfig = { serverExternalPackages: ['native-sdk'] }`. [Rasmiy manba](https://nextjs.org/docs/app/api-reference/config/next-config-js/serverExternalPackages).
 
 ---
 
-## Q71. React & Next.js Frontend Architecture Concept #71 | React va Next.js Frontend Savoli #71
+## Q71. Vite: API secret VITE_ nomi bilan browser source'da ko'rinib qoldi?
 
-**EN:** Advanced frontend scenario #71 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** VITE_ prefiksli barcha qiymatni public deb hisoblang; secret bilan ishlaydigan chaqiruvni serverga ko'chiring va exposed credentialni almashtiring. Masalan, `const publicOrigin = import.meta.env.VITE_PUBLIC_ORIGIN`. [Rasmiy manba](https://vite.dev/guide/env-and-mode).
 
-**UZB:** Frontend muhandisligi bo'yicha #71-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #71
-import React from 'react';
-
-export default function Component71() {
-  return <div>Frontend Component #71</div>;
-}
-```
-
 ---
-
-## Q72. React & Next.js Frontend Architecture Concept #72 | React va Next.js Frontend Savoli #72
-
-**EN:** Advanced frontend scenario #72 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #72-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q72. Vite: QA build .env.production qiymatini olib noto'g'ri backendga ketmoqda?
 
-```tsx
-// Frontend Component Snippet #72
-import React from 'react';
+**UZB:** Mode va NODE_ENV alohida tushuncha ekanini hisobga olib QA uchun .env.qa yarating va build commandda mode'ni aniq bering. Masalan, `vite build --mode qa`. [Rasmiy manba](https://vite.dev/guide/env-and-mode#modes).
 
-export default function Component72() {
-  return <div>Frontend Component #72</div>;
-}
-```
-
 ---
-
-## Q73. React & Next.js Frontend Architecture Concept #73 | React va Next.js Frontend Savoli #73
-
-**EN:** Advanced frontend scenario #73 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #73-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #73
-import React from 'react';
+## Q73. Vite: vite build TypeScript xatolari bo'lsa ham muvaffaqiyatli tugayapti?
 
-export default function Component73() {
-  return <div>Frontend Component #73</div>;
-}
-```
+**UZB:** Vite faqat TS transpile qilishini hisobga olib canonical buildga tsc --noEmit yoki project buildni alohida gate sifatida qo'shing. Masalan, `tsc --noEmit && vite build`. [Rasmiy manba](https://vite.dev/guide/features#typescript).
 
 ---
 
-## Q74. React & Next.js Frontend Architecture Concept #74 | React va Next.js Frontend Savoli #74
+## Q74. Vite: custom store HMRdan keyin eski subscriberlarni saqlab eventni ko'paytirmoqda?
 
-**EN:** Advanced frontend scenario #74 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** HMR dispose callbackida listener va singleton state'ni tozalang; accept boundaryni modul ownershipiga yaqin joylashtiring. Masalan, `import.meta.hot?.dispose(() => store.destroy())`. [Rasmiy manba](https://vite.dev/guide/api-hmr).
 
-**UZB:** Frontend muhandisligi bo'yicha #74-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #74
-import React from 'react';
-
-export default function Component74() {
-  return <div>Frontend Component #74</div>;
-}
-```
-
 ---
-
-## Q75. React & Next.js Frontend Architecture Concept #75 | React va Next.js Frontend Savoli #75
 
-**EN:** Advanced frontend scenario #75 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q75. Vite: katta metadata.json faylidan faqat version kerak, ammo default import butun obyektni client chunkka olib kirmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #75-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Vite JSON named importlarini tree-shake qila oladi, shuning uchun `import { version } from './metadata.json'` ishlating va faqat kerakli maydonni export qiling. Production builddan oldin-keyin chunk tarkibi va gzip hajmini solishtiring; runtime'da dinamik kalitlar bilan butun obyekt kerak bo'lsa bu optimizatsiyani majburlamang. [Rasmiy manba](https://vite.dev/guide/features#json).
 
-```tsx
-// Frontend Component Snippet #75
-import React from 'react';
-
-export default function Component75() {
-  return <div>Frontend Component #75</div>;
-}
-```
-
 ---
-
-## Q76. React & Next.js Frontend Architecture Concept #76 | React va Next.js Frontend Savoli #76
-
-**EN:** Advanced frontend scenario #76 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #76-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q76. Vite: portal /tools subpathda ochiladi, ammo generated asset URLlari domain rootiga ketmoqda?
 
-```tsx
-// Frontend Component Snippet #76
-import React from 'react';
+**UZB:** Build base'ni yakuniy public pathga sozlang; router basename va reverse proxy pathi bilan bir xil ekanini preview artefaktda tekshiring. Masalan, `export default defineConfig({ base: '/tools/' })`. [Rasmiy manba](https://vite.dev/guide/build#public-base-path).
 
-export default function Component76() {
-  return <div>Frontend Component #76</div>;
-}
-```
-
 ---
-
-## Q77. React & Next.js Frontend Architecture Concept #77 | React va Next.js Frontend Savoli #77
 
-**EN:** Advanced frontend scenario #77 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q77. Vite: footerda build versiyasi kerak, ammo browserda process.env mavjud emasligi uchun runtime xato chiqmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #77-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Build vaqtida almashtiriladigan aniq constant yarating: `define: { __APP_VERSION__: JSON.stringify(process.env.npm_package_version) }`; TypeScript uchun `declare const __APP_VERSION__: string` qo'shing. `define` matnli global replacement ekanini hisobga olib qiymatni `JSON.stringify` qiling va build artefaktida kutilgan versiyani smoke-test qiling. Secretni bu yo'l bilan bermang, chunki qiymat client kodiga yoziladi. [Rasmiy manba](https://vite.dev/config/shared-options#define).
 
-```tsx
-// Frontend Component Snippet #77
-import React from 'react';
-
-export default function Component77() {
-  return <div>Frontend Component #77</div>;
-}
-```
-
 ---
-
-## Q78. React & Next.js Frontend Architecture Concept #78 | React va Next.js Frontend Savoli #78
 
-**EN:** Advanced frontend scenario #78 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q78. Vite: developmentda /api so'rovlari CORS cookie bilan bloklanyapti?
 
-**UZB:** Frontend muhandisligi bo'yicha #78-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Vite server.proxy orqali pathni backendga uzating, changeOrigin va TLSni faqat dev ehtiyojiga qarab sozlang. Masalan, `server: { proxy: { '/api': { target: 'http://127.0.0.1:3000', changeOrigin: true } } }`. [Rasmiy manba](https://vite.dev/config/server-options#server-proxy).
 
-```tsx
-// Frontend Component Snippet #78
-import React from 'react';
-
-export default function Component78() {
-  return <div>Frontend Component #78</div>;
-}
-```
-
 ---
-
-## Q79. React & Next.js Frontend Architecture Concept #79 | React va Next.js Frontend Savoli #79
-
-**EN:** Advanced frontend scenario #79 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #79-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q79. Vite: dev serverni wildcard CORS bilan LANga ochish boshqa saytga source o'qish imkonini bermoqda?
 
-```tsx
-// Frontend Component Snippet #79
-import React from 'react';
+**UZB:** server.corsni aniq trusted origin bilan cheklang; remote access bo'lmasa default localhost modelini saqlang. Masalan, `server: { cors: { origin: 'https://dev.example.test' } }`. [Rasmiy manba](https://vite.dev/config/server-options#server-cors).
 
-export default function Component79() {
-  return <div>Frontend Component #79</div>;
-}
-```
-
 ---
-
-## Q80. React & Next.js Frontend Architecture Concept #80 | React va Next.js Frontend Savoli #80
-
-**EN:** Advanced frontend scenario #80 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #80-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #80
-import React from 'react';
+## Q80. Vite: DNS rebindingdan himoya uchun allowedHosts true qilib yuborilgan?
 
-export default function Component80() {
-  return <div>Frontend Component #80</div>;
-}
-```
+**UZB:** allowedHostsga faqat boshqariladigan hostlarni yozing; true qiymati har qanday host headerni qabul qilishini hisobga oling. Masalan, `server: { allowedHosts: ['dev.example.test'] }`. [Rasmiy manba](https://vite.dev/config/server-options#server-allowedhosts).
 
 ---
 
-## Q81. React & Next.js Frontend Architecture Concept #81 | React va Next.js Frontend Savoli #81
+## Q81. Vite: production diagnostikasi uchun alohida source map fayli kerak, ammo bundle ichida sourceMappingURL commenti bo'lmasligi shart?
 
-**EN:** Advanced frontend scenario #81 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** `build: { sourcemap: 'hidden' }` sozlang: Vite alohida source map yaratadi, lekin bundled fayllarga source map commentini yozmaydi. CI smoke-testda `.map` artefakti mavjudligini va emitted JS oxirida `sourceMappingURL` yo'qligini tekshiring; xaritani qayerda saqlash va kimga berish alohida deployment siyosati bo'lib qoladi. [Rasmiy manba](https://vite.dev/config/build-options#build-sourcemap).
 
-**UZB:** Frontend muhandisligi bo'yicha #81-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #81
-import React from 'react';
-
-export default function Component81() {
-  return <div>Frontend Component #81</div>;
-}
-```
-
 ---
-
-## Q82. React & Next.js Frontend Architecture Concept #82 | React va Next.js Frontend Savoli #82
 
-**EN:** Advanced frontend scenario #82 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q82. Vite: eski korporativ browser production bundle syntaxini parse qila olmayapti?
 
-**UZB:** Frontend muhandisligi bo'yicha #82-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Qo'llab-quvvatlash matritsasidan build.target tanlang; transform qilinmaydigan web APIlar uchun polyfill zaruratini alohida tekshiring. Masalan, `build: { target: ['chrome100', 'safari15'] }`. [Rasmiy manba](https://vite.dev/config/build-options#build-target).
 
-```tsx
-// Frontend Component Snippet #82
-import React from 'react';
-
-export default function Component82() {
-  return <div>Frontend Component #82</div>;
-}
-```
-
 ---
-
-## Q83. React & Next.js Frontend Architecture Concept #83 | React va Next.js Frontend Savoli #83
-
-**EN:** Advanced frontend scenario #83 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #83-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #83
-import React from 'react';
+## Q83. Vite: eski WebView #RGBA CSS rangini tushunmay style buzmoqda?
 
-export default function Component83() {
-  return <div>Frontend Component #83</div>;
-}
-```
+**UZB:** JavaScript targetdan mustaqil build.cssTarget qo'ying va aynan shu WebViewda visual regressionni qayta ishlating. Masalan, `build: { cssTarget: 'chrome61' }`. [Rasmiy manba](https://vite.dev/config/build-options#build-csstarget).
 
 ---
 
-## Q84. React & Next.js Frontend Architecture Concept #84 | React va Next.js Frontend Savoli #84
+## Q84. Vite: lazy route JS bilan birga uning CSS'i kech kelib qisqa FOUC paydo qilmoqda?
 
-**EN:** Advanced frontend scenario #84 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** cssCodeSplit behaviorini o'lchang; route CSS chunk preloadini saqlash yoki bitta CSS bundle trade-offini real waterfall bilan tanlang. Masalan, `build: { cssCodeSplit: false }`. [Rasmiy manba](https://vite.dev/config/build-options#build-csscodesplit).
 
-**UZB:** Frontend muhandisligi bo'yicha #84-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #84
-import React from 'react';
-
-export default function Component84() {
-  return <div>Frontend Component #84</div>;
-}
-```
-
 ---
-
-## Q85. React & Next.js Frontend Architecture Concept #85 | React va Next.js Frontend Savoli #85
 
-**EN:** Advanced frontend scenario #85 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q85. Vite: vendor chunk strategiyasi har kichik dependency update'da katta cache invalidation bermoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #85-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Output code-splitting qoidalarini import graph va change frequencyga qarab belgilang; chunklar sonini waterfall bilan solishtiring. Masalan, `build: { rolldownOptions: { output: { codeSplitting: { groups: [{ name: 'vendor', test: /node_modules/ }] } } } }`. [Rasmiy manba](https://vite.dev/guide/build#chunking-strategy).
 
-```tsx
-// Frontend Component Snippet #85
-import React from 'react';
-
-export default function Component85() {
-  return <div>Frontend Component #85</div>;
-}
-```
-
 ---
-
-## Q86. React & Next.js Frontend Architecture Concept #86 | React va Next.js Frontend Savoli #86
-
-**EN:** Advanced frontend scenario #86 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #86-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q86. Vite: kichik deb o'ylangan base64 assetlar JS/CSS hajmini kutilmaganda oshirdi?
 
-```tsx
-// Frontend Component Snippet #86
-import React from 'react';
+**UZB:** assetsInlineLimitni network va cache ehtiyojiga qarab o'lchang; Git LFS placeholder inline qilinmasligini ham tekshiring. Masalan, `build: { assetsInlineLimit: 2048 }`. [Rasmiy manba](https://vite.dev/config/build-options#build-assetsinlinelimit).
 
-export default function Component86() {
-  return <div>Frontend Component #86</div>;
-}
-```
-
 ---
-
-## Q87. React & Next.js Frontend Architecture Concept #87 | React va Next.js Frontend Savoli #87
-
-**EN:** Advanced frontend scenario #87 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #87-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #87
-import React from 'react';
+## Q87. Vite: GLTF model importi unknown file type xatosi bermoqda, ammo buildda hashed asset URL qaytishi kerak?
 
-export default function Component87() {
-  return <div>Frontend Component #87</div>;
-}
-```
+**UZB:** Custom binary extensionni static asset sifatida taniting: `assetsInclude: ['**/*.gltf']`; undan keyin `import modelUrl from './scene.gltf'` resolved URL qaytaradi va build asset pipeline uni boshqaradi. Dev va productionda URL ochilishini, fayl esa plugin transform pipeline'iga tasodifan kirmasligini tekshiring. [Rasmiy manba](https://vite.dev/config/shared-options#assetsinclude).
 
 ---
 
-## Q88. React & Next.js Frontend Architecture Concept #88 | React va Next.js Frontend Savoli #88
+## Q88. Vite: markdown page globi barcha 500 modulni initial bundlega eager qo'shmoqda?
 
-**EN:** Advanced frontend scenario #88 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Default lazy import.meta.glob mapidan foydalaning; faqat build-time metadata zarur bo'lsa query/import optionsni toraytiring. Masalan, `const pages = import.meta.glob('./pages/*.md')`. [Rasmiy manba](https://vite.dev/guide/features#glob-import).
 
-**UZB:** Frontend muhandisligi bo'yicha #88-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #88
-import React from 'react';
-
-export default function Component88() {
-  return <div>Frontend Component #88</div>;
-}
-```
-
 ---
-
-## Q89. React & Next.js Frontend Architecture Concept #89 | React va Next.js Frontend Savoli #89
-
-**EN:** Advanced frontend scenario #89 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #89-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q89. Vite: chart kutubxonasi dashboard ochilmasa ham entry chunkka kirib ketmoqda?
 
-```tsx
-// Frontend Component Snippet #89
-import React from 'react';
+**UZB:** Feature boundaryda dynamic import qiling; network failure uchun UI fallback va retry oqimini qo'shing. Masalan, `const { renderChart } = await import('./charts.js')`. [Rasmiy manba](https://vite.dev/guide/features#dynamic-import).
 
-export default function Component89() {
-  return <div>Frontend Component #89</div>;
-}
-```
-
 ---
-
-## Q90. React & Next.js Frontend Architecture Concept #90 | React va Next.js Frontend Savoli #90
-
-**EN:** Advanced frontend scenario #90 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #90-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #90
-import React from 'react';
+## Q90. Vite: worker source productionda /src yo'lidan olinib 404 bermoqda?
 
-export default function Component90() {
-  return <div>Frontend Component #90</div>;
-}
-```
+**UZB:** Statik tahlil qilinadigan new URL syntaxini worker constructor ichida ishlating va module type'ni belgilang. Masalan, `new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })`. [Rasmiy manba](https://vite.dev/guide/features#web-workers).
 
 ---
 
-## Q91. React & Next.js Frontend Architecture Concept #91 | React va Next.js Frontend Savoli #91
+## Q91. Vite: compliance tekshiruvi production bundle ichidagi dependency litsenziyalarining to'liq ro'yxatini so'ramoqda?
 
-**EN:** Advanced frontend scenario #91 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** `build: { license: true }`ni yoqing; Vite bundled dependencylar litsenziyalarini `dist/.vite/license.md` fayliga chiqaradi. CI'da fayl yaratilgani va kutilgan dependency nomi/versioni borligini tekshiring; maxsus downstream format kerak bo'lsa `license: { fileName: 'licenses.json' }` bilan JSON metadata chiqaring. [Rasmiy manba](https://vite.dev/config/build-options#build-license).
 
-**UZB:** Frontend muhandisligi bo'yicha #91-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #91
-import React from 'react';
-
-export default function Component91() {
-  return <div>Frontend Component #91</div>;
-}
-```
-
 ---
-
-## Q92. React & Next.js Frontend Architecture Concept #92 | React va Next.js Frontend Savoli #92
 
-**EN:** Advanced frontend scenario #92 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q92. Vite: SSR entry render paytida window ishlatib Node processni yiqitmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #92-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Universal moduldan browser-only side effectni ajrating yoki import.meta.env.SSR branch bilan build-time chiqarib tashlang. Masalan, `if (!import.meta.env.SSR) window.addEventListener('resize', onResize)`. [Rasmiy manba](https://vite.dev/guide/ssr#conditional-logic).
 
-```tsx
-// Frontend Component Snippet #92
-import React from 'react';
-
-export default function Component92() {
-  return <div>Frontend Component #92</div>;
-}
-```
-
 ---
-
-## Q93. React & Next.js Frontend Architecture Concept #93 | React va Next.js Frontend Savoli #93
-
-**EN:** Advanced frontend scenario #93 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #93-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q93. Vite: SSR webworker target Node built-in dependency sabab buildda ishlamayapti?
 
-```tsx
-// Frontend Component Snippet #93
-import React from 'react';
+**UZB:** Runtime targetga mos package tanlang; webworker bundle zarur bo'lsa ssr.noExternal Node built-in importlarda xato berishini acceptance'da tekshiring. Masalan, `ssr: { target: 'webworker', noExternal: true }`. [Rasmiy manba](https://vite.dev/guide/ssr#ssr-target).
 
-export default function Component93() {
-  return <div>Frontend Component #93</div>;
-}
-```
-
 ---
-
-## Q94. React & Next.js Frontend Architecture Concept #94 | React va Next.js Frontend Savoli #94
 
-**EN:** Advanced frontend scenario #94 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q94. Vite: monorepodagi kerakli shared fayl /@fs orqali 403 qaytarmoqda, lekin dev serverni butun diskka ochish mumkin emas?
 
-**UZB:** Frontend muhandisligi bo'yicha #94-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** `server.fs.strict`ni yoqilgan holda saqlang va faqat workspace root hamda kerakli shared katalogni ruxsat ro'yxatiga qo'shing: `server: { fs: { allow: [searchForWorkspaceRoot(process.cwd()), '../shared'] } }`. Ruxsat etilgan import 200, repo tashqarisidagi tasodifiy va sensitive fayl 403 bo'lishini dev-server testda tekshiring; `allow` berilganda avtomatik workspace aniqlash almashtirilishini unutmang. [Rasmiy manba](https://vite.dev/config/server-options#server-fs-allow).
 
-```tsx
-// Frontend Component Snippet #94
-import React from 'react';
-
-export default function Component94() {
-  return <div>Frontend Component #94</div>;
-}
-```
-
 ---
-
-## Q95. React & Next.js Frontend Architecture Concept #95 | React va Next.js Frontend Savoli #95
 
-**EN:** Advanced frontend scenario #95 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q95. Vite: ikki plugin bir virtual modulni transform qilib natija orderga bog'lanib qoldi?
 
-**UZB:** Frontend muhandisligi bo'yicha #95-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Plugin enforce va hook orderini aniq belgilang, configResolvedda yakuniy tartibni diagnostika qiling. Masalan, `{ name: 'schema', enforce: 'pre', transform(code, id) { /* ... */ } }`. [Rasmiy manba](https://vite.dev/guide/api-plugin#plugin-ordering).
 
-```tsx
-// Frontend Component Snippet #95
-import React from 'react';
-
-export default function Component95() {
-  return <div>Frontend Component #95</div>;
-}
-```
-
 ---
-
-## Q96. React & Next.js Frontend Architecture Concept #96 | React va Next.js Frontend Savoli #96
-
-**EN:** Advanced frontend scenario #96 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
 
-**UZB:** Frontend muhandisligi bo'yicha #96-raqamli real frontend va Next.js intervyu savoli va kodi.
+## Q96. Vite: linked monorepo paketi CommonJS dependency bilan devda resolve xatosi bermoqda?
 
-```tsx
-// Frontend Component Snippet #96
-import React from 'react';
+**UZB:** optimizeDeps.include orqali deep importni prebundle qiling; config o'zgargach cache invalidationni Vitega qoldiring. Masalan, `optimizeDeps: { include: ['linked-package > legacy-cjs'] }`. [Rasmiy manba](https://vite.dev/config/dep-optimization-options#optimizedeps-include).
 
-export default function Component96() {
-  return <div>Frontend Component #96</div>;
-}
-```
-
 ---
-
-## Q97. React & Next.js Frontend Architecture Concept #97 | React va Next.js Frontend Savoli #97
-
-**EN:** Advanced frontend scenario #97 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
-
-**UZB:** Frontend muhandisligi bo'yicha #97-raqamli real frontend va Next.js intervyu savoli va kodi.
 
-```tsx
-// Frontend Component Snippet #97
-import React from 'react';
+## Q97. Vite: monorepoda ikki resolve yo'li Reactning ikki nusxasini yuklamoqda?
 
-export default function Component97() {
-  return <div>Frontend Component #97</div>;
-}
-```
+**UZB:** resolve.dedupe bilan bitta root copyga majburlang va lockfile/import graphda sababni ham tozalang. Masalan, `resolve: { dedupe: ['react', 'react-dom'] }`. [Rasmiy manba](https://vite.dev/config/shared-options#resolve-dedupe).
 
 ---
 
-## Q98. React & Next.js Frontend Architecture Concept #98 | React va Next.js Frontend Savoli #98
+## Q98. Vite: birinchi marta katta editor route ochilganda dev transform waterfall kutdiradi?
 
-**EN:** Advanced frontend scenario #98 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Faqat tez-tez ochiladigan fayllarni server.warmupga kiriting; ortiqcha glob startupni yana sekinlashtirmasligini profile qiling. Masalan, `server: { warmup: { clientFiles: ['./src/editor/*.tsx'] } }`. [Rasmiy manba](https://vite.dev/config/server-options#server-warmup).
 
-**UZB:** Frontend muhandisligi bo'yicha #98-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #98
-import React from 'react';
-
-export default function Component98() {
-  return <div>Frontend Component #98</div>;
-}
-```
-
 ---
-
-## Q99. React & Next.js Frontend Architecture Concept #99 | React va Next.js Frontend Savoli #99
 
-**EN:** Advanced frontend scenario #99 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+## Q99. Vite: DevTools Disable cache yoqilganda Vite sahifasi juda sekin ochilmoqda?
 
-**UZB:** Frontend muhandisligi bo'yicha #99-raqamli real frontend va Next.js intervyu savoli va kodi.
+**UZB:** Toza browser profilida cache bilan qayta o'lchang; prebundled dependency hard cache va 304 response diagnostikasini buzadigan extensionlarni ajrating. Masalan, `vite --profile`. [Rasmiy manba](https://vite.dev/guide/performance#review-your-browser-setup).
 
-```tsx
-// Frontend Component Snippet #99
-import React from 'react';
-
-export default function Component99() {
-  return <div>Frontend Component #99</div>;
-}
-```
-
 ---
 
-## Q100. React & Next.js Frontend Architecture Concept #100 | React va Next.js Frontend Savoli #100
+## Q100. Vite: Express middleware mode'da custom SSR fallback bor, ammo Vite'ning SPA HTML middleware'i undan oldin requestni ushlab qolmoqda?
 
-**EN:** Advanced frontend scenario #100 covering Web Vitals, dynamic routing, Code Splitting, Suspense streaming, and SEO optimization.
+**UZB:** Vite configda `appType: 'custom'` belgilang — bu built-in HTML middleware'larni qo'shmaydi. Expressda asset va SSR routing tartibini o'zingiz boshqaring, HTMLni response qilishdan oldin developmentda `vite.transformIndexHtml(url, template)`dan o'tkazing. Asset, SSR route va 404 uchun precedence integration test yozing. [Vite app type](https://vite.dev/config/shared-options#apptype), [Vite SSR middleware](https://vite.dev/guide/ssr#setting-up-the-dev-server).
 
-**UZB:** Frontend muhandisligi bo'yicha #100-raqamli real frontend va Next.js intervyu savoli va kodi.
-
-```tsx
-// Frontend Component Snippet #100
-import React from 'react';
-
-export default function Component100() {
-  return <div>Frontend Component #100</div>;
-}
-```
+---

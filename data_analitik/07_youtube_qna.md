@@ -147,6 +147,8 @@ Zamonaviy Excel 365'da xuddi shu natijani ikki o'lchamli `XLOOKUP` bilan ham oli
 **Jadval taxminan:** `A` — Ism, `B` — Bo'lim, `C` — Eski maosh (Salary), `D` — Yangi maosh.
 
 ### Q1. Har bir xodim uchun yangi maoshni hisoblash — 1:01
+Avval foiz katakchasini mutlaq murojaat bilan qotiring, so'ng formula nusxalanganda bir nechta nazorat qatorini tekshiring. Masalan, `=C2*(1+$G$1)` eski maoshni `$G$1`dagi oshirish foizi bilan hisoblaydi. [Microsoft Support: formulalarni nusxalash va murojaatlar](https://support.microsoft.com/en-us/office/switch-between-relative-absolute-and-mixed-references-dfec08cd-ae65-4f56-839e-5f0d8d0baca9).
+
 **Savol:** Masalan, barcha xodimlarga 10% oshirim (zam) qo'shilsa, yangi maoshni qanday hisoblash mumkin?
 ```excel
 =C2*1.1
@@ -583,6 +585,8 @@ Yoki `Paste Special → Multiply`: alohida katakchada `1.1` yozib nusxalanadi, s
 > **Jadval taxminan:** `Sales Data` varag'ida — `A` Customer ID, `B` Mijoz nomi (bo'sh, VLOOKUP bilan to'ldiriladi), `C` Hudud (Region), `D` Toifa (Category), `E` Sotuv hajmi, `F` Target. `Customer Detail` varag'ida — `A` Customer ID, `B` Mijoz nomi.
 
 ### Q1. Mijoz nomini olish (VLOOKUP) — 6:21
+Qidiruv ustuni diapazonning birinchi ustuni ekanini va aniq moslik kerakligini tekshiring. Masalan, `=VLOOKUP(A2,'Customer Detail'!A:B,2,FALSE)` ID bo'yicha nomni qaytaradi; topilmagan ID va takroriy IDni alohida test qiling. [Microsoft Support: VLOOKUP](https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1).
+
 **Savol:** Customer ID yordamida Customer Detail varag'idan mijoz nomini Sales Data varag'iga qanday ko'chirish mumkin?
 ```excel
 =VLOOKUP(A2, 'Customer Detail'!A:B, 2, FALSE)
@@ -590,10 +594,14 @@ Yoki `Paste Special → Multiply`: alohida katakchada `1.1` yozib nusxalanadi, s
 `A2` — Sales Data varag'idagi Customer ID; `'Customer Detail'!A:B` — qidiriladigan jadval (birinchi ustunda ID bo'lishi shart); `2` — mijoz nomi joylashgan ustun raqami; `FALSE` — aniq moslik. Boshqa varaqqa ishora qilganda varaq nomi apostrof (`'...'`) bilan yoziladi.
 
 ### Q2. Savdo hajmini tahlil qilish (Pivot Table) — 10:51
+Manba ustunlarining turi va bo'sh qiymatlarini tekshirib, PivotTable'da `Region`ni Rows, `Category`ni Columns, sotuvni Values/Sum maydoniga qo'ying. Masalan, natija grand total bilan mosligini `=SUM(E:E)` orqali tekshiring va refreshdan keyin qayta solishtiring. [Microsoft Support: PivotTable yaratish](https://support.microsoft.com/en-us/office/create-a-pivottable-to-analyze-worksheet-data-a9a84538-bfe9-40a9-a8e9-f99134456576).
+
 **Savol:** Hudud (Region) va toifa (Category) bo'yicha umumiy sotuv hajmini qanday ko'rsatish mumkin?
 `Insert → PivotTable` — `Region` maydonini **Rows**'ga, `Category` maydonini **Columns**'ga, `Sotuv hajmi` ustunini **Values** maydoniga (`Sum of Sotuv hajmi`) sudrab tashlash. Natijada har bir hudud-toifa kesishmasida umumiy sotuv summasi jadval ko'rinishida chiqadi (cross-tab).
 
 ### Q3. Shartli formatlash: Target bilan solishtirish — 16:22
+Qoida diapazonining birinchi qatoriga nisbiy formula yozing va Applies to oralig'ini tekshiring. Masalan, `=E2<F2` qizil, `=E2>=F2` yashil qoida bo'ladi; bo'sh va xato qiymatlar uchun alohida test qatori qo'shing. [Microsoft Support: conditional formatting](https://support.microsoft.com/en-us/office/use-conditional-formatting-to-highlight-information-in-excel-fed60dfa-1d3f-4e13-9ecb-f1951ff89d7f).
+
 **Savol:** Sotuv hajmi maqsadli ko'rsatkichdan (Target) kam bo'lsa qizil, teng yoki yuqori bo'lsa yashil rangda qanday belgilash mumkin?
 Sotuv hajmi ustunini (`E2:E100`) tanlab, `Home → Conditional Formatting → New Rule → Use a formula to determine which cells to format`:
 ```excel
@@ -603,6 +611,8 @@ Sotuv hajmi ustunini (`E2:E100`) tanlab, `Home → Conditional Formatting → Ne
 Ikkala qoida ham alohida yaratiladi va har biriga mos fon rangi (Format → Fill) tanlanadi — nisbiy murojaat (`E2`, `F2`, `$` siz) tufayli qoida butun ustunga to'g'ri tarqaladi.
 
 ### Q4. Ish faoliyatini baholash (IF) — 20:40
+Natija chegarasini biznes qoidasi bilan aniqlab, tenglik holatini ham test qiling. Masalan, `=IF(E2>=F2,"achieve","not achieve")` targetga teng qiymatni muvaffaqiyat deb oladi; formula fill-down qilinganda murojaatlar siljishini tekshiring. [Microsoft Support: IF](https://support.microsoft.com/en-us/office/if-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2).
+
 **Savol:** Sotuv ko'rsatkichiga qarab "erishildi" (achieve) yoki "erishilmadi" (not achieve) natijasini ko'rsatadigan yangi ustun qanday yaratiladi?
 ```excel
 =IF(E2>=F2, "achieve", "not achieve")
@@ -610,6 +620,8 @@ Ikkala qoida ham alohida yaratiladi va har biriga mos fon rangi (Format → Fill
 Sotuv hajmi (`E2`) target (`F2`)ga teng yoki undan yuqori bo'lsa — "achieve", aks holda — "not achieve" qaytariladi. Bu ustun keyinchalik Pivot Table yoki `COUNTIF`da (masalan nechta xodim/mintaqa targetga erishgani) ishlatilishi mumkin.
 
 ### Q5. Ma'lumotlarni tozalash (Power Query) — 23:19
+Transformatsiyani qayta bajariladigan qadamlar sifatida tuzing: data type, Trim/Clean va kerakli kalitlar bo'yicha duplicate removal. Masalan, `Table.Distinct(Table.TransformColumns(Source, {{"Name", Text.Trim}}), {"Customer ID"})` ishlating; duplicate tanlash tartibiga suyanmang va refresh natijasini row count bilan tekshiring. [Microsoft Learn: duplicate qiymatlar](https://learn.microsoft.com/en-us/power-query/working-with-duplicates) va [best practices](https://learn.microsoft.com/en-us/power-query/best-practices).
+
 **Savol:** Tartibsiz ma'lumotlarni (dublikatlar, ortiqcha bo'shliqlar, noto'g'ri ma'lumot turlari) Power Query yordamida qanday tozalash mumkin?
 1. `Data → Get & Transform → From Table/Range` — manba jadval Power Query Editor'ga yuklanadi.
 2. **Dublikatlarni o'chirish:** kerakli ustun(lar)ni tanlab, `Home → Remove Rows → Remove Duplicates`.

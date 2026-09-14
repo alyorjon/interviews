@@ -1,0 +1,23 @@
+{
+  "name": "interviews-study-portal",
+  "private": true,
+  "type": "module",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "build": "npm run build --workspace @interviews/content && npm run build --workspace @interviews/api && npm run build --workspace @interviews/web",
+    "test": "npm run test:node && npm run test:web",
+    "test:node": "tsx --test",
+    "test:web": "npm run test --workspace @interviews/web",
+    "content:audit": "npm run audit --workspace @interviews/content"
+  },
+  "overrides": {
+    "@nestjs/platform-express": {
+      "multer": "2.3.0"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

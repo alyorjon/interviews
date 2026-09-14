@@ -767,6 +767,10 @@ EXPLAIN ANALYZE SELECT * FROM employees WHERE department_id = 5 AND salary > 300
 
 ## Q8. What is ACID compliance in SQL Databases? | SQL ma'lumotlar bazasida ACID nima?
 
+**EN:** ACID means Atomicity, Consistency, Isolation, and Durability. Wrap the whole business change in one transaction, enforce invariants with constraints, choose an isolation level for the anomaly you must prevent, and commit only after every statement succeeds.
+
+**UZB:** ACID — Atomicity, Consistency, Isolation va Durability. Masalan, pul o'tkazishda debit va creditni bitta `BEGIN; ... COMMIT;` ichida bajaring; xatoda `ROLLBACK` qiling, constraintlarni database'da saqlang va concurrent transaction testini yozing. [PostgreSQL: Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html) va [Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html).
+
 ---
 
 ## Q9. What are SQL Joins (INNER, LEFT, RIGHT, FULL OUTER, CROSS, SELF)? | SQL Join turlari

@@ -1,0 +1,1921 @@
+{
+  "generatedAt": "2026-09-12T14:44:19.398Z",
+  "pageCount": 55,
+  "questionCount": 2419,
+  "deduplicatedQuestionCount": 2339,
+  "duplicateCount": 80,
+  "nearDuplicateCount": 4015,
+  "questionsNeedingSource": 0,
+  "pages": [
+    {
+      "sourcePath": "ai_engineering/basics.md",
+      "slug": "ai-engineering-basics",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "business_analyst_skills.md",
+      "slug": "business-analyst-skills",
+      "extractedQuestionCount": 0,
+      "canonicalQuestionCount": 0,
+      "contentScore": {
+        "score": 5,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 4,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 5,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/01_excel_basics.md",
+      "slug": "data-analitik-01-excel-basics",
+      "extractedQuestionCount": 0,
+      "canonicalQuestionCount": 0,
+      "contentScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/02_spreadsheet_basics.md",
+      "slug": "data-analitik-02-spreadsheet-basics",
+      "extractedQuestionCount": 104,
+      "canonicalQuestionCount": 104,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "104 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "104 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/03_data_analyst_masterclass.md",
+      "slug": "data-analitik-03-data-analyst-masterclass",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/04_interview_challenges.md",
+      "slug": "data-analitik-04-interview-challenges",
+      "extractedQuestionCount": 9,
+      "canonicalQuestionCount": 9,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "9 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "9 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/05_data_analyst_2026_interviews.md",
+      "slug": "data-analitik-05-data-analyst-2026-interviews",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/06_uzbekiston_2026_real_interviews.md",
+      "slug": "data-analitik-06-uzbekiston-2026-real-interviews",
+      "extractedQuestionCount": 90,
+      "canonicalQuestionCount": 90,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "90 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "90 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/07_youtube_qna.md",
+      "slug": "data-analitik-07-youtube-qna",
+      "extractedQuestionCount": 129,
+      "canonicalQuestionCount": 129,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "129 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "129 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/08_macros_guide.md",
+      "slug": "data-analitik-08-macros-guide",
+      "extractedQuestionCount": 1,
+      "canonicalQuestionCount": 1,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "1 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "1 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/09_macros_quiz.md",
+      "slug": "data-analitik-09-macros-quiz",
+      "extractedQuestionCount": 0,
+      "canonicalQuestionCount": 0,
+      "contentScore": {
+        "score": 5,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 4,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 5,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/10_excel_quiz.md",
+      "slug": "data-analitik-10-excel-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "data_analitik/11_spreadsheet_quiz.md",
+      "slug": "data-analitik-11-spreadsheet-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "docker/basics.md",
+      "slug": "docker-basics",
+      "extractedQuestionCount": 55,
+      "canonicalQuestionCount": 55,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "55 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "55 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "docker/quiz.md",
+      "slug": "docker-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "dsa.md",
+      "slug": "dsa",
+      "extractedQuestionCount": 76,
+      "canonicalQuestionCount": 76,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "76 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "76 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "github/basics.md",
+      "slug": "github-basics",
+      "extractedQuestionCount": 64,
+      "canonicalQuestionCount": 64,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "64 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "64 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "github/quiz.md",
+      "slug": "github-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "javascript/backend_node.md",
+      "slug": "javascript-backend-node",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "javascript/basic_syntax.md",
+      "slug": "javascript-basic-syntax",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "javascript/basics.md",
+      "slug": "javascript-basics",
+      "extractedQuestionCount": 1,
+      "canonicalQuestionCount": 1,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "1 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "1 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "javascript/frontend_react_next.md",
+      "slug": "javascript-frontend-react-next",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "javascript/leetcode_codewars.md",
+      "slug": "javascript-leetcode-codewars",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 21,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "javascript/quiz.md",
+      "slug": "javascript-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "mind/basics.md",
+      "slug": "mind-basics",
+      "extractedQuestionCount": 49,
+      "canonicalQuestionCount": 49,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "49 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "49 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "mind/quiz.md",
+      "slug": "mind-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "odoo/basics.md",
+      "slug": "odoo-basics",
+      "extractedQuestionCount": 115,
+      "canonicalQuestionCount": 115,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "115 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "115 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "odoo/developer.md",
+      "slug": "odoo-developer",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "odoo/functional_admin.md",
+      "slug": "odoo-functional-admin",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "odoo/quiz.md",
+      "slug": "odoo-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "practical/fastapi.md",
+      "slug": "practical-fastapi",
+      "extractedQuestionCount": 20,
+      "canonicalQuestionCount": 20,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "practical/javascript.md",
+      "slug": "practical-javascript",
+      "extractedQuestionCount": 20,
+      "canonicalQuestionCount": 20,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "practical/nestjs.md",
+      "slug": "practical-nestjs",
+      "extractedQuestionCount": 20,
+      "canonicalQuestionCount": 20,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "practical/nextjs.md",
+      "slug": "practical-nextjs",
+      "extractedQuestionCount": 20,
+      "canonicalQuestionCount": 20,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "practical/postgresql.md",
+      "slug": "practical-postgresql",
+      "extractedQuestionCount": 20,
+      "canonicalQuestionCount": 20,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "practical/python.md",
+      "slug": "practical-python",
+      "extractedQuestionCount": 20,
+      "canonicalQuestionCount": 20,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "practical/react.md",
+      "slug": "practical-react",
+      "extractedQuestionCount": 20,
+      "canonicalQuestionCount": 20,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "practical/vite.md",
+      "slug": "practical-vite",
+      "extractedQuestionCount": 20,
+      "canonicalQuestionCount": 20,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "20 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "python/basics.md",
+      "slug": "python-basics",
+      "extractedQuestionCount": 15,
+      "canonicalQuestionCount": 15,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "15 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "15 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "python/fastapi_youtube_qna.md",
+      "slug": "python-fastapi-youtube-qna",
+      "extractedQuestionCount": 0,
+      "canonicalQuestionCount": 0,
+      "contentScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "python/oop.md",
+      "slug": "python-oop",
+      "extractedQuestionCount": 96,
+      "canonicalQuestionCount": 95,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "96 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "96 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "python/quiz.md",
+      "slug": "python-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "python/restfullapi.md",
+      "slug": "python-restfullapi",
+      "extractedQuestionCount": 98,
+      "canonicalQuestionCount": 98,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "98 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "98 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "python/youtube_qna.md",
+      "slug": "python-youtube-qna",
+      "extractedQuestionCount": 0,
+      "canonicalQuestionCount": 0,
+      "contentScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 5,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "resume_maslahatlari.md",
+      "slug": "resume-maslahatlari",
+      "extractedQuestionCount": 1,
+      "canonicalQuestionCount": 1,
+      "contentScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "1 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "1 ta savol kartasi ajratildi",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "sap/basics.md",
+      "slug": "sap-basics",
+      "extractedQuestionCount": 1,
+      "canonicalQuestionCount": 1,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "1 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "1 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "sap/quiz.md",
+      "slug": "sap-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "sap/youtube_qna.md",
+      "slug": "sap-youtube-qna",
+      "extractedQuestionCount": 0,
+      "canonicalQuestionCount": 0,
+      "contentScore": {
+        "score": 5,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 4,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 5,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "sql/BASICS.md",
+      "slug": "sql-basics",
+      "extractedQuestionCount": 11,
+      "canonicalQuestionCount": 11,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "11 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "11 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "sql/postgresql_interviews.md",
+      "slug": "sql-postgresql-interviews",
+      "extractedQuestionCount": 0,
+      "canonicalQuestionCount": 0,
+      "contentScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "sql/practice_problems.md",
+      "slug": "sql-practice-problems",
+      "extractedQuestionCount": 14,
+      "canonicalQuestionCount": 14,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "14 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "14 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "sql/quiz.md",
+      "slug": "sql-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "sql/youtube_qna.md",
+      "slug": "sql-youtube-qna",
+      "extractedQuestionCount": 0,
+      "canonicalQuestionCount": 0,
+      "contentScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 6,
+        "label": "rivojlanmoqda",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "system_design_quiz.md",
+      "slug": "system-design-quiz",
+      "extractedQuestionCount": 30,
+      "canonicalQuestionCount": 30,
+      "contentScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 7,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "30 ta savol kartasi ajratildi",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    },
+    {
+      "sourcePath": "system_design.md",
+      "slug": "system-design",
+      "extractedQuestionCount": 100,
+      "canonicalQuestionCount": 100,
+      "contentScore": {
+        "score": 10,
+        "label": "kuchli",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "kartalar o'rtacha yetuk darajada"
+        ]
+      },
+      "designReadinessScore": {
+        "score": 8,
+        "label": "yetuk",
+        "reasons": [
+          "o'qish uchun yetarli hajm bor",
+          "100 ta savol kartasi ajratildi",
+          "kod yoki amaliy blok bor",
+          "tuzilgan jadval bor",
+          "sarlavha iyerarxiyasi bor",
+          "mobil o'qish uchun uzun yoki HTML blok audit talab qiladi"
+        ]
+      },
+      "overallScore": {
+        "score": 9,
+        "label": "kuchli",
+        "reasons": [
+          "kontent va dizayn tayyorligi o'rtachasi"
+        ]
+      }
+    }
+  ]
+}
