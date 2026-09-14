@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-09-12T20:12:53+05:00",
+  "build": "65072bc",
+  "productionUrl": "https://interviews.4ontak.uz",
+  "catalog": { "pages": 55, "extractedQuestions": 2419, "canonicalQuestions": 2339, "exactDuplicates": 80, "nearAuditPairs": 4015, "needsSource": 0 },
+  "chrome": {
+    "desktop": { "viewport": "1440x1000", "testedPages": 55, "passedPages": 55, "renderedCards": 2339, "overflowFailures": 0 },
+    "mobile": { "viewport": "360x800", "testedPages": 55, "passedPages": 55, "renderedCards": 2339, "overflowFailures": 0 },
+    "console": { "errors": 0, "warnings": 0 },
+    "interactions": { "answerReveal": "PASS", "confidence1to10": "PASS", "confidenceReloadPersistence": "PASS", "theme": "PASS", "search": "PASS", "topicFilter": "PASS", "difficultyFilter": "PASS", "mobileDrawerFocusTrap": "PASS", "mobileDrawerEscapeRestore": "PASS" }
+  },
+  "production": { "rootStatus": 200, "deepLinkStatus": 200, "unauthenticatedCatalogStatus": 401, "dockerHealthy": true, "authBypass": false },
+  "practicalContent": { "domains": 8, "newCardsPerDomain": 20, "newCards": 160, "rewrittenFrontendCards": 90, "totalPracticalImprovements": 250 }
+}
