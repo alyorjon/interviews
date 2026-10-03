@@ -1,20 +1,4 @@
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 -c \"import sys,json,subprocess; d=json.load(sys.stdin); fp=(d.get('tool_input') or {}).get('file_path',''); subprocess.run(['python3','scripts/build_index.py'], cwd=r'd:\\pythons\\interviews') if fp.endswith('.md') else None\"",
-            "shell": "bash",
-            "timeout": 30,
-            "statusMessage": "Syncing index.html with markdown changes..."
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(python -c ' *)"

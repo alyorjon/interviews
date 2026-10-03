@@ -1,24 +1,31 @@
-import { Controller, Get, type Type } from "@nestjs/common";
+import { Controller, Get, Inject, ServiceUnavailableException } from "@nestjs/common";
 
-import { TelegramBotService } from "./telegram-bot.service.js";
+import { PROGRESS_STORE, type ProgressStore } from "./progress.store.js";
+import { type BotStatus, TelegramBotService } from "./telegram-bot.service.js";
 
 export interface HealthResponse {
   status: "ok";
   service: "interviews-api";
-  bot: { status: ReturnType<TelegramBotService["getStatus"]> };
+  bot: { status: BotStatus };
 }
 
-export function makeHealthController(bot: TelegramBotService): Type<unknown> {
-  class HealthController {
-    health(): HealthResponse {
-      return {
-        status: "ok",
-        service: "interviews-api",
-        bot: { status: bot.getStatus() },
-      };
-    }
+@Controller("health")
+export class HealthController {
+  constructor(
+    @Inject(TelegramBotService) private readonly bot: TelegramBotService,
+    @Inject(PROGRESS_STORE) private readonly store: ProgressStore,
+  ) {}
+
+  /** Liveness: the process is up. Never depends on external services. */
+  @Get()
+  health(): HealthResponse {
+    return { status: "ok", service: "interviews-api", bot: { status: this.bot.getStatus() } };
   }
-  Controller("health")(HealthController);
-  Get()(HealthController.prototype, "health", Object.getOwnPropertyDescriptor(HealthController.prototype, "health")!);
-  return HealthController;
+
+  /** Readiness: a load balancer should only route here when storage answers. */
+  @Get("ready")
+  async ready(): Promise<{ status: "ready" }> {
+    if (!await this.store.ping()) throw new ServiceUnavailableException("progress store unavailable");
+    return { status: "ready" };
+  }
 }

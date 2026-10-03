@@ -25,5 +25,6 @@ structure and depth rather than introducing a new format. Prefer expanding an ex
 creating a new file — see README.md's principle of linking to "the deepest and most current material"
 instead of duplicating shallow copies across files.
 
-A PostToolUse hook already regenerates `index.html` automatically after any `.md` edit — you don't need
-to run the build script yourself unless you want to double-check it.
+Run `npm run content:audit` after editing to confirm the questions parse. Never write placeholder or
+templated filler questions — a regression test fails on them — and verify version facts against
+primary sources.

@@ -1,3 +1,5 @@
+# Single-host setup: one API container + Redis. For horizontal scaling see
+# docs/operations/scaling.md (N API replicas behind a load balancer, BOT_MODE=webhook).
 services:
   app:
     build:
@@ -11,12 +13,20 @@ services:
       - "127.0.0.1:4173:4173"
     environment:
       BOT_TOKEN: "${BOT_TOKEN:-}"
+      BOT_MODE: "${BOT_MODE:-polling}"
+      TELEGRAM_WEBHOOK_SECRET: "${TELEGRAM_WEBHOOK_SECRET:-}"
+      ALLOWED_TELEGRAM_USER_IDS: "${ALLOWED_TELEGRAM_USER_IDS:-}"
       ALLOWED_TELEGRAM_USER_ID: "${ALLOWED_TELEGRAM_USER_ID:-}"
+      ADMIN_TELEGRAM_USER_ID: "${ADMIN_TELEGRAM_USER_ID:-}"
       PUBLIC_URL: "${PUBLIC_URL:-}"
       PUBLIC_HOSTNAME: "${PUBLIC_HOSTNAME:-}"
-      AUTH_BYPASS: "${AUTH_BYPASS:-false}"
+      AUTH_BYPASS: "false"
+      REDIS_URL: "redis://redis:6379"
+    depends_on:
+      redis:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4173/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4173/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
       interval: 20s
       timeout: 5s
       start_period: 20s
@@ -25,3 +35,21 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
+
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    # Append-only file with fsync every second: at most ~1s of ratings lost on a crash.
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  redis-data:

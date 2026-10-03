@@ -1,27 +1,21 @@
-# 100 OOP Interview Questions & Answers | Savol va Javoblar
-### English + O'zbek | Python Examples
+# OOP intervyu savollari va javoblari / OOP Interview Questions
+### English + O'zbek | Python misollari bilan
+
+> **Nima bu:** obyektga yo'naltirilgan dasturlash tushunchalari — klass, meros, polimorfizm, SOLID va dizayn naqshlari — Python misollari bilan. C++/Java'ga xos tushunchalar (friend, virtual destruktor, vtable) ham so'raladi, shuning uchun ularning Python'dagi ekvivalenti tushuntirilgan.  
+> **Takrorlanmasligi uchun:** obyektni nusxalash (shallow/deep copy) va `enum` — `python/basics.md` da; CQRS va Event Sourcing — `python/basics.md` va `system_design.md` da.  
+> **Har bir javob tartibi:** oddiy tilda → batafsilroq (EN/UZ va kod) → intervyuda qanday aytasiz.
 
 ---
 
-## 📌 Table of Contents | Mundarija
-
-1. [Core Concepts | Asosiy Tushunchalar (1–12)](#1-core-concepts--asosiy-tushunchalar)
-2. [Keywords & Methods | Kalit So'zlar (13–16)](#2-keywords--methods--kalit-sozlar)
-3. [Inheritance & Relations | Meros va Munosabatlar (17–28)](#3-inheritance--relations--meros-va-munosabatlar)
-4. [Object Patterns | Obyekt Patternlari (29–36)](#4-object-patterns--obyekt-patternlari)
-5. [Advanced OOP | Ilg'or OOP (37–60)](#5-advanced-oop--ilgor-oop)
-6. [Binding & Casting | Bog'lash va Konvertatsiya (61–78)](#6-binding--casting--boglash-va-konvertatsiya)
-7. [SOLID Principles | SOLID Tamoyillar (79–82)](#7-solid-principles--solid-tamoyillar)
-8. [Design Patterns | Dizayn Patternlar (83–94)](#8-design-patterns--dizayn-patternlar)
-9. [Other Concepts | Boshqa Tushunchalar (95–100)](#9-other-concepts--boshqa-tushunchalar)
+# 🔹 Core Concepts | Asosiy Tushunchalar
 
 ---
 
-## 1. Core Concepts | Asosiy Tushunchalar
+## Q1. What is OOP? | OOP nima?
 
----
+**Oddiy qilib aytganda:** OOP — dasturni 'obyektlar' atrofida qurish: har obyekt o'z ma'lumotini (atributlar) va bu ma'lumot bilan ishlaydigan amallarni (metodlar) birga saqlaydi. Masalan, `BankAccount` obyektida balans ham, `deposit()` va `withdraw()` ham bor.
 
-### 1. What is OOP? | OOP nima?
+**Batafsilroq:**
 
 **EN:** A programming paradigm based on **objects** and **classes** that models real-world entities.
 
@@ -45,9 +39,15 @@ car = Car("Tesla", 200)
 car.drive()  # Tesla is driving at 200 km/h
 ```
 
+**Intervyuda shunday ayting:** "OOP ma'lumot va xulqni birga inkapsulatsiya qiladi va murakkablikni aniq interfeysli obyektlarga bo'ladi. Python ko'p paradigmali: OOP'ni holat va xulq birga bo'lganda ishlataman, oddiy transformatsiyalar uchun esa funksiyalar yetarli."
+
 ---
 
-### 2. What are the four pillars of OOP? | OOP ning to'rt ustuni nima?
+## Q2. What are the four pillars of OOP? | OOP ning to'rt ustuni nima?
+
+**Oddiy qilib aytganda:** OOP'ning to'rt ustuni: **inkapsulatsiya** — ichki tafsilotlarni yashirish; **meros** — mavjud klassdan yangisini qurish; **polimorfizm** — bitta buyruq turli obyektlarda turlicha ishlashi; **abstraksiya** — faqat muhim narsani ko'rsatish.
+
+**Batafsilroq:**
 
 **EN:** **Encapsulation, Inheritance, Polymorphism, Abstraction.**
 
@@ -85,9 +85,15 @@ for a in animals:
 # Whiskers says: Meow!
 ```
 
+**Intervyuda shunday ayting:** "Inkapsulatsiya holatni himoya qiladi, abstraksiya murakkablikni yashiradi, polimorfizm bir xil interfeys orqali turli implementatsiyalarni ishlatishga imkon beradi, meros kodni qayta ishlatadi. Amalda merosdan ko'ra kompozitsiyani afzal ko'raman."
+
 ---
 
-### 3. What is a class? | Klass nima?
+## Q3. What is a class? | Klass nima?
+
+**Oddiy qilib aytganda:** Klass — chizma (qolip): 'mashinaning rangi, modeli bo'ladi va u yura oladi' deb tasvirlaydi. Undan yaratilgan har bir aniq mashina — obyekt.
+
+**Batafsilroq:**
 
 **EN:** A **blueprint** for creating objects — defines attributes and methods.
 
@@ -119,9 +125,15 @@ print(p2.greet())          # Hi, I'm Jasur, age 30
 print(Person.species)      # Homo sapiens
 ```
 
+**Intervyuda shunday ayting:** "Klass — atributlar va metodlar shabloni hamda o'zi ham obyekt (`type` nusxasi). Klass atributlari barcha nusxalar uchun umumiy, nusxa atributlari — har biriga alohida; o'zgaruvchan klass atributi (ro'yxat) klassik tuzoq."
+
 ---
 
-### 4. What is an object? | Obyekt nima?
+## Q4. What is an object? | Obyekt nima?
+
+**Oddiy qilib aytganda:** Obyekt — klassdan yaratilgan aniq narsa: `car = Car("qizil")`. Bir klassdan ko'p obyekt yaratish mumkin, har biri o'z ma'lumotiga ega.
+
+**Batafsilroq:**
 
 **EN:** An **instance** of a class — a concrete entity created from a blueprint.
 
@@ -151,9 +163,15 @@ print(book2.read(100))  # Read to page 100/352
 print(book1.current_page)  # 50  — mustaqil holat
 ```
 
+**Intervyuda shunday ayting:** "Obyekt — identifikator (`id`), tur va holatga ega. Python'da hamma narsa obyekt: sonlar, funksiyalar, klasslar va modullar ham. Shuning uchun funksiyalarni argument sifatida uzatish va klasslarni runtime'da yaratish mumkin."
+
 ---
 
-### 5. What is encapsulation? | Inkapsulatsiya nima?
+## Q5. What is encapsulation? | Inkapsulatsiya nima?
+
+**Oddiy qilib aytganda:** Inkapsulatsiya — obyektning ichki tafsilotlarini yashirib, tashqariga faqat xavfsiz 'tugmalar' berish. Bank hisobida balansni to'g'ridan-to'g'ri o'zgartirib bo'lmaydi — faqat `deposit()` va `withdraw()` orqali, ular esa qoidalarni tekshiradi.
+
+**Batafsilroq:**
 
 **EN:** Bundling **data and methods** into a single unit and **restricting direct access** to internal state.
 
@@ -192,9 +210,15 @@ print(acc.balance)       # 1500000
 # acc.__balance          # AttributeError! — encapsulation ishlayapti
 ```
 
+**Intervyuda shunday ayting:** "Python'da qat'iy `private` yo'q: `_name` — kelishuv bo'yicha ichki, `__name` — nom o'zgartirish (name mangling), asosan meros to'qnashuvlaridan himoya. Haqiqiy inkapsulatsiya — invariantlarni metodlar va `property` orqali saqlash."
+
 ---
 
-### 6. What is inheritance? | Meros olish nima?
+## Q6. What is inheritance? | Meros olish nima?
+
+**Oddiy qilib aytganda:** Meros — yangi klass mavjud klassning hamma narsasini oladi va o'zinikini qo'shadi yoki o'zgartiradi. `ElectricCar` `Car` dan meros oladi: yura oladi, qo'shimchasiga zaryadlanadi.
+
+**Batafsilroq:**
 
 **EN:** A mechanism where one class **acquires properties and behavior** from another class.
 
@@ -234,9 +258,15 @@ print(tesla.honk())         # Tesla: Beep beep!        (Car dan)
 print(tesla.charge_info())  # Battery: 100 kWh         (ElectricCar dan)
 ```
 
+**Intervyuda shunday ayting:** "Meros 'is-a' munosabati uchun — bola klass otaning o'rnida muammosiz ishlay olishi kerak (Liskov tamoyili). Chuqur ierarxiyalardan qochaman: ular mo'rt va tushunish qiyin. Xulqni qayta ishlatish uchun ko'pincha kompozitsiya yaxshiroq."
+
 ---
 
-### 7. What is polymorphism? | Polimorfizm nima?
+## Q7. What is polymorphism? | Polimorfizm nima?
+
+**Oddiy qilib aytganda:** Polimorfizm — bitta buyruq turli obyektlarda o'z usulida bajariladi. `shape.area()` doira uchun πr², kvadrat uchun a² hisoblaydi — chaqiruvchi qaysi shakl ekanini bilishi shart emas.
+
+**Batafsilroq:**
 
 **EN:** The ability to take **many forms** — one interface behaves differently based on the object.
 
@@ -285,9 +315,15 @@ for shape in shapes:
 # Triangle: area = 12.00
 ```
 
+**Intervyuda shunday ayting:** "Python'da polimorfizm duck typing orqali ishlaydi: kerakli metodi bor har qanday obyekt mos keladi, meros shart emas. Statik tekshiruv uchun `Protocol` bilan ifodalayman. `if isinstance(...)` zanjirlari o'rniga polimorfizm — yangi tur qo'shilganda eski kod o'zgarmaydi."
+
 ---
 
-### 8. What is abstraction? | Abstraktsiya nima?
+## Q8. What is abstraction? | Abstraktsiya nima?
+
+**Oddiy qilib aytganda:** Abstraksiya — murakkablikni yashirib, faqat kerakli narsani ko'rsatish. Mashina haydovchisi rul va pedalni biladi, dvigatel ichidagi jarayonlarni bilishi shart emas.
+
+**Batafsilroq:**
 
 **EN:** **Hiding complex implementation details** and showing only the essential features to the user.
 
@@ -331,9 +367,15 @@ print(stripe.process_payment(99.99))
 # Success | Muvaffaqiyatli
 ```
 
+**Intervyuda shunday ayting:** "Abstraksiya — to'g'ri interfeys tanlash: nima qilinishini ko'rsatish, qanday qilinishini yashirish. Python'da ABC yoki Protocol bilan ifodalanadi. Yomon abstraksiya (hamma narsani qamraydigan 'universal' klass) yaxshisidan ko'ra ko'proq zarar keltiradi."
+
 ---
 
-### 9. What is method overloading? | Metod yuklash nima?
+## Q9. What is method overloading? | Metod yuklash nima?
+
+**Oddiy qilib aytganda:** Metod yuklash (overloading) — bir nomli metodning turli parametrlar bilan bir necha versiyasi (Java/C++ da). Python'da bitta nomda faqat oxirgi ta'rif qoladi, shuning uchun buning o'rniga standart qiymatli parametrlar yoki tur bo'yicha tarqatish ishlatiladi.
+
+**Batafsilroq:**
 
 **EN:** Multiple methods with the **same name but different parameters** in the same class. Python simulates this with default args or `*args`.
 
@@ -364,9 +406,15 @@ print(calc.add(5, 3, 2))    # 10  — uch argument
 print(calc.multiply(2, 3, 4))  # 24
 ```
 
+**Intervyuda shunday ayting:** "Python'da klassik overloading yo'q. O'rniga: standart qiymatlar, `*args/**kwargs`, `functools.singledispatch`/`singledispatchmethod` (tur bo'yicha) va faqat type checker uchun `typing.overload`. Ko'pincha eng tozasi — aniq nomli alohida metodlar (`from_json`, `from_row`)."
+
 ---
 
-### 10. What is method overriding? | Metodni qayta yozish nima?
+## Q10. What is method overriding? | Metodni qayta yozish nima?
+
+**Oddiy qilib aytganda:** Metodni qayta yozish (overriding) — bola klass ota klassdagi metodni o'z versiyasi bilan almashtiradi. `Animal.speak()` umumiy, `Dog.speak()` esa "Vov!" qaytaradi.
+
+**Batafsilroq:**
 
 **EN:** A **subclass redefines** a method inherited from its superclass to provide specific behavior.
 
@@ -404,9 +452,15 @@ for n in notifications:
     print(n.send("Order confirmed | Buyurtma tasdiqlandi"))
 ```
 
+**Intervyuda shunday ayting:** "Override'da ota xulqini kengaytirish kerak bo'lsa `super().method()` ni chaqiraman. Python 3.12+ da `@typing.override` decorator'i bor — ota metod nomi o'zgarsa, type checker xato beradi. Override qilingan metod ota kontraktini buzmasligi kerak (LSP)."
+
 ---
 
-### 11. What is a constructor? | Konstruktor nima?
+## Q11. Konstruktor nima (standart, parametrli, nusxa konstruktori)? / What is a constructor (default, parameterized, copy)?
+
+**Oddiy qilib aytganda:** Konstruktor — obyekt yaratilganda avtomatik ishlaydigan va uni boshlang'ich holatga keltiradigan metod. Python'da bu `__init__`. Java/C++ dagi turli konstruktorlar (standart, parametrli, nusxa) Python'da standart qiymatli parametrlar va klass metodlari bilan ifodalanadi.
+
+**Batafsilroq:**
 
 **EN:** A special method (`__init__`) automatically called when an object is created to **initialize** it.
 
@@ -439,9 +493,97 @@ conn2 = DatabaseConnection("prod.server.com", 5432, "production")
 # Connection #2 created to prod.server.com:5432
 ```
 
+**Qo'shimcha — What is a default constructor?:**
+
+**EN:** A constructor that **takes no arguments** — provides default values.
+
+**UZB:** **Argumentsiz** konstruktor — standart qiymatlarni beradi.
+
+```python
+class ServerConfig:
+    def __init__(self):              # EN: default constructor | UZB: standart konstruktor
+        self.host = "localhost"
+        self.port = 8000
+        self.debug = False
+        self.workers = 4
+        self.timeout = 30
+
+config = ServerConfig()
+print(config.host)     # localhost
+print(config.port)     # 8000
+print(config.workers)  # 4
+```
+
+**Qo'shimcha — What is a parameterized constructor?:**
+
+**EN:** A constructor that **takes arguments** to initialize an object with specific values.
+
+**UZB:** Obyektni aniq qiymatlar bilan ishga tushirish uchun **argumentlar qabul qiluvchi** konstruktor.
+
+```python
+class Product:
+    def __init__(self, name: str, price: float, category: str, stock: int = 0):
+        # EN: parameterized — caller provides initial values
+        # UZB: parametrli — chaqiruvchi boshlang'ich qiymatlarni beradi
+        self.name = name
+        self.price = price
+        self.category = category
+        self.stock = stock
+
+    def __repr__(self):
+        return f"Product({self.name}, ${self.price}, stock={self.stock})"
+
+laptop = Product("MacBook Pro", 2499.99, "Electronics", 10)
+phone = Product("iPhone 15", 999.99, "Electronics")
+print(laptop)  # Product(MacBook Pro, $2499.99, stock=10)
+print(phone)   # Product(iPhone 15, $999.99, stock=0)
+```
+
+**Qo'shimcha — What is a copy constructor?:**
+
+**EN:** A constructor that creates a **new object as a copy** of an existing one.
+
+**UZB:** Mavjud obyektning **nusxasi sifatida yangi obyekt** yaratadigan konstruktor.
+
+```python
+import copy
+
+class Matrix:
+    def __init__(self, data=None, source=None):
+        if source is not None:             # EN: copy constructor | UZB: nusxa konstruktori
+            self.data = copy.deepcopy(source.data)
+            self.rows = source.rows
+            self.cols = source.cols
+        else:
+            self.data = data or []
+            self.rows = len(self.data)
+            self.cols = len(self.data[0]) if self.data else 0
+
+    @classmethod
+    def copy_of(cls, other: 'Matrix') -> 'Matrix':
+        return cls(source=other)
+
+    def __repr__(self):
+        return f"Matrix({self.rows}x{self.cols})"
+
+m1 = Matrix([[1, 2, 3], [4, 5, 6]])
+m2 = Matrix.copy_of(m1)           # EN: copy constructor via classmethod
+                                   # UZB: classmethod orqali nusxa konstruktori
+
+m2.data[0][0] = 99
+print(m1.data[0][0])   # 1   — original o'zgarmadi
+print(m2.data[0][0])   # 99  — nusxa
+```
+
+**Intervyuda shunday ayting:** "`__init__` nusxani sozlaydi (yaratishni `__new__` qiladi). Muqobil yaratish usullari uchun `@classmethod` fabrikalar (`User.from_dict(data)`) — overloading'dan aniqroq. Nusxa uchun Python'da nusxa konstruktori o'rniga `copy.copy`/`deepcopy` yoki dataclass'dagi `dataclasses.replace`."
+
 ---
 
-### 12. What is a destructor? | Destruktor nima?
+## Q12. Destruktor nima va Python'da `__del__` qachon chaqiriladi? / What is a destructor and when does `__del__` run?
+
+**Oddiy qilib aytganda:** Destruktor — obyekt yo'q qilinayotganda chaqiriladigan metod (Python'da `__del__`). Lekin Python'da u **qachon** chaqirilishi kafolatlanmagan, shuning uchun resurslarni (fayl, ulanish) yopish uchun unga tayanmaslik kerak.
+
+**Batafsilroq:**
 
 **EN:** A special method (`__del__`) invoked **when an object is destroyed** or garbage collected.
 
@@ -474,13 +616,53 @@ del fm
 # [CLOSE] output.txt
 ```
 
+**Qo'shimcha — What is a destructor?:**
+
+**EN:** A method (`__del__`) called **when an object is about to be destroyed** — used for cleanup.
+
+**UZB:** Obyekt **yo'q qilinishidan oldin** chaqiriladigan metod (`__del__`) — tozalash uchun ishlatiladi.
+
+```python
+# EN: Context manager is preferred over __del__ for cleanup in Python
+# UZB: Python'da tozalash uchun __del__ dan ko'ra context manager afzal
+
+class DatabaseConnection:
+    def __init__(self, url: str):
+        self.url = url
+        self.is_open = True
+        print(f"[CONNECT] {url}")
+
+    def query(self, sql: str) -> str:
+        if not self.is_open:
+            raise RuntimeError("EN: Connection closed | UZB: Ulanish yopilgan")
+        return f"Result of: {sql}"
+
+    def close(self):
+        self.is_open = False
+        print(f"[DISCONNECT] {self.url}")
+
+    def __del__(self):
+        if self.is_open:
+            self.close()       # EN: safety net | UZB: xavfsizlik to'ri
+
+conn = DatabaseConnection("postgresql://localhost/app")
+print(conn.query("SELECT 1"))
+del conn     # [DISCONNECT] — agar yopilmagan bo'lsa
+```
+
+**Intervyuda shunday ayting:** "`__del__` qachon ishlashi aniq emas: aylanma havolalarda kechikadi, interpretator yopilayotganda esa umuman ishlamasligi mumkin. Resurslarni context manager (`with`) bilan boshqaraman; zaxira tozalash kerak bo'lsa — `weakref.finalize`."
+
 ---
 
-## 2. Keywords & Methods | Kalit So'zlar
+# 🔹 Keywords & Methods | Kalit So'zlar
 
 ---
 
-### 13. What is `this` keyword? | `this` kalit so'z nima?
+## Q13. What is `this` keyword? | `this` kalit so'z nima?
+
+**Oddiy qilib aytganda:** `this` (Java/C++) — metod ichida 'hozirgi obyekt'ga ishora. Python'da buning o'rniga birinchi parametr `self` bor va u **aniq** yoziladi: `def deposit(self, amount)`.
+
+**Batafsilroq:**
 
 **EN:** In Python it's **`self`** — refers to the **current object instance** inside a method.
 
@@ -514,9 +696,15 @@ result = c.increment().increment().increment().reset().increment()
 print(result)  # Counter(1)
 ```
 
+**Intervyuda shunday ayting:** "Python'da `self` — kalit so'z emas, oddiy nom (kelishuv), va u aniq uzatiladi: `obj.method(x)` aslida `Class.method(obj, x)`. Bu 'explicit is better than implicit' tamoyili. Klass metodlarida birinchi parametr — `cls`."
+
 ---
 
-### 14. What is `super` keyword? | `super` kalit so'z nima?
+## Q14. What is `super` keyword? | `super` kalit so'z nima?
+
+**Oddiy qilib aytganda:** `super()` — ota klassning metodini chaqirish: bola klass `__init__` da avval `super().__init__()` ni chaqiradi, keyin o'z qo'shimchalarini qo'shadi.
+
+**Batafsilroq:**
 
 **EN:** `super()` refers to the **parent class** — used to call parent methods and constructor.
 
@@ -554,9 +742,15 @@ print(dog.describe())
 # Rex makes 'Woof' sound | Breed: Labrador
 ```
 
+**Intervyuda shunday ayting:** "`super()` 'ota klass' emas, MRO bo'yicha **keyingi** klassni qaytaradi — ko'p merosda bu hal qiluvchi. Shuning uchun kooperativ merosda har klass `super()` ni chaqiradi va `**kwargs` ni uzatadi."
+
 ---
 
-### 15. What is a static method? | Statik metod nima?
+## Q15. What is a static method? | Statik metod nima?
+
+**Oddiy qilib aytganda:** Statik metod — klassga tegishli, lekin obyektga ham, klassga ham bog'liq bo'lmagan funksiya (`@staticmethod`). Klass metodi (`@classmethod`) esa klassning o'zini (`cls`) oladi va ko'pincha muqobil konstruktor sifatida ishlatiladi.
+
+**Batafsilroq:**
 
 **EN:** A method that **belongs to the class**, not to any specific instance — no `self` or `cls` parameter.
 
@@ -586,9 +780,15 @@ print(TemperatureConverter.fahrenheit_to_celsius(98.6)) # 37.0
 print(TemperatureConverter.celsius_to_kelvin(0))        # 273.15
 ```
 
+**Intervyuda shunday ayting:** "`@staticmethod` — mantiqan klassga yaqin yordamchi funksiya; ko'p hollarda modul darajasidagi funksiya ham yetarli. `@classmethod` — fabrikalar uchun, chunki u meros bilan to'g'ri ishlaydi: `cls(...)` bola klassning nusxasini yaratadi."
+
 ---
 
-### 16. What is a final class? | Final klass nima?
+## Q16. Final (sealed) klass nima? / What is a final (sealed) class?
+
+**Oddiy qilib aytganda:** Final klass — undan meros olib bo'lmaydigan klass (Java'da `final`, C#'da `sealed`). Python buni runtime'da taqiqlamaydi, lekin `@typing.final` bilan belgilasangiz, type checker meros olishga urinishni xato deb ko'rsatadi.
+
+**Batafsilroq:**
 
 **EN:** A class that **cannot be inherited** from. Python simulates this with `__init_subclass__`.
 
@@ -622,13 +822,53 @@ print(config.version)   # 1.0.0
 # class MyConfig(AppConfig): pass  # TypeError!
 ```
 
+**Qo'shimcha — What is a sealed class?:**
+
+**EN:** A class that **cannot be subclassed** — prevents further inheritance.
+
+**UZB:** Undan **meros olib bo'lmaydigan** klass — keyingi merosni oldini oladi.
+
+```python
+class Sealed(type):
+    """EN: Metaclass that blocks inheritance | UZB: Merosni blokladigan metaklass"""
+    def __new__(mcs, name, bases, namespace):
+        for base in bases:
+            if isinstance(base, Sealed) and getattr(base, '__sealed__', False):
+                raise TypeError(
+                    f"EN: '{base.__name__}' is sealed — cannot inherit\n"
+                    f"UZB: '{base.__name__}' muhrlangan — meros olib bo'lmaydi"
+                )
+        cls = super().__new__(mcs, name, bases, namespace)
+        cls.__sealed__ = True
+        return cls
+
+class JWTToken(metaclass=Sealed):
+    def __init__(self, payload: dict):
+        self.payload = payload
+
+    def encode(self) -> str:
+        import base64, json
+        return base64.b64encode(json.dumps(self.payload).encode()).decode()
+
+token = JWTToken({"user_id": 1, "role": "admin"})
+print(token.encode())
+
+# class MyToken(JWTToken): pass   # TypeError — sealed!
+```
+
+**Intervyuda shunday ayting:** "Python'da `@final` — faqat statik tekshiruv uchun; runtime'da taqiqlash kerak bo'lsa `__init_subclass__` da xato ko'taraman. Final klasslar kutubxona muallifiga ichki tuzilmani o'zgartirish erkinligini beradi."
+
 ---
 
-## 3. Inheritance & Relations | Meros va Munosabatlar
+# 🔹 Inheritance & Relations | Meros va Munosabatlar
 
 ---
 
-### 17. What is multiple inheritance? | Ko'p meros olish nima?
+## Q17. Ko'p meros va MRO qanday ishlaydi (diamond muammosi)? / How do multiple inheritance and MRO work (the diamond problem)?
+
+**Oddiy qilib aytganda:** Ko'p meros — klass bir nechta ota klassdan meros oladi. Ikki ota bir xil metodga ega bo'lsa, qaysi biri chaqiriladi? Python buni **MRO** (metodlarni qidirish tartibi) bilan hal qiladi — tartibni `Class.__mro__` da ko'rish mumkin.
+
+**Batafsilroq:**
 
 **EN:** A class **inheriting from more than one parent class** simultaneously.
 
@@ -662,9 +902,125 @@ print(duck.quack())  # Quack! | Vak-vak!
 print(Duck.__mro__)  # EN: MRO order | UZB: MRO tartibi
 ```
 
+**Qo'shimcha — What is multiple inheritance? (MRO):**
+
+**EN:** Python uses **C3 linearization (MRO)** to determine method lookup order in diamond inheritance.
+
+**UZB:** Python olmos shaklida meros olishda metod qidirish tartibini aniqlash uchun **C3 linearizatsiyasidan (MRO)** foydalanadi.
+
+```python
+# EN: Diamond problem and how Python solves it with MRO
+# UZB: Olmos muammosi va Python uni MRO bilan qanday hal qiladi
+
+class A:
+    def greet(self): return "A"
+
+class B(A):
+    def greet(self): return f"B → {super().greet()}"
+
+class C(A):
+    def greet(self): return f"C → {super().greet()}"
+
+class D(B, C):                     # EN: diamond inheritance | UZB: olmos meros
+    def greet(self): return f"D → {super().greet()}"
+
+d = D()
+print(d.greet())         # D → B → C → A
+print(D.__mro__)
+# (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
+# EN: MRO ensures A is visited only once | UZB: MRO A faqat bir marta ko'rilishini ta'minlaydi
+```
+
+**Qo'shimcha — What is method resolution?:**
+
+**EN:** The process of **determining which method to call** when multiple candidates exist (inheritance, polymorphism).
+
+**UZB:** Bir nechta nomzod bo'lganda **qaysi metodni chaqirishni aniqlash** jarayoni.
+
+```python
+# EN: Python MRO — C3 linearization resolves method lookup
+# UZB: Python MRO — C3 linearizatsiyasi metod qidiruvini hal qiladi
+
+class Mixin1:
+    def process(self): return "Mixin1"
+
+class Mixin2:
+    def process(self): return "Mixin2"
+
+class Base:
+    def process(self): return "Base"
+
+class MyClass(Mixin1, Mixin2, Base):
+    pass
+
+obj = MyClass()
+print(obj.process())      # Mixin1  — MRO order
+print(MyClass.__mro__)    # MRO zanjiri
+
+# EN: Use super() to chain through MRO
+# UZB: MRO bo'ylab zanjir uchun super() ishlatish
+class A:
+    def greet(self): return f"A({super().greet() if hasattr(super(), 'greet') else ''})"
+
+class B(A):
+    def greet(self): return f"B→{super().greet()}"
+
+class C(A):
+    def greet(self): return f"C→{super().greet()}"
+
+class D(B, C):
+    def greet(self): return f"D→{super().greet()}"
+
+print(D().greet())   # D→B→C→A()
+```
+
+**Qo'shimcha — What is a virtual base class?:**
+
+**EN:** A base class that is **shared (not duplicated)** in diamond inheritance — Python handles this via MRO.
+
+**UZB:** Olmos merosida **ulashiladigan (takrorlanmaydigan)** asosiy klass — Python buni MRO orqali hal qiladi.
+
+```python
+# EN: Diamond inheritance — without virtual base (conceptual)
+# UZB: Olmos meros — virtual asosiy klasssiz (tushuncha)
+
+class Base:
+    def __init__(self, value: int):
+        self.value = value
+        print(f"Base.__init__ called with {value}")
+
+class Left(Base):
+    def __init__(self, value: int):
+        super().__init__(value)      # EN: super() uses MRO — Base called once
+        print("Left.__init__")       # UZB: super() MRO ishlatadi — Base bir marta
+
+class Right(Base):
+    def __init__(self, value: int):
+        super().__init__(value)
+        print("Right.__init__")
+
+class Diamond(Left, Right):          # EN: diamond inheritance | UZB: olmos meros
+    def __init__(self, value: int):
+        super().__init__(value)      # EN: Python MRO ensures Base.__init__ runs ONCE
+        print("Diamond.__init__")    # UZB: Python MRO Base.__init__ ni bir marta ishlatadi
+
+d = Diamond(42)
+# Base.__init__ called with 42  — bir marta!
+# Right.__init__
+# Left.__init__
+# Diamond.__init__
+print(d.value)  # 42
+```
+
+**Intervyuda shunday ayting:** "Python C3 linearizatsiyasi bilan MRO quradi: bola otadan oldin, otalar e'lon qilingan tartibda, har klass bir marta — diamond muammosi shunday hal bo'ladi. Ko'p merosni asosan mixin'lar uchun ishlataman va barcha klasslar `super()` ni kooperativ chaqiradi."
+
 ---
 
-### 18. What is an abstract class? | Abstrakt klass nima?
+## Q18. What is an abstract class? | Abstrakt klass nima?
+
+**Oddiy qilib aytganda:** Abstrakt klass — to'liq bo'lmagan chizma: 'har bir shaklda `area()` bo'lishi shart' deydi, lekin o'zi hisoblamaydi. Undan to'g'ridan-to'g'ri obyekt yaratib bo'lmaydi — faqat meros olib, yetishmayotgan metodlarni yozgan klassdan.
+
+**Batafsilroq:**
 
 **EN:** A class that **cannot be instantiated** and may contain abstract methods that subclasses must implement.
 
@@ -706,9 +1062,15 @@ report = SalesReport("Q1 Sales | Q1 Savdolari")
 print(report.generate())
 ```
 
+**Intervyuda shunday ayting:** "Python'da `abc.ABC` va `@abstractmethod`: barcha abstrakt metodlar amalga oshirilmaguncha nusxa yaratib bo'lmaydi — xato erta chiqadi. ABC umumiy kodni ham saqlashi mumkin (template method). Faqat interfeys kerak bo'lsa — `Protocol`."
+
 ---
 
-### 19. What is an interface? | Interfeys nima?
+## Q19. Interfeys nima va u klassdan nimasi bilan farq qiladi? / What is an interface and how does it differ from a class?
+
+**Oddiy qilib aytganda:** Interfeys — 'nima qila olishi kerak' degan shartnoma, 'qanday' ekanini aytmaydi. Klass esa aniq amalga oshirishni beradi. Python'da alohida `interface` kalit so'zi yo'q — abstrakt klasslar yoki `Protocol` ishlatiladi.
+
+**Batafsilroq:**
 
 **EN:** A **contract** that defines a set of methods with no implementation — all methods must be implemented by classes.
 
@@ -759,9 +1121,60 @@ print(user.to_json())       # {"id": 1, "name": "Alyorjon"}
 print(user.cache_key())     # user:1
 ```
 
+**Qo'shimcha — What is the difference between a class and an interface?:**
+
+**EN:** A class **can contain implementation**; an interface only contains **method signatures** (contract).
+
+**UZB:** Klass **amalga oshirishni o'z ichiga olishi mumkin**; interfeys faqat **metod imzolarini** o'z ichiga oladi (shartnoma).
+
+| Feature / Xususiyat | Class / Klass | Interface / Interfeys |
+|---|---|---|
+| Instantiation / Yaratish | Yes / Ha | No / Yo'q |
+| Implementation / Amalga oshirish | Yes / Ha | No (Abstract) / Yo'q |
+| Multiple inherit / Ko'p meros | Limited / Cheklangan | Yes / Ha |
+| State / Holat | Yes / Ha | No / Yo'q |
+
+```python
+from abc import ABC, abstractmethod
+
+# EN: Interface — no state, no implementation
+# UZB: Interfeys — holat yo'q, amalga oshirish yo'q
+class Drawable(ABC):
+    @abstractmethod
+    def draw(self): pass
+
+    @abstractmethod
+    def get_bounds(self) -> tuple: pass
+
+# EN: Abstract class — has state AND some implementation
+# UZB: Abstrakt klass — holat ham, qisman amalga oshirish ham bor
+class Widget(ABC):
+    def __init__(self, x: int, y: int):
+        self.x = x                 # EN: state | UZB: holat
+        self.y = y
+
+    def move(self, dx, dy):        # EN: concrete method | UZB: konkret metod
+        self.x += dx
+        self.y += dy
+
+    @abstractmethod
+    def render(self): pass
+
+class Button(Widget, Drawable):
+    def render(self): print(f"Button at ({self.x},{self.y})")
+    def draw(self): print("Drawing button")
+    def get_bounds(self): return (self.x, self.y, 100, 30)
+```
+
+**Intervyuda shunday ayting:** "Python'da interfeys ikki xil: nominal — ABC (meros majburiy), strukturaviy — `Protocol` (metodlar mos bo'lsa yetarli). Kichik, maqsadli interfeyslarni afzal ko'raman (ISP). Klass holat va implementatsiyani saqlaydi, interfeys — faqat kontraktni."
+
 ---
 
-### 20. What is a virtual function? | Virtual funksiya nima?
+## Q20. What is a virtual function? | Virtual funksiya nima?
+
+**Oddiy qilib aytganda:** Virtual funksiya (C++) — bola klass qayta yozishi mumkin bo'lgan va obyektning haqiqiy turiga qarab tanlanadigan metod. Python'da **barcha** metodlar shunday ishlaydi — alohida kalit so'z kerak emas.
+
+**Batafsilroq:**
 
 **EN:** A function that **can be overridden** in a derived class. In Python, all methods are virtual by default.
 
@@ -798,86 +1211,15 @@ process(Logger(), "Server started | Server ishga tushdi")
 process(ColorLogger(), "User logged in | Foydalanuvchi kirdi")
 ```
 
----
-
-### 21. What is a pure virtual function? | Sof virtual funksiya nima?
-
-**EN:** A function that **must be overridden** — has no implementation in the base class (`@abstractmethod`).
-
-**UZB:** **Qayta yozilishi shart** — asosiy klassda amalga oshirilmagan (`@abstractmethod`).
-
-```python
-from abc import ABC, abstractmethod
-
-class StorageBackend(ABC):
-    @abstractmethod                        # EN: pure virtual | UZB: sof virtual
-    def read(self, key: str) -> bytes:
-        """EN: Must implement in subclass | UZB: Subklassda amalga oshirish shart"""
-        pass
-
-    @abstractmethod
-    def write(self, key: str, data: bytes) -> bool:
-        pass
-
-    @abstractmethod
-    def delete(self, key: str) -> bool:
-        pass
-
-class RedisStorage(StorageBackend):
-    def read(self, key: str) -> bytes:
-        print(f"[Redis] Reading: {key}")
-        return b"data"
-
-    def write(self, key: str, data: bytes) -> bool:
-        print(f"[Redis] Writing {len(data)} bytes to {key}")
-        return True
-
-    def delete(self, key: str) -> bool:
-        print(f"[Redis] Deleting: {key}")
-        return True
-
-redis = RedisStorage()
-redis.write("session:123", b"user_data")
-print(redis.read("session:123"))
-```
+**Intervyuda shunday ayting:** "C++ da dinamik tarqatish uchun `virtual` kerak; Python'da har metod chaqiruvi runtime'da obyekt turidan qidiriladi, ya'ni hamma metodlar 'virtual'. Bu moslashuvchan, lekin har chaqiruv biroz qimmat."
 
 ---
 
-### 22. What is dynamic method dispatch? | Dinamik metod chaqirish nima?
+## Q21. What is composition in OOP? | OOP'da kompozitsiya nima?
 
-**EN:** The process of **resolving which method to call at runtime** based on the actual object type.
+**Oddiy qilib aytganda:** Kompozitsiya — obyekt boshqa obyektlardan **tuziladi**: mashinada dvigatel bor ('has-a'). Dvigatel mashina bilan birga yaratiladi va yo'q qilinadi — u mashinaning qismi.
 
-**UZB:** Haqiqiy obyekt turiga qarab **qaysi metod chaqirilishini runtime'da hal qilish** jarayoni.
-
-```python
-# EN: Python resolves method calls at runtime — dynamic dispatch
-# UZB: Python metod chaqiruvlarini runtime'da hal qiladi — dinamik chaqirish
-
-class TaxCalculator:
-    def calculate(self, amount: float) -> float:
-        return amount * 0.10    # EN: 10% default | UZB: 10% standart
-
-class UzbekTax(TaxCalculator):
-    def calculate(self, amount: float) -> float:
-        return amount * 0.12    # UZB: O'zbekiston QQS 12%
-
-class EUTax(TaxCalculator):
-    def calculate(self, amount: float) -> float:
-        return amount * 0.20    # EN: EU VAT 20% | UZB: Evropa QQS 20%
-
-def process_order(calculator: TaxCalculator, price: float):
-    # EN: Which calculate() runs? Decided at runtime based on actual type
-    # UZB: Qaysi calculate() ishlaydi? Haqiqiy turga qarab runtime'da aniqlanadi
-    tax = calculator.calculate(price)
-    print(f"Price: ${price:.2f} | Tax: ${tax:.2f} | Total: ${price + tax:.2f}")
-
-process_order(UzbekTax(), 100_000)   # Uzbek tax
-process_order(EUTax(), 100_000)      # EU tax
-```
-
----
-
-### 23. What is composition in OOP? | OOP'da kompozitsiya nima?
+**Batafsilroq:**
 
 **EN:** A design where a class **contains objects of other classes** — "has-a" relationship. Preferred over inheritance.
 
@@ -920,9 +1262,15 @@ car = SmartCar("BMW")
 car.trip("Tashkent", "Lo'licha")
 ```
 
+**Intervyuda shunday ayting:** "Kompozitsiya — 'merosdan ko'ra kompozitsiya' tamoyilining asosi: xulqni ichki obyektlarga topshirish moslashuvchanroq, testlash osonroq va ierarxiya mo'rtligidan xoli. Qismlarni konstruktor orqali berib (dependency injection), ularni testda almashtirish oson."
+
 ---
 
-### 24. What is aggregation? | Agregatsiya nima?
+## Q22. What is aggregation? | Agregatsiya nima?
+
+**Oddiy qilib aytganda:** Agregatsiya — obyekt boshqa obyektlarni **ishlatadi**, lekin ular mustaqil yashaydi: bo'limda xodimlar bor, bo'lim yopilsa ham xodimlar qoladi. Kompozitsiyadan farqi — hayot sikli bog'liq emas.
+
+**Batafsilroq:**
 
 **EN:** A **weak form of association** — one class uses another, but they can **exist independently**.
 
@@ -960,9 +1308,15 @@ del emp1                             # EN: deleting employee doesn't delete addr
 print(home)                          # Amir Temur ko'chasi 1, Tashkent — hali mavjud
 ```
 
+**Intervyuda shunday ayting:** "Agregatsiya — kuchsiz 'has-a': qism boshqa joyda ham ishlatilishi mumkin va egasidan uzoqroq yashaydi. Farq kodda ko'pincha bir xil ko'rinadi — muhimi, kim obyekt hayot sikliga javobgar ekanini aniq belgilash."
+
 ---
 
-### 25. What is association? | Assotsiatsiya nima?
+## Q23. What is association? | Assotsiatsiya nima?
+
+**Oddiy qilib aytganda:** Assotsiatsiya — ikki obyekt o'rtasidagi har qanday bog'liqlik: o'qituvchi va talaba bir-birini 'biladi', lekin biri ikkinchisining qismi emas. Agregatsiya va kompozitsiya — assotsiatsiyaning kuchliroq turlari.
+
+**Batafsilroq:**
 
 **EN:** A relationship where **one class uses or interacts with another**.
 
@@ -998,9 +1352,15 @@ print(teacher.teach(student))
 student.receive_grade("Python", 95)
 ```
 
+**Intervyuda shunday ayting:** "Assotsiatsiya — eng umumiy munosabat; yo'nalishi (bir tomonlama yoki ikki tomonlama) va karraliligi (bir-ko'p) bo'ladi. Ikki tomonlama havolalar aylanma bog'liqlik va xotira muammolarini keltirishi mumkin — iloji bo'lsa bir tomonlama qilaman."
+
 ---
 
-### 26–27. What is coupling? | Qovushish nima?
+## Q24. What is coupling? | Qovushish nima?
+
+**Oddiy qilib aytganda:** Coupling (bog'liqlik) — klasslar bir-biriga qanchalik bog'langan. Kuchli bog'liqlik — bittasini o'zgartirsangiz, boshqalari ham buziladi. Maqsad — kuchsiz bog'liqlik: klasslar bir-birining ichki tuzilmasini emas, faqat interfeysini bilsin.
+
+**Batafsilroq:**
 
 **EN:** The degree to which **one class is dependent on another**. Low coupling = flexible, maintainable code.
 
@@ -1050,9 +1410,15 @@ svc2 = UserService(SQLite())
 print(svc2.get_user(1))
 ```
 
+**Intervyuda shunday ayting:** "Kuchsiz bog'liqlik uchun: interfeys/Protocol orqali ishlash, bog'liqliklarni tashqaridan berish (DI), hodisalar orqali aloqa. Yuqori koheziya + kuchsiz bog'liqlik — o'zgarishlar mahalliy qoladi va testlash oson."
+
 ---
 
-### 28. What is cohesion? | Koheziya nima?
+## Q25. What is cohesion? | Koheziya nima?
+
+**Oddiy qilib aytganda:** Koheziya — klass ichidagi narsalar bir-biriga qanchalik tegishli. Yuqori koheziya — klass bitta aniq vazifani bajaradi (`InvoicePrinter` faqat chop etadi). Past koheziya — 'hamma narsa' klassi (`Utils`), uni tushunish va o'zgartirish qiyin.
+
+**Batafsilroq:**
 
 **EN:** The measure of how **closely related the responsibilities** of a class are. High cohesion = one class, one purpose.
 
@@ -1084,161 +1450,19 @@ class TaxCalculator:           # EN: only tax calculations
     def calculate(self, amount, rate): pass  # UZB: faqat soliq hisob-kitoblari
 ```
 
----
-
-## 4. Object Patterns | Obyekt Patternlari
+**Intervyuda shunday ayting:** "Yuqori koheziya SRP bilan bog'liq: bitta sabab bilan o'zgaradigan narsalar birga. Klass metodlari umumiy atributlarning kichik qismini ishlatsa — bu uni ikkiga bo'lish kerakligining belgisi."
 
 ---
 
-### 29. What is a default constructor? | Standart konstruktor nima?
-
-**EN:** A constructor that **takes no arguments** — provides default values.
-
-**UZB:** **Argumentsiz** konstruktor — standart qiymatlarni beradi.
-
-```python
-class ServerConfig:
-    def __init__(self):              # EN: default constructor | UZB: standart konstruktor
-        self.host = "localhost"
-        self.port = 8000
-        self.debug = False
-        self.workers = 4
-        self.timeout = 30
-
-config = ServerConfig()
-print(config.host)     # localhost
-print(config.port)     # 8000
-print(config.workers)  # 4
-```
+# 🔹 Object Patterns | Obyekt Patternlari
 
 ---
 
-### 30. What is a parameterized constructor? | Parametrli konstruktor nima?
+## Q26. Singleton nima va Python'da uni qanday qilish kerak? / What is a singleton and how should you do it in Python?
 
-**EN:** A constructor that **takes arguments** to initialize an object with specific values.
+**Oddiy qilib aytganda:** Singleton — butun dasturda faqat **bitta** nusxasi bo'lishi kerak bo'lgan obyekt (masalan, konfiguratsiya). Python'da eng oddiy yo'l — modul darajasida bitta obyekt yaratish: modul bir marta yuklanadi, shuning uchun obyekt ham bitta bo'ladi.
 
-**UZB:** Obyektni aniq qiymatlar bilan ishga tushirish uchun **argumentlar qabul qiluvchi** konstruktor.
-
-```python
-class Product:
-    def __init__(self, name: str, price: float, category: str, stock: int = 0):
-        # EN: parameterized — caller provides initial values
-        # UZB: parametrli — chaqiruvchi boshlang'ich qiymatlarni beradi
-        self.name = name
-        self.price = price
-        self.category = category
-        self.stock = stock
-
-    def __repr__(self):
-        return f"Product({self.name}, ${self.price}, stock={self.stock})"
-
-laptop = Product("MacBook Pro", 2499.99, "Electronics", 10)
-phone = Product("iPhone 15", 999.99, "Electronics")
-print(laptop)  # Product(MacBook Pro, $2499.99, stock=10)
-print(phone)   # Product(iPhone 15, $999.99, stock=0)
-```
-
----
-
-### 31. What is object cloning? | Obyektni klonlash nima?
-
-**EN:** Creating an **exact copy** of an existing object.
-
-**UZB:** Mavjud obyektning **aniq nusxasini** yaratish.
-
-```python
-import copy
-
-class UserSettings:
-    def __init__(self, theme: str, lang: str, plugins: list):
-        self.theme = theme
-        self.lang = lang
-        self.plugins = plugins
-
-original = UserSettings("dark", "uz", ["linter", "formatter"])
-
-# EN: Shallow copy — plugins list is shared!
-# UZB: Sayoz nusxa — plugins ro'yxati ulashilgan!
-shallow = copy.copy(original)
-shallow.theme = "light"           # EN: ok — independent | UZB: mustaqil
-shallow.plugins.append("debugger")  # EN: affects original! | UZB: originalga ta'sir qiladi!
-
-print(original.theme)    # dark    — o'zgarmadi
-print(original.plugins)  # ["linter", "formatter", "debugger"] — o'zgardi!
-
-# EN: Deep copy — everything independent
-# UZB: Chuqur nusxa — hamma narsa mustaqil
-deep = copy.deepcopy(original)
-deep.plugins.append("profiler")
-print(original.plugins)  # hali ["linter", "formatter", "debugger"] — ta'sir etmadi
-```
-
----
-
-### 32. What is deep copy? | Chuqur nusxalash nima?
-
-**EN:** Copying an object **along with all its referenced objects** — fully independent copy.
-
-**UZB:** Obyektni **barcha ichki obyektlari bilan birga** nusxalash — to'liq mustaqil nusxa.
-
-```python
-import copy
-
-class Node:
-    def __init__(self, value: int, children: list = None):
-        self.value = value
-        self.children = children or []
-
-    def __repr__(self):
-        return f"Node({self.value}, children={[c.value for c in self.children]})"
-
-# EN: Tree structure
-# UZB: Daraxt tuzilishi
-root = Node(1, [Node(2, [Node(4), Node(5)]), Node(3)])
-
-deep_copy = copy.deepcopy(root)
-
-# EN: Modify copy — original untouched
-# UZB: Nusxani o'zgartirish — original ta'sirlanmaydi
-deep_copy.value = 99
-deep_copy.children[0].value = 88
-
-print(root.value)               # 1  — o'zgarmadi
-print(root.children[0].value)   # 2  — o'zgarmadi
-print(deep_copy.value)          # 99
-```
-
----
-
-### 33. What is shallow copy? | Sayoz nusxalash nima?
-
-**EN:** Copying an object **without copying the objects it references** — nested objects are shared.
-
-**UZB:** Obyektni **ichki obyektlarini nusxalamasdan** ko'chirish — ichki obyektlar ulashiladi.
-
-```python
-import copy
-
-class Config:
-    def __init__(self, name: str, rules: list):
-        self.name = name
-        self.rules = rules             # EN: mutable nested object | UZB: o'zgaruvchan ichki obyekt
-
-base_config = Config("base", ["rule1", "rule2"])
-
-# EN: Shallow copy — name is independent, rules is SHARED
-# UZB: Sayoz nusxa — name mustaqil, rules ULASHILGAN
-child_config = copy.copy(base_config)
-child_config.name = "child"          # EN: independent — ok | UZB: mustaqil — yaxshi
-child_config.rules.append("rule3")   # EN: modifies original! | UZB: originalga ta'sir!
-
-print(base_config.name)    # base     — o'zgarmadi
-print(base_config.rules)   # ['rule1', 'rule2', 'rule3']  — o'zgardi!
-```
-
----
-
-### 34. What is a singleton class? | Singleton klass nima?
+**Batafsilroq:**
 
 **EN:** A class that allows **only one instance** — all references point to the same object.
 
@@ -1275,43 +1499,58 @@ pool1.get_connection()
 print(len(pool2._pool))        # 1 — pool2 ham ko'radi
 ```
 
----
+**Qo'shimcha — What is a singleton pattern?:**
 
-### 35. What is an enum? | Enum nima?
+**EN:** Ensures a class has **only one instance** and provides a global access point.
 
-**EN:** A special data type that defines a **collection of named constants**.
-
-**UZB:** **Nomlangan konstantalar to'plamini** belgilaydigan maxsus ma'lumot turi.
+**UZB:** Klassning **faqat bitta nusxasini** ta'minlaydi va global kirish nuqtasini beradi.
 
 ```python
-from enum import Enum, auto
+import threading
 
-class OrderStatus(Enum):
-    PENDING    = auto()   # EN: waiting | UZB: kutilmoqda
-    CONFIRMED  = auto()   # EN: confirmed | UZB: tasdiqlangan
-    SHIPPING   = auto()   # EN: in transit | UZB: yo'lda
-    DELIVERED  = auto()   # EN: delivered | UZB: yetkazildi
-    CANCELLED  = auto()   # EN: cancelled | UZB: bekor qilindi
+class AppLogger:
+    """EN: Thread-safe Singleton Logger | UZB: Thread-xavfsiz Singleton Logger"""
+    _instance = None
+    _lock = threading.Lock()
 
-class Order:
-    def __init__(self, order_id: int, product: str):
-        self.order_id = order_id
-        self.product = product
-        self.status = OrderStatus.PENDING
+    def __new__(cls):
+        if cls._instance is None:
+            with cls._lock:            # EN: thread-safe | UZB: thread-xavfsiz
+                if cls._instance is None:
+                    cls._instance = super().__new__(cls)
+                    cls._instance._logs = []
+                    print("EN: Logger initialized | UZB: Logger ishga tushirildi")
+        return cls._instance
 
-    def update_status(self, new_status: OrderStatus):
-        print(f"Order #{self.order_id}: {self.status.name} → {new_status.name}")
-        self.status = new_status
+    def log(self, level: str, message: str):
+        entry = f"[{level.upper()}] {message}"
+        self._logs.append(entry)
+        print(entry)
 
-order = Order(1001, "MacBook Pro")
-order.update_status(OrderStatus.CONFIRMED)
-order.update_status(OrderStatus.SHIPPING)
-order.update_status(OrderStatus.DELIVERED)
+    def get_logs(self) -> list:
+        return self._logs.copy()
+
+# EN: Always the same instance | UZB: Har doim bir xil nusxa
+logger1 = AppLogger()
+logger2 = AppLogger()
+logger3 = AppLogger()
+
+logger1.log("info", "Server started | Server ishga tushdi")
+logger2.log("warning", "High memory | Xotira yuqori")
+
+print(f"EN: Same? | UZB: Bir xilmi? {logger1 is logger2 is logger3}")  # True
+print(f"Total logs | Jami yozuvlar: {len(logger3.get_logs())}")  # 2
 ```
+
+**Intervyuda shunday ayting:** "Python'da singleton'ning eng tabiiy shakli — modul darajasidagi obyekt yoki `functools.cache` bilan o'ralgan fabrika. `__new__` yoki metaclass bilan yozilgan singleton global holat yaratadi va testlashni qiyinlashtiradi — ko'pincha dependency injection yaxshiroq."
 
 ---
 
-### 36. What is an inner class? | Ichki klass nima?
+## Q27. What is an inner class? | Ichki klass nima?
+
+**Oddiy qilib aytganda:** Ichki klass — boshqa klass ichida e'lon qilingan klass. U tashqi klass bilan mantiqan bog'liq yordamchi tushunchani guruhlash uchun ishlatiladi (masalan, Django modelidagi `class Meta`).
+
+**Batafsilroq:**
 
 **EN:** A class **defined inside another class** — logically grouped with its outer class.
 
@@ -1356,13 +1595,19 @@ print(ll.display())   # 1 → 2 → 3
 print(f"Size | O'lcham: {ll.size}")  # 3
 ```
 
----
-
-## 5. Advanced OOP | Ilg'or OOP
+**Intervyuda shunday ayting:** "Python'da ichki klass tashqi klass nusxasiga maxsus kirish olmaydi (Java'dagi inner class'dan farqli) — bu faqat nomlar guruhlash. Konfiguratsiya uchun (`Meta`, `Config`) qulay; boshqa hollarda modul darajasidagi klass soddaroq."
 
 ---
 
-### 37. What is a friend function? | Do'st funksiya nima?
+# 🔹 Advanced OOP | Ilg'or OOP
+
+---
+
+## Q28. Do'st funksiya va do'st klass nima? / What are friend functions and friend classes?
+
+**Oddiy qilib aytganda:** Do'st funksiya/klass (C++) — boshqa klassning yopiq (private) a'zolariga kirish huquqi berilgan funksiya yoki klass. Python'da haqiqiy private yo'q, shuning uchun bu tushuncha kerak emas: `_` bilan boshlanadigan nomlar 'ichki, ehtiyot bo'l' degan kelishuv xolos.
+
+**Batafsilroq:**
 
 **EN:** A function that can **access private members** of a class (C++ concept). In Python, simulated via name mangling or trusted access patterns.
 
@@ -1391,9 +1636,47 @@ print(vault.grant_access(trusted_auditor))
 # [AUDIT] Verified secret: TOP***
 ```
 
+**Qo'shimcha — What is a friend class?:**
+
+**EN:** A class that can **access private members** of another class (C++ concept). Python simulation:
+
+**UZB:** Boshqa klassning **private a'zolariga kira oladigan** klass (C++ tushunchasi). Python simulyatsiyasi:
+
+```python
+class Engine:
+    def __init__(self):
+        self.__rpm = 0
+        self.__temperature = 20
+
+    def start(self):
+        self.__rpm = 3000
+        self.__temperature = 90
+
+    class Diagnostics:               # EN: friend class simulation | UZB: do'st klass simulyatsiyasi
+        def __init__(self, engine: 'Engine'):
+            self._engine = engine
+
+        def report(self) -> dict:
+            return {
+                "rpm": self._engine._Engine__rpm,          # EN: name mangling access
+                "temp": self._engine._Engine__temperature   # UZB: nom o'zgartirish orqali kirish
+            }
+
+engine = Engine()
+engine.start()
+diag = Engine.Diagnostics(engine)
+print(diag.report())   # {'rpm': 3000, 'temp': 90}
+```
+
+**Intervyuda shunday ayting:** "C++ da `friend` inkapsulatsiyani nazorat ostida ochadi. Python'da buning o'rniga modul darajasidagi kelishuvlar: bir modul ichidagi kod bir-birining `_internal` a'zolarini ishlatishi normal, tashqi kod esa faqat ommaviy API'ni."
+
 ---
 
-### 38. What is an access modifier? | Kirish modifikatori nima?
+## Q29. What is an access modifier? | Kirish modifikatori nima?
+
+**Oddiy qilib aytganda:** Kirish modifikatorlari (public, protected, private) — klass a'zolarini kim ko'ra olishini belgilaydi. Python'da ular kalit so'z emas, **nom kelishuvi**: `name` — ommaviy, `_name` — ichki, `__name` — nomi avtomatik o'zgartiriladi.
+
+**Batafsilroq:**
 
 **EN:** Keywords defining the **visibility of class members** — public, protected, private.
 
@@ -1428,9 +1711,15 @@ print(obj._protected)    # Subclasses | Subklasslarga  (accessible but shouldn't
 # print(obj.__private)   # AttributeError!
 ```
 
+**Intervyuda shunday ayting:** "Python 'hammamiz kattalarmiz' tamoyiliga tayanadi: `_` — kelishuv, `__` — name mangling (`_Class__name`), asosan bola klasslardagi nom to'qnashuvlaridan himoya, xavfsizlik uchun emas. Ommaviy API'ni aniq belgilayman va ichki narsalarni `_` bilan ajrataman."
+
 ---
 
-### 39–41. Inheritance types | Meros olish turlari
+## Q30. Inheritance types | Meros olish turlari
+
+**Oddiy qilib aytganda:** Meros turlari: yakka (bitta ota), ko'p (bir nechta ota), ko'p darajali (bobo → ota → bola), ierarxik (bitta otadan bir nechta bola) va gibrid (ularning aralashmasi). Python ularning hammasini qo'llaydi.
+
+**Batafsilroq:**
 
 **EN:** **Public** (default in Python) — members remain accessible. **Protected** — members become protected. **Private** — members become private (no native support in Python).
 
@@ -1466,40 +1755,15 @@ pi = PrivateInheritance()
 print(pi.only_public())
 ```
 
----
-
-### 42. What is multiple inheritance? (MRO) | Ko'p meros olish (MRO)?
-
-**EN:** Python uses **C3 linearization (MRO)** to determine method lookup order in diamond inheritance.
-
-**UZB:** Python olmos shaklida meros olishda metod qidirish tartibini aniqlash uchun **C3 linearizatsiyasidan (MRO)** foydalanadi.
-
-```python
-# EN: Diamond problem and how Python solves it with MRO
-# UZB: Olmos muammosi va Python uni MRO bilan qanday hal qiladi
-
-class A:
-    def greet(self): return "A"
-
-class B(A):
-    def greet(self): return f"B → {super().greet()}"
-
-class C(A):
-    def greet(self): return f"C → {super().greet()}"
-
-class D(B, C):                     # EN: diamond inheritance | UZB: olmos meros
-    def greet(self): return f"D → {super().greet()}"
-
-d = D()
-print(d.greet())         # D → B → C → A
-print(D.__mro__)
-# (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
-# EN: MRO ensures A is visited only once | UZB: MRO A faqat bir marta ko'rilishini ta'minlaydi
-```
+**Intervyuda shunday ayting:** "Python barcha meros turlarini qo'llaydi, ko'p meros esa MRO bilan tartibga solinadi. Amalda sayoz ierarxiyalar va mixin'lar; chuqur ko'p darajali meros kodni mo'rt qiladi."
 
 ---
 
-### 43. What is a virtual destructor? | Virtual destruktor nima?
+## Q31. Virtual destruktor nima? / What is a virtual destructor?
+
+**Oddiy qilib aytganda:** Virtual destruktor (C++) — ota klass ko'rsatkichi orqali bola obyekt o'chirilganda bola destruktori ham chaqirilishini ta'minlaydi. Python'da bu muammo yo'q: obyekt o'z turini biladi va `__del__` ham oddiy metod kabi qidiriladi.
+
+**Batafsilroq:**
 
 **EN:** Ensures the **correct destructor** is called for derived class objects through a base class reference.
 
@@ -1533,9 +1797,47 @@ del res
 # [BASE DEL] cache
 ```
 
+**Qo'shimcha — What is a pure virtual destructor?:**
+
+**EN:** A destructor declared pure virtual — base class cleanup is guaranteed but implementation required.
+
+**UZB:** Sof virtual destruktor — asosiy klass tozalash kafolatlanadi, lekin amalga oshirish talab qilinadi.
+
+```python
+from abc import ABC, abstractmethod
+
+class ManagedObject(ABC):
+    @abstractmethod
+    def cleanup(self):
+        """EN: Subclass must implement cleanup | UZB: Subklass cleanup ni amalga oshirishi shart"""
+        pass
+
+    def __del__(self):
+        self.cleanup()             # EN: guaranteed on destruction | UZB: yo'q qilishda kafolatlangan
+
+class TempFile(ManagedObject):
+    def __init__(self, path: str):
+        self.path = path
+        print(f"[CREATE] {path}")
+
+    def cleanup(self):
+        print(f"[CLEANUP] Deleting temp file: {self.path} | vaqtinchalik fayl o'chirildi")
+
+tf = TempFile("/tmp/upload_abc123.tmp")
+del tf
+# [CREATE] /tmp/upload_abc123.tmp
+# [CLEANUP] Deleting temp file: /tmp/upload_abc123.tmp
+```
+
+**Intervyuda shunday ayting:** "C++ da polimorfik bazaviy klassda virtual destruktor bo'lmasa, resurslar sizib chiqadi. Python'da xotirani interpretator boshqaradi va har metod dinamik tarqatiladi, shuning uchun bu tushuncha kerak emas — resurslar uchun context manager."
+
 ---
 
-### 44. What is operator overloading? | Operator yuklash nima?
+## Q32. What is operator overloading? | Operator yuklash nima?
+
+**Oddiy qilib aytganda:** Operator yuklash — o'z klassingiz uchun `+`, `==`, `<` kabi operatorlarning ma'nosini belgilash. `Money(10) + Money(5)` ishlashi uchun klassga `__add__` metodi yoziladi.
+
+**Batafsilroq:**
 
 **EN:** Giving **additional meaning to operators** (`+`, `-`, `*`, etc.) for user-defined types.
 
@@ -1575,77 +1877,15 @@ print(total * 1.12)      # 7,280,000.0 UZS  (with tax | soliq bilan)
 print(salary > bonus)    # True
 ```
 
----
-
-### 45. What is a friend class? | Do'st klass nima?
-
-**EN:** A class that can **access private members** of another class (C++ concept). Python simulation:
-
-**UZB:** Boshqa klassning **private a'zolariga kira oladigan** klass (C++ tushunchasi). Python simulyatsiyasi:
-
-```python
-class Engine:
-    def __init__(self):
-        self.__rpm = 0
-        self.__temperature = 20
-
-    def start(self):
-        self.__rpm = 3000
-        self.__temperature = 90
-
-    class Diagnostics:               # EN: friend class simulation | UZB: do'st klass simulyatsiyasi
-        def __init__(self, engine: 'Engine'):
-            self._engine = engine
-
-        def report(self) -> dict:
-            return {
-                "rpm": self._engine._Engine__rpm,          # EN: name mangling access
-                "temp": self._engine._Engine__temperature   # UZB: nom o'zgartirish orqali kirish
-            }
-
-engine = Engine()
-engine.start()
-diag = Engine.Diagnostics(engine)
-print(diag.report())   # {'rpm': 3000, 'temp': 90}
-```
+**Intervyuda shunday ayting:** "Operatorlarni faqat ma'nosi tabiiy bo'lganda yuklayman (vektorlar, pul, vaqt). Qo'llab-quvvatlanmaydigan turga `NotImplemented` qaytaraman — Python teskari operatsiyani (`__radd__`) sinab ko'radi. `__eq__` yozsam, `__hash__` ni ham moslayman; tartiblash uchun `functools.total_ordering`."
 
 ---
 
-### 46. What is a pure virtual destructor? | Sof virtual destruktor nima?
+## Q33. What is method hiding? | Metodni yashirish nima?
 
-**EN:** A destructor declared pure virtual — base class cleanup is guaranteed but implementation required.
+**Oddiy qilib aytganda:** Metodni yashirish — bola klassda ota klassdagi bilan bir xil nomli metod e'lon qilinsa, u otanikini 'yashiradi'. Java/C#'da bu statik metodlar uchun alohida tushuncha; Python'da esa bu oddiy qayta yozish (override).
 
-**UZB:** Sof virtual destruktor — asosiy klass tozalash kafolatlanadi, lekin amalga oshirish talab qilinadi.
-
-```python
-from abc import ABC, abstractmethod
-
-class ManagedObject(ABC):
-    @abstractmethod
-    def cleanup(self):
-        """EN: Subclass must implement cleanup | UZB: Subklass cleanup ni amalga oshirishi shart"""
-        pass
-
-    def __del__(self):
-        self.cleanup()             # EN: guaranteed on destruction | UZB: yo'q qilishda kafolatlangan
-
-class TempFile(ManagedObject):
-    def __init__(self, path: str):
-        self.path = path
-        print(f"[CREATE] {path}")
-
-    def cleanup(self):
-        print(f"[CLEANUP] Deleting temp file: {self.path} | vaqtinchalik fayl o'chirildi")
-
-tf = TempFile("/tmp/upload_abc123.tmp")
-del tf
-# [CREATE] /tmp/upload_abc123.tmp
-# [CLEANUP] Deleting temp file: /tmp/upload_abc123.tmp
-```
-
----
-
-### 47. What is method hiding? | Metodni yashirish nima?
+**Batafsilroq:**
 
 **EN:** Subclass has **same-named method** that does not truly override the parent — shadows it instead.
 
@@ -1674,9 +1914,15 @@ print(c.display())     # Child.show() | Bola klass  — polymorphism still works
 print(Parent.show(c))  # Parent.show() | Ota klass
 ```
 
+**Intervyuda shunday ayting:** "Python'da nom qidiruvi har doim dinamik, shuning uchun yashirish va qayta yozish bir xil: bola klassdagi nom ustun. Tasodifiy yashirishning oldini olish uchun `@typing.override` va linter'lardan foydalanaman."
+
 ---
 
-### 48. What is an abstract method? | Abstrakt metod nima?
+## Q34. Abstrakt (sof virtual) metod nima? / What is an abstract (pure virtual) method?
+
+**Oddiy qilib aytganda:** Abstrakt metod — 'bu metod albatta bo'lishi kerak, lekin uni bola klass yozadi' degan belgi. C++ da bu sof virtual funksiya (`= 0`). Python'da `@abstractmethod` bilan belgilanadi va u amalga oshirilmaguncha obyekt yaratib bo'lmaydi.
+
+**Batafsilroq:**
 
 **EN:** A method **without a body** declared in an abstract class — must be implemented by all subclasses.
 
@@ -1714,45 +1960,56 @@ exporter = CSVExporter("report")
 exporter.save([["Name", "Age"], ["Alyorjon", 25], ["Jasur", 30]])
 ```
 
----
+**Qo'shimcha — What is a pure virtual function?:**
 
-### 49. What is a sealed class? | Muhrlangan klass nima?
+**EN:** A function that **must be overridden** — has no implementation in the base class (`@abstractmethod`).
 
-**EN:** A class that **cannot be subclassed** — prevents further inheritance.
-
-**UZB:** Undan **meros olib bo'lmaydigan** klass — keyingi merosni oldini oladi.
+**UZB:** **Qayta yozilishi shart** — asosiy klassda amalga oshirilmagan (`@abstractmethod`).
 
 ```python
-class Sealed(type):
-    """EN: Metaclass that blocks inheritance | UZB: Merosni blokladigan metaklass"""
-    def __new__(mcs, name, bases, namespace):
-        for base in bases:
-            if isinstance(base, Sealed) and getattr(base, '__sealed__', False):
-                raise TypeError(
-                    f"EN: '{base.__name__}' is sealed — cannot inherit\n"
-                    f"UZB: '{base.__name__}' muhrlanган — meros olib bo'lmaydi"
-                )
-        cls = super().__new__(mcs, name, bases, namespace)
-        cls.__sealed__ = True
-        return cls
+from abc import ABC, abstractmethod
 
-class JWTToken(metaclass=Sealed):
-    def __init__(self, payload: dict):
-        self.payload = payload
+class StorageBackend(ABC):
+    @abstractmethod                        # EN: pure virtual | UZB: sof virtual
+    def read(self, key: str) -> bytes:
+        """EN: Must implement in subclass | UZB: Subklassda amalga oshirish shart"""
+        pass
 
-    def encode(self) -> str:
-        import base64, json
-        return base64.b64encode(json.dumps(self.payload).encode()).decode()
+    @abstractmethod
+    def write(self, key: str, data: bytes) -> bool:
+        pass
 
-token = JWTToken({"user_id": 1, "role": "admin"})
-print(token.encode())
+    @abstractmethod
+    def delete(self, key: str) -> bool:
+        pass
 
-# class MyToken(JWTToken): pass   # TypeError — sealed!
+class RedisStorage(StorageBackend):
+    def read(self, key: str) -> bytes:
+        print(f"[Redis] Reading: {key}")
+        return b"data"
+
+    def write(self, key: str, data: bytes) -> bool:
+        print(f"[Redis] Writing {len(data)} bytes to {key}")
+        return True
+
+    def delete(self, key: str) -> bool:
+        print(f"[Redis] Deleting: {key}")
+        return True
+
+redis = RedisStorage()
+redis.write("session:123", b"user_data")
+print(redis.read("session:123"))
 ```
+
+**Intervyuda shunday ayting:** "`@abstractmethod` ABC ichida — amalga oshirilmagan metod bo'lsa, nusxa yaratishda darhol `TypeError`. Abstrakt metodning o'zida ham umumiy kod bo'lishi mumkin va bola uni `super()` bilan chaqira oladi. Property uchun `@property` + `@abstractmethod`."
 
 ---
 
-### 50. What is delegation? | Delegatsiya nima?
+## Q35. What is delegation? | Delegatsiya nima?
+
+**Oddiy qilib aytganda:** Delegatsiya — obyekt vazifani o'zi bajarmasdan, boshqa obyektga topshiradi: `Logger` xabarni o'zi yozmaydi, balki `FileWriter` ga beradi. Bu merosning muqobili.
+
+**Batafsilroq:**
 
 **EN:** **Passing the responsibility** of a task to another object instead of implementing it yourself.
 
@@ -1791,9 +2048,15 @@ svc = UserService()
 svc.register("a@example.com", "secret123", 25)
 ```
 
+**Intervyuda shunday ayting:** "Delegatsiya kompozitsiya orqali qayta ishlatish: aniq metodlarni ichki obyektga yo'naltiraman yoki umumiy proxy uchun `__getattr__`. Merosdan farqli, ichki obyektni runtime'da almashtirish va testda soxtasini berish oson."
+
 ---
 
-### 51. What is a mutable object? | O'zgaruvchan obyekt nima?
+## Q36. O'zgaruvchan va o'zgarmas obyektlar farqi? / Mutable vs immutable objects?
+
+**Oddiy qilib aytganda:** O'zgaruvchan obyekt (list, dict, set) yaratilgandan keyin o'zgartirilishi mumkin. O'zgarmas obyekt (int, str, tuple, frozenset) — yo'q: 'o'zgartirish' har safar **yangi** obyekt yaratadi. Bu farq funksiyalarga argument berishda va lug'at kalitlarida muhim.
+
+**Batafsilroq:**
 
 **EN:** An object whose **state can be changed** after creation.
 
@@ -1829,9 +2092,7 @@ cart.remove_item("Mouse")
 print(cart)     # Cart(1 items, total=12,000,000 UZS)
 ```
 
----
-
-### 52. What is an immutable object? | O'zgarmas obyekt nima?
+**Qo'shimcha — What is an immutable object?:**
 
 **EN:** An object whose **state cannot be changed** after creation — creates new object instead.
 
@@ -1863,9 +2124,15 @@ print(p1.distance_to(p2))  # 5.0
 # p1.x = 10   # FrozenInstanceError! — immutable
 ```
 
+**Intervyuda shunday ayting:** "O'zgarmas obyektlar hashlanadi (dict kaliti bo'la oladi), thread'lar orasida xavfsiz va kutilmagan yon ta'sir yo'q. O'z o'zgarmas turlarim uchun `@dataclass(frozen=True)` yoki `NamedTuple`. Klassik tuzoq — o'zgaruvchan standart argument (`practical/python.md` Q6)."
+
 ---
 
-### 53. What is object slicing? | Obyektni kesish nima?
+## Q37. What is object slicing? | Obyektni kesish nima?
+
+**Oddiy qilib aytganda:** Obyektni kesish (object slicing, C++) — bola obyekt ota turidagi o'zgaruvchiga **qiymat** sifatida ko'chirilganda, bolaning qo'shimcha qismlari 'kesilib' qoladi. Python'da o'zgaruvchilar havola bo'lgani uchun bu muammo yo'q.
+
+**Batafsilroq:**
 
 **EN:** In C++, assigning derived object to base variable **loses derived attributes**. Python avoids this — objects retain full type.
 
@@ -1897,9 +2164,15 @@ print(isinstance(animal, Dog))     # True — haqiqiy tur saqlanadi
 print(hasattr(animal, 'breed'))    # True — atribut bor
 ```
 
+**Intervyuda shunday ayting:** "C++ da slicing qiymat bo'yicha nusxalashdan kelib chiqadi; Python'da hamma narsa havola, shuning uchun obyekt har doim to'liq turini saqlaydi. Intervyuda buni tillar farqini tushunish belgisi sifatida tushuntiraman."
+
 ---
 
-### 54. What is a mixin? | Mixin nima?
+## Q38. Mixin nima? / What is a mixin?
+
+**Oddiy qilib aytganda:** Mixin — o'zi mustaqil ishlatilmaydigan, lekin boshqa klasslarga bitta aniq qobiliyat qo'shadigan kichik klass: `JsonMixin` — obyektni JSON'ga aylantirishni, `TimestampMixin` — yaratilgan vaqtni qo'shadi.
+
+**Batafsilroq:**
 
 **EN:** A class that **provides reusable methods** to other classes through multiple inheritance — not meant to be standalone.
 
@@ -1949,9 +2222,58 @@ print(u.to_json())
 u.validate()
 ```
 
+**Qo'shimcha — What is a mixin class?:**
+
+*(See #54 for full example | To'liq misolni #54 da ko'ring)*
+
+**EN:** A class providing **additional reusable functionality** through multiple inheritance without being a full parent.
+
+**UZB:** Ko'p meros olish orqali to'liq ota klass bo'lmasdan **qo'shimcha qayta ishlatiladigan funksionallik** ta'minlaydigan klass.
+
+```python
+# EN: Practical mixin — FastAPI/Django style
+# UZB: Amaliy mixin — FastAPI/Django uslubi
+
+class CRUDMixin:
+    """EN: Reusable CRUD operations for models | UZB: Modellarga qayta ishlatiladigan CRUD"""
+    _store = {}
+
+    @classmethod
+    def create(cls, **kwargs):
+        obj = cls(**kwargs)
+        cls._store[id(obj)] = obj
+        return obj
+
+    @classmethod
+    def all(cls):
+        return list(cls._store.values())
+
+    def delete(self):
+        self.__class__._store.pop(id(self), None)
+
+class User(CRUDMixin):
+    def __init__(self, name: str, email: str):
+        self.name = name
+        self.email = email
+
+    def __repr__(self): return f"User({self.name})"
+
+u1 = User.create(name="Alyorjon", email="a@ex.com")
+u2 = User.create(name="Jasur", email="j@ex.com")
+print(User.all())   # [User(Alyorjon), User(Jasur)]
+u1.delete()
+print(User.all())   # [User(Jasur)]
+```
+
+**Intervyuda shunday ayting:** "Mixin — tor, holatsiz (yoki kam holatli) qobiliyat; ko'p meros orqali qo'shiladi va MRO'da asosiy klassdan oldin yoziladi. Barcha metodlar `super()` ni kooperativ chaqiradi. Mixin'lar ko'payib ketsa, kompozitsiyaga o'taman."
+
 ---
 
-### 55. What is polymorphic association? | Polimorfik assotsiatsiya nima?
+## Q39. What is polymorphic association? | Polimorfik assotsiatsiya nima?
+
+**Oddiy qilib aytganda:** Polimorfik assotsiatsiya — bitta bog'lanish turli turdagi obyektlarga ishora qila oladi: masalan, 'izoh' post'ga ham, rasmga ham, videoga ham tegishli bo'lishi mumkin. Bazada bu odatda `(target_type, target_id)` juftligi bilan saqlanadi.
+
+**Batafsilroq:**
 
 **EN:** The ability to **associate an object with different types** at runtime.
 
@@ -1994,9 +2316,15 @@ for like in likes:
     print(like.describe())
 ```
 
+**Intervyuda shunday ayting:** "Polimorfik assotsiatsiya moslashuvchan, lekin baza darajasida foreign key yaxlitligini yo'qotadi. Muqobillar: har tur uchun alohida nullable FK + CHECK, yoki umumiy 'commentable' jadvali. Tanlovni yaxlitlik va so'rov soddaligi o'rtasidagi murosa sifatida tushuntiraman."
+
 ---
 
-### 56. What is a namespace? | Namespace nima?
+## Q40. What is a namespace? | Namespace nima?
+
+**Oddiy qilib aytganda:** Namespace — nomlar va ular ko'rsatadigan obyektlar ro'yxati. Har modul, har funksiya va har klass o'z namespace'iga ega, shuning uchun turli joylardagi bir xil nomlar to'qnashmaydi.
+
+**Batafsilroq:**
 
 **EN:** A **container for identifiers** that prevents naming conflicts.
 
@@ -2030,9 +2358,15 @@ class TestConfig:
 print(f"App: {Config.DEBUG} | Test: {TestConfig.DEBUG}")
 ```
 
+**Intervyuda shunday ayting:** "Python nomlarni LEGB tartibida qidiradi. Modul, klass va nusxa namespace'lari aslida lug'atlar (`__dict__`). 'Namespaces are one honking great idea' — importlarni aniq qilib (`import x` yoki aniq nomlar), `from x import *` dan qochaman."
+
 ---
 
-### 57. What is garbage collection? | Axlat yig'ish nima?
+## Q41. What is garbage collection? | Axlat yig'ish nima?
+
+**Oddiy qilib aytganda:** Garbage collection — ishlatilmay qolgan obyektlarni xotiradan avtomatik tozalash. Python'da asosan har obyektga nechta havola borligi sanaladi (0 bo'lsa — darhol o'chiriladi), bir-biriga ishora qilib qolgan obyektlar uchun esa qo'shimcha 'axlat yig'uvchi' ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** **Automatic memory management** that frees memory occupied by unreachable objects.
 
@@ -2063,45 +2397,15 @@ gc.collect()      # EN: force collection | UZB: majburiy yig'ish
 print(f"GC stats | GC statistikasi: {gc.get_count()}")
 ```
 
----
-
-### 58. What is a destructor? | Destruktor nima?
-
-**EN:** A method (`__del__`) called **when an object is about to be destroyed** — used for cleanup.
-
-**UZB:** Obyekt **yo'q qilinishidan oldin** chaqiriladigan metod (`__del__`) — tozalash uchun ishlatiladi.
-
-```python
-# EN: Context manager is preferred over __del__ for cleanup in Python
-# UZB: Python'da tozalash uchun __del__ dan ko'ra context manager afzal
-
-class DatabaseConnection:
-    def __init__(self, url: str):
-        self.url = url
-        self.is_open = True
-        print(f"[CONNECT] {url}")
-
-    def query(self, sql: str) -> str:
-        if not self.is_open:
-            raise RuntimeError("EN: Connection closed | UZB: Ulanish yopilgan")
-        return f"Result of: {sql}"
-
-    def close(self):
-        self.is_open = False
-        print(f"[DISCONNECT] {self.url}")
-
-    def __del__(self):
-        if self.is_open:
-            self.close()       # EN: safety net | UZB: xavfsizlik to'ri
-
-conn = DatabaseConnection("postgresql://localhost/app")
-print(conn.query("SELECT 1"))
-del conn     # [DISCONNECT] — agar yopilmagan bo'lsa
-```
+**Intervyuda shunday ayting:** "CPython: reference counting + aylanma havolalar uchun generatsion GC (`gc` moduli). Xotira sizishi odatda GC muammosi emas, balki o'sib borayotgan global kesh yoki ro'yxat — uni `tracemalloc` bilan topaman. Katta aylanmalarni `weakref` bilan uzaman."
 
 ---
 
-### 59. What is the Liskov Substitution Principle? | Liskov almashtirish printsipi nima?
+## Q42. What is the Liskov Substitution Principle? | Liskov almashtirish printsipi nima?
+
+**Oddiy qilib aytganda:** Liskov tamoyili — bola klass ota klass o'rniga qo'yilsa, dastur to'g'ri ishlashda davom etishi kerak. Klassik misol: `Square` ni `Rectangle` dan meros qilish — kvadratning kengligini o'zgartirish balandligini ham o'zgartiradi va kutilgan xulq buziladi.
+
+**Batafsilroq:**
 
 **EN:** Objects of a subclass should be able to **replace objects of the base class** without breaking the program.
 
@@ -2142,9 +2446,15 @@ for bird in birds:
     print(bird.move())
 ```
 
+**Intervyuda shunday ayting:** "LSP: bola klass ota kontraktini kuchaytirmasligi (kirishni torroq qilmasligi) va kafolatlarini zaiflashtirmasligi kerak. Buzilish belgisi — bola metodida `NotImplementedError` yoki `isinstance` tekshiruvlari. Bunday holatda meros o'rniga umumiy interfeys yoki kompozitsiya."
+
 ---
 
-### 60. What is constructor chaining? | Konstruktor zanjiri nima?
+## Q43. Konstruktor zanjiri va delegatsiyasi nima? / What are constructor chaining and delegation?
+
+**Oddiy qilib aytganda:** Konstruktor zanjiri — bola klass konstruktori ota klass konstruktorini chaqiradi, u esa o'z otasinikini — shunda har daraja o'z qismini tayyorlaydi. Python'da bu `super().__init__(...)` orqali; delegatsiya esa bitta konstruktor boshqa (masalan, klass metodi) orqali ishlashi.
+
+**Batafsilroq:**
 
 **EN:** The process of **calling one constructor from another** — builds initialization chains.
 
@@ -2179,13 +2489,58 @@ print(f"Perimeter | Perimetr: {hexagon.perimeter()}")
 # Perimeter | Perimetr: 30.0
 ```
 
+**Qo'shimcha — What is a constructor delegation?:**
+
+**EN:** When **one constructor calls another** constructor of the same class.
+
+**UZB:** **Bir konstruktor bir xil klassning boshqa konstruktorini chaqirishi**.
+
+```python
+class HttpResponse:
+    def __init__(self, status: int, body: str, headers: dict = None, content_type: str = "application/json"):
+        self.status = status
+        self.body = body
+        self.headers = headers or {"Content-Type": content_type}
+        self.content_type = content_type
+
+    # EN: Constructor delegation via classmethods
+    # UZB: Classmethod orqali konstruktor delegatsiyasi
+    @classmethod
+    def ok(cls, body: str) -> 'HttpResponse':
+        return cls(200, body)               # EN: delegates to main constructor
+                                             # UZB: asosiy konstruktorga topshiradi
+
+    @classmethod
+    def not_found(cls, resource: str) -> 'HttpResponse':
+        return cls(404, f"'{resource}' not found | topilmadi")
+
+    @classmethod
+    def error(cls, message: str) -> 'HttpResponse':
+        return cls(500, f"Error | Xatolik: {message}")
+
+    def __repr__(self):
+        return f"HttpResponse({self.status}, body='{self.body[:30]}...')"
+
+# EN: Using delegated constructors
+# UZB: Delegatsiya qilingan konstruktorlardan foydalanish
+print(HttpResponse.ok('{"user": "Alyorjon"}'))
+print(HttpResponse.not_found("User"))
+print(HttpResponse.error("Database connection failed | DB ulanishi xato"))
+```
+
+**Intervyuda shunday ayting:** "Har `__init__` da `super().__init__(**kwargs)` — ko'p merosda ham zanjir to'liq o'tadi. Muqobil konstruktorlar `@classmethod` bo'lib, asosiy `__init__` ga delegatsiya qiladi — validatsiya bitta joyda qoladi."
+
 ---
 
-## 6. Binding & Casting | Bog'lash va Konvertatsiya
+# 🔹 Binding & Casting | Bog'lash va Konvertatsiya
 
 ---
 
-### 61. What is dynamic binding? | Dinamik bog'lash nima?
+## Q44. Dinamik (kech) bog'lash nima? / What is dynamic (late) binding?
+
+**Oddiy qilib aytganda:** Dinamik (kech) bog'lash — qaysi metod chaqirilishi dastur **ishlayotganda**, obyektning haqiqiy turiga qarab hal qilinadi. `animal.speak()` — `animal` it bo'lsa itning, mushuk bo'lsa mushukning metodi ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** Binding that occurs **at runtime** — method resolved based on actual object type.
 
@@ -2216,9 +2571,90 @@ print(publish(MarkdownRenderer(), text))
 # UZB: Bir xil funksiya chaqiruvi, boshqacha natijalar — dinamik bog'lash
 ```
 
+**Qo'shimcha — What is dynamic method dispatch?:**
+
+**EN:** The process of **resolving which method to call at runtime** based on the actual object type.
+
+**UZB:** Haqiqiy obyekt turiga qarab **qaysi metod chaqirilishini runtime'da hal qilish** jarayoni.
+
+```python
+# EN: Python resolves method calls at runtime — dynamic dispatch
+# UZB: Python metod chaqiruvlarini runtime'da hal qiladi — dinamik chaqirish
+
+class TaxCalculator:
+    def calculate(self, amount: float) -> float:
+        return amount * 0.10    # EN: 10% default | UZB: 10% standart
+
+class UzbekTax(TaxCalculator):
+    def calculate(self, amount: float) -> float:
+        return amount * 0.12    # UZB: O'zbekiston QQS 12%
+
+class EUTax(TaxCalculator):
+    def calculate(self, amount: float) -> float:
+        return amount * 0.20    # EN: EU VAT 20% | UZB: Evropa QQS 20%
+
+def process_order(calculator: TaxCalculator, price: float):
+    # EN: Which calculate() runs? Decided at runtime based on actual type
+    # UZB: Qaysi calculate() ishlaydi? Haqiqiy turga qarab runtime'da aniqlanadi
+    tax = calculator.calculate(price)
+    print(f"Price: ${price:.2f} | Tax: ${tax:.2f} | Total: ${price + tax:.2f}")
+
+process_order(UzbekTax(), 100_000)   # Uzbek tax
+process_order(EUTax(), 100_000)      # EU tax
+```
+
+**Qo'shimcha — What is late binding?:**
+
+**EN:** Also known as **dynamic binding** — method calls resolved at runtime, not compile time.
+
+**UZB:** **Dinamik bog'lash** deb ham ataladi — metod chaqiruvlari kompilyatsiya vaqtida emas, runtime'da hal qilinadi.
+
+```python
+# EN: Late binding — Python's default behavior
+# UZB: Kech bog'lash — Python'ning standart xatti-harakati
+
+class Plugin:
+    def execute(self) -> str:
+        return "Default plugin"
+
+class AuthPlugin(Plugin):
+    def execute(self) -> str:
+        return "EN: Authenticating user | UZB: Foydalanuvchini tasdiqlash"
+
+class CachePlugin(Plugin):
+    def execute(self) -> str:
+        return "EN: Caching response | UZB: Javobni keshlash"
+
+class LogPlugin(Plugin):
+    def execute(self) -> str:
+        return "EN: Logging request | UZB: So'rovni qayd etish"
+
+class MiddlewareChain:
+    def __init__(self):
+        self.plugins: list[Plugin] = []
+
+    def add(self, plugin: Plugin) -> 'MiddlewareChain':
+        self.plugins.append(plugin)
+        return self
+
+    def run(self):
+        for plugin in self.plugins:
+            print(plugin.execute())   # EN: late binding — which execute()? runtime!
+                                      # UZB: kech bog'lash — qaysi execute()? runtime!
+
+chain = MiddlewareChain()
+chain.add(AuthPlugin()).add(CachePlugin()).add(LogPlugin()).run()
+```
+
+**Intervyuda shunday ayting:** "Python'da deyarli hamma narsa kech bog'lanadi: atribut va metodlar chaqiruv paytida qidiriladi. Bu polimorfizm va monkey-patching'ga imkon beradi, lekin xatolar ham faqat ishlash paytida chiqadi — shuning uchun type checker va testlar."
+
 ---
 
-### 62. What is static binding? | Statik bog'lash nima?
+## Q45. Statik (erta) bog'lash nima? / What is static (early) binding?
+
+**Oddiy qilib aytganda:** Statik (erta) bog'lash — qaysi funksiya chaqirilishi **kompilyatsiya** vaqtida hal qilinadi (C++ dagi oddiy metodlar, Java'dagi statik metodlar). Python kompilyatsiya qilinadigan tillardek emas, shuning uchun unda deyarli hamma narsa dinamik.
+
+**Batafsilroq:**
 
 **EN:** Binding that occurs **at compile time** — method is determined before runtime.
 
@@ -2246,167 +2682,40 @@ print(StringUtils.is_palindrome("racecar")) # True
 print(StringUtils.from_list(["Hello", "World"]))  # Hello World
 ```
 
----
+**Qo'shimcha — What is early binding?:**
 
-### 63. What is method resolution? | Metod aniqlash nima?
+**EN:** Also known as **static binding** — resolved at compile/definition time.
 
-**EN:** The process of **determining which method to call** when multiple candidates exist (inheritance, polymorphism).
-
-**UZB:** Bir nechta nomzod bo'lganda **qaysi metodni chaqirishni aniqlash** jarayoni.
+**UZB:** **Statik bog'lash** deb ham ataladi — kompilyatsiya/ta'riflash vaqtida hal qilinadi.
 
 ```python
-# EN: Python MRO — C3 linearization resolves method lookup
-# UZB: Python MRO — C3 linearizatsiyasi metod qidiruvini hal qiladi
+# EN: Early binding — static and class methods
+# UZB: Erta bog'lash — statik va klass metodlari
 
-class Mixin1:
-    def process(self): return "Mixin1"
+class MathHelper:
+    PI = 3.14159265358979        # EN: early bound constant | UZB: erta bog'liq konstantA
 
-class Mixin2:
-    def process(self): return "Mixin2"
+    @staticmethod                # EN: early binding — always MathHelper.circle_area
+    def circle_area(r: float):   # UZB: erta bog'lash — doim MathHelper.circle_area
+        return MathHelper.PI * r ** 2
 
-class Base:
-    def process(self): return "Base"
+    @classmethod                 # EN: early-ish binding via cls
+    def from_diameter(cls, d: float):  # UZB: cls orqali erta bog'lash
+        return cls.circle_area(d / 2)
 
-class MyClass(Mixin1, Mixin2, Base):
-    pass
-
-obj = MyClass()
-print(obj.process())      # Mixin1  — MRO order
-print(MyClass.__mro__)    # MRO zanjiri
-
-# EN: Use super() to chain through MRO
-# UZB: MRO bo'ylab zanjir uchun super() ishlatish
-class A:
-    def greet(self): return f"A({super().greet() if hasattr(super(), 'greet') else ''})"
-
-class B(A):
-    def greet(self): return f"B→{super().greet()}"
-
-class C(A):
-    def greet(self): return f"C→{super().greet()}"
-
-class D(B, C):
-    def greet(self): return f"D→{super().greet()}"
-
-print(D().greet())   # D→B→C→A()
+print(MathHelper.circle_area(5))    # 78.539...
+print(MathHelper.from_diameter(10)) # 78.539...
 ```
+
+**Intervyuda shunday ayting:** "Erta bog'lash tezroq va xatolarni oldinroq topadi, lekin moslashuvchan emas. Python'da uning o'rnini qisman statik type checker'lar bosadi — xatolar ishga tushirishdan oldin topiladi, runtime xulqi esa dinamikligicha qoladi."
 
 ---
 
-### 64. What is downcasting? | Pastga ko'chirish nima?
+## Q46. What is a virtual table (vtable)? | Virtual jadval (vtable) nima?
 
-**EN:** Casting an object of a **superclass reference to a subclass** — requires type check.
+**Oddiy qilib aytganda:** Virtual jadval (vtable, C++) — har klass uchun 'qaysi virtual metod qayerda' ro'yxati; obyekt shu ro'yxatga ishora qilib, to'g'ri metodni tez topadi. Python'da vtable yo'q: metodlar klass lug'atlaridan MRO bo'yicha qidiriladi.
 
-**UZB:** **Superklass havolasini subklass turiga** o'tkazish — tur tekshiruvi talab qiladi.
-
-```python
-class Animal:
-    def __init__(self, name: str):
-        self.name = name
-
-    def speak(self) -> str:
-        return f"{self.name} makes a sound"
-
-class Dog(Animal):
-    def fetch(self) -> str:           # EN: subclass-specific method | UZB: subklassga xos metod
-        return f"{self.name} fetches the ball!"
-
-class Cat(Animal):
-    def purr(self) -> str:
-        return f"{self.name} purrs..."
-
-animals: list[Animal] = [Dog("Rex"), Cat("Whiskers"), Dog("Buddy")]
-
-for animal in animals:
-    # EN: Downcast — check type first, then access subclass methods
-    # UZB: Pastga ko'chirish — avval tur tekshir, keyin subklass metodiga kirish
-    if isinstance(animal, Dog):
-        print(animal.fetch())    # Dog-specific method
-    elif isinstance(animal, Cat):
-        print(animal.purr())     # Cat-specific method
-```
-
----
-
-### 65. What is upcasting? | Yuqoriga ko'chirish nima?
-
-**EN:** Casting an object of a **subclass to its superclass** — implicit and safe.
-
-**UZB:** **Subklass obyektini o'z superklass turiga** o'tkazish — yashirin va xavfsiz.
-
-```python
-class Shape:
-    def area(self) -> float:
-        return 0.0
-
-    def describe(self) -> str:
-        return f"{type(self).__name__}: area={self.area():.2f}"
-
-class Circle(Shape):
-    def __init__(self, r: float):
-        self.r = r
-    def area(self) -> float:
-        import math
-        return math.pi * self.r ** 2
-
-class Square(Shape):
-    def __init__(self, s: float):
-        self.s = s
-    def area(self) -> float:
-        return self.s ** 2
-
-# EN: Upcast — Circle/Square → Shape (implicit, safe)
-# UZB: Yuqoriga ko'chirish — Circle/Square → Shape (yashirin, xavfsiz)
-shapes: list[Shape] = [Circle(5), Square(4), Circle(3)]  # upcast
-
-total_area = sum(s.area() for s in shapes)
-print(f"Total area | Umumiy maydon: {total_area:.2f}")
-
-for shape in shapes:
-    print(shape.describe())  # EN: polymorphism works | UZB: polimorfizm ishlaydi
-```
-
----
-
-### 66. What is a copy constructor? | Nusxa konstruktori nima?
-
-**EN:** A constructor that creates a **new object as a copy** of an existing one.
-
-**UZB:** Mavjud obyektning **nusxasi sifatida yangi obyekt** yaratadigan konstruktor.
-
-```python
-import copy
-
-class Matrix:
-    def __init__(self, data=None, source=None):
-        if source is not None:             # EN: copy constructor | UZB: nusxa konstruktori
-            self.data = copy.deepcopy(source.data)
-            self.rows = source.rows
-            self.cols = source.cols
-        else:
-            self.data = data or []
-            self.rows = len(self.data)
-            self.cols = len(self.data[0]) if self.data else 0
-
-    @classmethod
-    def copy_of(cls, other: 'Matrix') -> 'Matrix':
-        return cls(source=other)
-
-    def __repr__(self):
-        return f"Matrix({self.rows}x{self.cols})"
-
-m1 = Matrix([[1, 2, 3], [4, 5, 6]])
-m2 = Matrix.copy_of(m1)           # EN: copy constructor via classmethod
-                                   # UZB: classmethod orqali nusxa konstruktori
-
-m2.data[0][0] = 99
-print(m1.data[0][0])   # 1   — original o'zgarmadi
-print(m2.data[0][0])   # 99  — nusxa
-```
-
----
-
-### 67. What is a virtual table (vtable)? | Virtual jadval (vtable) nima?
+**Batafsilroq:**
 
 **EN:** An internal table used to **resolve virtual method calls** in polymorphic classes. Python uses `__dict__` and MRO.
 
@@ -2438,9 +2747,15 @@ print("MRO (lookup order):", [c.__name__ for c in GuideDog.__mro__])
 print(dog.speak())   # Woof! — found in Dog.__dict__
 ```
 
+**Intervyuda shunday ayting:** "C++ vtable — dinamik tarqatishning tezkor mexanizmi. CPython'da metod qidiruvi `__dict__` va MRO orqali, tezlik uchun esa ichki keshlar (method cache, 3.11+ dagi ixtisoslashgan bytecode) ishlatiladi."
+
 ---
 
-### 68. What is multiple dispatch? | Ko'p chaqirish nima?
+## Q47. What is multiple dispatch? | Ko'p chaqirish nima?
+
+**Oddiy qilib aytganda:** Multiple dispatch — qaysi funksiya chaqirilishi **barcha** argumentlarning turiga qarab tanlanadi (faqat birinchisiga emas). Masalan, `collide(Asteroid, Ship)` va `collide(Ship, Ship)` turli ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** Choosing which function to call based on the **runtime types of more than one argument**.
 
@@ -2476,9 +2791,15 @@ print(serialize({"a": 1}))         # dict:{"a": 1}
 print(serialize("hello"))          # hello  — default
 ```
 
+**Intervyuda shunday ayting:** "Python'da standart kutubxona faqat birinchi argument bo'yicha tarqatadi — `functools.singledispatch`. To'liq multiple dispatch uchun tashqi kutubxonalar (plum, multipledispatch) yoki aniq lug'at `{(TypeA, TypeB): handler}`."
+
 ---
 
-### 69. What is an abstract data type (ADT)? | Abstrakt ma'lumot turi (AMT) nima?
+## Q48. What is an abstract data type (ADT)? | Abstrakt ma'lumot turi (AMT) nima?
+
+**Oddiy qilib aytganda:** Abstrakt ma'lumot turi (ADT) — ma'lumot va unda bajariladigan amallarni ichki tuzilmadan qat'i nazar tasvirlash: 'stek' — `push`, `pop`, `peek` amallari bor narsa; u ro'yxatda yoki bog'langan ro'yxatda yozilganmi — farqi yo'q.
+
+**Batafsilroq:**
 
 **EN:** A model for data types defined by its **behavior from the user's perspective**, not implementation.
 
@@ -2525,9 +2846,58 @@ print(stack.pop())   # 3
 print(stack.size())  # 2
 ```
 
+**Intervyuda shunday ayting:** "ADT — interfeys va xulq, implementatsiya emas. Python'da buni ABC yoki Protocol bilan ifodalayman va implementatsiyani almashtirish mumkin bo'ladi. `collections.abc` (Sequence, Mapping) — tayyor ADT'lar."
+
 ---
 
-### 70. What is an exception in OOP? | OOP'da istisno nima?
+## Q49. OOP'da istisnolar va ularni boshqarish / Exceptions and exception handling in OOP
+
+**Oddiy qilib aytganda:** Istisno (exception) — dastur normal oqimini buzgan hodisa: fayl yo'q, noto'g'ri qiymat, tarmoq uzildi. OOP'da istisnolar ham klasslar: o'z xatolaringizni `Exception` dan meros qilib yaratasiz va ularni turiga qarab ushlaysiz.
+
+**Batafsilroq:**
+
+**EN:** Responding to exceptions using **try, except, else, and finally** blocks.
+
+**UZB:** **try, except, else va finally** bloklari yordamida istisnolarga javob berish.
+
+```python
+import logging
+
+class APIClient:
+    def __init__(self, base_url: str):
+        self.base_url = base_url
+
+    def fetch(self, endpoint: str) -> dict:
+        import random
+        # EN: Simulate different error scenarios
+        # UZB: Turli xato stsenariylarini simulyatsiya qilish
+        roll = random.random()
+        if roll < 0.3:
+            raise ConnectionError("EN: Network timeout | UZB: Tarmoq vaqti tugadi")
+        if roll < 0.5:
+            raise ValueError("EN: Invalid response | UZB: Noto'g'ri javob")
+        return {"data": "success", "endpoint": endpoint}
+
+def safe_fetch(client: APIClient, endpoint: str) -> dict:
+    try:
+        result = client.fetch(endpoint)         # EN: may raise | UZB: istisno qo'zg'atishi mumkin
+    except ConnectionError as e:
+        logging.error(f"Network error: {e}")
+        return {"error": "network", "retry": True}
+    except ValueError as e:
+        logging.warning(f"Data error: {e}")
+        return {"error": "data", "retry": False}
+    except Exception as e:
+        logging.critical(f"Unexpected: {e}")
+        raise                                    # EN: re-raise unknown errors | UZB: noma'lum xatolarni qayta ko'tarish
+    else:
+        print("EN: Request successful | UZB: So'rov muvaffaqiyatli")  # EN: runs if no exception
+        return result
+    finally:
+        print("EN: Request completed | UZB: So'rov yakunlandi")       # EN: always runs | UZB: har doim ishlaydi
+```
+
+**Qo'shimcha — What is an exception in OOP?:**
 
 **EN:** An event that **disrupts the normal flow** of execution — represented as objects in Python.
 
@@ -2571,101 +2941,15 @@ except NotFoundError as e:
     print(f"[{e.code}] {e}")   # [404] 'User' with id=999 not found
 ```
 
----
-
-### 71. What is exception handling? | Istisnolarni boshqarish nima?
-
-**EN:** Responding to exceptions using **try, except, else, and finally** blocks.
-
-**UZB:** **try, except, else va finally** bloklari yordamida istisnolarga javob berish.
-
-```python
-import logging
-
-class APIClient:
-    def __init__(self, base_url: str):
-        self.base_url = base_url
-
-    def fetch(self, endpoint: str) -> dict:
-        import random
-        # EN: Simulate different error scenarios
-        # UZB: Turli xato stsenariylarini simulyatsiya qilish
-        roll = random.random()
-        if roll < 0.3:
-            raise ConnectionError("EN: Network timeout | UZB: Tarmoq vaqti tugadi")
-        if roll < 0.5:
-            raise ValueError("EN: Invalid response | UZB: Noto'g'ri javob")
-        return {"data": "success", "endpoint": endpoint}
-
-def safe_fetch(client: APIClient, endpoint: str) -> dict:
-    try:
-        result = client.fetch(endpoint)         # EN: may raise | UZB: istisno qo'zg'atishi mumkin
-    except ConnectionError as e:
-        logging.error(f"Network error: {e}")
-        return {"error": "network", "retry": True}
-    except ValueError as e:
-        logging.warning(f"Data error: {e}")
-        return {"error": "data", "retry": False}
-    except Exception as e:
-        logging.critical(f"Unexpected: {e}")
-        raise                                    # EN: re-raise unknown errors | UZB: noma'lum xatolarni qayta ko'tarish
-    else:
-        print("EN: Request successful | UZB: So'rov muvaffaqiyatli")  # EN: runs if no exception
-        return result
-    finally:
-        print("EN: Request completed | UZB: So'rov yakunlandi")       # EN: always runs | UZB: har doim ishlaydi
-```
+**Intervyuda shunday ayting:** "O'z ilovam uchun istisnolar ierarxiyasini quraman: `AppError` → `NotFoundError`, `PermissionError`... — chaqiruvchi kerakli darajada ushlaydi. Xabar va kontekstni atributlarda saqlayman, past darajadagi xatoni `raise ... from e` bilan o'rayman. Hamma narsani yutib yuboradigan `except:` dan qochaman."
 
 ---
 
-### 72. What is the difference between a class and an interface? | Klass va interfeys o'rtasidagi farq nima?
+## Q50. OOP'da tur o'zgartirish: upcasting va downcasting / Type casting in OOP: upcasting and downcasting
 
-**EN:** A class **can contain implementation**; an interface only contains **method signatures** (contract).
+**Oddiy qilib aytganda:** Tur o'zgartirish (casting) — obyektga boshqa tur sifatida qarash. Upcasting — bola obyektni ota turi sifatida ishlatish (xavfsiz). Downcasting — ota tur sifatida kelgan obyektni bola turiga 'tushirish' (tekshirish kerak). Python'da obyekt turi o'zgarmaydi — faqat qanday ishlatishingiz o'zgaradi.
 
-**UZB:** Klass **amalga oshirishni o'z ichiga olishi mumkin**; interfeys faqat **metod imzolarini** o'z ichiga oladi (shartnoma).
-
-| Feature / Xususiyat | Class / Klass | Interface / Interfeys |
-|---|---|---|
-| Instantiation / Yaratish | Yes / Ha | No / Yo'q |
-| Implementation / Amalga oshirish | Yes / Ha | No (Abstract) / Yo'q |
-| Multiple inherit / Ko'p meros | Limited / Cheklangan | Yes / Ha |
-| State / Holat | Yes / Ha | No / Yo'q |
-
-```python
-from abc import ABC, abstractmethod
-
-# EN: Interface — no state, no implementation
-# UZB: Interfeys — holat yo'q, amalga oshirish yo'q
-class Drawable(ABC):
-    @abstractmethod
-    def draw(self): pass
-
-    @abstractmethod
-    def get_bounds(self) -> tuple: pass
-
-# EN: Abstract class — has state AND some implementation
-# UZB: Abstrakt klass — holat ham, qisman amalga oshirish ham bor
-class Widget(ABC):
-    def __init__(self, x: int, y: int):
-        self.x = x                 # EN: state | UZB: holat
-        self.y = y
-
-    def move(self, dx, dy):        # EN: concrete method | UZB: konkret metod
-        self.x += dx
-        self.y += dy
-
-    @abstractmethod
-    def render(self): pass
-
-class Button(Widget, Drawable):
-    def render(self): print(f"Button at ({self.x},{self.y})")
-    def draw(self): print("Drawing button")
-    def get_bounds(self): return (self.x, self.y, 100, 30)
-```
-
----
-
-### 73. What is type casting in OOP? | OOP'da tur o'zgartirish nima?
+**Batafsilroq:**
 
 **EN:** Converting one type of **object reference to another**.
 
@@ -2704,54 +2988,86 @@ print(str(3.14))      # float → str
 print(list((1,2,3)))  # tuple → list
 ```
 
----
+**Qo'shimcha — What is downcasting?:**
 
-### 74. What is a mixin class? | Mixin klass nima?
+**EN:** Casting an object of a **superclass reference to a subclass** — requires type check.
 
-*(See #54 for full example | To'liq misolni #54 da ko'ring)*
-
-**EN:** A class providing **additional reusable functionality** through multiple inheritance without being a full parent.
-
-**UZB:** Ko'p meros olish orqali to'liq ota klass bo'lmasdan **qo'shimcha qayta ishlatiladigan funksionallik** ta'minlaydigan klass.
+**UZB:** **Superklass havolasini subklass turiga** o'tkazish — tur tekshiruvi talab qiladi.
 
 ```python
-# EN: Practical mixin — FastAPI/Django style
-# UZB: Amaliy mixin — FastAPI/Django uslubi
-
-class CRUDMixin:
-    """EN: Reusable CRUD operations for models | UZB: Modellarga qayta ishlatiladigan CRUD"""
-    _store = {}
-
-    @classmethod
-    def create(cls, **kwargs):
-        obj = cls(**kwargs)
-        cls._store[id(obj)] = obj
-        return obj
-
-    @classmethod
-    def all(cls):
-        return list(cls._store.values())
-
-    def delete(self):
-        self.__class__._store.pop(id(self), None)
-
-class User(CRUDMixin):
-    def __init__(self, name: str, email: str):
+class Animal:
+    def __init__(self, name: str):
         self.name = name
-        self.email = email
 
-    def __repr__(self): return f"User({self.name})"
+    def speak(self) -> str:
+        return f"{self.name} makes a sound"
 
-u1 = User.create(name="Alyorjon", email="a@ex.com")
-u2 = User.create(name="Jasur", email="j@ex.com")
-print(User.all())   # [User(Alyorjon), User(Jasur)]
-u1.delete()
-print(User.all())   # [User(Jasur)]
+class Dog(Animal):
+    def fetch(self) -> str:           # EN: subclass-specific method | UZB: subklassga xos metod
+        return f"{self.name} fetches the ball!"
+
+class Cat(Animal):
+    def purr(self) -> str:
+        return f"{self.name} purrs..."
+
+animals: list[Animal] = [Dog("Rex"), Cat("Whiskers"), Dog("Buddy")]
+
+for animal in animals:
+    # EN: Downcast — check type first, then access subclass methods
+    # UZB: Pastga ko'chirish — avval tur tekshir, keyin subklass metodiga kirish
+    if isinstance(animal, Dog):
+        print(animal.fetch())    # Dog-specific method
+    elif isinstance(animal, Cat):
+        print(animal.purr())     # Cat-specific method
 ```
+
+**Qo'shimcha — What is upcasting?:**
+
+**EN:** Casting an object of a **subclass to its superclass** — implicit and safe.
+
+**UZB:** **Subklass obyektini o'z superklass turiga** o'tkazish — yashirin va xavfsiz.
+
+```python
+class Shape:
+    def area(self) -> float:
+        return 0.0
+
+    def describe(self) -> str:
+        return f"{type(self).__name__}: area={self.area():.2f}"
+
+class Circle(Shape):
+    def __init__(self, r: float):
+        self.r = r
+    def area(self) -> float:
+        import math
+        return math.pi * self.r ** 2
+
+class Square(Shape):
+    def __init__(self, s: float):
+        self.s = s
+    def area(self) -> float:
+        return self.s ** 2
+
+# EN: Upcast — Circle/Square → Shape (implicit, safe)
+# UZB: Yuqoriga ko'chirish — Circle/Square → Shape (yashirin, xavfsiz)
+shapes: list[Shape] = [Circle(5), Square(4), Circle(3)]  # upcast
+
+total_area = sum(s.area() for s in shapes)
+print(f"Total area | Umumiy maydon: {total_area:.2f}")
+
+for shape in shapes:
+    print(shape.describe())  # EN: polymorphism works | UZB: polimorfizm ishlaydi
+```
+
+**Intervyuda shunday ayting:** "Python dinamik: upcasting avtomatik (duck typing), downcasting o'rniga `isinstance` tekshiruvi yoki — yaxshisi — polimorfizm. `typing.cast` faqat type checker'ga ma'lumot beradi, runtime'da hech narsa qilmaydi. Qiymat konvertatsiyasi (`int("5")`) bu boshqa narsa — yangi obyekt yaratadi."
 
 ---
 
-### 75. What is the `isinstance` operator? | `isinstance` operatori nima?
+## Q51. What is the `isinstance` operator? | `isinstance` operatori nima?
+
+**Oddiy qilib aytganda:** `isinstance(obj, Class)` — 'bu obyekt shu klassdanmi (yoki uning bolasidanmi)?' degan savol. `type(obj) == Class` dan farqli, meros bilan to'g'ri ishlaydi va bir nechta turni birdaniga tekshira oladi.
+
+**Batafsilroq:**
 
 **EN:** Tests whether an object is an **instance of a specific class or its subclass**.
 
@@ -2785,125 +3101,19 @@ def process(vehicle: Vehicle):
         print("EN: Fill gas! | UZB: Benzin soling!")
 ```
 
----
-
-### 76. What is late binding? | Kech bog'lash nima?
-
-**EN:** Also known as **dynamic binding** — method calls resolved at runtime, not compile time.
-
-**UZB:** **Dinamik bog'lash** deb ham ataladi — metod chaqiruvlari kompilyatsiya vaqtida emas, runtime'da hal qilinadi.
-
-```python
-# EN: Late binding — Python's default behavior
-# UZB: Kech bog'lash — Python'ning standart xatti-harakati
-
-class Plugin:
-    def execute(self) -> str:
-        return "Default plugin"
-
-class AuthPlugin(Plugin):
-    def execute(self) -> str:
-        return "EN: Authenticating user | UZB: Foydalanuvchini tasdiqlash"
-
-class CachePlugin(Plugin):
-    def execute(self) -> str:
-        return "EN: Caching response | UZB: Javobni keshlash"
-
-class LogPlugin(Plugin):
-    def execute(self) -> str:
-        return "EN: Logging request | UZB: So'rovni qayd etish"
-
-class MiddlewareChain:
-    def __init__(self):
-        self.plugins: list[Plugin] = []
-
-    def add(self, plugin: Plugin) -> 'MiddlewareChain':
-        self.plugins.append(plugin)
-        return self
-
-    def run(self):
-        for plugin in self.plugins:
-            print(plugin.execute())   # EN: late binding — which execute()? runtime!
-                                      # UZB: kech bog'lash — qaysi execute()? runtime!
-
-chain = MiddlewareChain()
-chain.add(AuthPlugin()).add(CachePlugin()).add(LogPlugin()).run()
-```
+**Intervyuda shunday ayting:** "`isinstance` merosni hisobga oladi va ABC/`register` bilan virtual subclass'larni ham taniydi. Ko'p `isinstance` tarmoqlari — polimorfizm yetishmasligi belgisi. Tur bo'yicha tarmoqlanish kerak bo'lsa — `singledispatch` yoki `match`."
 
 ---
 
-### 77. What is early binding? | Erta bog'lash nima?
-
-**EN:** Also known as **static binding** — resolved at compile/definition time.
-
-**UZB:** **Statik bog'lash** deb ham ataladi — kompilyatsiya/ta'riflash vaqtida hal qilinadi.
-
-```python
-# EN: Early binding — static and class methods
-# UZB: Erta bog'lash — statik va klass metodlari
-
-class MathHelper:
-    PI = 3.14159265358979        # EN: early bound constant | UZB: erta bog'liq konstantA
-
-    @staticmethod                # EN: early binding — always MathHelper.circle_area
-    def circle_area(r: float):   # UZB: erta bog'lash — doim MathHelper.circle_area
-        return MathHelper.PI * r ** 2
-
-    @classmethod                 # EN: early-ish binding via cls
-    def from_diameter(cls, d: float):  # UZB: cls orqali erta bog'lash
-        return cls.circle_area(d / 2)
-
-print(MathHelper.circle_area(5))    # 78.539...
-print(MathHelper.from_diameter(10)) # 78.539...
-```
+# 🔹 SOLID Principles | SOLID Tamoyillar
 
 ---
 
-### 78. What is a virtual base class? | Virtual asosiy klass nima?
+## Q52. What is the Single Responsibility Principle (SRP)? | Yagona Mas'uliyat Tamoyili nima?
 
-**EN:** A base class that is **shared (not duplicated)** in diamond inheritance — Python handles this via MRO.
+**Oddiy qilib aytganda:** Yagona mas'uliyat tamoyili (SRP) — klass faqat **bitta** narsa uchun javobgar bo'lishi va faqat bitta sabab bilan o'zgarishi kerak. `Invoice` hisob-fakturani hisoblaydi, lekin uni PDF qilish yoki email yuborish — boshqa klasslarning ishi.
 
-**UZB:** Olmos merosida **ulashiladigan (takrorlanmaydigan)** asosiy klass — Python buni MRO orqali hal qiladi.
-
-```python
-# EN: Diamond inheritance — without virtual base (conceptual)
-# UZB: Olmos meros — virtual asosiy klasssiz (tushuncha)
-
-class Base:
-    def __init__(self, value: int):
-        self.value = value
-        print(f"Base.__init__ called with {value}")
-
-class Left(Base):
-    def __init__(self, value: int):
-        super().__init__(value)      # EN: super() uses MRO — Base called once
-        print("Left.__init__")       # UZB: super() MRO ishlatadi — Base bir marta
-
-class Right(Base):
-    def __init__(self, value: int):
-        super().__init__(value)
-        print("Right.__init__")
-
-class Diamond(Left, Right):          # EN: diamond inheritance | UZB: olmos meros
-    def __init__(self, value: int):
-        super().__init__(value)      # EN: Python MRO ensures Base.__init__ runs ONCE
-        print("Diamond.__init__")    # UZB: Python MRO Base.__init__ ni bir marta ishlatadi
-
-d = Diamond(42)
-# Base.__init__ called with 42  — bir marta!
-# Right.__init__
-# Left.__init__
-# Diamond.__init__
-print(d.value)  # 42
-```
-
----
-
-## 7. SOLID Principles | SOLID Tamoyillar
-
----
-
-### 79. What is the Single Responsibility Principle (SRP)? | Yagona Mas'uliyat Tamoyili nima?
+**Batafsilroq:**
 
 **EN:** A class should have **only one reason to change** — one class, one job.
 
@@ -2943,7 +3153,7 @@ class UserValidator:
         return bool(data.get("name") and data.get("email"))
 
 class UserService:
-    """EN: Coordinates — orchestrates other services | UZB: Muvofiqlashtiради"""
+    """EN: Coordinates — orchestrates other services | UZB: Muvofiqlashtiradi"""
     def __init__(self):
         self.repo = UserRepository()
         self.email = EmailService()
@@ -2961,9 +3171,15 @@ svc = UserService()
 svc.register("Alyorjon", "a@example.com")
 ```
 
+**Intervyuda shunday ayting:** "SRP'ni 'o'zgarish sabablari' orqali tushunaman: buxgalteriya qoidalari va PDF dizayni turli odamlar tomonidan o'zgartiriladi, shuning uchun ular alohida. Belgilari — katta klass, turli sohalarga oid importlar, `and` bilan tasvirlanadigan nom."
+
 ---
 
-### 80. What is the Open/Closed Principle (OCP)? | Ochiq/Yopiq Tamoyil nima?
+## Q53. What is the Open/Closed Principle (OCP)? | Ochiq/Yopiq Tamoyil nima?
+
+**Oddiy qilib aytganda:** Ochiq/yopiq tamoyili (OCP) — kod yangi imkoniyatlar uchun **ochiq**, lekin mavjud kodni o'zgartirish uchun **yopiq** bo'lishi kerak. Yangi to'lov usulini qo'shish uchun eski `if/elif` ni tahrirlamasdan, yangi klass qo'shasiz.
+
+**Batafsilroq:**
 
 **EN:** Classes should be **open for extension but closed for modification**.
 
@@ -3011,9 +3227,15 @@ Order([100_000, 200_000, 150_000], PercentDiscount(10)).total()
 Order([100_000, 200_000, 150_000], SeasonalDiscount()).total()
 ```
 
+**Intervyuda shunday ayting:** "OCP'ni polimorfizm, strategiya va plagin registry orqali amalga oshiraman. Lekin oldindan har narsani kengaytiriladigan qilmayman — o'zgarish nuqtasi haqiqatan paydo bo'lganda abstraksiya qo'shaman (YAGNI)."
+
 ---
 
-### 81. What is the Interface Segregation Principle (ISP)? | Interfeys Ajratish Tamoyili nima?
+## Q54. What is the Interface Segregation Principle (ISP)? | Interfeys Ajratish Tamoyili nima?
+
+**Oddiy qilib aytganda:** Interfeysni ajratish tamoyili (ISP) — klasslarni ular ishlatmaydigan metodlarga bog'lamaslik. Katta `Worker` interfeysi o'rniga kichik `Printable`, `Scannable` — printer faqat chop etadi, skanerlash metodini yozishga majbur emas.
+
+**Batafsilroq:**
 
 **EN:** Clients should **not be forced to depend on interfaces they don't use** — prefer many small interfaces.
 
@@ -3062,9 +3284,15 @@ print(human.work()); print(human.eat())
 print(robot.work())  # robot.eat() — AttributeError, correctly!
 ```
 
+**Intervyuda shunday ayting:** "ISP — kichik, maqsadli interfeyslar. Python'da buni Protocol'lar bilan qulay ifodalayman: funksiya o'ziga kerak bo'lgan minimal protokolni talab qiladi, shunda testda soxta obyekt yozish ham oson."
+
 ---
 
-### 82. What is the Dependency Inversion Principle (DIP)? | Bog'liqlikni Teskari Aylantirish Tamoyili nima?
+## Q55. What is the Dependency Inversion Principle (DIP)? | Bog'liqlikni Teskari Aylantirish Tamoyili nima?
+
+**Oddiy qilib aytganda:** Bog'liqlikni teskari aylantirish (DIP) — yuqori darajadagi mantiq aniq implementatsiyalarga (masalan, PostgreSQL) emas, abstraksiyaga (`Repository` interfeysi) bog'lanishi kerak. Shunda bazani almashtirish yoki testda soxtasini berish oson.
+
+**Batafsilroq:**
 
 **EN:** High-level modules should **depend on abstractions**, not on low-level modules.
 
@@ -3108,13 +3336,19 @@ OrderService(EmailChannel()).place_order("a@ex.com", "Laptop")
 OrderService(TelegramChannel()).place_order("@alyorjon", "Phone")
 ```
 
----
-
-## 8. Design Patterns | Dizayn Patternlar
+**Intervyuda shunday ayting:** "DIP: biznes mantiq abstraksiyaga bog'lanadi, implementatsiyalar esa tashqaridan uzatiladi (dependency injection). Python'da buning uchun Protocol + konstruktor orqali uzatish yetarli, DI framework shart emas. FastAPI'dagi `Depends` shu tamoyilning amaliy ko'rinishi."
 
 ---
 
-### 83. What is an adapter pattern? | Adapter pattern nima?
+# 🔹 Design Patterns | Dizayn Patternlar
+
+---
+
+## Q56. What is an adapter pattern? | Adapter pattern nima?
+
+**Oddiy qilib aytganda:** Adapter — mos kelmaydigan ikki narsani ulaydigan 'o'tkazgich' (elektr vilkasi adapteri kabi). Eski to'lov kutubxonasi `make_payment()` desa, sizning kodingiz `pay()` kutsa — adapter klass `pay()` ni `make_payment()` ga aylantiradi.
+
+**Batafsilroq:**
 
 **EN:** A design pattern that allows **incompatible interfaces to work together**.
 
@@ -3154,54 +3388,15 @@ adapter = PaymentAdapter(legacy)
 checkout(adapter, 500_000)
 ```
 
----
-
-### 84. What is a singleton pattern? | Singleton pattern nima?
-
-**EN:** Ensures a class has **only one instance** and provides a global access point.
-
-**UZB:** Klassning **faqat bitta nusxasini** ta'minlaydi va global kirish nuqtasini beradi.
-
-```python
-import threading
-
-class AppLogger:
-    """EN: Thread-safe Singleton Logger | UZB: Thread-xavfsiz Singleton Logger"""
-    _instance = None
-    _lock = threading.Lock()
-
-    def __new__(cls):
-        if cls._instance is None:
-            with cls._lock:            # EN: thread-safe | UZB: thread-xavfsiz
-                if cls._instance is None:
-                    cls._instance = super().__new__(cls)
-                    cls._instance._logs = []
-                    print("EN: Logger initialized | UZB: Logger ishga tushirildi")
-        return cls._instance
-
-    def log(self, level: str, message: str):
-        entry = f"[{level.upper()}] {message}"
-        self._logs.append(entry)
-        print(entry)
-
-    def get_logs(self) -> list:
-        return self._logs.copy()
-
-# EN: Always the same instance | UZB: Har doim bir xil nusxa
-logger1 = AppLogger()
-logger2 = AppLogger()
-logger3 = AppLogger()
-
-logger1.log("info", "Server started | Server ishga tushdi")
-logger2.log("warning", "High memory | Xotira yuqori")
-
-print(f"EN: Same? | UZB: Bir xilmi? {logger1 is logger2 is logger3}")  # True
-print(f"Total logs | Jami yozuvlar: {len(logger3.get_logs())}")  # 2
-```
+**Intervyuda shunday ayting:** "Adapter tashqi yoki eski API'ni o'z interfeysimga moslaydi va chegarada turadi — domen kodi tashqi kutubxona tafsilotlarini bilmaydi. Kutubxonani almashtirganda faqat adapter o'zgaradi."
 
 ---
 
-### 85. What is the factory pattern? | Factory pattern nima?
+## Q57. What is the factory pattern? | Factory pattern nima?
+
+**Oddiy qilib aytganda:** Factory — obyekt yaratishni alohida joyga chiqarish: 'menga CSV eksportchi ber' deysiz, fabrika qaysi klassni va qanday sozlamalar bilan yaratishni o'zi hal qiladi. Chaqiruvchi aniq klass nomlarini bilishi shart emas.
+
+**Batafsilroq:**
 
 **EN:** Provides an **interface for creating objects** but lets subclasses decide which type to instantiate.
 
@@ -3250,9 +3445,15 @@ for db in ["postgresql", "firebird", "sqlite"]:
     print(driver.execute("SELECT 1"))
 ```
 
+**Intervyuda shunday ayting:** "Python'da fabrika ko'pincha oddiy funksiya, `@classmethod` konstruktor yoki registry lug'ati — Java'dagi klasslar ierarxiyasi shart emas. Nom konfiguratsiyadan kelsa — faqat ruxsat etilgan registry'dan (`practical/python.md` Q15)."
+
 ---
 
-### 86. What is the decorator pattern? | Decorator pattern nima?
+## Q58. What is the decorator pattern? | Decorator pattern nima?
+
+**Oddiy qilib aytganda:** Decorator pattern — obyektni o'rab, unga yangi xulq qo'shish, uning klassini o'zgartirmasdan: oddiy kofe → sut qo'shilgan kofe → shakar qo'shilgan kofe. Har qatlam asl obyektning interfeysini saqlaydi.
+
+**Batafsilroq:**
 
 **EN:** Allows **behavior to be added to an object** dynamically without changing its structure.
 
@@ -3312,9 +3513,15 @@ result = fetch_data("https://api.example.com/users")
 print(result)
 ```
 
+**Intervyuda shunday ayting:** "Decorator pattern (obyekt darajasida) va Python'ning `@decorator` sintaksisi (funksiya darajasida) — g'oya bir xil: o'rash orqali kengaytirish. Kesh, log, retry kabi kesib o'tuvchi vazifalar uchun qulay; qatlamlar ko'payib ketsa, xatoni kuzatish qiyinlashadi."
+
 ---
 
-### 87. What is a proxy pattern? | Proxy pattern nima?
+## Q59. What is a proxy pattern? | Proxy pattern nima?
+
+**Oddiy qilib aytganda:** Proxy — asl obyekt o'rnida turuvchi vakil: murojaatni asl obyektga uzatadi, lekin yo'lda qo'shimcha ish qiladi — ruxsatni tekshiradi, natijani keshlaydi yoki og'ir obyektni faqat kerak bo'lganda yaratadi.
+
+**Batafsilroq:**
 
 **EN:** An object **represents and controls access** to another object.
 
@@ -3360,9 +3567,15 @@ loader.load("banner.jpg")      # EN: disk load | UZB: diskdan
 loader.load("avatar.png")      # EN: cache hit! | UZB: keshdan!
 ```
 
+**Intervyuda shunday ayting:** "Proxy interfeysni saqlab, kirishni boshqaradi: lazy loading (ORM'dagi bog'liq obyektlar), kesh, ruxsat, masofaviy chaqiruv. Python'da `__getattr__` orqali umumiy proxy yozish oson, lekin u type checker'dan yashirinadi — muhim joylarda aniq metodlar yozaman."
+
 ---
 
-### 88. What is the strategy pattern? | Strategy pattern nima?
+## Q60. What is the strategy pattern? | Strategy pattern nima?
+
+**Oddiy qilib aytganda:** Strategy — bir vazifani bajarishning bir nechta usulini alohida klass/funksiyalarga ajratib, kerak paytda almashtirish. Yetkazib berish narxini hisoblash: 'oddiy', 'tezkor', 'bepul' — har biri alohida strategiya.
+
+**Batafsilroq:**
 
 **EN:** Defines a **family of algorithms** and makes them **interchangeable** at runtime.
 
@@ -3427,9 +3640,15 @@ processor.set_strategy(MergeSort())
 print(processor.process(data))
 ```
 
+**Intervyuda shunday ayting:** "Python'da strategiya ko'pincha shunchaki funksiya — birinchi darajali funksiyalar tufayli klasslar ierarxiyasi shart emas. Strategiyani konstruktor orqali berish if/elif zanjirlarini yo'qotadi va OCP'ni ta'minlaydi."
+
 ---
 
-### 89. What is the observer pattern? | Observer pattern nima?
+## Q61. Observer pattern va hodisaga asoslangan model / Observer pattern and event-driven model
+
+**Oddiy qilib aytganda:** Observer — 'obuna bo'lish' naqshi: bir obyekt (masalan, buyurtma) o'zgarganda, unga obuna bo'lganlarning hammasi (email, ombor, analitika) avtomatik xabar oladi. Buyurtma ularning kimligini bilishi shart emas — bu hodisaga asoslangan dasturlashning asosi.
+
+**Batafsilroq:**
 
 **EN:** Subject **maintains a list of observers** and notifies them automatically of state changes.
 
@@ -3499,50 +3718,96 @@ tesla.price = 180.0
 tesla.price = 260.0
 ```
 
----
+**Qo'shimcha — What is an event-driven programming model?:**
 
-### 90. What is a constructor delegation? | Konstruktor delegatsiyasi nima?
+**EN:** A model where the **flow of the program is determined by events** — user actions, messages, system events.
 
-**EN:** When **one constructor calls another** constructor of the same class.
-
-**UZB:** **Bir konstruktor bir xil klassning boshqa konstruktorini chaqirishi**.
+**UZB:** Dastur oqimi **hodisalar bilan aniqlanadigan** model — foydalanuvchi harakatlari, xabarlar, tizim hodisalari.
 
 ```python
-class HttpResponse:
-    def __init__(self, status: int, body: str, headers: dict = None, content_type: str = "application/json"):
-        self.status = status
-        self.body = body
-        self.headers = headers or {"Content-Type": content_type}
-        self.content_type = content_type
+# EN: Event-driven model — pub/sub pattern
+# UZB: Hodisaga asoslangan model — pub/sub pattern
 
-    # EN: Constructor delegation via classmethods
-    # UZB: Classmethod orqali konstruktor delegatsiyasi
-    @classmethod
-    def ok(cls, body: str) -> 'HttpResponse':
-        return cls(200, body)               # EN: delegates to main constructor
-                                             # UZB: asosiy konstruktorga topshiradi
+from typing import Callable, Any
+from dataclasses import dataclass
+from datetime import datetime
 
-    @classmethod
-    def not_found(cls, resource: str) -> 'HttpResponse':
-        return cls(404, f"'{resource}' not found | topilmadi")
+@dataclass
+class Event:
+    name: str
+    data: Any
+    timestamp: str = ""
 
-    @classmethod
-    def error(cls, message: str) -> 'HttpResponse':
-        return cls(500, f"Error | Xatolik: {message}")
+    def __post_init__(self):
+        if not self.timestamp:
+            self.timestamp = datetime.now().isoformat()
 
-    def __repr__(self):
-        return f"HttpResponse({self.status}, body='{self.body[:30]}...')"
+class EventBus:
+    """EN: Central event bus — mediator for all events | UZB: Markaziy hodisa avtobusi"""
+    def __init__(self):
+        self._handlers: dict[str, list[Callable]] = {}
 
-# EN: Using delegated constructors
-# UZB: Delegatsiya qilingan konstruktorlardan foydalanish
-print(HttpResponse.ok('{"user": "Alyorjon"}'))
-print(HttpResponse.not_found("User"))
-print(HttpResponse.error("Database connection failed | DB ulanishi xato"))
+    def subscribe(self, event_name: str, handler: Callable):
+        self._handlers.setdefault(event_name, []).append(handler)
+        print(f"[BUS] Subscribed to '{event_name}' | '{event_name}' ga obuna bo'lindi")
+
+    def publish(self, event: Event):
+        print(f"\n[EVENT] {event.name} at {event.timestamp}")
+        handlers = self._handlers.get(event.name, [])
+        if not handlers:
+            print(f"[BUS] No handlers for '{event.name}' | handler yo'q")
+            return
+        for handler in handlers:
+            handler(event)
+
+bus = EventBus()
+
+# EN: Subscribe different services to events | UZB: Turli xizmatlarni hodisalarga obuna qilish
+bus.subscribe("order.created", lambda e: print(f"  [WAREHOUSE] Preparing: {e.data} | Tayyorlanmoqda"))
+bus.subscribe("order.created", lambda e: print(f"  [EMAIL] Confirming order: {e.data} | Tasdiqlash xati"))
+bus.subscribe("order.created", lambda e: print(f"  [ANALYTICS] Tracking order | Kuzatilmoqda"))
+bus.subscribe("payment.failed", lambda e: print(f"  [ALERT] Payment failed! Notify: {e.data} | To'lov xato!"))
+
+# EN: Publish events | UZB: Hodisalarni e'lon qilish
+bus.publish(Event("order.created", {"id": 1001, "item": "MacBook", "amount": 12_000_000}))
+bus.publish(Event("payment.failed", {"order_id": 1002, "user": "Alyorjon"}))
 ```
+
+**Qo'shimcha — Modern Event-Driven OOP & Observer Pattern in Python:**
+
+**EN:** Event-driven OOP decouples event producers from event consumers using publish-subscribe or observer pattern mechanisms.
+
+**UZB:** Event-driven OOP hodisa chiqaruvchilarni hodisa tinglovchilaridan ajratadi, bu publish-subscribe yoki observer patternlari orqali amalga oshiriladi.
+
+```python
+from typing import Callable, List, Dict
+
+class EventManager:
+    def __init__(self):
+        self._listeners: Dict[str, List[Callable]] = {}
+
+    def subscribe(self, event_type: str, listener: Callable):
+        self._listeners.setdefault(event_type, []).append(listener)
+
+    def notify(self, event_type: str, data: dict):
+        for listener in self._listeners.get(event_type, []):
+            listener(data)
+
+# Misol / Usage
+bus = EventManager()
+bus.subscribe("user_registered", lambda data: print(f"📧 Email yuborildi: {data['email']}"))
+bus.notify("user_registered", {"user_id": 1, "email": "ali@example.com"})
+```
+
+**Intervyuda shunday ayting:** "Observer ishlab chiqaruvchini iste'molchilardan ajratadi. Xotira sizishining oldini olish uchun obunachilarni `weakref` bilan saqlash yoki aniq obunani bekor qilish kerak. Bir jarayon ichida — oddiy callback ro'yxati yoki signal; servislar orasida — xabar brokeri. Bitta obunachining xatosi boshqalarini to'xtatmasligi kerak."
 
 ---
 
-### 91. What is covariance? | Kovariyantlik nima?
+## Q62. Kovariantlik va kontravariantlik nima? / What are covariance and contravariance?
+
+**Oddiy qilib aytganda:** Kovariantlik — 'mushuklar ro'yxati' 'hayvonlar ro'yxati' o'rnida ishlatilishi mumkinmi? Faqat **o'qish** uchun — ha (kovariant). Kontravariantlik — teskarisi: 'har qanday hayvonni boqa oladigan' funksiya 'mushuk boquvchi' o'rnida ishlatilishi mumkin.
+
+**Batafsilroq:**
 
 **EN:** The ability to use a **more derived type** where a base type is expected.
 
@@ -3576,9 +3841,7 @@ print(count_animals(dogs))   # 2
 print(count_animals(cats))   # 1
 ```
 
----
-
-### 92. What is contravariance? | Kontravarianslik nima?
+**Qo'shimcha — What is contravariance?:**
 
 **EN:** The ability to use a **less derived (base) type** where a derived type is expected.
 
@@ -3609,9 +3872,15 @@ def process_dog_with(handler: Callable[[Animal], None], dog: Dog):
 process_dog_with(handle_animal, Dog())
 ```
 
+**Intervyuda shunday ayting:** "Type checker nuqtai nazaridan: o'zgarmas konteynerlar (`Sequence[T]`) kovariant, o'zgaruvchan `list[T]` invariant (aks holda mushuklar ro'yxatiga it qo'shib yuborish mumkin bo'lardi), funksiya argumentlari kontravariant. PEP 695 (3.12+) da variance avtomatik aniqlanadi."
+
 ---
 
-### 93. What is function composition? | Funksiya kompozitsiyasi nima?
+## Q63. What is function composition? | Funksiya kompozitsiyasi nima?
+
+**Oddiy qilib aytganda:** Funksiya kompozitsiyasi — kichik funksiyalarni zanjir qilib, kattaroq funksiya yasash: `clean → validate → save`. Har funksiya bitta ishni qiladi, birining natijasi keyingisiga uzatiladi.
+
+**Batafsilroq:**
 
 **EN:** Combining functions where the **output of one becomes the input** of the next.
 
@@ -3657,9 +3926,15 @@ for text in texts:
 # Toshkent Uzbekistan
 ```
 
+**Intervyuda shunday ayting:** "Kompozitsiya kichik, sof funksiyalardan pipeline quradi — testlash oson. Python'da buning uchun alohida operator yo'q; `functools.reduce` bilan `compose` yozish mumkin, lekin ko'pincha oddiy ketma-ket chaqiruvlar yoki generator pipeline'lari o'qiluvchanroq."
+
 ---
 
-### 94. What is the bridge pattern? | Bridge pattern nima?
+## Q64. What is the bridge pattern? | Bridge pattern nima?
+
+**Oddiy qilib aytganda:** Bridge — ikki mustaqil o'zgaruvchi o'lchamni ajratish: 'shakl' (doira, kvadrat) va 'chizish usuli' (ekran, PDF). Har kombinatsiya uchun alohida klass (DoiraEkran, DoiraPDF...) o'rniga, shakl ichida chizish usulini saqlaysiz.
+
+**Batafsilroq:**
 
 **EN:** Separates an object's **abstraction from its implementation** so they vary independently.
 
@@ -3711,13 +3986,19 @@ EmailNotification(HTMLFormatter()).send("a@ex.com", "Welcome | Xush kelibsiz", "
 PushNotification(MarkdownFormatter()).send("@alyorjon", "New Order | Yangi buyurtma", "Your order #1001 is confirmed | tasdiqlandi")
 ```
 
----
-
-## 9. Other Concepts | Boshqa Tushunchalar
+**Intervyuda shunday ayting:** "Bridge abstraksiya va implementatsiyani kompozitsiya orqali ajratadi — klasslar soni ko'paytma emas, yig'indi bo'yicha o'sadi. Python'da ko'pincha implementatsiyani konstruktorga uzatiladigan Protocol'li obyekt sifatida beraman."
 
 ---
 
-### 95. What is a facade pattern? | Facade pattern nima?
+# 🔹 Other Concepts | Boshqa Tushunchalar
+
+---
+
+## Q65. What is a facade pattern? | Facade pattern nima?
+
+**Oddiy qilib aytganda:** Facade — murakkab tizim oldidagi oddiy 'peshtaxta': buyurtma berish uchun omborni, to'lovni, yetkazib berishni alohida chaqirish o'rniga, bitta `OrderFacade.place_order()` hammasini ichkarida muvofiqlashtiradi.
+
+**Batafsilroq:**
 
 **EN:** Provides a **simplified interface** to a complex subsystem.
 
@@ -3772,9 +4053,15 @@ converter = VideoConverter()
 converter.convert("lecture.avi", "mp4", lang="uz", quality="1080p")
 ```
 
+**Intervyuda shunday ayting:** "Facade murakkab quyi tizimga soddalashtirilgan kirish nuqtasi beradi va chaqiruvchilarni ichki o'zgarishlardan himoya qiladi. U 'hamma narsani biladigan' klassga aylanib ketmasligi kerak — faqat muvofiqlashtiradi, biznes qoidalari ichki servislarda qoladi."
+
 ---
 
-### 96. What is lazy initialization? | Dangasa ishga tushirish nima?
+## Q66. What is lazy initialization? | Dangasa ishga tushirish nima?
+
+**Oddiy qilib aytganda:** Dangasa (lazy) ishga tushirish — og'ir narsani oldindan emas, **birinchi kerak bo'lganda** yaratish. Masalan, katta ML modelini dastur boshlanganda emas, birinchi so'rov kelganda yuklash.
+
+**Batafsilroq:**
 
 **EN:** An object is **not created until it is actually needed** — saves resources.
 
@@ -3815,9 +4102,15 @@ print(service.predict("image.jpg"))          # EN: NOW model loads | UZB: ENDI m
 print(service.predict("photo.png"))          # EN: already loaded | UZB: allaqachon yuklangan
 ```
 
+**Intervyuda shunday ayting:** "Python'da lazy init uchun `functools.cached_property`, `functools.cache` fabrikasi yoki modul darajasidagi `__getattr__`. Ko'p thread'li muhitda ikki marta ishga tushirishdan qulf bilan himoyalanaman. Server ilovalarida ba'zan buning aksi yaxshi: og'ir resursni ishga tushishda yuklab, birinchi foydalanuvchini kuttirmaslik."
+
 ---
 
-### 97. What is method chaining? | Metod zanjiri nima?
+## Q67. What is method chaining? | Metod zanjiri nima?
+
+**Oddiy qilib aytganda:** Metod zanjiri — har metod obyektning o'zini qaytaradi, shuning uchun chaqiruvlarni ketma-ket yozish mumkin: `query.filter(...).order_by(...).limit(10)`. Kod o'qiladigan 'gap' ga aylanadi.
+
+**Batafsilroq:**
 
 **EN:** A technique where **multiple methods are called in a single statement** — each method returns `self`.
 
@@ -3884,9 +4177,15 @@ print(query)
 # ORDER BY salary DESC LIMIT 10 OFFSET 20
 ```
 
+**Intervyuda shunday ayting:** "Zanjir builder va query API'larida qulay. Ikki yondashuv: o'zgaruvchan (`return self`) va o'zgarmas (har chaqiruv yangi obyekt qaytaradi — SQLAlchemy `select()` kabi, xavfsizroq). Uzun zanjirlarni qavs ichida qatorlarga bo'laman — debugging osonlashadi."
+
 ---
 
-### 98. What is reflection in OOP? | OOP'da refleksiya nima?
+## Q68. What is reflection in OOP? | OOP'da refleksiya nima?
+
+**Oddiy qilib aytganda:** Refleksiya — dastur o'zini ishlash paytida 'ko'rishi' va o'zgartirishi: obyektning qanday atributlari va metodlari borligini bilish, nomi bo'yicha metodni chaqirish. Python'da `getattr`, `hasattr`, `dir`, `type` va `inspect` shu ishni qiladi.
+
+**Batafsilroq:**
 
 **EN:** The ability of a program to **inspect and modify its own structure** at runtime.
 
@@ -3896,7 +4195,7 @@ print(query)
 import inspect
 
 class APIEndpoint:
-    """EN: Example class for reflection | UZB: Refleksiya uchun namunа klass"""
+    """EN: Example class for reflection | UZB: Refleksiya uchun namuna klass"""
 
     base_url: str = "/api/v1"
 
@@ -3938,66 +4237,15 @@ setattr(endpoint, 'rate_limit', 100)
 print("Rate limit:", endpoint.rate_limit)
 ```
 
----
-
-### 99. What is an event-driven programming model? | Hodisaga asoslangan dasturlash modeli nima?
-
-**EN:** A model where the **flow of the program is determined by events** — user actions, messages, system events.
-
-**UZB:** Dastur oqimi **hodisalar bilan aniqlanadigan** model — foydalanuvchi harakatlari, xabarlar, tizim hodisalari.
-
-```python
-# EN: Event-driven model — pub/sub pattern
-# UZB: Hodisaga asoslangan model — pub/sub pattern
-
-from typing import Callable, Any
-from dataclasses import dataclass
-from datetime import datetime
-
-@dataclass
-class Event:
-    name: str
-    data: Any
-    timestamp: str = ""
-
-    def __post_init__(self):
-        if not self.timestamp:
-            self.timestamp = datetime.now().isoformat()
-
-class EventBus:
-    """EN: Central event bus — mediator for all events | UZB: Markaziy hodisa avtobuси"""
-    def __init__(self):
-        self._handlers: dict[str, list[Callable]] = {}
-
-    def subscribe(self, event_name: str, handler: Callable):
-        self._handlers.setdefault(event_name, []).append(handler)
-        print(f"[BUS] Subscribed to '{event_name}' | '{event_name}' ga obuna bo'lindi")
-
-    def publish(self, event: Event):
-        print(f"\n[EVENT] {event.name} at {event.timestamp}")
-        handlers = self._handlers.get(event.name, [])
-        if not handlers:
-            print(f"[BUS] No handlers for '{event.name}' | handler yo'q")
-            return
-        for handler in handlers:
-            handler(event)
-
-bus = EventBus()
-
-# EN: Subscribe different services to events | UZB: Turli xizmatlarni hodisalarga obuna qilish
-bus.subscribe("order.created", lambda e: print(f"  [WAREHOUSE] Preparing: {e.data} | Tayyorlanmoqda"))
-bus.subscribe("order.created", lambda e: print(f"  [EMAIL] Confirming order: {e.data} | Tasdiqlash xati"))
-bus.subscribe("order.created", lambda e: print(f"  [ANALYTICS] Tracking order | Kuzatilmoqda"))
-bus.subscribe("payment.failed", lambda e: print(f"  [ALERT] Payment failed! Notify: {e.data} | To'lov xato!"))
-
-# EN: Publish events | UZB: Hodisalarni e'lon qilish
-bus.publish(Event("order.created", {"id": 1001, "item": "MacBook", "amount": 12_000_000}))
-bus.publish(Event("payment.failed", {"order_id": 1002, "user": "Alyorjon"}))
-```
+**Intervyuda shunday ayting:** "Refleksiya framework'lar (ORM, serializatorlar, DI) uchun kuchli vosita. Ilova kodida ehtiyotkorlik bilan: foydalanuvchi bergan nom bilan `getattr(obj, name)()` qilish xavfli — faqat ruxsat etilgan ro'yxat. Refleksiya type checker'dan yashirinadi."
 
 ---
 
-### 100. What is the DRY principle in OOP? | OOP'da DRY tamoyili nima?
+## Q69. What is the DRY principle in OOP? | OOP'da DRY tamoyili nima?
+
+**Oddiy qilib aytganda:** DRY — 'o'zingni takrorlama': har bir bilim (qoida, formula) tizimda bitta joyda bo'lishi kerak. Soliq hisoblash formulasi uch joyda yozilgan bo'lsa, o'zgarganda bittasi albatta unutiladi.
+
+**Batafsilroq:**
 
 **EN:** **Don't Repeat Yourself** — every piece of knowledge should have a single, authoritative representation.
 
@@ -4067,63 +4315,19 @@ print("\n=== EN: Bonus Tax | UZB: Bonus Solig'i ===")
 TaxSystem.print_breakdown(TaxSystem.bonus_tax(2_000_000))
 ```
 
----
-
-## 📊 Summary | Xulosa
-
-| # | Topic / Mavzu | Key Word EN | Kalit So'z UZB |
-|---|---|---|---|
-| 1–4 | OOP Basics | Class, Object, Paradigm | Klass, Obyekt, Paradigma |
-| 5–8 | 4 Pillars | Encapsulation, Inheritance, Polymorphism, Abstraction | Inkapsulatsiya, Meros, Polimorfizm, Abstraktsiya |
-| 9–12 | Methods | Overloading, Overriding, Constructor, Destructor | Yuklash, Qayta yozish, Konstruktor, Destruktor |
-| 13–16 | Keywords | self, super, static, final | self, super, statik, final |
-| 17–24 | Inheritance | Multiple, Abstract, Interface, Composition | Ko'p meros, Abstrakt, Interfeys, Kompozitsiya |
-| 25–28 | Relations | Association, Coupling, Cohesion | Assotsiatsiya, Qovushish, Koheziya |
-| 29–36 | Patterns | Copy, Singleton, Enum, Inner Class | Nusxa, Singleton, Enum, Ichki klass |
-| 37–60 | Advanced | Access, Virtual, Abstract, Mixin | Kirish, Virtual, Abstrakt, Mixin |
-| 61–68 | Binding | Dynamic, Static, MRO, Casting | Dinamik, Statik, MRO, Konvertatsiya |
-| 69–78 | Types | ADT, Exception, Interface vs Class | AMT, Istisno, Interfeys va Klass |
-| 79–82 | SOLID | SRP, OCP, ISP, DIP | YMT, O/Y, IAS, BTT |
-| 83–94 | Design Patterns | Singleton, Factory, Observer, Strategy | Singleton, Fabrika, Kuzatuvchi, Strategiya |
-| 95–100 | Misc | Facade, Lazy, Chaining, DRY | Fasad, Dangasa, Zanjir, O'zni Takrorlama |
+**Intervyuda shunday ayting:** "DRY — kod emas, **bilim** takrorlanmasligi haqida. Ikki joydagi o'xshash kod turli sabablar bilan o'zgarsa, ularni birlashtirish noto'g'ri abstraksiya yaratadi. Qoidam: uchinchi takrorda abstraksiya qilaman va avval takror bitta bilimmi, ekanligini tekshiraman."
 
 ---
 
-> 📝 **Source**: [@CODERSS_WORLD](https://t.me/coderss_world)
-> 💻 **Python Examples added** | **Python misollari qo'shildi**
-> 🇬🇧 **English** + 🇺🇿 **O'zbek** | Bilingual Edition
+# 🔹 Zamonaviy OOP va arxitektura | Modern OOP & Architecture
 
 ---
 
-## 96. Modern Event-Driven OOP & Observer Pattern in Python | Zamonaviy Event-Driven OOP va Observer Pattern
+## Q70. Data Transfer Objects (DTO) and Value Objects in Python | DTO va Value Objects
 
-**EN:** Event-driven OOP decouples event producers from event consumers using publish-subscribe or observer pattern mechanisms.
+**Oddiy qilib aytganda:** DTO — qatlamlar yoki servislar orasida ma'lumot tashish uchun oddiy obyekt (masalan, API javobi). Value Object — identifikatori yo'q, faqat qiymati bilan aniqlanadigan o'zgarmas obyekt: `Money(100, "UZS")` — ikki bir xil summa bir xil hisoblanadi.
 
-**UZB:** Event-driven OOP hodisa chiqaruvchilarni hodisa tinglovchilaridan ajratadi, bu publish-subscribe yoki observer patternlari orqali amalga oshiriladi.
-
-```python
-from typing import Callable, List, Dict
-
-class EventManager:
-    def __init__(self):
-        self._listeners: Dict[str, List[Callable]] = {}
-
-    def subscribe(self, event_type: str, listener: Callable):
-        self._listeners.setdefault(event_type, []).append(listener)
-
-    def notify(self, event_type: str, data: dict):
-        for listener in self._listeners.get(event_type, []):
-            listener(data)
-
-# Misol / Usage
-bus = EventManager()
-bus.subscribe("user_registered", lambda data: print(f"📧 Email yuborildi: {data['email']}"))
-bus.notify("user_registered", {"user_id": 1, "email": "ali@example.com"})
-```
-
----
-
-## 97. Data Transfer Objects (DTO) and Value Objects in Python | DTO va Value Objects
+**Batafsilroq:**
 
 **EN:** Value Objects are immutable objects defined by their attributes rather than identity. DTOs encapsulate data transferred between software layers.
 
@@ -4146,17 +4350,15 @@ m2 = Money(100.0)
 print(m1 == m2)  # True - Value Equality!
 ```
 
----
-
-## 98. CQRS (Command Query Responsibility Segregation) Pattern in Python | CQRS Patterni
-
-**EN:** CQRS separates read operations (queries) from write operations (commands) to optimize performance and scalability independently.
-
-**UZB:** CQRS o'qish operatsiyalarini (queries) yozish operatsiyalaridan (commands) ajratib, ularni mustaqil ravishda optimallashtirish imkonini beradi.
+**Intervyuda shunday ayting:** "DTO chegaralarda — validatsiya va serializatsiya uchun (Pydantic model). Value Object domen ichida — `@dataclass(frozen=True)`, invariantlarni konstruktorda tekshiradi va tenglik qiymat bo'yicha. Entity esa ID bilan aniqlanadi — farqni aniq ajrataman."
 
 ---
 
-## 99. Dependency Injection (DI) and Inversion of Control (IoC) | Dependency Injection va IoC
+## Q71. Dependency Injection (DI) and Inversion of Control (IoC) | Dependency Injection va IoC
+
+**Oddiy qilib aytganda:** Dependency Injection — obyekt o'ziga kerak bo'lgan narsalarni o'zi yaratmaydi, ularni **tashqaridan** oladi: `OrderService(repository, payment_gateway)`. Inversion of Control — dastur oqimini framework boshqaradi, siz faqat qismlarni berasiz.
+
+**Batafsilroq:**
 
 **EN:** DI injects dependencies into a class rather than allowing the class to instantiate dependencies internally, facilitating unit testing and loose coupling.
 
@@ -4175,9 +4377,15 @@ class UserService:
         self.email_service.send(f"Welcome {email}")
 ```
 
+**Intervyuda shunday ayting:** "DI bog'liqliklarni aniq va almashtiriladigan qiladi — testda soxta repository berish oson. Python'da ko'pincha oddiy konstruktor injeksiyasi va kompozitsiya ildizida (composition root) yig'ish yetarli; FastAPI'da `Depends`. Global singleton'lar DI'ning teskarisi."
+
 ---
 
-## 100. Modern OOP & Clean Architecture Summary | Zamonaviy OOP va Clean Architecture Xulosasi
+## Q72. Modern OOP & Clean Architecture Summary | Zamonaviy OOP va Clean Architecture Xulosasi
+
+**Oddiy qilib aytganda:** Clean Architecture — kodni qatlamlarga bo'lish: markazda biznes qoidalari (domen), tashqarida — baza, veb-framework, tashqi xizmatlar. Asosiy qoida: bog'liqliklar faqat **ichkariga** qaraydi — biznes mantiq FastAPI yoki PostgreSQL haqida hech narsa bilmaydi.
+
+**Batafsilroq:**
 
 **EN:** Modern OOP combines object encapsulation with functional immutability, type annotations, interface segregation, and domain-driven design principles.
 
@@ -4187,3 +4395,9 @@ class UserService:
 
 *Prepared by | Tayyorlagan: Alyorjon*  
 *Sources | Manbalar: Design Patterns (GoF), Clean Architecture by Robert C. Martin*
+
+**Intervyuda shunday ayting:** "Clean/Hexagonal arxitekturada domen port'lar (interfeyslar) orqali tashqi dunyo bilan gaplashadi, adapterlar ularni amalga oshiradi. Foydasi — test va almashtirish osonligi; narxi — qo'shimcha qatlamlar. Kichik CRUD servislari uchun oddiy tuzilmani, murakkab domen uchun esa shu yondashuvni tanlayman."
+
+---
+
+> 📝 **Manba / Source:** [@CODERSS_WORLD](https://t.me/coderss_world) — Python misollari va o'zbekcha tushuntirishlar qo'shilgan.

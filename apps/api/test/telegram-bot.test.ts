@@ -289,3 +289,35 @@ test("stopBot aborts the active request and polling stays quiescent", async () =
   assert.equal(bot.getStatus(), "stopped");
   assert.equal(calls, callsAtStop);
 });
+
+test("an open portal uses the default menu button and answers any private /start", async () => {
+  const calls: Array<{ method: string; body: Record<string, unknown> }> = [];
+  let updatePolls = 0;
+  const telegramFetch: typeof fetch = async (input, init) => {
+    const method = String(input).split("/").at(-1)!;
+    calls.push({ method, body: JSON.parse(String(init?.body)) as Record<string, unknown> });
+    if (method === "getUpdates" && updatePolls++ === 0) {
+      return new Response(JSON.stringify({ ok: true, result: [
+        { update_id: 7, message: { from: { id: 424242 }, chat: { id: 424242, type: "private" }, text: "/start" } },
+        { update_id: 8, message: { from: { id: 424242 }, chat: { id: -100, type: "group" }, text: "/start" } },
+      ] }), { status: 200 });
+    }
+    if (method === "getUpdates") {
+      return await new Promise<Response>((_resolve, reject) => {
+        init?.signal?.addEventListener("abort", () => reject(init.signal?.reason), { once: true });
+      });
+    }
+    return new Response(JSON.stringify({ ok: true, result: true }), { status: 200 });
+  };
+  const bot = new TelegramBotService({ allowedTelegramUserIds: "*", telegramFetch, botRetryBaseMs: 1 });
+
+  bot.startBot("synthetic-token", "https://interviews.example.com");
+  await waitFor(() => calls.filter((call) => call.method === "sendMessage").length === 2);
+  bot.stopBot();
+
+  assert.equal(calls.find((call) => call.method === "setChatMenuButton")?.body.chat_id, undefined);
+  const [privateReply, groupReply] = calls.filter((call) => call.method === "sendMessage");
+  assert.equal(privateReply?.body.chat_id, 424242);
+  assert.ok(privateReply?.body.reply_markup);
+  assert.equal(groupReply?.body.reply_markup, undefined, "group chats never receive the Web App button");
+});

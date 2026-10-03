@@ -2,7 +2,7 @@
 
 **Talablar:** R17, R18, R08, R07
 **Topilma:** C01
-**Tanlov:** 9.6/10 — 90 savolni source-grounded amaliy ssenодаря bilan qayta yozish
+**Tanlov:** 9.6/10 — 90 savolni source-grounded amaliy ssenariylar bilan qayta yozish
 **Zona:** `javascript/frontend-react-next.md`, content audit/tests
 **Status:** in-progress
 

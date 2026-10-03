@@ -13,3 +13,5 @@ Har savolni alohida qoldirish rad etildi, chunki takrorlash sessiyasini dublikat
 ## Oqibatlar
 
 Sessiyada aniq dublikat bitta marta ko'rinadi va uning provenance'i yo'qolmaydi. Yaqin dublikatlar inson ko'rigi uchun qoladi; fingerprint qoidasi o'zgarsa kanonik identifikatsiya va progress mosligi qayta baholanishi kerak.
+
+> **Holat:** ADR-0008 bilan to'ldirildi (2026-09-25): token to'plami aynan teng savollar ham birlashtiriladi.

@@ -1,8 +1,14 @@
-import { defineConfig } from "vitest/config";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: { proxy: { "/api": "http://localhost:4173" } },
-  test: { environment: "jsdom", environmentOptions: { jsdom: { url: "http://localhost/" } }, setupFiles: "./src/vitest/setup.ts", css: true, globals: true }
+  test: {
+    environment: "jsdom",
+    environmentOptions: { jsdom: { url: "http://localhost/" } },
+    setupFiles: "./src/vitest/setup.ts",
+    globals: true,
+  },
 });

@@ -1,226 +1,58 @@
-# FastAPI — YouTube Intervyu Savol-Javoblari
+# FastAPI — YouTube intervyularidan qo'shimcha savollar
 
-> YouTube'dan olingan FastAPI intervyu savollari va kod misollari bilan javoblar. To'liq 100 ta savollik qo'llanma uchun `python/restfullapi.md` faylига qarang — bu fayl video-asosidagi qisqaroq Q&A to'plami.
+> **Nima bu:** YouTube'dagi FastAPI intervyularida beriladigan, lekin boshqa sahifalarda yo'q savollar. Takrorlanmasligi uchun asosiy mavzular (FastAPI nima, Flask/Django bilan farqi, Pydantic, async, dependency injection, middleware, lifespan, JWT, API kalitlar, CORS, fayl yuklash, background tasks, streaming, hujjatlashtirish, deployment) — `python/restfullapi.md` da; amaliy ssenariylar — `practical/fastapi.md` da.
+> **Har bir javob tartibi:** oddiy tilda → batafsilroq (misol bilan) → intervyuda qanday aytasiz → esda tuting.
 
 ---
 
-## Asosiy tushunchalar
+## Q1. Sub-application va `mount` nima uchun kerak? / What are sub-applications and `mount` for?
 
-**1. FastAPI nima va nima uchun mashhur?**
-Python'ning type hints'iga asoslangan zamonaviy, yuqori tezlikka ega veb-freymvork. **Starlette** (async) va **Pydantic** (validatsiya) asosida qurilgan. Tezkorligi, avtomatik hujjatlashtirish (Swagger UI) va async/await bilan mashhur.
+**Oddiy qilib aytganda:** `mount` — asosiy ilovaning bir yo'liga **butunlay alohida ilovani** ulash: `/admin` da mustaqil admin API (o'z hujjati va middleware'lari bilan), `/static` da fayllar, `/legacy` da eski Flask ilova. Router'dan farqi — mount qilingan ilova asosiy ilovaning dependency va middleware'larini olmaydi, u o'zicha yashaydi.
+
+**Batafsilroq:**
+
 ```python
 from fastapi import FastAPI
+from fastapi.middleware.wsgi import WSGIMiddleware
+from fastapi.staticfiles import StaticFiles
+
+app = FastAPI()                                   # asosiy API: /docs
+admin = FastAPI(title="Admin API")                # alohida hujjat: /admin/docs
+
+@admin.get("/stats")
+def stats(): ...
+
+app.mount("/admin", admin)                        # mustaqil ASGI ilova
+app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/legacy", WSGIMiddleware(flask_app))   # eski WSGI ilovani asta ko'chirish
+```
+
+**Intervyuda shunday ayting:** "Bitta ilova ichidagi modullar uchun — `APIRouter` (umumiy dependency, middleware va bitta OpenAPI). Mustaqil hujjat, xavfsizlik yoki boshqa framework kerak bo'lsa — `mount`. Mount qilingan ilovaga asosiy ilovaning dependency'lari ta'sir qilmaydi — himoyani unda alohida qo'yaman."
+
+**Esda tuting:** mount qilingan ilovada yo'llar prefiksga nisbatan bo'ladi va FastAPI `root_path` ni to'g'ri uzatadi — shuning uchun `/admin/docs` ishlaydi. Manba: [Sub Applications - Mounts](https://fastapi.tiangolo.com/advanced/sub-applications/).
+
+## Q2. React/Vite frontend'ni FastAPI orqali qanday berish mumkin (`app.frontend()`)? / How do you serve a React/Vite frontend from FastAPI with `app.frontend()`?
+
+**Oddiy qilib aytganda:** `npm run build` frontend'ni `dist/` papkasidagi tayyor fayllarga aylantiradi. FastAPI 0.138 dan boshlab ularni bitta qator bilan berish mumkin: `app.frontend("/", directory="dist")`. API yo'llari doim ustun turadi, `/dashboard/settings` kabi sahifa manzillariga esa avtomatik `index.html` beriladi — SPA'ni yangilaganda 404 bo'lmaydi.
+
+**Batafsilroq:**
+
+```python
+from fastapi import FastAPI
+
 app = FastAPI()
 
-@app.get("/salom/{ism}")
-async def salom(ism: str):
-    return {"xabar": f"Salom, {ism}!"}
+@app.get("/api/health")
+def health():
+    return {"status": "ok"}          # API marshrutlari doim birinchi tekshiriladi
+
+app.frontend("/", directory="dist")  # fallback="auto": index.html (yoki 404.html bo'lsa u)
 ```
 
-**2. FastAPI Flask va Django'dan farqi**
-| | Flask | Django | FastAPI |
-|---|---|---|---|
-| Turi | Mikroframework | To'liq | API-fokusli mikroframework |
-| Async | Qo'shimcha sozlash | Qisman (3.1+) | Tabiiy |
-| Validatsiya | Qo'lda | Forms/Serializers | Avtomatik (Pydantic) |
-| Hujjat | Yo'q | Yo'q (DRF bilan qisman) | Avtomatik (Swagger/ReDoc) |
+- Fallback faqat brauzer navigatsiyasi uchun (`GET`/`HEAD` va `Accept: text/html`); yo'q JS/CSS fayllar baribir `404` qaytaradi.
+- `fastapi dev` da `dist/` hali yo'q bo'lsa — faqat ogohlantirish; boshqa muhitlarda ilova yaratilayotganda xato (0.141 dagi `check_dir="auto"`).
+- App yoki router dependency'lari frontend javoblariga ham qo'llanadi — masalan, cookie autentifikatsiyasi bilan himoyalash.
 
-**3. Pydantic'ning roli**
-```python
-from pydantic import BaseModel
+**Intervyuda shunday ayting:** "Kichik loyihada frontend va API'ni bitta FastAPI jarayonidan berish CORS'ni yo'qotadi va deploy'ni soddalashtiradi: `app.frontend()` statik build'ni SPA fallback bilan beradi. Katta yuklamada esa statik fayllarni CDN yoki Nginx beradi — ular kesh va siqishni yaxshiroq qiladi, Python jarayoni faqat API bilan band bo'ladi."
 
-class Foydalanuvchi(BaseModel):
-    ism: str
-    yosh: int
-    email: str
-
-@app.post("/foydalanuvchi")
-async def yaratish(user: Foydalanuvchi):
-    return user
-```
-Noto'g'ri tur yuborilsa, avtomatik `422 Unprocessable Entity` qaytaradi.
-
-**4. Asinxron dasturlash**
-```python
-import asyncio
-
-@app.get("/malumot")
-async def malumot_olish():
-    await asyncio.sleep(1)
-    return {"holat": "tayyor"}
-```
-I/O kutish paytida boshqa so'rovlarni bloklamaydi. Sinxron (`def`) endpoint avtomatik thread pool'da ishga tushadi.
-
----
-
-## Dependency Injection
-
-```python
-from fastapi import Depends
-
-def db_ulanish():
-    db = "ma'lumotlar bazasiga ulanish"
-    try:
-        yield db
-    finally:
-        print("ulanish yopildi")
-
-@app.get("/items")
-async def items(db=Depends(db_ulanish)):
-    return {"db": db}
-```
-Autentifikatsiya, DB session, konfiguratsiya kabi umumiy logikani bir joyda yozib, kerakli marshrutlarga ulash mumkin.
-
-**Testlash uchun DI**
-```python
-app.dependency_overrides[get_db] = lambda: "fake test database"
-```
-Haqiqiy resursni test paytida soxta (mock) obyekt bilan almashtirib, izolyatsiya qilingan test o'tkazish.
-
----
-
-## Middleware, Event Handlers
-
-**Middleware**
-```python
-import time
-from fastapi import Request
-
-@app.middleware("http")
-async def vaqt_middleware(request: Request, call_next):
-    boshlanish = time.time()
-    response = await call_next(request)
-    response.headers["X-Process-Time"] = str(time.time() - boshlanish)
-    return response
-```
-Barcha marshrutlarga avtomatik qo'llanadi (logging, header qo'shish); `Depends`dan farqi — tanlab emas, global qo'llanadi.
-
-**Event Handlers (startup/shutdown)**
-```python
-from contextlib import asynccontextmanager
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("Startup — DB ulanishi ochilmoqda")
-    yield
-    print("Shutdown — resurslar tozalanmoqda")
-
-app = FastAPI(lifespan=lifespan)
-```
-Eski usul: `@app.on_event("startup")` / `@app.on_event("shutdown")` (endi `lifespan` tavsiya etiladi).
-
----
-
-## Xavfsizlik
-
-**OAuth2 / JWT**
-```python
-from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends, HTTPException
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-@app.get("/himoyalangan")
-async def sahifa(token: str = Depends(oauth2_scheme)):
-    if token != "togri_token":
-        raise HTTPException(status_code=401, detail="Ruxsat yo'q")
-    return {"xabar": "Xush kelibsiz"}
-```
-
-**API Keys**
-```python
-from fastapi.security import APIKeyHeader
-from fastapi import Security, HTTPException
-
-api_key_header = APIKeyHeader(name="X-API-Key")
-
-async def api_kalitni_tekshirish(kalit: str = Security(api_key_header)):
-    if kalit != "maxfiy-kalit-123":
-        raise HTTPException(status_code=403, detail="Noto'g'ri API kalit")
-    return kalit
-```
-OAuth2/JWT'ga nisbatan soddaroq, lekin kamroq xavfsiz (refresh mexanizmi yo'q) — odatda server-server integratsiyasida ishlatiladi.
-
-**CORS**
-```python
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://mysite.com"],
-    allow_credentials=True,
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
-)
-```
-
----
-
-## Fayllar, Background Tasks, Streaming
-
-**Fayllarni yuklash**
-```python
-from fastapi import File, UploadFile
-
-@app.post("/yuklash")
-async def fayl_yuklash(fayl: UploadFile = File(...)):
-    kontent = await fayl.read()
-    return {"nomi": fayl.filename, "hajmi": len(kontent)}
-```
-`UploadFile` faylni stream sifatida ishlaydi — katta fayllarni xotiraga to'liq yuklamaydi (`bytes` turidan farqli).
-
-**Background Tasks**
-```python
-from fastapi import BackgroundTasks
-
-def email_yuborish(email: str):
-    print(f"{email} ga email yuborilmoqda...")
-
-@app.post("/royxatdan-otish")
-async def royxat(email: str, background_tasks: BackgroundTasks):
-    background_tasks.add_task(email_yuborish, email)
-    return {"xabar": "qabul qilindi"}
-```
-Javob darhol qaytariladi, og'ir jarayon fonda bajariladi. Uzoq vazifalar uchun **Celery** kabi to'liq task queue tavsiya etiladi.
-
-**Streaming Response**
-```python
-from fastapi.responses import StreamingResponse
-
-def malumot_generator():
-    for i in range(1000000):
-        yield f"qator {i}\n"
-
-@app.get("/stream")
-async def stream_endpoint():
-    return StreamingResponse(malumot_generator(), media_type="text/plain")
-```
-Katta ma'lumotni bo'lak-bo'lak (chunk) jo'natadi, xotirani tejaydi.
-
----
-
-## Ma'lumotlar bazasi, Hujjatlashtirish, Deployment
-
-**DB integratsiyasi**
-FastAPI o'z ORM'iga ega emas — SQLAlchemy, Tortoise ORM, SQLModel yoki MongoDB uchun Motor bilan ishlaydi.
-```python
-@app.get("/users/{user_id}")
-async def user_olish(user_id: int, db: Session = Depends(get_db)):
-    return db.query(User).filter(User.id == user_id).first()
-```
-
-**Avtomatik hujjatlashtirish**
-OpenAPI schema (`/openapi.json`) asosida `/docs` (Swagger UI) va `/redoc` (ReDoc) avtomatik yaratiladi.
-
-**Sub-applications**
-```python
-sub_app = FastAPI()
-app.mount("/kichik", sub_app)
-```
-Katta loyihani mustaqil qismlarga bo'lish — har biri o'z Swagger sahifasiga ega. `APIRouter`dan farqi: to'liq mustaqil FastAPI instance.
-
-**Deployment**
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
-```
-Production arxitekturasi: Uvicorn/Gunicorn (ASGI server) → Docker → Nginx (reverse proxy, SSL) → ba'zan Kubernetes.
+**Esda tuting:** `app.frontend()` faqat tayyor statik build'ni beradi — server tomonida render (SSR) qilmaydi. Hash'li asset'larga uzoq muddatli `Cache-Control`, `index.html` ga esa `no-cache` kerak. Manba: [FastAPI — Frontend](https://fastapi.tiangolo.com/tutorial/frontend/).

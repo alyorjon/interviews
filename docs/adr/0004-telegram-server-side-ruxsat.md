@@ -13,3 +13,5 @@ Faqat client-side yashirish rad etildi, chunki header yoki UI holatini foydalanu
 ## Oqibatlar
 
 Kontentga ruxsat Telegram imzosi va serverdagi konfiguratsiyaga bog'lanadi. Token aylantirilishi, initData eskirishi va Telegram mavjud emasligi alohida operatsion holatlarga aylanadi; haqiqiy ko'p foydalanuvchilik keyingi arxitektura qarorini talab qiladi.
+
+> **Holat:** ADR-0007 bilan qisman almashtirildi (2026-09-25): kontent endi ochiq statik; Telegram imzosi faqat progress API uchun.

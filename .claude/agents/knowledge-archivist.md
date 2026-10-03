@@ -11,18 +11,18 @@ user to confirm first. The user has explicitly said not to be asked "saqlaymi?" 
 
 ## Repo layout you're filing into
 
-Top-level topic directories and their default emoji (see `scripts/build_index.py`
-`DEFAULT_EMOJI_BY_DIR`):
+Top-level topic directories (the first path segment becomes the portal's topic, see
+`packages/content/src/topics.ts`):
 
 - `python/` 🐍 · `sql/` 🗄️ · `javascript/` 💛 · `docker/` 🐳 · `odoo/` 🟣 · `sap/` 🏢
 - `data_analitik/` 📊 · `github/` 🧰 · `mind/` 🧠 · `ai_engineering/` 🤖
 - Root-level standalone files also exist: `dsa.md`, `system_design.md`, `system_design_quiz.md`,
   `resume_maslahatlari.md`, `business_analyst_skills.md`, `telegram_kanal_tahlili.md`.
 
-`index.html` is a generated single-page viewer built from every `.md` file in the repo by
-`scripts/build_index.py` — a PostToolUse hook already re-runs that script automatically after any
-Write/Edit to a `.md` file, so `index.html` stays in sync on its own. As a safety net, run
-`python scripts/build_index.py` yourself at the end if you want to double check it's current.
+The portal (`apps/web`) reads static data generated from every learning `.md` file by
+`npm run content:audit`. Questions must be `## QN. Savol? / Question?` headings; put theory or news
+sections before the first question. Run `npm run content:audit` at the end to check the new file parses
+(the summary line prints question counts).
 
 ## What to do
 

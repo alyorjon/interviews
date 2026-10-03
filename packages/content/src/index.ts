@@ -142,7 +142,9 @@ function parseMarkdown(markdown: string): RawCard[] {
       fence = { marker: run[0] as "`" | "~", length: run.length };
       continue;
     }
-    if (/Javoblar|Answer Key/i.test(line) && /^#{1,6}/.test(line)) continue;
+    // Only a heading that *starts* an answer-key section is skipped; "oqimli javoblar"
+    // inside a real question heading must still become a card.
+    if (/^#{1,6}\s+(?:✅\s*)?(?:Javoblar|Answer Key)\b/i.test(line)) continue;
     const markdownHeading = line.match(/^(#{1,6})\s+(.+)$/);
     const headingLevel = markdownHeading?.[1].length;
     if (headingLevel !== undefined) {
@@ -167,6 +169,14 @@ function parseMarkdown(markdown: string): RawCard[] {
       headingStack.push({ level: headingLevel!, text: cleanInline(markdownHeading![2]!), isQuestion: true });
       continue;
     }
+    // "## 10. String formatlash / String formatting": numbered bilingual topic
+    // headings are questions; "## 1. Basics / Asoslar (1–25)" ranges are sections.
+    const bilingualHeading = line.match(/^#{2,6}\s+\d+[.)]\s+(.+\s\/\s.+)$/);
+    if (bilingualHeading && !/\(\s*Q?\d+\s*[–—-]\s*Q?\d+\s*\)/.test(line)) {
+      starts.push({ index, line: index + 1, kind: "heading", question: cleanInline(bilingualHeading[1]!), lineage });
+      headingStack.push({ level: headingLevel!, text: cleanInline(markdownHeading![2]!), isQuestion: true });
+      continue;
+    }
     if (markdownHeading) {
       headingStack.push({
         level: headingLevel!,
@@ -180,11 +190,26 @@ function parseMarkdown(markdown: string): RawCard[] {
       starts.push({ index, line: index + 1, kind: "label", question: cleanInline(label[1]!), lineage });
       continue;
     }
+    // "**22. SAVEPOINT nima?**" — a whole bold, numbered line is a question with a prose answer.
+    const boldNumbered = line.match(/^\s*\*\*\d+[.)]\s+(.+?)\*\*\s*$/);
+    if (boldNumbered) {
+      starts.push({ index, line: index + 1, kind: "label", question: cleanInline(boldNumbered[1]!), lineage });
+      continue;
+    }
     const quiz = line.match(/^\s*\*\*(\d+)[.)]\*\*\s*(.+)$/);
     if (quiz) starts.push({ index, line: index + 1, kind: "quiz", number: Number(quiz[1]), question: cleanInline(quiz[2]!), lineage });
   }
 
-  return starts.map((start, position) => {
+  // A question-like heading whose body is empty before the next question is a
+  // section title ("## 1. Asoslar / Basics", "### SAP B1 nima?"), not a card.
+  const isSectionTitle = (position: number) => {
+    const start = starts[position]!;
+    const next = starts[position + 1];
+    return start.kind === "heading" && next !== undefined
+      && lines.slice(start.index + 1, next.index).every((line) => /^\s*(?:-{3,}|\*{3,}|#{1,6}\s.*)?\s*$/.test(line));
+  };
+  return starts.flatMap((start, position) => {
+    if (isSectionTitle(position)) return [];
     const end = starts[position + 1]?.index ?? lines.length;
     const body = lines.slice(start.index + 1, end);
     const answerSection = body.findIndex((line) => /^\s*(?:\*\*)?(?:Javob|Answer)\s*:/i.test(line));
@@ -197,7 +222,7 @@ function parseMarkdown(markdown: string): RawCard[] {
       answer = options.find((option) => option.toUpperCase().startsWith(`${correctOption})`))?.replace(/^[A-D][.)]\s+/, "") ?? "";
     }
     const context = relevantContext(start.lineage, start.question);
-    return { question: start.question, answer, context, options, correctOption, line: start.line };
+    return [{ question: start.question, answer, context, options, correctOption, line: start.line }];
   });
 }
 
@@ -274,11 +299,18 @@ function makeCard(raw: RawCard, pageTitle: string, sourcePath: string): CatalogC
   };
 }
 
-function canonicalize(cards: CatalogCard[]): CatalogCard[] {
-  const byFingerprint = new Map<string, CatalogCard>();
+/**
+ * Merges cards that share `keyOf(card)` into the first one seen. The survivor
+ * keeps its id (stored user progress refers to it); `aliases` records every
+ * absorbed id so page card lists can be remapped.
+ */
+function canonicalize(cards: CatalogCard[], keyOf: (card: CatalogCard) => string, aliases: Map<string, string>): CatalogCard[] {
+  const byKey = new Map<string, CatalogCard>();
   for (const card of cards) {
-    const existing = byFingerprint.get(card.fingerprint);
-    if (!existing) { byFingerprint.set(card.fingerprint, card); continue; }
+    const key = keyOf(card) || card.id;
+    const existing = byKey.get(key);
+    if (!existing) { byKey.set(key, card); continue; }
+    if (existing.id !== card.id) aliases.set(card.id, existing.id);
     existing.sources.push(...card.sources);
     if (card.answer.length > existing.answer.length) {
       existing.answer = card.answer;
@@ -293,7 +325,12 @@ function canonicalize(cards: CatalogCard[]): CatalogCard[] {
     if (card.options.length > existing.options.length) existing.options = card.options;
     if (!existing.correctOption && card.correctOption) existing.correctOption = card.correctOption;
   }
-  return [...byFingerprint.values()];
+  return [...byKey.values()];
+}
+
+/** Order- and language-insensitive key: "What is Docker? | Docker nima?" equals "Docker nima? / What is Docker?". */
+function equivalenceKey(card: CatalogCard): string {
+  return [...normalizedTokens(card.question)].sort().join(" ");
 }
 
 function normalizedTokens(question: string): Set<string> {
@@ -351,7 +388,9 @@ export async function buildCatalog(root: string): Promise<Catalog> {
       overallScore: { score: overallValue, label: labelFor(overallValue), reasons: ["kontent va dizayn tayyorligi o'rtachasi"] }
     });
   }
-  const cards = canonicalize(extracted);
+  const aliases = new Map<string, string>();
+  const cards = canonicalize(canonicalize(extracted, (card) => card.fingerprint, aliases), equivalenceKey, aliases);
+  for (const page of pages) page.cardIds = [...new Set(page.cardIds.map((id) => aliases.get(id) ?? id))];
   const nearDuplicates = [];
   for (let left = 0; left < cards.length; left++) {
     for (let right = left + 1; right < cards.length; right++) {
@@ -413,3 +452,6 @@ export async function writeContentAudit(root: string, outputDirectory = path.joi
   ]);
   return catalog;
 }
+
+export { topicId, topicLabel } from "./topics.js";
+export { writeStaticBundle } from "./static-bundle.js";

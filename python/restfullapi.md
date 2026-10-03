@@ -1,33 +1,20 @@
-# 🚀 FastAPI · SQLAlchemy · Pydantic · Alembic
-# Interview Questions & Answers | Intervyu Savol va Javoblari
-## Part 1 of 2 — Questions 1–50
+# 🚀 FastAPI · SQLAlchemy · Pydantic · Alembic — intervyu savollari
 
-> **EN:** 100 bilingual interview questions with real code examples covering FastAPI, SQLAlchemy, Pydantic, Alembic, async/await, JWT auth, testing, and deployment.
-> **UZ:** FastAPI, SQLAlchemy, Pydantic, Alembic, async/await, JWT auth, testing va deployment bo'yicha 100 ta bilingual savol, real kod misollari bilan.
-
----
-
-## 📑 Mundarija | Table of Contents
-
-| # | Bo'lim | Section |
-|---|--------|---------|
-| 1–15 | FastAPI Asoslari | FastAPI Basics |
-| 16–25 | FastAPI Ilg'or | FastAPI Advanced |
-| 26–40 | Pydantic | Pydantic |
-| 41–55 | SQLAlchemy | SQLAlchemy |
-| 56–65 | Alembic | Alembic |
-| 66–75 | Async & Performance | Async & Performance |
-| 76–85 | Auth & Security | Auth & Security |
-| 86–92 | Testing | Testing |
-| 93–100 | Deploy & Best Practices | Deploy & Best Practices |
+> **Nima bu:** FastAPI, Pydantic v2, SQLAlchemy 2.0 va Alembic bo'yicha nazariy va amaliy savollar — real kod misollari bilan. Python tilining o'zi (asyncio asoslari va event loop) — `python/basics.md` da; "nima qilasiz?" ssenariylari — `practical/fastapi.md` da.  
+> **Har bir javob tartibi:** oddiy tilda → batafsilroq (EN/UZ va kod) → intervyuda qanday aytasiz.  
+> **Versiyalar (2026-yil sentabr):** FastAPI 0.14x, Pydantic 2, SQLAlchemy 2.0, Python 3.14.
 
 ---
 
-# 🔷 FASTAPI ASOSLARI | FASTAPI BASICS (Q1–Q15)
+# 🔷 FASTAPI ASOSLARI | FASTAPI BASICS
 
 ---
 
 ## Q1. What is FastAPI? | FastAPI nima?
+
+**Oddiy qilib aytganda:** FastAPI — Python'da API yozish uchun zamonaviy framework. Siz funksiya va uning parametrlari turini yozasiz, FastAPI esa kiruvchi ma'lumotni o'zi tekshiradi, JSON'ga aylantiradi va `/docs` sahifasida interaktiv hujjat yaratadi.
+
+**Batafsilroq:**
 
 **EN:** FastAPI is a modern, high-performance Python web framework for building APIs. It is built on top of **Starlette** (ASGI web framework) and **Pydantic** (data validation). It supports async/await natively and auto-generates OpenAPI (Swagger) documentation.
 
@@ -49,9 +36,15 @@ async def root():
 # ReDoc:   http://localhost:8000/redoc
 ```
 
+**Intervyuda shunday ayting:** "FastAPI Starlette (ASGI) va Pydantic ustida qurilgan: type hint'lardan validatsiya, serializatsiya va OpenAPI hujjati avtomatik chiqadi. 2026-yil holatiga 0.14x versiyalar: Pydantic v1 qo'llovi olib tashlangan (0.128), SSE va JSON Lines oqimlari o'rnatilgan (0.134–0.135), JSON body uchun qat'iy Content-Type (0.132)."
+
 ---
 
 ## Q2. What is the difference between FastAPI, Flask, and Django? | FastAPI, Flask va Django farqi nima?
+
+**Oddiy qilib aytganda:** Uchalasi ham Python veb-framework'i, lekin maqsadi turlicha. **Django** — 'hammasi qutida': admin panel, ORM, autentifikatsiya. **Flask** — minimal, hamma narsani o'zingiz tanlaysiz. **FastAPI** — API uchun, avtomatik validatsiya va hujjat bilan, async'ni tabiiy qo'llaydi.
+
+**Batafsilroq:**
 
 **EN:** FastAPI is async-first, auto-validates data, and auto-generates docs. Flask is minimalist and sync-only. Django is a full-stack framework with its own ORM, admin panel, and many built-in features.
 
@@ -70,9 +63,15 @@ async def root():
 | EN: ORM | ❌ (use SQLAlchemy) | ❌ (use SQLAlchemy) | ✅ Built-in |
 | UZ: ORM | ❌ (SQLAlchemy) | ❌ (SQLAlchemy) | ✅ O'rnatilgan |
 
+**Intervyuda shunday ayting:** "Tanlov vazifaga bog'liq: admin va tayyor imkoniyatlar kerak bo'lgan to'liq veb-ilova — Django; kichik servis yoki to'liq nazorat — Flask; tipli, hujjatlashtirilgan API va yuqori I/O parallellik — FastAPI. Tezlik ko'pincha framework'dan ko'ra baza va arxitekturaga bog'liq."
+
 ---
 
 ## Q3. What is ASGI and WSGI? | ASGI va WSGI nima?
+
+**Oddiy qilib aytganda:** WSGI — Python veb-server va ilova orasidagi eski 'kelishuv': bitta so'rov — bitta ishchi, navbat bilan. ASGI — yangi kelishuv: async'ni qo'llaydi, bitta jarayon minglab ulanishni (WebSocket, uzun so'rovlar) ushlab tura oladi.
+
+**Batafsilroq:**
 
 **EN:** WSGI (Web Server Gateway Interface) is a synchronous Python standard. ASGI (Asynchronous Server Gateway Interface) is its async successor — it supports WebSockets, long-polling, and concurrent requests. FastAPI uses ASGI via **Uvicorn**.
 
@@ -86,12 +85,18 @@ gunicorn app:app
 uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 
 # Production uchun Gunicorn + Uvicorn workers | Gunicorn + Uvicorn workers for prod
-gunicorn main:app -k uvicorn.workers.UvicornWorker -w 4
+gunicorn main:app -k uvicorn_worker.UvicornWorker -w 4
 ```
+
+**Intervyuda shunday ayting:** "WSGI sinxron so'rov-javob modeli (Gunicorn + Django/Flask); ASGI async va uzoq yashovchi ulanishlarni (WebSocket, SSE) qo'llaydi (Uvicorn, Hypercorn). FastAPI ASGI ilova; productionda Uvicorn bir nechta worker bilan yoki Kubernetes'da har pod'da bitta jarayon."
 
 ---
 
 ## Q4. How do you define routes (path operations) in FastAPI? | FastAPI'da marshrutlarni qanday aniqlash mumkin?
+
+**Oddiy qilib aytganda:** Route — 'shu manzilga shu metod bilan kelgan so'rovni shu funksiya bajaradi' degan qoida: `@app.get("/users/{id}")`. GET — o'qish, POST — yaratish, PUT/PATCH — o'zgartirish, DELETE — o'chirish.
+
+**Batafsilroq:**
 
 **EN:** Use decorators like `@app.get()`, `@app.post()`, `@app.put()`, `@app.patch()`, `@app.delete()` to define path operations.
 
@@ -133,9 +138,15 @@ async def delete_item(item_id: int):
     return None
 ```
 
+**Intervyuda shunday ayting:** "Path operation decorator'lari HTTP metod va yo'lni funksiyaga bog'laydi; parametrlar turidan validatsiya chiqadi. Statik yo'llarni parametrlilardan oldin e'lon qilaman (`/users/me` → `/users/{id}`), holat kodlarini (`status_code=201`) aniq beraman."
+
 ---
 
 ## Q5. What are Path Parameters, Query Parameters, and Request Body? | Path, Query va Body parametrlari nima?
+
+**Oddiy qilib aytganda:** Uch xil ma'lumot manbai: **path** — manzilning o'zida (`/users/42`), **query** — `?` dan keyin (`?page=2&active=true`), **body** — so'rov tanasida (odatda JSON). FastAPI funksiya parametrlariga qarab qaysi biri ekanini o'zi aniqlaydi.
+
+**Batafsilroq:**
 
 **EN:** Path parameters are part of the URL path. Query parameters come after `?`. Request body is sent in the HTTP body (usually JSON).
 
@@ -170,9 +181,15 @@ async def create_user(
     }
 ```
 
+**Intervyuda shunday ayting:** "Yo'ldagi nom — path, oddiy turli boshqa parametr — query, Pydantic modeli — body. Chegaralarni `Annotated[int, Query(ge=1, le=100)]` kabi aniq beraman. Resurs identifikatori — path'da, filtr va sahifalash — query'da, yaratiladigan ma'lumot — body'da."
+
 ---
 
 ## Q6. What is Dependency Injection in FastAPI? | FastAPI'da Dependency Injection nima?
+
+**Oddiy qilib aytganda:** Dependency Injection — endpoint o'ziga kerak narsani (baza sessiyasi, joriy foydalanuvchi) o'zi yaratmaydi, balki `Depends(...)` orqali 'menga shuni ber' deydi. FastAPI uni har so'rov uchun tayyorlab beradi va testda almashtirish oson.
+
+**Batafsilroq:**
 
 **EN:** Dependency Injection (DI) is a pattern where FastAPI automatically creates and provides dependencies (like DB sessions, auth, config) to path operation functions via `Depends()`.
 
@@ -221,9 +238,15 @@ async def get_me(
     return current_user
 ```
 
+**Intervyuda shunday ayting:** "`Depends` qayta ishlatiladigan mantiqni (auth, sessiya, sahifalash) ajratadi; dependency'lar ichma-ich bo'lishi va bir so'rov ichida keshlanishi mumkin. `Annotated` alias'lari bilan (`CurrentUser = Annotated[User, Depends(get_current_user)]`) imzolar qisqaradi. Testda `app.dependency_overrides`."
+
 ---
 
 ## Q7. What is FastAPI Router? | FastAPI Router nima?
+
+**Oddiy qilib aytganda:** Router — endpoint'larni mavzular bo'yicha alohida fayllarga ajratish: `users.py` da foydalanuvchilar, `orders.py` da buyurtmalar. Keyin ular asosiy ilovaga `include_router` bilan ulanadi va umumiy prefiks, teg va dependency oladi.
+
+**Batafsilroq:**
 
 **EN:** `APIRouter` is used to split a large application into multiple modules/files, each with its own routes. Similar to Flask Blueprints.
 
@@ -261,9 +284,15 @@ app.include_router(items.router, prefix="/api/v1")
 app.include_router(auth.router, prefix="/api/v1")
 ```
 
+**Intervyuda shunday ayting:** "`APIRouter` modullilik uchun: prefiks, teglar va router darajasidagi dependency'lar (masalan, butun router'ga autentifikatsiya). Loyiha tuzilmasini domen bo'yicha tuzaman — har domen o'z router, schema va service'iga ega."
+
 ---
 
 ## Q8. What is Middleware in FastAPI? | FastAPI'da Middleware nima?
+
+**Oddiy qilib aytganda:** Middleware — har so'rov va javob o'tadigan 'darvoza': so'rov kelganda va javob ketayotganda bir xil ishni bajaradi — vaqtni o'lchash, log yozish, sarlavha qo'shish. U barcha endpoint'larga birdan ta'sir qiladi.
+
+**Batafsilroq:**
 
 **EN:** Middleware is a function that runs before and after every request. Used for logging, CORS, authentication, request timing, etc.
 
@@ -302,9 +331,15 @@ async def log_requests(request: Request, call_next):
     return response
 ```
 
+**Intervyuda shunday ayting:** "Middleware kesib o'tuvchi vazifalar uchun: CORS, GZip, vaqt, request ID. Body'ni o'qiydigan middleware stream'larni buzadi — og'ir ishlar uchun sof ASGI middleware yoki dependency. Middleware tartibi muhim: oxirgi qo'shilgani eng tashqi qatlam."
+
 ---
 
 ## Q9. How do you handle errors and exceptions in FastAPI? | FastAPI'da xatolarni qanday boshqarish mumkin?
+
+**Oddiy qilib aytganda:** Xatolarni boshqarish — foydalanuvchiga tushunarli javob qaytarish: resurs yo'q bo'lsa `HTTPException(404)`, o'z xatolaringiz uchun esa `exception_handler` bilan ularni bir xil formatdagi javobga aylantirish.
+
+**Batafsilroq:**
 
 **EN:** Use `HTTPException` for standard HTTP errors, or create custom exception handlers with `@app.exception_handler()`.
 
@@ -354,9 +389,15 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 ```
 
+**Intervyuda shunday ayting:** "Domen istisnolarini service'da ko'taraman va global `exception_handler` bilan HTTP javobga xaritalayman — endpoint'lar toza qoladi va format bir xil. Kutilmagan xatolarda ichki tafsilotni qaytarmayman, faqat log'da request ID bilan. 422 validatsiya formatini ham kerak bo'lsa moslayman."
+
 ---
 
-## Q10. What are Background Tasks in FastAPI? | FastAPI'da Background Tasks nima?
+## Q10. What are Background Tasks and how do you handle long-running work? | Background Tasks va uzoq davom etadigan ishlar
+
+**Oddiy qilib aytganda:** Background task — javob yuborilgandan **keyin** bajariladigan kichik ish (masalan, email). Foydalanuvchi kutmaydi. Lekin u shu server jarayonida ishlaydi: server qayta ishga tushsa, ish yo'qoladi. Uzoq yoki muhim ishlar uchun navbat (Celery, arq, RQ) kerak.
+
+**Batafsilroq:**
 
 **EN:** Background tasks run after the response is sent. Used for sending emails, logging, notifications, or heavy processing without blocking the response.
 
@@ -393,9 +434,59 @@ async def register_user(
 # ⚠️ UZ: Og'ir tasklar uchun Celery + Redis ishlatish yaxshiroq
 ```
 
+**Qo'shimcha — How to handle long-running tasks in FastAPI?**
+
+**EN:** For tasks longer than a few seconds: use Celery + Redis/RabbitMQ for background processing. Return a task ID immediately and let clients poll for status.
+
+**UZ:** Bir necha soniyadan ko'p davom etadigan tasklar uchun: background processing uchun Celery + Redis/RabbitMQ ishlatiladi. Darhol task ID qaytarilib, clientlar status uchun polling qiladi.
+
+```python
+# celery_app.py
+from celery import Celery
+
+celery = Celery(
+    "tasks",
+    broker="redis://localhost:6379/0",
+    backend="redis://localhost:6379/1"
+)
+
+@celery.task(bind=True)
+def process_report(self, user_id: int, date_range: dict):
+    try:
+        self.update_state(state="PROGRESS", meta={"progress": 0})
+        # ... og'ir hisob-kitob | heavy computation
+        self.update_state(state="PROGRESS", meta={"progress": 50})
+        # ... davom etadi | continues
+        return {"report_url": "/reports/output.xlsx"}
+    except Exception as exc:
+        raise self.retry(exc=exc, max_retries=3)
+
+# FastAPI endpoint
+@app.post("/reports/")
+async def create_report(user_id: int):
+    task = process_report.delay(user_id, {"start": "2024-01", "end": "2024-12"})
+    return {"task_id": task.id, "status": "queued"}
+
+@app.get("/reports/{task_id}/status")
+async def get_report_status(task_id: str):
+    task = process_report.AsyncResult(task_id)
+    return {
+        "task_id": task_id,
+        "status": task.status,    # PENDING, PROGRESS, SUCCESS, FAILURE
+        "result": task.result if task.successful() else None,
+        "meta": task.info
+    }
+```
+
+**Intervyuda shunday ayting:** "`BackgroundTasks` — yengil, javobdan keyingi, yo'qolsa ham mayli bo'lgan ishlar uchun. Uzoq yoki muhim ishlar uchun — tashqi navbat va worker'lar: qayta urinish, kuzatish va alohida masshtablash. API `202 Accepted` va job ID qaytaradi, klient holatni so'raydi."
+
 ---
 
 ## Q11. What are WebSockets in FastAPI? | FastAPI'da WebSocket nima?
+
+**Oddiy qilib aytganda:** WebSocket — brauzer va server orasidagi **doimiy, ikki tomonlama** aloqa: chat, o'yin, jonli bildirishnomalar. HTTP'dagi 'so'ra-javob ol' dan farqli, server istalgan paytda o'zi xabar yubora oladi.
+
+**Batafsilroq:**
 
 **EN:** WebSockets provide full-duplex, real-time communication between client and server. FastAPI has built-in WebSocket support.
 
@@ -437,9 +528,15 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
         await manager.broadcast(f"{client_id} left the chat")
 ```
 
+**Intervyuda shunday ayting:** "FastAPI'da `@app.websocket` + ulanishlar menejeri; uzilishni `WebSocketDisconnect` bilan ushlab, ro'yxatdan o'chiraman. Autentifikatsiya handshake'da. Bir nechta server bo'lsa, xabarlarni Redis Pub/Sub orqali tarqataman — xotiradagi ro'yxat faqat o'sha jarayon ulanishlarini biladi."
+
 ---
 
 ## Q12. What is the Lifespan event in FastAPI? | FastAPI'da Lifespan event nima?
+
+**Oddiy qilib aytganda:** Lifespan — ilova ishga tushganda va to'xtaganda **bir marta** bajariladigan kod: baza ulanishlar pool'ini ochish, ML modelini yuklash va oxirida ularni yopish. `yield` dan oldingisi — ishga tushish, keyingisi — to'xtash.
+
+**Batafsilroq:**
 
 **EN:** Lifespan events allow you to run code on application **startup** and **shutdown** — for initializing DB connections, loading ML models, etc.
 
@@ -470,9 +567,15 @@ app = FastAPI(lifespan=lifespan)
 # @app.on_event("shutdown")
 ```
 
+**Intervyuda shunday ayting:** "Lifespan context manager'i ishga tushish va to'xtashni juftlaydi — eski `on_event` o'rniga. Umumiy resurslarni `app.state` da saqlayman. Kubernetes'da readiness faqat lifespan tugagach 'tayyor' desin; har worker jarayoni lifespan'ni alohida bajaradi."
+
 ---
 
 ## Q13. How does FastAPI auto-generate documentation? | FastAPI hujjatlarni avtomatik qanday yaratadi?
+
+**Oddiy qilib aytganda:** FastAPI kodingizdagi route'lar, parametrlar va Pydantic modellaridan OpenAPI tavsifini avtomatik yaratadi. `/docs` (Swagger UI) va `/redoc` sahifalarida API'ni ko'rish va brauzerdan sinab ko'rish mumkin.
+
+**Batafsilroq:**
 
 **EN:** FastAPI uses your Python type hints and Pydantic models to automatically generate an OpenAPI schema, which is rendered as interactive Swagger UI and ReDoc.
 
@@ -513,9 +616,15 @@ async def create_user(user: UserCreate):
 # Docs: http://localhost:8000/docs
 ```
 
+**Intervyuda shunday ayting:** "Hujjat kod bilan sinxron — alohida yozish shart emas. Uni boyitaman: `summary`, `description`, `responses={404: ...}`, misollar va teglar. OpenAPI sxemasidan klient SDK'larini generatsiya qilish mumkin. Ichki endpoint'larni `include_in_schema=False` bilan yashiraman (lekin himoya qilaman)."
+
 ---
 
 ## Q14. What is Response Model in FastAPI? | FastAPI'da Response Model nima?
+
+**Oddiy qilib aytganda:** Response model — 'javobda faqat shu maydonlar bo'ladi' degan qoida. Bazadagi foydalanuvchi obyektida parol xeshi bo'lsa ham, `UserOut` modelida u yo'q — FastAPI uni javobdan olib tashlaydi.
+
+**Batafsilroq:**
 
 **EN:** `response_model` defines the shape of the response. FastAPI validates and filters the output — fields not in the model are excluded automatically. Useful for hiding internal fields like passwords.
 
@@ -556,9 +665,15 @@ async def get_user(user_id: int):
 # response_model_include={"field"} — faqat shu maydonlarni kiritish
 ```
 
+**Intervyuda shunday ayting:** "Kirish va chiqish uchun alohida modellar; qaytish tipi yoki `response_model` javobni filtrlaydi va hujjatlashtiradi. 0.130 dan javob Pydantic orqali Rust'da serializatsiya qilinadi — tezroq. `response_model_exclude_unset` kabi opsiyalar PATCH semantikasida foydali."
+
 ---
 
 ## Q15. What is API Versioning in FastAPI? | FastAPI'da API Versioning nima?
+
+**Oddiy qilib aytganda:** API versiyalash — eski klientlar buzilmasligi uchun o'zgargan API'ni yangi versiya sifatida yonma-yon berish: `/api/v1/users` eski formatda, `/api/v2/users` yangi formatda.
+
+**Batafsilroq:**
 
 **EN:** API versioning keeps old API versions working while introducing new ones. Most common approach: URL path versioning (`/api/v1/`, `/api/v2/`).
 
@@ -591,13 +706,19 @@ app.include_router(v2_router)
 # GET /api/v2/users/ → new response with avatar
 ```
 
+**Intervyuda shunday ayting:** "Avval orqaga mos o'zgarishni sinayman (yangi maydon qo'shish). Buzuvchi o'zgarishda — URL prefiksli router'lar (`/api/v1`, `/api/v2`), eski versiyani `Deprecation`/`Sunset` sarlavhalari va aniq sana bilan o'chiraman. Versiyalar soni kam bo'lsin — har biri qo'llab-quvvatlash narxi."
+
 ---
 
-# 🔶 FASTAPI ILGʻOR | FASTAPI ADVANCED (Q16–Q25)
+# 🔶 FASTAPI ILGʻOR | FASTAPI ADVANCED
 
 ---
 
 ## Q16. What is the difference between `async def` and `def` in FastAPI? | FastAPI'da `async def` va `def` farqi nima?
+
+**Oddiy qilib aytganda:** `async def` endpoint bitta event loop'da ishlaydi — faqat `await` qilinadigan (async) kutubxonalar bilan. Oddiy `def` endpoint'ni FastAPI alohida thread'da ishga tushiradi — sinxron kutubxonalar (requests, eski SDK) uchun xavfsiz. Xato — `async def` ichida sinxron, bloklovchi chaqiruv.
+
+**Batafsilroq:**
 
 **EN:** `async def` runs in the async event loop — for I/O-bound tasks (DB, HTTP calls). `def` runs in a thread pool — for CPU-bound or sync-only code. Never use blocking calls inside `async def`.
 
@@ -640,9 +761,15 @@ async def correct_endpoint():
     return result
 ```
 
+**Intervyuda shunday ayting:** "Qoida: I/O async kutubxonalar bilan bo'lsa — `async def`; sinxron kutubxona bo'lsa — oddiy `def` (thread pool'da ishlaydi). `async def` ichida bloklovchi chaqiruv butun serverni to'xtatadi. Og'ir CPU ishi uchun — process pool yoki navbat. Amaliy ssenariy — `practical/fastapi.md` Q5."
+
 ---
 
 ## Q17. How to implement Pagination in FastAPI? | FastAPI'da Pagination qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** Pagination — katta ro'yxatni sahifalarga bo'lib berish: bir so'rovda 20 ta, keyingisida yana 20 ta. Hamma yozuvni birdan qaytarish serverni ham, klientni ham qiynaydi.
+
+**Batafsilroq:**
 
 **EN:** Implement pagination using query parameters `skip` and `limit`, or use cursor-based pagination for large datasets.
 
@@ -691,9 +818,15 @@ async def list_users(
     )
 ```
 
+**Intervyuda shunday ayting:** "`limit` ga yuqori chegara qo'yaman (`Query(ge=1, le=100)`). Kichik jadvallar uchun offset yetarli, kattalari uchun keyset/cursor pagination (`after_id`) — oxirgi sahifalarda ham tez va yangi qatorlar qo'shilganda takrorlar bo'lmaydi. Javobda keyingi kursorni qaytaraman."
+
 ---
 
 ## Q18. How to implement File Upload in FastAPI? | FastAPI'da fayl yuklashni qanday amalga oshirish mumkin?
+
+**Oddiy qilib aytganda:** Fayl yuklash — `UploadFile` parametri orqali. U katta faylni vaqtinchalik diskka yozadi va bo'lak-bo'lak o'qish imkonini beradi. Hajm va fayl turini albatta tekshirish kerak.
+
+**Batafsilroq:**
 
 **EN:** Use `UploadFile` and `File` from FastAPI to handle file uploads.
 
@@ -740,9 +873,15 @@ async def upload_multiple(files: List[UploadFile] = File(...)):
     return results
 ```
 
+**Intervyuda shunday ayting:** "`UploadFile` (spooled) katta fayllarni xotiraga to'liq olmaydi; `bytes` parametri esa oladi — katta fayllar uchun ishlatmayman. Hajmni proxy va ilovada cheklayman, turini mazmunidan tekshiraman, nomni o'zim beraman. Juda katta fayllar — presigned URL bilan to'g'ridan-to'g'ri S3'ga."
+
 ---
 
 ## Q19. How to implement Caching in FastAPI? | FastAPI'da Caching qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** Kesh — tez-tez so'raladigan, kam o'zgaradigan javobni vaqtincha eslab qolish: keyingi so'rovlar bazaga bormasdan tez javob oladi. Redis'da yoki HTTP darajasida (`Cache-Control`) saqlanishi mumkin.
+
+**Batafsilroq:**
 
 **EN:** Use Redis for distributed caching, or in-memory caching for simple cases. `fastapi-cache2` library makes it easy.
 
@@ -788,9 +927,15 @@ async def get_product(product_id: int, redis=Depends(get_redis)):
     return product
 ```
 
+**Intervyuda shunday ayting:** "Kesh kaliti barcha muhim parametrlarni o'z ichiga oladi (foydalanuvchiga bog'liq bo'lsa — uning ID'si ham), har yozuvga TTL, ma'lumot o'zgarganda invalidatsiya. Ommaviy javoblar uchun HTTP kesh sarlavhalari va CDN, ichki kesh uchun Redis. Cache stampede'dan himoya — lock yoki stale-while-revalidate."
+
 ---
 
 ## Q20. How to implement Rate Limiting in FastAPI? | FastAPI'da Rate Limiting qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** Rate limiting — bir foydalanuvchi yoki IP'dan ma'lum vaqtda ruxsat etilgan so'rovlar soni: 'daqiqasiga 5 ta login urinishi'. Oshsa — `429 Too Many Requests`. Server va API'ni suiiste'moldan himoya qiladi.
+
+**Batafsilroq:**
 
 **EN:** Rate limiting restricts how many requests a client can make in a time window. Use `slowapi` library or custom Redis-based middleware.
 
@@ -820,9 +965,15 @@ async def get_data(request: Request):
     return {"data": "..."}
 ```
 
+**Intervyuda shunday ayting:** "Hisoblagich bir nechta worker va server uchun umumiy bo'lishi kerak — Redis (slowapi yoki o'z token bucket'im). Kalit: API kalit yoki foydalanuvchi, zaxira sifatida IP (proxy ortida to'g'ri IP bilan). Javobda `Retry-After`. Qo'pol cheklovni proxy/gateway darajasida ham qo'yaman."
+
 ---
 
-## Q21. How to implement Server-Sent Events (SSE) in FastAPI? | FastAPI'da SSE qanday amalga oshiriladi?
+## Q21. How do you stream responses and Server-Sent Events? | Oqimli javoblar va SSE qanday qilinadi?
+
+**Oddiy qilib aytganda:** Oqimli javob — natijani oxirigacha kutmasdan, tayyor bo'lgan qismlarini darhol yuborish: katta CSV eksporti, AI chatbot javobi, jarayon holati. SSE — brauzer `EventSource` bilan o'qiydigan standart oqim formati.
+
+**Batafsilroq:**
 
 **EN:** SSE allows the server to push real-time updates to clients over HTTP (one-directional). Good for notifications, dashboards, logs.
 
@@ -858,9 +1009,53 @@ async def sse_endpoint(topic: str):
 # es.onmessage = (e) => console.log(JSON.parse(e.data));
 ```
 
+**Qo'shimcha — What are Server-side Streaming responses?**
+
+**EN:** Streaming responses send data in chunks, allowing the client to start processing before the full response is ready. Ideal for large files or real-time data.
+
+**UZ:** Oqimli javoblar ma'lumotlarni bo'laklarda yuboradi, clientga to'liq javob tayyor bo'lmasdan ishlov berishni boshlash imkonini beradi. Katta fayllar yoki real-vaqt ma'lumotlari uchun ideal.
+
+```python
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+import asyncio
+
+app = FastAPI()
+
+async def generate_csv(data_size: int):
+    yield "id,name,email\n"  # Header
+    for i in range(data_size):
+        await asyncio.sleep(0)  # Boshqa koroutinlarga imkon | Allow other coroutines
+        yield f"{i},User{i},user{i}@example.com\n"
+
+@app.get("/export/csv")
+async def export_csv(size: int = 10000):
+    return StreamingResponse(
+        generate_csv(size),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=users.csv"}
+    )
+
+# Katta fayl stream | Large file streaming
+@app.get("/files/{filename}")
+async def stream_file(filename: str):
+    async def file_generator():
+        async with aiofiles.open(f"files/{filename}", "rb") as f:
+            while chunk := await f.read(8192):  # 8KB bo'laklar | 8KB chunks
+                yield chunk
+
+    return StreamingResponse(file_generator(), media_type="application/octet-stream")
+```
+
+**Intervyuda shunday ayting:** "Katta yoki bosqichma-bosqich tayyorlanadigan javoblar uchun `StreamingResponse`; FastAPI 0.135+ da SSE uchun o'rnatilgan `EventSourceResponse` va `yield` (0.134+ da JSON Lines ham). Proxy buferlashini o'chiraman (`X-Accel-Buffering: no`), klient uzilganda generator to'xtashini tekshiraman."
+
 ---
 
 ## Q22. What is OpenAPI Tags and how to organize them? | OpenAPI Tags nima va ularni qanday tartiblashtirish kerak?
+
+**Oddiy qilib aytganda:** OpenAPI teglari — endpoint'larni hujjatda guruhlash: 'Foydalanuvchilar', 'Buyurtmalar', 'Admin'. Katta API'da kerakli qismni topish osonlashadi va teglarga tavsif qo'shish mumkin.
+
+**Batafsilroq:**
 
 **EN:** Tags group endpoints in Swagger UI, making documentation more readable.
 
@@ -895,9 +1090,15 @@ async def list_items():
     return []
 ```
 
+**Intervyuda shunday ayting:** "Teglarni router darajasida beraman va `openapi_tags` bilan tavsif va tartibni belgilayman. Teglar klient generatorlarida ham modul nomlariga aylanadi, shuning uchun ularni barqaror saqlayman."
+
 ---
 
 ## Q23. How to add custom headers to FastAPI responses? | FastAPI javoblariga maxsus headerlar qanday qo'shish mumkin?
+
+**Oddiy qilib aytganda:** Maxsus sarlavhalar — javobga qo'shimcha ma'lumot qo'shish: `X-Request-ID`, `X-Total-Count`, `Cache-Control`. Endpoint'da `Response` parametri orqali yoki hamma javoblar uchun middleware'da qo'shiladi.
+
+**Batafsilroq:**
 
 **EN:** Use `Response` object or return `JSONResponse` with custom headers.
 
@@ -929,9 +1130,15 @@ async def direct_response():
     )
 ```
 
+**Intervyuda shunday ayting:** "Endpoint'ga xos sarlavhalar — `response: Response` parametri orqali; hammaga tegishlilari (request ID, xavfsizlik sarlavhalari) — middleware'da. Brauzer JS o'qishi kerak bo'lgan maxsus sarlavhalarni CORS'da `expose_headers` ga qo'shaman."
+
 ---
 
 ## Q24. How to implement Health Check endpoint? | Health Check endpoint qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** Health check — 'servis tirikmi va ishlay oladimi?' degan savolga javob beruvchi endpoint. Load balancer va Kubernetes shu orqali buzilgan nusxaga trafik yubormaydi yoki uni qayta ishga tushiradi.
+
+**Batafsilroq:**
 
 **EN:** Health check endpoints let orchestrators (Kubernetes, Docker) know if the app is alive and ready.
 
@@ -940,7 +1147,7 @@ async def direct_response():
 ```python
 from fastapi import FastAPI
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, timezone
 import time
 
 app = FastAPI()
@@ -965,7 +1172,7 @@ async def health_check():
     return HealthResponse(
         status="ok" if db_status == "ok" else "degraded",
         uptime=round(time.time() - START_TIME, 2),
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         version="1.0.0",
         database=db_status
     )
@@ -975,9 +1182,15 @@ async def ping():
     return {"pong": True}
 ```
 
+**Intervyuda shunday ayting:** "Ikkita endpoint: liveness (jarayon javob beryaptimi — bog'liqliklarsiz) va readiness (baza, kesh kabi bog'liqliklar tayyormi — qisqa timeout bilan). Liveness'ga bazani qo'shmayman — baza uzilganda hamma pod qayta ishga tushib, muammo kattalashadi."
+
 ---
 
 ## Q25. How to implement CORS in FastAPI? | FastAPI'da CORS qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** CORS — brauzerning xavfsizlik qoidasi: bir saytdagi JS boshqa domendagi API javobini faqat API ruxsat bersa o'qiy oladi. FastAPI'da `CORSMiddleware` bilan qaysi saytlarga ruxsat berilishi aniq ko'rsatiladi.
+
+**Batafsilroq:**
 
 **EN:** CORS (Cross-Origin Resource Sharing) allows or restricts web browsers from making requests to a different origin.
 
@@ -1014,13 +1227,19 @@ app.add_middleware(
 )
 ```
 
+**Intervyuda shunday ayting:** "Production'da origin'larni aniq ro'yxat bilan beraman; `allow_credentials=True` bilan `*` ishlatilmaydi. CORS autentifikatsiya emas — faqat brauzerni cheklaydi. Frontend va API bitta domenda bo'lsa, CORS umuman kerak emas. Amaliy ssenariy — `practical/fastapi.md` Q9."
+
 ---
 
-# 🟢 PYDANTIC (Q26–Q40)
+# 🟢 PYDANTIC
 
 ---
 
 ## Q26. What is Pydantic? | Pydantic nima?
+
+**Oddiy qilib aytganda:** Pydantic — ma'lumot tekshiruvchi kutubxona: siz model (maydonlar va turlar) yozasiz, u kiruvchi ma'lumotni tekshiradi va kerakli turga aylantiradi. Xato bo'lsa — qaysi maydon noto'g'ri ekanini aniq aytadi.
+
+**Batafsilroq:**
 
 **EN:** Pydantic is a Python data validation and settings management library using type annotations. FastAPI uses Pydantic for request validation, response serialization, and settings.
 
@@ -1029,14 +1248,14 @@ app.add_middleware(
 ```python
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 class UserCreate(BaseModel):
     name: str = Field(..., min_length=2, max_length=50, example="Ali Valiev")
     email: EmailStr = Field(..., example="ali@example.com")
     age: int = Field(..., ge=18, le=120)
     bio: Optional[str] = Field(None, max_length=500)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 # Avtomatik tekshiruv | Automatic validation
 try:
@@ -1049,9 +1268,15 @@ except Exception as e:
 # - age: must be >= 18
 ```
 
+**Intervyuda shunday ayting:** "Pydantic v2 — Rust'da yozilgan yadro (pydantic-core) bilan tez validatsiya, serializatsiya va JSON Schema. FastAPI uni body, query, javob va sozlamalar uchun ishlatadi. Tizim chegarasida Pydantic, domen ichida esa ko'pincha oddiy dataclass'lar."
+
 ---
 
 ## Q27. What is the difference between Pydantic V1 and V2? | Pydantic V1 va V2 farqi nima?
+
+**Oddiy qilib aytganda:** Pydantic V2 — to'liq qayta yozilgan, ancha tezroq versiya. Ko'p nomlar o'zgardi: `dict()` → `model_dump()`, `parse_obj` → `model_validate`, `@validator` → `@field_validator`, `class Config` → `model_config`. FastAPI 0.128 dan V1 umuman qo'llanmaydi.
+
+**Batafsilroq:**
 
 **EN:** Pydantic V2 is a complete rewrite in Rust — much faster (5-50x), with breaking API changes. Key differences: `model_dump()` instead of `dict()`, `model_validate()` instead of `from_orm()`, `ConfigDict` instead of class `Config`.
 
@@ -1086,9 +1311,15 @@ print(User.model_validate(obj))    # from_orm() o'rniga | instead of from_orm()
 # V2 Rust core'ga ega | V2 has Rust core
 ```
 
+**Intervyuda shunday ayting:** "V2 ga o'tishda asosiy o'zgarishlar: `model_dump`/`model_validate`, `field_validator`/`model_validator`, `ConfigDict`, `from_attributes` (eski `orm_mode`), qat'iyroq tur konvertatsiyasi. FastAPI 0.127 da `pydantic.v1` uchun ogohlantirish, 0.128 da uning qo'llovi olib tashlandi — eski kodni albatta ko'chirish kerak."
+
 ---
 
 ## Q28. What are Pydantic Field validators? | Pydantic Field validatorlari nima?
+
+**Oddiy qilib aytganda:** Validator — maydon uchun o'zingiz yozadigan qo'shimcha tekshiruv: 'parol kamida bitta raqamli bo'lsin', 'tugash sanasi boshlanishidan keyin bo'lsin'. Bitta maydon uchun — `field_validator`, bir nechta maydonni birga tekshirish uchun — `model_validator`.
+
+**Batafsilroq:**
 
 **EN:** Custom validators add business logic to field validation using `@field_validator` (V2) or `@validator` (V1).
 
@@ -1134,9 +1365,15 @@ user = UserCreate(
 )
 ```
 
+**Intervyuda shunday ayting:** "Oddiy cheklovlarni avval `Field(...)`/`Annotated` bilan (min_length, gt, pattern) beraman — ular JSON Schema'ga ham tushadi. Murakkab mantiq — `@field_validator`, maydonlararo — `@model_validator(mode="after")`. Validator'da xatoni `ValueError` bilan aniq xabar bilan ko'taraman."
+
 ---
 
-## Q29. What is Pydantic BaseSettings? | Pydantic BaseSettings nima?
+## Q29. What is Pydantic BaseSettings and how do you configure per environment? | BaseSettings va muhitga xos konfiguratsiya
+
+**Oddiy qilib aytganda:** `BaseSettings` — sozlamalarni muhit o'zgaruvchilari va `.env` fayldan o'qib, Pydantic modeli sifatida tekshiradi. `DATABASE_URL` berilmagan yoki noto'g'ri bo'lsa, ilova ishga tushmasdanoq aniq xato beradi. Muhitga qarab (dev, staging, prod) turli qiymatlar olinadi.
+
+**Batafsilroq:**
 
 **EN:** `BaseSettings` reads configuration from environment variables and `.env` files — ideal for managing app settings in different environments.
 
@@ -1186,418 +1423,7 @@ SettingsDep = Annotated[Settings, Depends(get_settings)]
 # DEBUG=false
 ```
 
----
-
-## Q30. How to create nested Pydantic models? | Ichma-ich Pydantic modellarini qanday yaratish mumkin?
-
-**EN:** Pydantic models can contain other models as field types, enabling complex nested data structures.
-
-**UZ:** Pydantic modellari boshqa modellarni maydon turi sifatida o'z ichiga olishi mumkin, bu murakkab ichma-ich ma'lumot tuzilmalarini yaratishga imkon beradi.
-
-```python
-from pydantic import BaseModel, EmailStr
-from typing import List, Optional
-
-class Address(BaseModel):
-    street: str
-    city: str
-    country: str = "Uzbekistan"
-
-class ContactInfo(BaseModel):
-    email: EmailStr
-    phone: Optional[str] = None
-    address: Optional[Address] = None
-
-class Order(BaseModel):
-    product_id: int
-    quantity: int
-    price: float
-
-class User(BaseModel):
-    id: int
-    name: str
-    contact: ContactInfo
-    orders: List[Order] = []
-
-# Ishlatish | Usage
-user = User(
-    id=1,
-    name="Ali",
-    contact=ContactInfo(
-        email="ali@example.com",
-        address=Address(street="Navoiy ko'chasi 1", city="Toshkent")
-    ),
-    orders=[
-        Order(product_id=10, quantity=2, price=50000.0)
-    ]
-)
-
-# Dict'ga aylantirish | Convert to dict
-print(user.model_dump())
-# JSON'ga | To JSON
-print(user.model_dump_json(indent=2))
-```
-
----
-
-## Q31. What is `model_dump()` and its options? | `model_dump()` va uning opsiyalari nima?
-
-**EN:** `model_dump()` converts a Pydantic model to a dictionary. It has many filtering options.
-
-**UZ:** `model_dump()` — Pydantic modelni lug'atga aylantiradi. Ko'p filtrlash opsiyalariga ega.
-
-```python
-from pydantic import BaseModel
-from typing import Optional
-
-class User(BaseModel):
-    id: int
-    name: str
-    email: str
-    password: str
-    bio: Optional[str] = None
-
-user = User(id=1, name="Ali", email="ali@ex.com", password="secret")
-
-# Standart | Default
-user.model_dump()
-# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com', 'password': 'secret', 'bio': None}
-
-# Faqat o'rnatilganlar | Only set fields
-user.model_dump(exclude_unset=True)
-# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com', 'password': 'secret'}
-
-# Chiqarib tashlash | Exclude fields
-user.model_dump(exclude={"password"})
-# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com', 'bio': None}
-
-# Faqat shu maydonlar | Only these fields
-user.model_dump(include={"id", "name", "email"})
-# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com'}
-
-# None maydonlarni chiqarish | Exclude None fields
-user.model_dump(exclude_none=True)
-# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com', 'password': 'secret'}
-```
-
----
-
-## Q32. How to use Pydantic with SQLAlchemy ORM? | Pydantic'ni SQLAlchemy ORM bilan qanday ishlatish kerak?
-
-**EN:** Use `model_config = ConfigDict(from_attributes=True)` (V2) to allow Pydantic to read data directly from SQLAlchemy ORM objects.
-
-**UZ:** SQLAlchemy ORM ob'ektlaridan Pydantic'ga to'g'ridan-to'g'ri ma'lumot o'qish imkonini berish uchun `model_config = ConfigDict(from_attributes=True)` (V2) ishlatiladi.
-
-```python
-from pydantic import BaseModel, ConfigDict
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import DeclarativeBase
-
-# SQLAlchemy modeli | SQLAlchemy model
-class Base(DeclarativeBase):
-    pass
-
-class UserORM(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    email = Column(String)
-    hashed_password = Column(String)
-
-# Pydantic schema
-class UserSchema(BaseModel):
-    model_config = ConfigDict(from_attributes=True)  # ← Muhim! | Important!
-
-    id: int
-    name: str
-    email: str
-    # hashed_password yo'q — yashiriladi | not included — hidden
-
-# ORM → Pydantic
-user_orm = UserORM(id=1, name="Ali", email="ali@ex.com", hashed_password="$hash")
-user_schema = UserSchema.model_validate(user_orm)  # ← from_attributes=True kerak | needed
-print(user_schema.model_dump())
-# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com'}
-```
-
----
-
-## Q33. What is Pydantic `Field` and its options? | Pydantic `Field` va uning opsiyalari nima?
-
-**EN:** `Field` provides metadata and validation rules for individual Pydantic model fields.
-
-**UZ:** `Field` — Pydantic model maydonlari uchun metadata va tekshiruv qoidalarini ta'minlaydi.
-
-```python
-from pydantic import BaseModel, Field
-from typing import Optional
-import re
-
-class Product(BaseModel):
-    # Majburiy | Required
-    name: str = Field(..., min_length=1, max_length=200, description="Mahsulot nomi")
-
-    # Default qiymat | Default value
-    price: float = Field(default=0.0, ge=0.0, description="Narx (UZS)")
-
-    # Ixtiyoriy | Optional
-    description: Optional[str] = Field(None, max_length=1000)
-
-    # Regex pattern
-    sku: str = Field(..., pattern=r"^[A-Z]{3}-\d{6}$", example="ABC-123456")
-
-    # Alias — JSON da boshqa nom | Different name in JSON
-    category_id: int = Field(..., alias="categoryId")
-
-    # GT, GE, LT, LE
-    stock: int = Field(default=0, ge=0, le=10000)
-
-    # Float aniqlik | Float precision
-    weight: float = Field(..., gt=0, description="Og'irligi (kg)")
-
-    # Swagger uchun misol | Example for Swagger
-    tags: list[str] = Field(default=[], max_length=10, example=["electronics", "sale"])
-
-# Alias bilan ishlash | Work with alias
-product = Product(
-    name="Laptop",
-    price=5000000.0,
-    sku="LAP-000001",
-    categoryId=3,    # ← alias
-    weight=2.5
-)
-print(product.category_id)  # 3
-```
-
----
-
-## Q34. How to create Custom Types in Pydantic? | Pydantic'da Custom Type'lar qanday yaratiladi?
-
-**EN:** Create custom types using `Annotated` with `BeforeValidator`, `AfterValidator`, or by subclassing types.
-
-**UZ:** `Annotated` va `BeforeValidator`, `AfterValidator` yordamida yoki type'lardan meros olib maxsus type'lar yaratiladi.
-
-```python
-from pydantic import BaseModel, BeforeValidator, AfterValidator
-from typing import Annotated
-import re
-
-# Custom type: UZS telefon raqami | UZ phone number
-def validate_uz_phone(v: str) -> str:
-    v = v.strip().replace(" ", "")
-    pattern = r"^\+998\d{9}$"
-    if not re.match(pattern, v):
-        raise ValueError("O'zbekiston telefon raqami formati: +998XXXXXXXXX")
-    return v
-
-UZPhone = Annotated[str, AfterValidator(validate_uz_phone)]
-
-# Custom type: Katta harf | Uppercase string
-def to_upper(v: str) -> str:
-    return v.upper()
-
-UpperStr = Annotated[str, BeforeValidator(to_upper)]
-
-# Custom type: Musbat son | Positive float
-PositiveAmount = Annotated[float, Field(gt=0)]
-
-class Employee(BaseModel):
-    name: UpperStr                  # Avtomatik katta harf | Auto uppercase
-    phone: UZPhone                  # Tekshirilgan telefon | Validated phone
-    salary: PositiveAmount          # Musbat miqdor | Positive amount
-
-emp = Employee(
-    name="ali valiev",             # → "ALI VALIEV"
-    phone="+998 90 123 45 67",     # → "+998901234567"
-    salary=5000000.0
-)
-```
-
----
-
-## Q35. How to serialize Pydantic models to JSON? | Pydantic modellarini JSON'ga qanday serializatsiya qilish kerak?
-
-**EN:** Use `model_dump_json()` for direct JSON string, or `model_dump()` then `json.dumps()` for custom options.
-
-**UZ:** To'g'ridan-to'g'ri JSON string uchun `model_dump_json()`, yoki `model_dump()` so'ng `json.dumps()` maxsus opsiyalar uchun.
-
-```python
-from pydantic import BaseModel
-from datetime import datetime
-from decimal import Decimal
-
-class Order(BaseModel):
-    id: int
-    created_at: datetime
-    total: Decimal
-    status: str
-
-order = Order(
-    id=1,
-    created_at=datetime(2024, 1, 15, 10, 30),
-    total=Decimal("149999.99"),
-    status="pending"
-)
-
-# JSON string | JSON satr
-json_str = order.model_dump_json()
-print(json_str)
-# {"id":1,"created_at":"2024-01-15T10:30:00","total":"149999.99","status":"pending"}
-
-# Chiroyli | Pretty print
-print(order.model_dump_json(indent=2))
-
-# Dict opsiyalar bilan | Dict with options
-data = order.model_dump(
-    mode="json",   # JSON-compatible types
-    exclude={"status"}
-)
-```
-
----
-
-## Q36. What are Pydantic Discriminated Unions? | Pydantic Discriminated Union nima?
-
-**EN:** Discriminated unions allow a field to accept different model types based on a discriminator field value.
-
-**UZ:** Discriminated union — maydonning diskriminator maydon qiymatiga asoslanib turli model turlarini qabul qilishiga imkon beradi.
-
-```python
-from pydantic import BaseModel
-from typing import Union, Literal, Annotated
-
-class CatEvent(BaseModel):
-    type: Literal["cat"]
-    meow_count: int
-
-class DogEvent(BaseModel):
-    type: Literal["dog"]
-    bark_volume: float
-
-# Discriminated Union — type maydoni asosida | Based on type field
-PetEvent = Annotated[
-    Union[CatEvent, DogEvent],
-    Field(discriminator="type")
-]
-
-class EventLog(BaseModel):
-    event: PetEvent
-
-# Ishlatish | Usage
-log1 = EventLog(event={"type": "cat", "meow_count": 5})
-log2 = EventLog(event={"type": "dog", "bark_volume": 8.5})
-
-print(type(log1.event))  # CatEvent
-print(type(log2.event))  # DogEvent
-```
-
----
-
-## Q37. What are Pydantic computed fields? | Pydantic computed field nima?
-
-**EN:** `@computed_field` creates read-only properties that are included in model serialization.
-
-**UZ:** `@computed_field` — model serializatsiyasiga kiritilgan faqat o'qish xususiyatlarini yaratadi.
-
-```python
-from pydantic import BaseModel, computed_field
-
-class Rectangle(BaseModel):
-    width: float
-    height: float
-
-    @computed_field
-    @property
-    def area(self) -> float:
-        return self.width * self.height
-
-    @computed_field
-    @property
-    def perimeter(self) -> float:
-        return 2 * (self.width + self.height)
-
-rect = Rectangle(width=5.0, height=3.0)
-print(rect.model_dump())
-# {'width': 5.0, 'height': 3.0, 'area': 15.0, 'perimeter': 16.0}
-```
-
----
-
-## Q38. How to handle Optional fields properly? | Optional maydonlarni qanday to'g'ri boshqarish kerak?
-
-**EN:** Distinguish between "field not provided" (use `exclude_unset`) and "field is None" (use `Optional`). For PATCH endpoints, use `exclude_unset=True`.
-
-**UZ:** "Maydon berilmagan" (`exclude_unset`) va "maydon None" (`Optional`) orasidagi farqni ajrating. PATCH endpointlar uchun `exclude_unset=True` ishlatiladi.
-
-```python
-from pydantic import BaseModel
-from typing import Optional
-
-class UserUpdate(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
-    bio: Optional[str] = None
-
-# PATCH endpoint — faqat berilgan maydonlarni yangilash | Update only provided fields
-@app.patch("/users/{user_id}")
-async def update_user(
-    user_id: int,
-    user_update: UserUpdate,
-    db: AsyncSession = Depends(get_db)
-):
-    # Faqat berilgan maydonlar | Only provided fields
-    update_data = user_update.model_dump(exclude_unset=True)
-    # PATCH {"name": "Vali"} → {"name": "Vali"} (email va bio o'zgartirilmaydi | not changed)
-
-    stmt = (
-        update(User)
-        .where(User.id == user_id)
-        .values(**update_data)
-    )
-    await db.execute(stmt)
-    await db.commit()
-    return {"updated": update_data}
-```
-
----
-
-## Q39. What is Pydantic's `model_config`? | Pydantic `model_config` nima?
-
-**EN:** `model_config` (V2) / `class Config` (V1) controls model behavior — ORM mode, extra fields, field aliases, etc.
-
-**UZ:** `model_config` (V2) / `class Config` (V1) — model xatti-harakatini boshqaradi: ORM rejimi, qo'shimcha maydonlar, maydon aliasi va boshqalar.
-
-```python
-from pydantic import BaseModel, ConfigDict, Field
-
-class StrictUser(BaseModel):
-    model_config = ConfigDict(
-        from_attributes=True,          # ORM mode — SQLAlchemy bilan | With SQLAlchemy
-        extra="forbid",                # Qo'shimcha maydonlarga ruxsat yo'q | No extra fields
-        str_strip_whitespace=True,     # Stringlardan bo'sh joylarni olib tashlash | Strip whitespace
-        str_to_lower=False,            # Stringlarni kichik harfga o'tkazmaslik
-        validate_assignment=True,      # Tayinlashda ham tekshirish | Validate on assignment
-        populate_by_name=True,         # Alias bilan ham to'ldirish | Also populate by name
-        frozen=False,                  # Immutable qilish | Make immutable
-    )
-
-    name: str = Field(..., alias="full_name")
-    email: str
-
-# extra="forbid" — noma'lum maydon bo'lsa xato | Unknown field raises error
-try:
-    StrictUser(name="Ali", email="ali@ex.com", unknown="field")
-except Exception as e:
-    print(e)  # ValidationError: Extra inputs not permitted
-
-# populate_by_name=True — ikkala nom bilan ham yaratish | Create with both names
-user = StrictUser(full_name="Ali", email="ali@ex.com")   # alias bilan | with alias
-user = StrictUser(name="Ali", email="ali@ex.com")         # ism bilan | with name
-```
-
----
-
-## Q40. How to use Pydantic for environment-specific configuration? | Pydantic'ni muhitga xos konfiguratsiya uchun qanday ishlatish kerak?
+**Qo'shimcha — How to use Pydantic for environment-specific configuration?**
 
 **EN:** Use multiple settings classes or environment variables to manage dev/staging/production configs.
 
@@ -1649,13 +1475,488 @@ settings = Settings()
 # DEBUG=false
 ```
 
----
-
-# 🔵 SQLALCHEMY (Q41–Q55)
+**Intervyuda shunday ayting:** "`pydantic-settings` bilan konfiguratsiyani bitta tipli obyektga yig'aman va ishga tushishda tekshiraman (fail fast). Sirlar — muhit o'zgaruvchilari yoki secret manager'dan, repozitoriyga yozilmaydi; sir maydonlari uchun `SecretStr`. Sozlamalarni `lru_cache` li dependency orqali beraman — testda almashtirish oson."
 
 ---
 
-## Q41. What is SQLAlchemy? | SQLAlchemy nima?
+## Q30. How to create nested Pydantic models? | Ichma-ich Pydantic modellarini qanday yaratish mumkin?
+
+**Oddiy qilib aytganda:** Ichma-ich model — model ichida boshqa model: buyurtmada mijoz (o'z modeli) va mahsulotlar ro'yxati (har biri o'z modeli). Pydantic butun daraxtni bir yo'la tekshiradi va xato qayerda ekanini yo'li bilan ko'rsatadi.
+
+**Batafsilroq:**
+
+**EN:** Pydantic models can contain other models as field types, enabling complex nested data structures.
+
+**UZ:** Pydantic modellari boshqa modellarni maydon turi sifatida o'z ichiga olishi mumkin, bu murakkab ichma-ich ma'lumot tuzilmalarini yaratishga imkon beradi.
+
+```python
+from pydantic import BaseModel, EmailStr
+from typing import List, Optional
+
+class Address(BaseModel):
+    street: str
+    city: str
+    country: str = "Uzbekistan"
+
+class ContactInfo(BaseModel):
+    email: EmailStr
+    phone: Optional[str] = None
+    address: Optional[Address] = None
+
+class Order(BaseModel):
+    product_id: int
+    quantity: int
+    price: float
+
+class User(BaseModel):
+    id: int
+    name: str
+    contact: ContactInfo
+    orders: List[Order] = []
+
+# Ishlatish | Usage
+user = User(
+    id=1,
+    name="Ali",
+    contact=ContactInfo(
+        email="ali@example.com",
+        address=Address(street="Navoiy ko'chasi 1", city="Toshkent")
+    ),
+    orders=[
+        Order(product_id=10, quantity=2, price=50000.0)
+    ]
+)
+
+# Dict'ga aylantirish | Convert to dict
+print(user.model_dump())
+# JSON'ga | To JSON
+print(user.model_dump_json(indent=2))
+```
+
+**Intervyuda shunday ayting:** "Ichma-ich modellar murakkab JSON'ni tipli qiladi va har daraja alohida tekshiriladi; xatolar `["items", 2, "price"]` kabi aniq yo'l bilan qaytadi. Juda chuqur ichma-ichlikdan qochaman — API'ni ishlatishni qiyinlashtiradi."
+
+---
+
+## Q31. What is `model_dump()` and its options? | `model_dump()` va uning opsiyalari nima?
+
+**Oddiy qilib aytganda:** `model_dump()` — Pydantic modelini oddiy lug'atga aylantiradi. Opsiyalar bilan nimani chiqarishni boshqarasiz: `exclude_unset=True` — faqat yuborilgan maydonlar, `exclude={"password"}` — maxfiy maydonni chiqarmaslik, `mode="json"` — JSON'ga mos turlar.
+
+**Batafsilroq:**
+
+**EN:** `model_dump()` converts a Pydantic model to a dictionary. It has many filtering options.
+
+**UZ:** `model_dump()` — Pydantic modelni lug'atga aylantiradi. Ko'p filtrlash opsiyalariga ega.
+
+```python
+from pydantic import BaseModel
+from typing import Optional
+
+class User(BaseModel):
+    id: int
+    name: str
+    email: str
+    password: str
+    bio: Optional[str] = None
+
+user = User(id=1, name="Ali", email="ali@ex.com", password="secret")
+
+# Standart | Default
+user.model_dump()
+# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com', 'password': 'secret', 'bio': None}
+
+# Faqat o'rnatilganlar | Only set fields
+user.model_dump(exclude_unset=True)
+# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com', 'password': 'secret'}
+
+# Chiqarib tashlash | Exclude fields
+user.model_dump(exclude={"password"})
+# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com', 'bio': None}
+
+# Faqat shu maydonlar | Only these fields
+user.model_dump(include={"id", "name", "email"})
+# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com'}
+
+# None maydonlarni chiqarish | Exclude None fields
+user.model_dump(exclude_none=True)
+# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com', 'password': 'secret'}
+```
+
+**Intervyuda shunday ayting:** "`model_dump(exclude_unset=True)` — PATCH uchun asosiy vosita ('yuborilmagan' va 'null yuborilgan' farqlanadi). `mode="json"` sana va Decimal'ni JSON'ga mos qiladi, `model_dump_json()` esa to'g'ridan-to'g'ri tezkor JSON beradi. `exclude_none` PATCH uchun noto'g'ri — ataylab yuborilgan null'ni ham tashlaydi."
+
+---
+
+## Q32. How to use Pydantic with SQLAlchemy ORM? | Pydantic'ni SQLAlchemy ORM bilan qanday ishlatish kerak?
+
+**Oddiy qilib aytganda:** SQLAlchemy modeli — bazadagi jadval, Pydantic modeli — API'dagi ma'lumot shakli. Ular alohida bo'ladi. `from_attributes=True` bilan Pydantic ORM obyektidan to'g'ridan-to'g'ri o'qiy oladi: `UserOut.model_validate(user_orm)`.
+
+**Batafsilroq:**
+
+**EN:** Use `model_config = ConfigDict(from_attributes=True)` (V2) to allow Pydantic to read data directly from SQLAlchemy ORM objects.
+
+**UZ:** SQLAlchemy ORM ob'ektlaridan Pydantic'ga to'g'ridan-to'g'ri ma'lumot o'qish imkonini berish uchun `model_config = ConfigDict(from_attributes=True)` (V2) ishlatiladi.
+
+```python
+from pydantic import BaseModel, ConfigDict
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import DeclarativeBase
+
+# SQLAlchemy modeli | SQLAlchemy model
+class Base(DeclarativeBase):
+    pass
+
+class UserORM(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String)
+    hashed_password = Column(String)
+
+# Pydantic schema
+class UserSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)  # ← Muhim! | Important!
+
+    id: int
+    name: str
+    email: str
+    # hashed_password yo'q — yashiriladi | not included — hidden
+
+# ORM → Pydantic
+user_orm = UserORM(id=1, name="Ali", email="ali@ex.com", hashed_password="$hash")
+user_schema = UserSchema.model_validate(user_orm)  # ← from_attributes=True kerak | needed
+print(user_schema.model_dump())
+# {'id': 1, 'name': 'Ali', 'email': 'ali@ex.com'}
+```
+
+**Intervyuda shunday ayting:** "ORM va API modellarini ajrataman — baza tuzilmasi o'zgarsa, API kontrakti buzilmaydi va maxfiy ustunlar tasodifan chiqmaydi. `ConfigDict(from_attributes=True)` ORM obyektini o'qiydi; lazy relationship'larni o'qishdan oldin eager loading qilaman — aks holda async'da xato yoki N+1."
+
+---
+
+## Q33. What is Pydantic `Field` and its options? | Pydantic `Field` va uning opsiyalari nima?
+
+**Oddiy qilib aytganda:** `Field` — maydonga qo'shimcha qoidalar va ma'lumot berish: standart qiymat, chegaralar (`gt=0`, `max_length=100`), tavsif, misol va boshqa nom (alias). Bu qoidalar ham tekshiruvda, ham API hujjatida ishlatiladi.
+
+**Batafsilroq:**
+
+**EN:** `Field` provides metadata and validation rules for individual Pydantic model fields.
+
+**UZ:** `Field` — Pydantic model maydonlari uchun metadata va tekshiruv qoidalarini ta'minlaydi.
+
+```python
+from pydantic import BaseModel, Field
+from typing import Optional
+import re
+
+class Product(BaseModel):
+    # Majburiy | Required
+    name: str = Field(..., min_length=1, max_length=200, description="Mahsulot nomi")
+
+    # Default qiymat | Default value
+    price: float = Field(default=0.0, ge=0.0, description="Narx (UZS)")
+
+    # Ixtiyoriy | Optional
+    description: Optional[str] = Field(None, max_length=1000)
+
+    # Regex pattern
+    sku: str = Field(..., pattern=r"^[A-Z]{3}-\d{6}$", example="ABC-123456")
+
+    # Alias — JSON da boshqa nom | Different name in JSON
+    category_id: int = Field(..., alias="categoryId")
+
+    # GT, GE, LT, LE
+    stock: int = Field(default=0, ge=0, le=10000)
+
+    # Float aniqlik | Float precision
+    weight: float = Field(..., gt=0, description="Og'irligi (kg)")
+
+    # Swagger uchun misol | Example for Swagger
+    tags: list[str] = Field(default=[], max_length=10, example=["electronics", "sale"])
+
+# Alias bilan ishlash | Work with alias
+product = Product(
+    name="Laptop",
+    price=5000000.0,
+    sku="LAP-000001",
+    categoryId=3,    # ← alias
+    weight=2.5
+)
+print(product.category_id)  # 3
+```
+
+**Intervyuda shunday ayting:** "`Field` validatsiya cheklovlari, hujjat (description, examples) va alias'larni bir joyda beradi; `Annotated[int, Field(gt=0)]` shaklini afzal ko'raman — qayta ishlatiladigan tur alias'lari yasash mumkin. O'zgaruvchan standart qiymat uchun `default_factory=list`."
+
+---
+
+## Q34. How to create Custom Types in Pydantic? | Pydantic'da Custom Type'lar qanday yaratiladi?
+
+**Oddiy qilib aytganda:** Maxsus tur — qayta ishlatiladigan tekshiruv qoidasi bilan tur: `PhoneNumber`, `PositiveDecimal`. Bir marta yozasiz va hamma modellarda ishlatasiz — qoida bir joyda turadi.
+
+**Batafsilroq:**
+
+**EN:** Create custom types using `Annotated` with `BeforeValidator`, `AfterValidator`, or by subclassing types.
+
+**UZ:** `Annotated` va `BeforeValidator`, `AfterValidator` yordamida yoki type'lardan meros olib maxsus type'lar yaratiladi.
+
+```python
+from pydantic import BaseModel, BeforeValidator, AfterValidator
+from typing import Annotated
+import re
+
+# Custom type: UZS telefon raqami | UZ phone number
+def validate_uz_phone(v: str) -> str:
+    v = v.strip().replace(" ", "")
+    pattern = r"^\+998\d{9}$"
+    if not re.match(pattern, v):
+        raise ValueError("O'zbekiston telefon raqami formati: +998XXXXXXXXX")
+    return v
+
+UZPhone = Annotated[str, AfterValidator(validate_uz_phone)]
+
+# Custom type: Katta harf | Uppercase string
+def to_upper(v: str) -> str:
+    return v.upper()
+
+UpperStr = Annotated[str, BeforeValidator(to_upper)]
+
+# Custom type: Musbat son | Positive float
+PositiveAmount = Annotated[float, Field(gt=0)]
+
+class Employee(BaseModel):
+    name: UpperStr                  # Avtomatik katta harf | Auto uppercase
+    phone: UZPhone                  # Tekshirilgan telefon | Validated phone
+    salary: PositiveAmount          # Musbat miqdor | Positive amount
+
+emp = Employee(
+    name="ali valiev",             # → "ALI VALIEV"
+    phone="+998 90 123 45 67",     # → "+998901234567"
+    salary=5000000.0
+)
+```
+
+**Intervyuda shunday ayting:** "Pydantic v2'da maxsus turlarni `Annotated` + `AfterValidator`/`BeforeValidator` bilan yasayman — klass merosisiz va qayta ishlatiladigan. Murakkab holatlar uchun `__get_pydantic_core_schema__`. Tur nomi domen tushunchasini ifodalaydi (`Email`, `Money`) — kod o'qiluvchan bo'ladi."
+
+---
+
+## Q35. How to serialize Pydantic models to JSON? | Pydantic modellarini JSON'ga qanday serializatsiya qilish kerak?
+
+**Oddiy qilib aytganda:** Serializatsiya — Pydantic modelini JSON matnga aylantirish. `model_dump_json()` buni tez bajaradi: sanalar ISO formatga, `Decimal` satrga aylanadi. Chiqish formatini maxsus serializer'lar bilan o'zgartirish mumkin.
+
+**Batafsilroq:**
+
+**EN:** Use `model_dump_json()` for direct JSON string, or `model_dump()` then `json.dumps()` for custom options.
+
+**UZ:** To'g'ridan-to'g'ri JSON string uchun `model_dump_json()`, yoki `model_dump()` so'ng `json.dumps()` maxsus opsiyalar uchun.
+
+```python
+from pydantic import BaseModel
+from datetime import datetime, timezone
+from decimal import Decimal
+
+class Order(BaseModel):
+    id: int
+    created_at: datetime
+    total: Decimal
+    status: str
+
+order = Order(
+    id=1,
+    created_at=datetime(2024, 1, 15, 10, 30),
+    total=Decimal("149999.99"),
+    status="pending"
+)
+
+# JSON string | JSON satr
+json_str = order.model_dump_json()
+print(json_str)
+# {"id":1,"created_at":"2024-01-15T10:30:00","total":"149999.99","status":"pending"}
+
+# Chiroyli | Pretty print
+print(order.model_dump_json(indent=2))
+
+# Dict opsiyalar bilan | Dict with options
+data = order.model_dump(
+    mode="json",   # JSON-compatible types
+    exclude={"status"}
+)
+```
+
+**Intervyuda shunday ayting:** "`model_dump_json()` Rust yadrosida ishlaydi — `json.dumps(model.model_dump())` dan tez. Maydon formatini `@field_serializer` bilan boshqaraman; pul uchun `Decimal` ni satr sifatida yuborish aniqlikni saqlaydi. Kirish va chiqish alias'larini aniq ajrataman."
+
+---
+
+## Q36. What are Pydantic Discriminated Unions? | Pydantic Discriminated Union nima?
+
+**Oddiy qilib aytganda:** Discriminated union — bir nechta turdan birini maxsus 'turi' maydoniga qarab aniqlash: `{"type": "card", ...}` bo'lsa — karta to'lovi modeli, `{"type": "cash"}` bo'lsa — naqd to'lov modeli. Pydantic qaysi modelni tekshirishni darhol biladi.
+
+**Batafsilroq:**
+
+**EN:** Discriminated unions allow a field to accept different model types based on a discriminator field value.
+
+**UZ:** Discriminated union — maydonning diskriminator maydon qiymatiga asoslanib turli model turlarini qabul qilishiga imkon beradi.
+
+```python
+from pydantic import BaseModel
+from typing import Union, Literal, Annotated
+
+class CatEvent(BaseModel):
+    type: Literal["cat"]
+    meow_count: int
+
+class DogEvent(BaseModel):
+    type: Literal["dog"]
+    bark_volume: float
+
+# Discriminated Union — type maydoni asosida | Based on type field
+PetEvent = Annotated[
+    Union[CatEvent, DogEvent],
+    Field(discriminator="type")
+]
+
+class EventLog(BaseModel):
+    event: PetEvent
+
+# Ishlatish | Usage
+log1 = EventLog(event={"type": "cat", "meow_count": 5})
+log2 = EventLog(event={"type": "dog", "bark_volume": 8.5})
+
+print(type(log1.event))  # CatEvent
+print(type(log2.event))  # DogEvent
+```
+
+**Intervyuda shunday ayting:** "Discriminator bilan Pydantic barcha variantlarni sinab ko'rmaydi — tez va xato xabari aniq (faqat mos variant bo'yicha). OpenAPI'da ham `oneOf` + discriminator sifatida hujjatlanadi. Hodisalar va polimorfik payload'lar uchun ideal."
+
+---
+
+## Q37. What are Pydantic computed fields? | Pydantic computed field nima?
+
+**Oddiy qilib aytganda:** Computed field — boshqa maydonlardan hisoblanadigan va javobga avtomatik qo'shiladigan maydon: to'rtburchak modelida `area` = eni × bo'yi. Uni alohida saqlash shart emas.
+
+**Batafsilroq:**
+
+**EN:** `@computed_field` creates read-only properties that are included in model serialization.
+
+**UZ:** `@computed_field` — model serializatsiyasiga kiritilgan faqat o'qish xususiyatlarini yaratadi.
+
+```python
+from pydantic import BaseModel, computed_field
+
+class Rectangle(BaseModel):
+    width: float
+    height: float
+
+    @computed_field
+    @property
+    def area(self) -> float:
+        return self.width * self.height
+
+    @computed_field
+    @property
+    def perimeter(self) -> float:
+        return 2 * (self.width + self.height)
+
+rect = Rectangle(width=5.0, height=3.0)
+print(rect.model_dump())
+# {'width': 5.0, 'height': 3.0, 'area': 15.0, 'perimeter': 16.0}
+```
+
+**Intervyuda shunday ayting:** "`@computed_field` + `@property` — hisoblangan qiymat serializatsiya va JSON Schema'ga kiradi. Faqat arzon, sof hisoblar uchun; og'ir yoki I/O talab qiladigan qiymatlarni service qatlamida hisoblayman."
+
+---
+
+## Q38. How to handle Optional fields properly? | Optional maydonlarni qanday to'g'ri boshqarish kerak?
+
+**Oddiy qilib aytganda:** Ixtiyoriy maydon — yuborilmasa ham bo'ladigan maydon. Muhim nozik farq: 'maydon yuborilmadi' va 'maydon `null` bilan yuborildi' — ikki xil narsa. PATCH so'rovlarida bu farqni to'g'ri ushlash kerak.
+
+**Batafsilroq:**
+
+**EN:** Distinguish between "field not provided" (use `exclude_unset`) and "field is None" (use `Optional`). For PATCH endpoints, use `exclude_unset=True`.
+
+**UZ:** "Maydon berilmagan" (`exclude_unset`) va "maydon None" (`Optional`) orasidagi farqni ajrating. PATCH endpointlar uchun `exclude_unset=True` ishlatiladi.
+
+```python
+from pydantic import BaseModel
+from typing import Optional
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    bio: Optional[str] = None
+
+# PATCH endpoint — faqat berilgan maydonlarni yangilash | Update only provided fields
+@app.patch("/users/{user_id}")
+async def update_user(
+    user_id: int,
+    user_update: UserUpdate,
+    db: AsyncSession = Depends(get_db)
+):
+    # Faqat berilgan maydonlar | Only provided fields
+    update_data = user_update.model_dump(exclude_unset=True)
+    # PATCH {"name": "Vali"} → {"name": "Vali"} (email va bio o'zgartirilmaydi | not changed)
+
+    stmt = (
+        update(User)
+        .where(User.id == user_id)
+        .values(**update_data)
+    )
+    await db.execute(stmt)
+    await db.commit()
+    return {"updated": update_data}
+```
+
+**Intervyuda shunday ayting:** "`str | None = None` — ixtiyoriy va null bo'lishi mumkin; `str | None` standartsiz — majburiy, lekin null qabul qiladi. PATCH'da `model_dump(exclude_unset=True)` bilan faqat yuborilganlarni qo'llayman. Amaliy ssenariy — `practical/fastapi.md` Q14."
+
+---
+
+## Q39. What is Pydantic's `model_config`? | Pydantic `model_config` nima?
+
+**Oddiy qilib aytganda:** `model_config` — modelning umumiy sozlamalari: noma'lum maydonlarni rad etish (`extra="forbid"`), satrlardagi bo'shliqlarni kesish, ORM obyektlaridan o'qish (`from_attributes`), obyektni o'zgarmas qilish (`frozen`).
+
+**Batafsilroq:**
+
+**EN:** `model_config` (V2) / `class Config` (V1) controls model behavior — ORM mode, extra fields, field aliases, etc.
+
+**UZ:** `model_config` (V2) / `class Config` (V1) — model xatti-harakatini boshqaradi: ORM rejimi, qo'shimcha maydonlar, maydon aliasi va boshqalar.
+
+```python
+from pydantic import BaseModel, ConfigDict, Field
+
+class StrictUser(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,          # ORM mode — SQLAlchemy bilan | With SQLAlchemy
+        extra="forbid",                # Qo'shimcha maydonlarga ruxsat yo'q | No extra fields
+        str_strip_whitespace=True,     # Stringlardan bo'sh joylarni olib tashlash | Strip whitespace
+        str_to_lower=False,            # Stringlarni kichik harfga o'tkazmaslik
+        validate_assignment=True,      # Tayinlashda ham tekshirish | Validate on assignment
+        populate_by_name=True,         # Alias bilan ham to'ldirish | Also populate by name
+        frozen=False,                  # Immutable qilish | Make immutable
+    )
+
+    name: str = Field(..., alias="full_name")
+    email: str
+
+# extra="forbid" — noma'lum maydon bo'lsa xato | Unknown field raises error
+try:
+    StrictUser(name="Ali", email="ali@ex.com", unknown="field")
+except Exception as e:
+    print(e)  # ValidationError: Extra inputs not permitted
+
+# populate_by_name=True — ikkala nom bilan ham yaratish | Create with both names
+user = StrictUser(full_name="Ali", email="ali@ex.com")   # alias bilan | with alias
+user = StrictUser(name="Ali", email="ali@ex.com")         # ism bilan | with name
+```
+
+**Intervyuda shunday ayting:** "`ConfigDict` bilan modellar xulqini belgilayman: kiruvchi so'rov modellarida `extra="forbid"` (mass assignment'dan himoya), javob modellarida `from_attributes=True`, qiymat obyektlarida `frozen=True`. Umumiy sozlamalarni bazaviy model klassida bir marta beraman."
+
+---
+
+# 🔵 SQLALCHEMY
+
+---
+
+## Q40. What is SQLAlchemy? | SQLAlchemy nima?
+
+**Oddiy qilib aytganda:** SQLAlchemy — Python'da ma'lumotlar bazasi bilan ishlashning eng mashhur kutubxonasi. Ikki qatlami bor: Core — SQL'ni Python ifodalari bilan yozish; ORM — jadvallarni Python klasslari sifatida ishlatish.
+
+**Batafsilroq:**
 
 **EN:** SQLAlchemy is a Python SQL toolkit and ORM (Object-Relational Mapper). It has two components: **Core** (SQL Expression Language — low level) and **ORM** (high level — maps Python classes to DB tables).
 
@@ -1686,9 +1987,15 @@ class Base(DeclarativeBase):
     pass
 ```
 
+**Intervyuda shunday ayting:** "SQLAlchemy 2.0 uslubi: tipli `Mapped[]` modellar, `select()` asosidagi so'rovlar, async qo'llovi (`AsyncSession`). ORM qulaylik beradi, lekin qanday SQL yuborilayotganini bilishim kerak — `echo=True` yoki so'rovlar log'i bilan tekshiraman."
+
 ---
 
-## Q42. How to define SQLAlchemy models? | SQLAlchemy modellarini qanday aniqlash kerak?
+## Q41. How to define SQLAlchemy models? | SQLAlchemy modellarini qanday aniqlash kerak?
+
+**Oddiy qilib aytganda:** SQLAlchemy modeli — jadvalning Python klassi ko'rinishi: har atribut — ustun, turi va cheklovlari bilan. 2.0 uslubida `Mapped[int]` va `mapped_column(...)` bilan yoziladi va type checker ularni tushunadi.
+
+**Batafsilroq:**
 
 **EN:** Define models as Python classes inheriting from `DeclarativeBase`. Each class represents a table.
 
@@ -1697,7 +2004,7 @@ class Base(DeclarativeBase):
 ```python
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship, DeclarativeBase
-from datetime import datetime
+from datetime import datetime, timezone
 
 class Base(DeclarativeBase):
     pass
@@ -1710,8 +2017,8 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False, index=True)
     hashed_password = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     # Relationship | Munosabat
     orders = relationship("Order", back_populates="user", lazy="selectin")
@@ -1726,14 +2033,20 @@ class Order(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     total = Column(Float, nullable=False)
     status = Column(String(50), default="pending")
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="orders")
 ```
 
+**Intervyuda shunday ayting:** "2.0 `DeclarativeBase` + `Mapped[...]` annotatsiyalari: nullable'lik `Optional` dan aniqlanadi, type checker'lar qo'llaydi. Cheklovlar (unique, FK, check) va indekslarni modelda aniq beraman — migratsiya ular asosida yaratiladi."
+
 ---
 
-## Q43. What are SQLAlchemy Relationships? | SQLAlchemy Relationships nima?
+## Q42. What are SQLAlchemy Relationships? | SQLAlchemy Relationships nima?
+
+**Oddiy qilib aytganda:** Relationship — jadvallar orasidagi bog'lanishni Python'da ishlatish: `user.orders` — foydalanuvchining buyurtmalari ro'yxati, `order.user` — buyurtma egasi. Bir-ko'p, ko'p-bir va ko'p-ko'p (oraliq jadval bilan) turlari bor.
+
+**Batafsilroq:**
 
 **EN:** Relationships define how models are connected. Types: One-to-Many, Many-to-One, One-to-One, Many-to-Many.
 
@@ -1783,9 +2096,15 @@ class Tag(Base):
     posts = relationship("Post", secondary=post_tags, back_populates="tags")
 ```
 
+**Intervyuda shunday ayting:** "`relationship()` + `back_populates` ikki tomonlama bog'lanish; yuklash strategiyasi (`lazy="selectin"` yoki so'rovda `selectinload`) N+1 ni oldini oladi. Async'da lazy loading ishlamaydi (implicit I/O) — bog'liq ma'lumotni doim aniq yuklayman. `cascade` ni ehtiyotkorlik bilan sozlayman."
+
 ---
 
-## Q44. What is the N+1 Query Problem and how to solve it? | N+1 Query muammosi nima va uni qanday hal qilish mumkin?
+## Q43. What is the N+1 Query Problem and how to solve it? | N+1 Query muammosi nima va uni qanday hal qilish mumkin?
+
+**Oddiy qilib aytganda:** N+1 — 1 ta so'rov bilan 50 ta foydalanuvchini olib, keyin har biri uchun alohida so'rov bilan buyurtmalarini olish: jami 51 ta so'rov. ORM'da bu sezilmasdan sodir bo'ladi. Yechim: bog'liq ma'lumotni birga yuklash — `selectinload`, `joinedload`.
+
+**Batafsilroq:**
 
 **EN:** N+1 happens when fetching N records triggers N additional queries for related data. Solved with eager loading: `selectinload` or `joinedload`.
 
@@ -1829,9 +2148,15 @@ result = await db.execute(
 )
 ```
 
+**Intervyuda shunday ayting:** "`selectinload` — bir-ko'p uchun (ikkinchi so'rov `IN` bilan), `joinedload` — ko'p-bir/bir-bir uchun (JOIN). N+1 ni so'rovlar log'i yoki testdagi so'rovlar soni assert'i bilan aniqlayman. Async SQLAlchemy'da lazy loading xato beradi — bu N+1 ni erta ko'rsatadi."
+
 ---
 
-## Q45. How to perform CRUD operations with SQLAlchemy async? | SQLAlchemy async bilan CRUD operatsiyalarini qanday bajarish kerak?
+## Q44. How to perform CRUD operations with SQLAlchemy async? | SQLAlchemy async bilan CRUD operatsiyalarini qanday bajarish kerak?
+
+**Oddiy qilib aytganda:** CRUD — yaratish, o'qish, yangilash, o'chirish. Async SQLAlchemy'da `AsyncSession` bilan: `session.add()` + `commit()` — yaratish, `session.get()` yoki `select()` — o'qish, atributni o'zgartirib `commit` — yangilash, `delete` — o'chirish.
+
+**Batafsilroq:**
 
 **EN:** Use `AsyncSession` methods to create, read, update, and delete records asynchronously.
 
@@ -1889,9 +2214,15 @@ async def delete_user(db: AsyncSession, user_id: int) -> bool:
     return result.rowcount > 0
 ```
 
+**Intervyuda shunday ayting:** "CRUD'ni repository/service qatlamida yozaman, endpoint'lar yupqa. Yangilashda faqat yuborilgan maydonlar (`exclude_unset`), yaratishda unique buzilishini `IntegrityError` ushlab 409 ga aylantiraman. Ommaviy amallar uchun ORM obyektlari o'rniga bitta `insert()`/`update()` so'rovi."
+
 ---
 
-## Q46. What is SQLAlchemy Session and how does it work? | SQLAlchemy Session nima va u qanday ishlaydi?
+## Q45. What is SQLAlchemy Session and how does it work? | SQLAlchemy Session nima va u qanday ishlaydi?
+
+**Oddiy qilib aytganda:** Session — baza bilan ishlash 'ish sessiyasi': siz obyektlarni qo'shasiz va o'zgartirasiz, session ularni kuzatadi va `commit` da hammasini bitta tranzaksiyada bazaga yozadi. Har so'rov o'z sessiyasini olishi kerak.
+
+**Batafsilroq:**
 
 **EN:** Session is the main interface for database operations. It tracks changes to ORM objects and syncs them with the DB on `commit()`. Use `yield` in FastAPI deps for proper lifecycle management.
 
@@ -1925,9 +2256,15 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 # detached    → session'dan ajratilgan | detached from session
 ```
 
+**Intervyuda shunday ayting:** "Session — unit of work va identity map: o'zgarishlarni to'playdi va commit'da yuboradi. FastAPI'da har so'rovga bitta sessiya — `yield` dependency orqali, xatoda rollback. Sessiyani so'rovlar yoki thread/task'lar orasida bo'lishmayman."
+
 ---
 
-## Q47. What is the difference between `scalar()`, `scalars()`, `all()`, `first()`, `one()`? | Ular orasida qanday farq bor?
+## Q46. What is the difference between `scalar()`, `scalars()`, `all()`, `first()`, `one()`? | Ular orasida qanday farq bor?
+
+**Oddiy qilib aytganda:** Natijani olishning turli usullari: `all()` — hamma qatorlar, `first()` — birinchisi yoki `None`, `one()` — aniq bitta (aks holda xato), `scalars()` — qatorlardan ORM obyektlarini ajratib olish, `scalar_one_or_none()` — bitta obyekt yoki `None`.
+
+**Batafsilroq:**
 
 **EN:** These methods control how query results are fetched and returned.
 
@@ -1964,9 +2301,15 @@ async def get_user_by_email(db: AsyncSession, email: str) -> User | None:
     return result.scalar_one_or_none()  # ← Eng keng tarqalgan | Most common
 ```
 
+**Intervyuda shunday ayting:** "`scalar_one()` — aniq bitta kutilganda (yo'q yoki ko'p bo'lsa xato — yaxshi), `scalar_one_or_none()` — ixtiyoriy bitta, `scalars().all()` — ro'yxat. `first()` o'zi `LIMIT` qo'shmaydi, shuning uchun so'rovda `limit(1)` yozaman. To'g'ri tanlov xatolarni yashirmaydi."
+
 ---
 
-## Q48. How to handle transactions in SQLAlchemy? | SQLAlchemy'da transaksiyalarni qanday boshqarish kerak?
+## Q47. How to handle transactions in SQLAlchemy? | SQLAlchemy'da transaksiyalarni qanday boshqarish kerak?
+
+**Oddiy qilib aytganda:** Tranzaksiya — bir nechta o'zgarishni 'yo hammasi, yo hech biri' qilib bajarish. SQLAlchemy'da `async with session.begin():` bloki: xato bo'lsa hammasi bekor qilinadi, bo'lmasa — saqlanadi. Ichki qisman bekor qilish uchun savepoint (`begin_nested`).
+
+**Batafsilroq:**
 
 **EN:** SQLAlchemy sessions automatically manage transactions. Use `begin()` for explicit transactions or `rollback()` on errors.
 
@@ -2005,9 +2348,15 @@ async with db.begin():
     # Avtomatik commit yoki rollback | Auto commit or rollback
 ```
 
+**Intervyuda shunday ayting:** "Tranzaksiya chegarasini service darajasida aniq belgilayman (`session.begin()`), endpoint'lar ichida tarqoq `commit` qilmayman. Tranzaksiya ichida tashqi API chaqirmayman — u qulflarni uzoq ushlaydi. Ishonchli hodisa yuborish uchun outbox."
+
 ---
 
-## Q49. What are SQLAlchemy indexes and constraints? | SQLAlchemy indeks va cheklovlari nima?
+## Q48. What are SQLAlchemy indexes and constraints? | SQLAlchemy indeks va cheklovlari nima?
+
+**Oddiy qilib aytganda:** Indekslar qidiruvni tezlashtiradi, cheklovlar (constraint) esa noto'g'ri ma'lumotni bazaga kiritmaydi: `unique=True` — takrorsiz, `ForeignKey` — mavjud yozuvga havola, `CheckConstraint` — qoida (narx > 0). Ular modelda yoziladi va migratsiyaga tushadi.
+
+**Batafsilroq:**
 
 **EN:** Indexes speed up queries. Constraints ensure data integrity at the database level.
 
@@ -2049,9 +2398,15 @@ class Employee(Base):
 Index("ix_email_lower", Employee.email)
 ```
 
+**Intervyuda shunday ayting:** "Biznes invariantlarini bazada constraint sifatida ham saqlayman — ilova validatsiyasi chetlab o'tilishi mumkin. Constraint'larga aniq nom beraman (`naming_convention`) — migratsiyalar barqaror bo'ladi. Indekslarni haqiqiy so'rovlarga qarab qo'shaman."
+
 ---
 
-## Q50. What is SQLAlchemy Core vs ORM? | SQLAlchemy Core va ORM farqi nima?
+## Q49. What is SQLAlchemy Core vs ORM? | SQLAlchemy Core va ORM farqi nima?
+
+**Oddiy qilib aytganda:** SQLAlchemy Core — SQL'ni Python'da ifodalar bilan yozish (jadvallar va so'rovlar), ORM esa buning ustidagi qatlam: jadvallarni klasslar, qatorlarni obyektlar sifatida ishlatish. Core — to'liq nazorat va tezlik, ORM — qulaylik.
+
+**Batafsilroq:**
 
 **EN:** **Core** uses SQL Expression Language — direct SQL-like queries. **ORM** maps Python objects to tables — higher abstraction. For complex queries or bulk operations, Core is better. For CRUD on models, ORM is easier.
 
@@ -2098,17 +2453,17 @@ async def orm_example(db: AsyncSession):
     users = result.scalars().all()
     for user in users:
         print(user.orders)  # Oldindan yuklangan | Pre-loaded
-```# 🚀 FastAPI · SQLAlchemy · Pydantic · Alembic
-# Interview Questions & Answers | Intervyu Savol va Javoblari
-## Part 2 of 2 — Questions 51–100
+```
+
+**Intervyuda shunday ayting:** "ORM — domen obyektlari va bog'lanishlar bilan ishlash uchun; Core (`insert()`, `update()`, `select()` jadvallarda) — ommaviy amallar, hisobotlar va murakkab SQL uchun. 2.0 da ikkalasi bir xil `select()` API'dan foydalanadi, shuning uchun ularni bir loyihada aralashtirish oson."
 
 ---
 
-# 🔵 SQLALCHEMY (davomi | continued) (Q51–Q55)
+## Q50. What is SQLAlchemy `hybrid_property`? | SQLAlchemy `hybrid_property` nima?
 
----
+**Oddiy qilib aytganda:** Hybrid property — ham Python'da, ham SQL so'rovda ishlaydigan hisoblangan xususiyat: `user.full_name` obyektda ism va familiyani birlashtiradi, `where(User.full_name == "Ali Valiyev")` esa xuddi shu mantiqni SQL'ga aylantiradi.
 
-## Q51. What is SQLAlchemy `hybrid_property`? | SQLAlchemy `hybrid_property` nima?
+**Batafsilroq:**
 
 **EN:** `hybrid_property` works both at the Python instance level and SQL query level — allows computed properties that translate to SQL expressions.
 
@@ -2151,9 +2506,15 @@ result = await db.execute(
 )
 ```
 
+**Intervyuda shunday ayting:** "`hybrid_property` mantiqni bitta joyda saqlaydi va filtr/saralashda ishlatish imkonini beradi. Python va SQL ifodalari turlicha bo'lsa, `.expression` bilan SQL versiyasini alohida yozaman. Tez-tez filtrlansa — indeks yoki generated column."
+
 ---
 
-## Q52. What is SQLAlchemy `event` system? | SQLAlchemy `event` tizimi nima?
+## Q51. What is SQLAlchemy `event` system? | SQLAlchemy `event` tizimi nima?
+
+**Oddiy qilib aytganda:** Event tizimi — model yoki sessiyada biror narsa bo'lganda avtomatik chaqiriladigan funksiyalar: yozishdan oldin `updated_at` ni qo'yish, o'chirishdan oldin log yozish.
+
+**Batafsilroq:**
 
 **EN:** SQLAlchemy events allow you to hook into ORM lifecycle events like `before_insert`, `after_update`, `before_delete`. Useful for auditing, auto-timestamps, soft delete.
 
@@ -2161,13 +2522,13 @@ result = await db.execute(
 
 ```python
 from sqlalchemy import event
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Avtomatik timestamp | Auto-timestamp
 @event.listens_for(Base, "before_update", propagate=True)
 def set_updated_at(mapper, connection, target):
     if hasattr(target, "updated_at"):
-        target.updated_at = datetime.utcnow()
+        target.updated_at = datetime.now(timezone.utc)
 
 # Soft delete pattern
 @event.listens_for(Session, "before_flush")
@@ -2175,7 +2536,7 @@ def soft_delete_listener(session, flush_context, instances):
     for obj in session.deleted:
         if hasattr(obj, "is_deleted"):
             obj.is_deleted = True
-            obj.deleted_at = datetime.utcnow()
+            obj.deleted_at = datetime.now(timezone.utc)
             session.expunge(obj)  # Haqiqiy o'chirishni oldini olish | Prevent real delete
             session.add(obj)
 
@@ -2185,9 +2546,15 @@ def after_user_insert(mapper, connection, target):
     print(f"New user created: {target.email}")
 ```
 
+**Intervyuda shunday ayting:** "Event'lar kesib o'tuvchi vazifalar uchun qulay (audit, timestamp), lekin yashirin mantiq — kodni o'qigan odam ularni ko'rmaydi. Ichida qo'shimcha so'rovlar yoki tashqi chaqiruvlar qilmayman; oddiy timestamp'lar uchun baza `DEFAULT`/`onupdate` soddaroq."
+
 ---
 
-## Q53. How to implement Soft Delete with SQLAlchemy? | SQLAlchemy bilan Soft Delete qanday amalga oshiriladi?
+## Q52. How to implement Soft Delete with SQLAlchemy? | SQLAlchemy bilan Soft Delete qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** Soft delete — yozuvni haqiqatan o'chirmasdan, 'o'chirilgan' deb belgilash (`deleted_at` ustuni). Keyin tiklash mumkin va tarix saqlanadi. Lekin har so'rovda o'chirilganlarni filtrlashni unutmaslik kerak.
+
+**Batafsilroq:**
 
 **EN:** Soft delete marks records as deleted instead of removing them from the database.
 
@@ -2196,7 +2563,7 @@ def after_user_insert(mapper, connection, target):
 ```python
 from sqlalchemy import Column, Boolean, DateTime, select
 from sqlalchemy.orm import DeclarativeBase, declared_attr
-from datetime import datetime
+from datetime import datetime, timezone
 
 class SoftDeleteMixin:
     is_deleted: bool = Column(Boolean, default=False, nullable=False)
@@ -2204,11 +2571,11 @@ class SoftDeleteMixin:
 
     def soft_delete(self):
         self.is_deleted = True
-        self.deleted_at = datetime.utcnow()
+        self.deleted_at = datetime.now(timezone.utc)
 
 class TimestampMixin:
-    created_at: datetime = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at: datetime = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at: datetime = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at: datetime = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
 class User(Base, SoftDeleteMixin, TimestampMixin):
     __tablename__ = "users"
@@ -2229,9 +2596,15 @@ async def get_active_users(db: AsyncSession):
     return result.scalars().all()
 ```
 
+**Intervyuda shunday ayting:** "Soft delete'da `deleted_at` + barcha so'rovlarda avtomatik filtr (global kriteriya, masalan `with_loader_criteria`). Noyoblik uchun partial unique indeks (`WHERE deleted_at IS NULL`). Shaxsiy ma'lumotni o'chirish talabi (GDPR) bo'lsa — soft delete yetarli emas, haqiqiy o'chirish yoki anonimlashtirish kerak."
+
 ---
 
-## Q54. What is `expire_on_commit` in SQLAlchemy? | SQLAlchemy'da `expire_on_commit` nima?
+## Q53. What is `expire_on_commit` in SQLAlchemy? | SQLAlchemy'da `expire_on_commit` nima?
+
+**Oddiy qilib aytganda:** `expire_on_commit` — commit'dan keyin obyekt atributlarini 'eskirgan' deb belgilash, shunda keyingi o'qishda ular bazadan qayta yuklanadi. Async kodda bu kutilmagan so'rov va xatoga olib keladi, shuning uchun ko'pincha `expire_on_commit=False` qo'yiladi.
+
+**Batafsilroq:**
 
 **EN:** By default, after `commit()`, all ORM objects expire (attributes become lazy-loaded on next access). Set `expire_on_commit=False` in async contexts to avoid `MissingGreenlet` errors.
 
@@ -2263,9 +2636,15 @@ async def create_user(db: AsyncSession, name: str):
     return user
 ```
 
+**Intervyuda shunday ayting:** "Async sessiyada `expire_on_commit=False` — commit'dan keyin obyektni qaytarganda yashirin lazy load bo'lmaydi. Buning narxi: obyekt eskirgan bo'lishi mumkin, kerak bo'lsa `await session.refresh(obj)`. Server tomonidan to'ldiriladigan qiymatlarni `RETURNING` bilan olaman."
+
 ---
 
-## Q55. How to implement full-text search with SQLAlchemy? | SQLAlchemy bilan to'liq matn qidiruvini qanday amalga oshirish kerak?
+## Q54. How to implement full-text search with SQLAlchemy? | SQLAlchemy bilan to'liq matn qidiruvini qanday amalga oshirish kerak?
+
+**Oddiy qilib aytganda:** To'liq matnli qidiruv — so'zlar bo'yicha qidirish (faqat aniq moslik emas). PostgreSQL'da `tsvector`/`tsquery` bor va SQLAlchemy ular bilan ishlay oladi: `where(Article.search.match("python fastapi"))`.
+
+**Batafsilroq:**
 
 **EN:** Use PostgreSQL's `tsvector` and `tsquery` via SQLAlchemy for full-text search. Or use `ILIKE` for simple case-insensitive search.
 
@@ -2304,13 +2683,19 @@ async def search_products_fts(db: AsyncSession, query: str):
     return result.scalars().all()
 ```
 
----
-
-# 🟡 ALEMBIC (Q56–Q65)
+**Intervyuda shunday ayting:** "PostgreSQL FTS'ni generated `tsvector` ustun va GIN indeks bilan ishlataman; so'rovni `websearch_to_tsquery` bilan quraman (foydalanuvchi kiritgan matn uchun xavfsiz). O'xshashlik va qism satr qidiruvi uchun `pg_trgm`. Murakkab qidiruv uchun — alohida qidiruv tizimi."
 
 ---
 
-## Q56. What is Alembic? | Alembic nima?
+# 🟡 ALEMBIC
+
+---
+
+## Q55. What is Alembic? | Alembic nima?
+
+**Oddiy qilib aytganda:** Alembic — baza tuzilmasi o'zgarishlarini (yangi jadval, ustun, indeks) versiyalangan fayllar sifatida yozish va qo'llash vositasi. Git kod uchun qanday bo'lsa, Alembic baza sxemasi uchun shunday.
+
+**Batafsilroq:**
 
 **EN:** Alembic is a database migration tool for SQLAlchemy. It tracks schema changes over time using migration scripts, similar to how Git tracks code changes.
 
@@ -2331,9 +2716,15 @@ alembic init alembic
 # alembic.ini       ← Asosiy konfiguratsiya | Main config
 ```
 
+**Intervyuda shunday ayting:** "Alembic migratsiyalari — sxema o'zgarishlarining tarixi: har muhitda bir xil tartibda qo'llanadi va kerak bo'lsa orqaga qaytariladi. Migratsiyalarni kod ko'rigidan o'tkazaman va CI'da toza bazaga to'liq qo'llab tekshiraman."
+
 ---
 
-## Q57. How to configure Alembic for async SQLAlchemy? | Alembic'ni async SQLAlchemy uchun qanday sozlash kerak?
+## Q56. How to configure Alembic for async SQLAlchemy? | Alembic'ni async SQLAlchemy uchun qanday sozlash kerak?
+
+**Oddiy qilib aytganda:** Async SQLAlchemy bilan Alembic'ni ishlatish uchun `env.py` da async engine yaratib, migratsiyalarni `run_sync` orqali bajarish kerak. Alembic'da buning uchun tayyor async shablon bor (`alembic init -t async`).
+
+**Batafsilroq:**
 
 **EN:** Async SQLAlchemy requires special Alembic configuration to run migrations asynchronously.
 
@@ -2389,9 +2780,15 @@ else:
     asyncio.run(run_migrations_online())
 ```
 
+**Intervyuda shunday ayting:** "`alembic init -t async` shabloni async engine va `connection.run_sync(do_run_migrations)` ni sozlaydi. `target_metadata` ga modellar metadata'sini ulayman va URL'ni sozlamalardan o'qiyman — sirlar `alembic.ini` ga yozilmaydi."
+
 ---
 
-## Q58. How to create and apply Alembic migrations? | Alembic migratsiyalarini qanday yaratish va qo'llash kerak?
+## Q57. How to create and apply Alembic migrations? | Alembic migratsiyalarini qanday yaratish va qo'llash kerak?
+
+**Oddiy qilib aytganda:** Migratsiya yaratish: `alembic revision --autogenerate -m "izoh"` — modellar va baza farqidan fayl yaratadi. Qo'llash: `alembic upgrade head`. Orqaga qaytarish: `alembic downgrade -1`.
+
+**Batafsilroq:**
 
 **EN:** Use `alembic revision` to create migration scripts and `alembic upgrade` to apply them.
 
@@ -2423,9 +2820,15 @@ alembic heads               # Oxirgi versiyalar | Latest versions
 alembic upgrade head --sql > migration.sql
 ```
 
+**Intervyuda shunday ayting:** "Autogenerate — qoralama: har faylni o'qib tuzataman. Productionda `upgrade head` deploy jarayonining alohida qadami; `alembic upgrade head --sql` bilan DBA uchun SQL chiqarish mumkin. `current` va `history` bilan holatni tekshiraman."
+
 ---
 
-## Q59. What does a migration file look like? | Migratsiya fayli qanday ko'rinadi?
+## Q58. What does a migration file look like? | Migratsiya fayli qanday ko'rinadi?
+
+**Oddiy qilib aytganda:** Migratsiya fayli — `upgrade()` (o'zgarishni qo'llash) va `downgrade()` (orqaga qaytarish) funksiyalari bor Python fayl. Unda `revision` va `down_revision` — migratsiyalar zanjiridagi o'rni.
+
+**Batafsilroq:**
 
 **EN:** Each migration file has `upgrade()` and `downgrade()` functions. `upgrade()` applies changes, `downgrade()` reverts them.
 
@@ -2485,9 +2888,15 @@ def downgrade() -> None:
     op.drop_column("users", "avatar_url")
 ```
 
+**Intervyuda shunday ayting:** "Har migratsiya kichik va bitta mantiqiy o'zgarish; `downgrade` ni ham yozaman va sinayman (qaytarib bo'lmaydigan o'zgarishlar bundan mustasno). Katta jadvallarda qulflarni hisobga olaman: `CREATE INDEX CONCURRENTLY` (autocommit blokida) va `lock_timeout`."
+
 ---
 
-## Q60. How to handle data migrations in Alembic? | Alembic'da ma'lumot migratsiyalarini qanday boshqarish kerak?
+## Q59. How to handle data migrations in Alembic? | Alembic'da ma'lumot migratsiyalarini qanday boshqarish kerak?
+
+**Oddiy qilib aytganda:** Ma'lumot migratsiyasi — faqat tuzilmani emas, mavjud ma'lumotni ham o'zgartirish: masalan, `full_name` ni `first_name` va `last_name` ga ajratish. Bu sxema migratsiyasidan xavfliroq, chunki ma'lumot bilan ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** Data migrations modify existing data (not schema). Use `op.get_bind()` or `op.execute()` inside migration files.
 
@@ -2529,9 +2938,15 @@ def downgrade() -> None:
     op.drop_column("users", "full_name")
 ```
 
+**Intervyuda shunday ayting:** "Ma'lumot migratsiyasini sxema o'zgarishidan ajrataman va expand-contract bilan qilaman: yangi ustun → ma'lumotni bo'laklab ko'chirish → kodni o'tkazish → eski ustunni o'chirish. Migratsiyada ORM modellarini import qilmayman (ular keyin o'zgaradi) — to'g'ridan-to'g'ri SQL yoki `sa.table()`."
+
 ---
 
-## Q61. How to handle Alembic migrations in production? | Production'da Alembic migratsiyalarini qanday boshqarish kerak?
+## Q60. How to handle Alembic migrations in production? | Production'da Alembic migratsiyalarini qanday boshqarish kerak?
+
+**Oddiy qilib aytganda:** Productionda migratsiya — ehtiyotkorlik talab qiladi: jadvalni uzoq qulflash sayt to'xtashiga olib kelishi mumkin. Migratsiyalar deploy jarayonida avtomatik, lekin bitta joyda, ilova ishga tushishidan oldin va orqaga mos holda bajariladi.
+
+**Batafsilroq:**
 
 **EN:** Run migrations as part of your CI/CD pipeline or at application startup. Always backup before migrating in production.
 
@@ -2574,9 +2989,15 @@ deploy:
       run: docker compose up -d
 ```
 
+**Intervyuda shunday ayting:** "Migratsiyalarni ilova ishga tushishida har replica'da emas, deploy'dagi alohida bitta qadamda (job) bajaraman. Har o'zgarish eski va yangi kod bilan ishlashi kerak (rolling deploy). `lock_timeout`, backup va avval staging'da production hajmidagi ma'lumotda sinash."
+
 ---
 
-## Q62. What is Alembic `--autogenerate` and its limitations? | Alembic `--autogenerate` va uning cheklovlari nima?
+## Q61. What is Alembic `--autogenerate` and its limitations? | Alembic `--autogenerate` va uning cheklovlari nima?
+
+**Oddiy qilib aytganda:** Autogenerate modellar va baza farqini topadi, lekin hamma narsani emas: ustun nomi o'zgarsa, u 'eskisini o'chir, yangisini qo'sh' deb tushunadi (ma'lumot yo'qoladi!), trigger, view va funksiyalarni esa umuman ko'rmaydi.
+
+**Batafsilroq:**
 
 **EN:** `--autogenerate` compares your SQLAlchemy models with the current DB schema and generates migration scripts. But it has limitations — it can't detect everything.
 
@@ -2604,9 +3025,15 @@ alembic revision --autogenerate -m "my change"
 cat alembic/versions/xxxxx_my_change.py
 ```
 
+**Intervyuda shunday ayting:** "Autogenerate cheklovlari: nom o'zgartirishni o'chirish+qo'shish deb ko'radi, server default'lar, CHECK constraint'lar, view, trigger va funksiyalarni to'liq sezmaydi. Shuning uchun har faylni ko'rib chiqaman va nom o'zgartirishni `op.alter_column(..., new_column_name=...)` bilan qo'lda yozaman."
+
 ---
 
-## Q63. How to work with multiple databases in Alembic? | Alembic'da bir nechta ma'lumotlar bazalari bilan qanday ishlash kerak?
+## Q62. How to work with multiple databases in Alembic? | Alembic'da bir nechta ma'lumotlar bazalari bilan qanday ishlash kerak?
+
+**Oddiy qilib aytganda:** Bir nechta baza bilan ishlash — masalan, asosiy baza va analitik baza. Alembic'da har biri uchun alohida migratsiyalar papkasi va sozlamasi yoki bitta konfiguratsiyada bir nechta 'engine' bo'lishi mumkin.
+
+**Batafsilroq:**
 
 **EN:** Use Alembic's multi-database feature with separate version directories for each database.
 
@@ -2634,9 +3061,15 @@ def run_migrations_for(db_name: str):
 alembic revision --autogenerate -m "Add users" --version-path alembic/versions_db1
 ```
 
+**Intervyuda shunday ayting:** "Har bazaning migratsiya tarixi mustaqil bo'lishi kerak — alohida `alembic.ini` bo'limlari yoki `multidb` shabloni. Bazalararo tranzaksiya yo'qligini hisobga olaman — ularni bir vaqtda o'zgartiradigan deploy'lar orqaga mos bo'lishi kerak."
+
 ---
 
-## Q64. What is Alembic `branch` and how to merge branches? | Alembic `branch` nima va ularni qanday birlashtirish kerak?
+## Q63. What is Alembic `branch` and how to merge branches? | Alembic `branch` nima va ularni qanday birlashtirish kerak?
+
+**Oddiy qilib aytganda:** Branch — ikki dasturchi bir vaqtda bitta migratsiyadan keyin yangi migratsiya yaratganda paydo bo'ladi: tarix ikkiga ayriladi (ikkita 'head'). `alembic merge` ularni birlashtiruvchi migratsiya yaratadi.
+
+**Batafsilroq:**
 
 **EN:** Alembic supports branching like Git — parallel migration paths. Use `alembic merge` to combine branches.
 
@@ -2660,9 +3093,15 @@ alembic merge -m "Merge users and products" a1b2c3 d4e5f6
 alembic upgrade head
 ```
 
+**Intervyuda shunday ayting:** "Ikki head bo'lsa `alembic upgrade head` xato beradi — CI'da `alembic heads` bilan buni tekshiraman. `alembic merge heads` bo'sh birlashtiruvchi migratsiya yaratadi; lekin ikki migratsiya bir xil jadvalni o'zgartirsa, tartibni qo'lda tekshiraman."
+
 ---
 
-## Q65. How to stamp Alembic version without running migrations? | Migratsiyalarni bajarmasdan Alembic versiyasini qanday belgilash kerak?
+## Q64. How to stamp Alembic version without running migrations? | Migratsiyalarni bajarmasdan Alembic versiyasini qanday belgilash kerak?
+
+**Oddiy qilib aytganda:** `alembic stamp` — migratsiyalarni bajarmasdan, bazani 'shu versiyada' deb belgilash. Mavjud bazaga Alembic'ni birinchi marta ulaganda yoki qo'lda tuzatilgan bazani tarix bilan moslashtirishda kerak.
+
+**Batafsilroq:**
 
 **EN:** `alembic stamp` marks the DB at a specific revision without actually running migrations — useful when the DB already has the correct schema.
 
@@ -2682,56 +3121,19 @@ alembic stamp head
 # Endi oddiy migratsiyalar ishlaydi | Now regular migrations work
 ```
 
----
-
-# ⚡ ASYNC & PERFORMANCE (Q66–Q75)
+**Intervyuda shunday ayting:** "`stamp` faqat `alembic_version` jadvalini yozadi — sxema haqiqatan mos ekanini oldin tekshiraman (masalan, bo'sh bazaga migratsiyalarni qo'llab, `pg_dump --schema-only` bilan solishtirib). Noto'g'ri stamp keyingi migratsiyalarni jimgina buzadi."
 
 ---
 
-## Q66. How does Python's asyncio event loop work? | Python asyncio event loop qanday ishlaydi?
-
-**EN:** The event loop runs coroutines cooperatively. When a coroutine hits `await`, it yields control to the loop, which runs other coroutines until the awaited operation completes.
-
-**UZ:** Event loop koroutinlarni kooperativ tarzda bajaradi. Koroutin `await` ga yetganda, boshqaruvni loop'ga beradi, loop kutilayotgan operatsiya tugamaguncha boshqa koroutinlarni bajaradi.
-
-```python
-import asyncio
-import time
-
-# Sinxron | Sync — ketma-ket, 3 soniya | Sequential, 3 seconds
-def sync_main():
-    time.sleep(1)
-    time.sleep(1)
-    time.sleep(1)
-    print("Done in 3 seconds")
-
-# Asinxron | Async — parallel, ~1 soniya | Concurrent, ~1 second
-async def fetch_data(name: str, delay: float):
-    print(f"{name} boshlandi | started")
-    await asyncio.sleep(delay)   # ← Boshqaruvni beradi | Yields control
-    print(f"{name} tugadi | finished")
-    return f"{name} result"
-
-async def async_main():
-    start = time.time()
-    # Parallel bajarish | Run concurrently
-    results = await asyncio.gather(
-        fetch_data("Task1", 1.0),
-        fetch_data("Task2", 1.0),
-        fetch_data("Task3", 1.0),
-    )
-    print(f"Done in {time.time()-start:.2f}s")  # ~1.00s
-    return results
-
-asyncio.run(async_main())
-
-# FastAPI event loop | FastAPI's event loop managed by Uvicorn
-# Bir eventloop'da yuzlab parallel so'rovlar | Hundreds of concurrent requests per event loop
-```
+# ⚡ ASYNC & PERFORMANCE
 
 ---
 
-## Q67. What is `asyncio.gather()` vs `asyncio.wait()`? | `asyncio.gather()` va `asyncio.wait()` farqi nima?
+## Q65. What is `asyncio.gather()` vs `asyncio.wait()`? | `asyncio.gather()` va `asyncio.wait()` farqi nima?
+
+**Oddiy qilib aytganda:** `gather` — bir nechta vazifani birga ishga tushirib, **hammasi** tugaguncha kutadi va natijalarni tartib bilan qaytaradi. `wait` — ko'proq nazorat beradi: masalan, 'birinchisi tugashi bilan' yoki 'birinchi xato bo'lganda' qaytish.
+
+**Batafsilroq:**
 
 **EN:** `gather()` runs coroutines concurrently and returns results in order. `wait()` gives more control (returns done/pending sets). Use `gather()` most of the time.
 
@@ -2776,9 +3178,15 @@ async def dashboard(user_id: int, db: AsyncSession = Depends(get_db)):
     return {"user": user, "orders": orders, "notifications": notifications}
 ```
 
+**Intervyuda shunday ayting:** "`gather` — oddiy parallel chaqiruvlar uchun; `return_exceptions=True` bo'lmasa, birinchi xato ko'tariladi, qolgan vazifalar esa ishlashda davom etadi. Zamonaviy kodda ko'pincha `asyncio.TaskGroup` — bittasi yiqilsa, qolganlarini bekor qiladi. `wait(..., return_when=FIRST_COMPLETED)` — poyga va timeout naqshlari uchun."
+
 ---
 
-## Q68. What is Connection Pooling? | Connection Pooling nima?
+## Q66. What is Connection Pooling? | Connection Pooling nima?
+
+**Oddiy qilib aytganda:** Connection pool — bazaga tayyor ulanishlar to'plami: har so'rov uchun yangi ulanish ochish o'rniga (sekin) tayyoridan olinadi va ishlatib bo'lingach qaytariladi. SQLAlchemy engine buni avtomatik qiladi.
+
+**Batafsilroq:**
 
 **EN:** Connection pooling maintains a pool of reusable DB connections instead of creating new ones for each request. Critical for performance.
 
@@ -2807,55 +3215,15 @@ print(engine.pool.status())
 # Pool size: 10  Connections in pool: 8  Current overflow: 2  Current checked out: 5
 ```
 
----
-
-## Q69. How to handle long-running tasks in FastAPI? | FastAPI'da uzoq davom etadigan tasklarni qanday boshqarish kerak?
-
-**EN:** For tasks longer than a few seconds: use Celery + Redis/RabbitMQ for background processing. Return a task ID immediately and let clients poll for status.
-
-**UZ:** Bir necha soniyadan ko'p davom etadigan tasklar uchun: background processing uchun Celery + Redis/RabbitMQ ishlatiladi. Darhol task ID qaytarilib, clientlar status uchun polling qiladi.
-
-```python
-# celery_app.py
-from celery import Celery
-
-celery = Celery(
-    "tasks",
-    broker="redis://localhost:6379/0",
-    backend="redis://localhost:6379/1"
-)
-
-@celery.task(bind=True)
-def process_report(self, user_id: int, date_range: dict):
-    try:
-        self.update_state(state="PROGRESS", meta={"progress": 0})
-        # ... og'ir hisob-kitob | heavy computation
-        self.update_state(state="PROGRESS", meta={"progress": 50})
-        # ... davom etadi | continues
-        return {"report_url": "/reports/output.xlsx"}
-    except Exception as exc:
-        raise self.retry(exc=exc, max_retries=3)
-
-# FastAPI endpoint
-@app.post("/reports/")
-async def create_report(user_id: int):
-    task = process_report.delay(user_id, {"start": "2024-01", "end": "2024-12"})
-    return {"task_id": task.id, "status": "queued"}
-
-@app.get("/reports/{task_id}/status")
-async def get_report_status(task_id: str):
-    task = process_report.AsyncResult(task_id)
-    return {
-        "task_id": task_id,
-        "status": task.status,    # PENDING, PROGRESS, SUCCESS, FAILURE
-        "result": task.result if task.successful() else None,
-        "meta": task.info
-    }
-```
+**Intervyuda shunday ayting:** "`pool_size`, `max_overflow`, `pool_pre_ping` (uzilgan ulanishni aniqlash), `pool_recycle` ni sozlayman. Umumiy ulanishlar: workerlar × replicalar × (pool_size + max_overflow) — bu `max_connections` dan oshmasin; ko'p replicada PgBouncer. Batafsil — `sql/postgresql_interviews.md`."
 
 ---
 
-## Q70. How to optimize FastAPI performance? | FastAPI unumdorligini qanday optimallashtirish mumkin?
+## Q67. How to optimize FastAPI performance? | FastAPI unumdorligini qanday optimallashtirish mumkin?
+
+**Oddiy qilib aytganda:** FastAPI tezligini oshirishning asosiy yo'llari: baza so'rovlarini optimallashtirish (N+1, indekslar), kesh, sahifalash, javob hajmini kamaytirish, siqish va og'ir ishlarni fonga chiqarish. Framework'ning o'zi kamdan-kam tor joy bo'ladi.
+
+**Batafsilroq:**
 
 **EN:** Key optimizations: async I/O, connection pooling, caching, avoiding N+1, proper indexing, compression.
 
@@ -2887,7 +3255,7 @@ users = await db.execute(
 # 5. Redis caching
 # 6. Nginx reverse proxy + load balancing
 # 7. Uvicorn workers soni | Number of Uvicorn workers
-# gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
+# gunicorn -w 4 -k uvicorn_worker.UvicornWorker main:app
 # workers = 2 * CPU_cores + 1
 
 # 8. Response model — keraksiz maydonlarni chiqarish | Exclude unnecessary fields
@@ -2899,9 +3267,15 @@ async def list_users(): ...
 async def list_items(skip: int = 0, limit: int = 20): ...
 ```
 
+**Intervyuda shunday ayting:** "Avval o'lchayman: tracing va profiling qayerda vaqt ketayotganini ko'rsatadi — ko'pincha baza yoki tashqi API. Keyin: eager loading, indekslar, kesh, pagination, `async` I/O, to'g'ri worker soni, katta javoblar uchun streaming. Yuklama testi (k6, Locust) bilan natijani tasdiqlayman."
+
 ---
 
-## Q71. What is `anyio` and how does FastAPI use it? | `anyio` nima va FastAPI uni qanday ishlatadi?
+## Q68. What is `anyio` and how does FastAPI use it? | `anyio` nima va FastAPI uni qanday ishlatadi?
+
+**Oddiy qilib aytganda:** `anyio` — async kod uchun umumiy qatlam: asyncio va trio ustida bir xil API beradi. FastAPI va Starlette ichkarida undan foydalanadi — masalan, oddiy `def` endpoint'larni thread pool'da ishga tushirish uchun.
+
+**Batafsilroq:**
 
 **EN:** `anyio` is an async networking library that supports both `asyncio` and `trio`. FastAPI/Starlette use it under the hood for backend-agnostic async operations.
 
@@ -2935,49 +3309,15 @@ async def sync_in_async():
     return {"result": result}
 ```
 
----
-
-## Q72. What are Server-side Streaming responses? | Server tomonidan oqimli javoblar nima?
-
-**EN:** Streaming responses send data in chunks, allowing the client to start processing before the full response is ready. Ideal for large files or real-time data.
-
-**UZ:** Oqimli javoblar ma'lumotlarni bo'laklarda yuboradi, clientga to'liq javob tayyor bo'lmasdan ishlov berishni boshlash imkonini beradi. Katta fayllar yoki real-vaqt ma'lumotlari uchun ideal.
-
-```python
-from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
-import asyncio
-
-app = FastAPI()
-
-async def generate_csv(data_size: int):
-    yield "id,name,email\n"  # Header
-    for i in range(data_size):
-        await asyncio.sleep(0)  # Boshqa koroutinlarga imkon | Allow other coroutines
-        yield f"{i},User{i},user{i}@example.com\n"
-
-@app.get("/export/csv")
-async def export_csv(size: int = 10000):
-    return StreamingResponse(
-        generate_csv(size),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=users.csv"}
-    )
-
-# Katta fayl stream | Large file streaming
-@app.get("/files/{filename}")
-async def stream_file(filename: str):
-    async def file_generator():
-        async with aiofiles.open(f"files/{filename}", "rb") as f:
-            while chunk := await f.read(8192):  # 8KB bo'laklar | 8KB chunks
-                yield chunk
-
-    return StreamingResponse(file_generator(), media_type="application/octet-stream")
-```
+**Intervyuda shunday ayting:** "FastAPI sinxron endpoint va dependency'larni anyio thread pool'ida ishga tushiradi (standart limit — 40 ta thread); juda ko'p sinxron bloklovchi chaqiruv bo'lsa, bu limit tor joyga aylanadi. Testlarda `pytest.mark.anyio` shu sababdan qulay."
 
 ---
 
-## Q73. How to implement request/response logging in FastAPI? | FastAPI'da so'rov/javob loglashtirish qanday amalga oshiriladi?
+## Q69. How to implement request/response logging in FastAPI? | FastAPI'da so'rov/javob loglashtirish qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** So'rov/javob log'i — har so'rov haqida: metod, manzil, status, qancha vaqt olgani va request ID. Muammo bo'lganda aynan qaysi so'rovda nima bo'lganini topish imkonini beradi.
+
+**Batafsilroq:**
 
 **EN:** Use middleware to log all requests and responses centrally.
 
@@ -3019,9 +3359,15 @@ async def logging_middleware(request: Request, call_next):
     return response
 ```
 
+**Intervyuda shunday ayting:** "Middleware'da strukturali (JSON) log: request ID (sarlavhadan yoki yangi), route shabloni, status, davomiylik. Body, token va shaxsiy ma'lumotni log'ga yozmayman. Log'ni trace ID bilan bog'layman (OpenTelemetry) — log'dan trace'ga o'tish mumkin bo'ladi."
+
 ---
 
-## Q74. What is `asyncio.Lock` and when to use it in FastAPI? | `asyncio.Lock` nima va FastAPI'da qachon ishlatish kerak?
+## Q70. What is `asyncio.Lock` and when to use it in FastAPI? | `asyncio.Lock` nima va FastAPI'da qachon ishlatish kerak?
+
+**Oddiy qilib aytganda:** `asyncio.Lock` — async kodda 'bir vaqtda faqat bittasi' qoidasi: masalan, bir nechta so'rov bir vaqtda tokenni yangilamoqchi bo'lsa, faqat biri yangilaydi, qolganlari kutadi. Muhim: u faqat **bitta jarayon** ichida ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** `asyncio.Lock` prevents race conditions when multiple coroutines access shared state concurrently.
 
@@ -3064,9 +3410,15 @@ class RateLimiter:
             return False
 ```
 
+**Intervyuda shunday ayting:** "`asyncio.Lock` bitta event loop ichidagi korutinalarni muvofiqlashtiradi — bir nechta worker yoki server orasida ishlamaydi. Taqsimlangan muvofiqlashtirish uchun baza qulfi (advisory lock), Redis lock yoki unique constraint. Lock ichida uzoq `await` qilmayman."
+
 ---
 
-## Q75. How to implement database connection retry logic? | Ma'lumotlar bazasiga ulanish qayta urinish logikasini qanday amalga oshirish kerak?
+## Q71. How to implement database connection retry logic? | Ma'lumotlar bazasiga ulanish qayta urinish logikasini qanday amalga oshirish kerak?
+
+**Oddiy qilib aytganda:** Baza vaqtincha ishlamay qolsa (masalan, qayta ishga tushayotgan bo'lsa), ilova darhol yiqilmasdan bir necha marta, har safar biroz uzoqroq kutib, qayta ulanishga urinishi kerak.
+
+**Batafsilroq:**
 
 **EN:** Implement exponential backoff retry for transient DB connection failures.
 
@@ -3103,90 +3455,129 @@ async def reliable_db_call(db: AsyncSession):
     return await db.execute(select(User))
 ```
 
----
-
-# 🔐 AUTH & SECURITY (Q76–Q85)
+**Intervyuda shunday ayting:** "Qayta urinish — exponential backoff va jitter bilan, cheklangan son bilan (tenacity kabi kutubxona). Faqat vaqtinchalik xatolarni qayta urinaman (ulanish uzilishi, serialization failure), mantiqiy xatolarni emas. `pool_pre_ping=True` uzilgan ulanishlarni oldindan aniqlaydi."
 
 ---
 
-## Q76. How to implement JWT Authentication in FastAPI? | FastAPI'da JWT autentifikatsiyani qanday amalga oshirish kerak?
+# 🔐 AUTH & SECURITY
 
-**EN:** Use `python-jose` for JWT and `passlib` for password hashing. Implement login endpoint that returns access token.
+---
 
-**UZ:** JWT uchun `python-jose`, parol xeshlash uchun `passlib` ishlatiladi. Kirish tokenini qaytaradigan login endpoint yaratiladi.
+## Q72. How do you implement OAuth2 password flow and JWT authentication? | OAuth2 va JWT autentifikatsiya qanday qilinadi?
+
+**Oddiy qilib aytganda:** JWT — imzolangan 'ruxsatnoma': foydalanuvchi login qilganda server unga token beradi, keyingi so'rovlarda token `Authorization: Bearer ...` sarlavhasida yuboriladi va server imzoni tekshirib, foydalanuvchini taniydi. OAuth2 password flow — login/parol evaziga token olishning standart usuli.
+
+**Batafsilroq:**
+
+**EN:** Use `PyJWT` for tokens and `pwdlib` (Argon2) for password hashing — the libraries the FastAPI docs recommend today (`python-jose` and `passlib` are no longer actively maintained). The login endpoint returns a short-lived access token.
+
+**UZ:** Tokenlar uchun `PyJWT`, parol xeshlash uchun `pwdlib` (Argon2) — bugungi FastAPI hujjatlari tavsiya qiladigan kutubxonalar (`python-jose` va `passlib` endi faol qo'llab-quvvatlanmaydi). Login endpoint qisqa muddatli access token qaytaradi.
 
 ```python
-from datetime import datetime, timedelta
-from typing import Optional
-from jose import JWTError, jwt
-from passlib.context import CryptContext
+from datetime import datetime, timedelta, timezone
+from typing import Annotated
+
+import jwt                                   # pip install pyjwt
+from jwt.exceptions import InvalidTokenError
+from pwdlib import PasswordHash              # pip install "pwdlib[argon2]"
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 
-SECRET_KEY = "your-secret-key"
+SECRET_KEY = settings.jwt_secret             # muhit o'zgaruvchisidan, kodda emas | from env, never hard-coded
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE = timedelta(minutes=15)
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+password_hash = PasswordHash.recommended()   # Argon2
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 class Token(BaseModel):
     access_token: str
-    token_type: str
+    token_type: str = "bearer"
 
-def verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
-
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
-    to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
-    to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+def create_access_token(user_id: int) -> str:
+    now = datetime.now(timezone.utc)
+    payload = {"sub": str(user_id), "iat": now, "exp": now + ACCESS_TOKEN_EXPIRE}
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme),
-    db: AsyncSession = Depends(get_db)
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db: Annotated[AsyncSession, Depends(get_db)],
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Hisob ma'lumotlari tasdiqlanmadi | Could not validate credentials",
+        detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: int = payload.get("sub")
-        if user_id is None:
-            raise credentials_exception
-    except JWTError:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])   # algoritm aniq | explicit algorithm
+        user_id = int(payload["sub"])
+    except (InvalidTokenError, KeyError, ValueError):
         raise credentials_exception
-    user = await get_user(db, user_id)
-    if user is None:
+    user = await db.get(User, user_id)
+    if user is None or not user.is_active:
         raise credentials_exception
     return user
 
-@app.post("/auth/token", response_model=Token)
+@app.post("/auth/token")
 async def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: AsyncSession = Depends(get_db)
-):
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> Token:
     user = await get_user_by_email(db, form_data.username)
-    if not user or not verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Noto'g'ri login yoki parol")
-    token = create_access_token(data={"sub": str(user.id)})
-    return Token(access_token=token, token_type="bearer")
+    if not user or not password_hash.verify(form_data.password, user.hashed_password):
+        raise HTTPException(status_code=401, detail="Incorrect email or password")
+    return Token(access_token=create_access_token(user.id))
 
 @app.get("/me")
-async def get_me(current_user: User = Depends(get_current_user)):
+async def get_me(current_user: Annotated[User, Depends(get_current_user)]):
     return current_user
 ```
 
+**Qo'shimcha — What is OAuth2 and how to implement it in FastAPI?**
+
+**EN:** OAuth2 is an authorization framework. FastAPI has built-in `OAuth2PasswordBearer` for password flow. For social login (Google, GitHub), use `authlib` or `python-social-auth`.
+
+**UZ:** OAuth2 — vakolat berish tizimi. FastAPI parol oqimi uchun o'rnatilgan `OAuth2PasswordBearer`ga ega. Ijtimoiy login (Google, GitHub) uchun `authlib` yoki `python-social-auth` ishlatiladi.
+
+```python
+from authlib.integrations.starlette_client import OAuth
+from starlette.config import Config
+
+config = Config(".env")
+oauth = OAuth(config)
+oauth.register(
+    name="google",
+    client_id=config("GOOGLE_CLIENT_ID"),
+    client_secret=config("GOOGLE_CLIENT_SECRET"),
+    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+    client_kwargs={"scope": "openid email profile"}
+)
+
+@app.get("/auth/google")
+async def google_login(request: Request):
+    redirect_uri = request.url_for("google_callback")
+    return await oauth.google.authorize_redirect(request, redirect_uri)
+
+@app.get("/auth/google/callback")
+async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
+    token = await oauth.google.authorize_access_token(request)
+    user_info = token.get("userinfo")
+    # Foydalanuvchi yaratish yoki topish | Create or find user
+    user = await get_or_create_user(db, email=user_info["email"], name=user_info["name"])
+    access_token = create_access_token({"sub": str(user.id)})
+    return {"access_token": access_token}
+```
+
+**Intervyuda shunday ayting:** "Access token qisqa muddatli (5–15 daqiqa), algoritm aniq belgilangan (`algorithms=["HS256"]` yoki RS256), `exp`, `iss`, `aud` tekshiriladi. Parollar — Argon2 yoki bcrypt bilan. Token ichiga maxfiy ma'lumot qo'ymayman — u shifrlanmagan, faqat imzolangan. Chiqish (revocation) uchun qisqa muddat + refresh token."
+
 ---
 
-## Q77. How to implement Role-Based Access Control (RBAC) in FastAPI? | FastAPI'da RBAC qanday amalga oshiriladi?
+## Q73. How to implement Role-Based Access Control (RBAC) in FastAPI? | FastAPI'da RBAC qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** RBAC — rolga asoslangan ruxsat: foydalanuvchiga rol beriladi (admin, manager, user), har rolga esa ruxsatlar. Endpoint 'faqat admin' desa, dependency foydalanuvchi rolini tekshiradi va mos kelmasa — `403`.
+
+**Batafsilroq:**
 
 **EN:** RBAC restricts access based on user roles. Create role-checking dependencies.
 
@@ -3232,9 +3623,15 @@ async def my_profile(
     return current_user
 ```
 
+**Intervyuda shunday ayting:** "Ruxsatni dependency sifatida yozaman (`require_role("admin")`) va router darajasida ulayman. Rol emas, ruxsat (permission) bo'yicha tekshirish moslashuvchanroq. Resurs egaligini ham tekshiraman — 'user' roli boshqa foydalanuvchining buyurtmasini ko'rmasin (IDOR)."
+
 ---
 
-## Q78. How to implement Refresh Token? | Refresh Token qanday amalga oshiriladi?
+## Q74. How to implement Refresh Token? | Refresh Token qanday amalga oshiriladi?
+
+**Oddiy qilib aytganda:** Refresh token — uzoq muddatli token, faqat yangi access token olish uchun ishlatiladi. Access token tez eskiradi (xavfsizlik), foydalanuvchi esa har 15 daqiqada qayta login qilmaydi — refresh token orqali yangisini oladi.
+
+**Batafsilroq:**
 
 **EN:** Use short-lived access tokens (15-30 min) and long-lived refresh tokens (days/weeks). Store refresh tokens in DB or Redis for revocation support.
 
@@ -3282,13 +3679,19 @@ async def refresh_token(refresh_token: str = Cookie(None)):
         user_id = payload.get("sub")
         new_access_token = create_access_token({"sub": user_id})
         return {"access_token": new_access_token}
-    except JWTError:
+    except jwt.InvalidTokenError:
         raise HTTPException(401, "Yaroqsiz token | Invalid token")
 ```
 
+**Intervyuda shunday ayting:** "Refresh token'ni bazada (xesh holida) saqlayman va har ishlatilganda almashtiraman (rotation); eski token qayta ishlatilsa — butun sessiyani bekor qilaman (o'g'irlik belgisi). Brauzerda — `HttpOnly`, `Secure`, `SameSite` cookie'da, JS o'qiy olmaydigan joyda."
+
 ---
 
-## Q79. What are common security vulnerabilities in FastAPI apps? | FastAPI ilovalarida keng tarqalgan xavfsizlik zaifliklari nima?
+## Q75. What are common security vulnerabilities in FastAPI apps? | FastAPI ilovalarida keng tarqalgan xavfsizlik zaifliklari nima?
+
+**Oddiy qilib aytganda:** FastAPI ilovalarida ko'p uchraydigan zaifliklar: SQL injection (so'rovga matn yopishtirish), ochiq saqlangan parollar, log'ga yozilgan sirlar, noto'g'ri CORS, rate limiting yo'qligi, javobda chiqib ketgan maxfiy maydonlar, boshqaning resursiga kirish (IDOR).
+
+**Batafsilroq:**
 
 **EN / UZ:**
 
@@ -3305,7 +3708,7 @@ await db.execute(select(User).where(User.email == user_input))
 user.password = password
 
 # ✅ bcrypt hashing
-user.hashed_password = pwd_context.hash(password)
+user.hashed_password = password_hash.hash(password)   # pwdlib (Argon2)
 
 # 3. Maxfiy ma'lumotlarni logga yozish | Logging secrets
 # ❌ Xavfli
@@ -3336,9 +3739,15 @@ async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 ```
 
+**Intervyuda shunday ayting:** "OWASP API Top 10 bo'yicha tekshiraman: obyekt darajasidagi ruxsat (IDOR) — eng ko'p uchraydigani, keyin autentifikatsiya, mass assignment (`extra="forbid"`), rate limiting, xavfsizlik sozlamalari. Parametrlangan so'rovlar, response modellar, sirlar muhit o'zgaruvchilarida, bog'liqliklar skaneri CI'da."
+
 ---
 
-## Q80. How to validate request data and prevent XSS? | So'rov ma'lumotlarini tekshirish va XSS ni oldini olish?
+## Q76. How to validate request data and prevent XSS? | So'rov ma'lumotlarini tekshirish va XSS ni oldini olish?
+
+**Oddiy qilib aytganda:** XSS — foydalanuvchi kiritgan matn ichidagi zararli skript boshqa foydalanuvchining brauzerida ishga tushishi. API darajasida kirishni tekshirish yordam beradi, lekin asosiy himoya — matnni ko'rsatishda to'g'ri 'qochirish' (escaping) va CSP.
+
+**Batafsilroq:**
 
 **EN:** Pydantic automatically validates types. For HTML content, sanitize using `bleach`. Use `Content-Security-Policy` headers.
 
@@ -3375,9 +3784,15 @@ async def security_headers(request: Request, call_next):
     return response
 ```
 
+**Intervyuda shunday ayting:** "XSS'ga qarshi asosiy himoya — chiqishda kontekstga mos escaping (React/Jinja buni avtomatik qiladi) va qat'iy CSP. API kirishni validatsiya qiladi va HTML kerak bo'lsa — allowlist bilan tozalaydi (masalan, nh3). JSON javoblar `application/json` bilan va `X-Content-Type-Options: nosniff`."
+
 ---
 
-## Q81. How to implement API Key authentication? | API Key autentifikatsiyasini qanday amalga oshirish kerak?
+## Q77. How to implement API Key authentication? | API Key autentifikatsiyasini qanday amalga oshirish kerak?
+
+**Oddiy qilib aytganda:** API kalit — servislar yoki tashqi mijozlar uchun oddiy 'maxfiy parol': har so'rovda sarlavhada (`X-API-Key`) yuboriladi. Foydalanuvchi login'i emas, dastur-dastur aloqasi uchun qulay.
+
+**Batafsilroq:**
 
 **EN:** Accept API keys via header or query parameter. Store hashed keys in the database.
 
@@ -3414,9 +3829,15 @@ async def protected_endpoint(api_key: APIKey = Depends(get_api_key)):
     return {"data": "Protected data", "key_owner": api_key.owner}
 ```
 
+**Intervyuda shunday ayting:** "API kalitlarni bazada xesh holida saqlayman, har mijozga alohida kalit, huquq doirasi (scope) va muddat bilan; almashtirish (rotation) imkoni bo'lsin. Kalitni faqat sarlavhada qabul qilaman (URL query'da emas — log'larga tushadi) va solishtirishni doimiy vaqtli qilaman."
+
 ---
 
-## Q82. How to implement Two-Factor Authentication (2FA)? | Ikki bosqichli autentifikatsiyani qanday amalga oshirish kerak?
+## Q78. How to implement Two-Factor Authentication (2FA)? | Ikki bosqichli autentifikatsiyani qanday amalga oshirish kerak?
+
+**Oddiy qilib aytganda:** 2FA — parolga qo'shimcha ikkinchi tekshiruv: telefondagi ilova yaratgan 6 xonali kod (TOTP) yoki SMS. Parol o'g'irlansa ham, hujumchi ikkinchi kodsiz kira olmaydi.
+
+**Batafsilroq:**
 
 **EN:** Use TOTP (Time-based One-Time Password) with `pyotp` library. Generate a secret, display QR code, verify 6-digit codes.
 
@@ -3458,46 +3879,15 @@ async def verify_2fa(code: str, current_user: User = Depends(get_current_user)):
     return {"verified": True}
 ```
 
----
-
-## Q83. What is OAuth2 and how to implement it in FastAPI? | OAuth2 nima va FastAPI'da uni qanday amalga oshirish kerak?
-
-**EN:** OAuth2 is an authorization framework. FastAPI has built-in `OAuth2PasswordBearer` for password flow. For social login (Google, GitHub), use `authlib` or `python-social-auth`.
-
-**UZ:** OAuth2 — vakolat berish tizimi. FastAPI parol oqimi uchun o'rnatilgan `OAuth2PasswordBearer`ga ega. Ijtimoiy login (Google, GitHub) uchun `authlib` yoki `python-social-auth` ishlatiladi.
-
-```python
-from authlib.integrations.starlette_client import OAuth
-from starlette.config import Config
-
-config = Config(".env")
-oauth = OAuth(config)
-oauth.register(
-    name="google",
-    client_id=config("GOOGLE_CLIENT_ID"),
-    client_secret=config("GOOGLE_CLIENT_SECRET"),
-    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
-    client_kwargs={"scope": "openid email profile"}
-)
-
-@app.get("/auth/google")
-async def google_login(request: Request):
-    redirect_uri = request.url_for("google_callback")
-    return await oauth.google.authorize_redirect(request, redirect_uri)
-
-@app.get("/auth/google/callback")
-async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
-    token = await oauth.google.authorize_access_token(request)
-    user_info = token.get("userinfo")
-    # Foydalanuvchi yaratish yoki topish | Create or find user
-    user = await get_or_create_user(db, email=user_info["email"], name=user_info["name"])
-    access_token = create_access_token({"sub": str(user.id)})
-    return {"access_token": access_token}
-```
+**Intervyuda shunday ayting:** "TOTP (pyotp) — SMS'dan xavfsizroq; eng kuchlisi — passkey/WebAuthn. Sirni shifrlangan saqlayman, kod tekshiruvini rate limit bilan himoyalayman va zaxira kodlar beraman. 2FA yoqilgan akkauntda sessiya faqat ikkala bosqichdan keyin to'liq huquq oladi."
 
 ---
 
-## Q84. How to implement request validation middleware? | So'rov tekshiruv middleware'ini qanday amalga oshirish kerak?
+## Q79. How to implement request validation middleware? | So'rov tekshiruv middleware'ini qanday amalga oshirish kerak?
+
+**Oddiy qilib aytganda:** Validatsiya middleware'i — barcha so'rovlarni endpoint'ga yetmasdan tekshirish: masalan, so'rov hajmi juda katta bo'lsa yoki kerakli sarlavha yo'q bo'lsa, darhol rad etish.
+
+**Batafsilroq:**
 
 **EN:** Add custom validation middleware to check request size, content type, and custom business rules.
 
@@ -3533,9 +3923,15 @@ async def validate_request(request: Request, call_next):
     return await call_next(request)
 ```
 
+**Intervyuda shunday ayting:** "Umumiy tekshiruvlar (maksimal body hajmi, Content-Type, request ID) middleware'da yoki proxy'da; endpoint'ga xos validatsiya — Pydantic modellarida. Middleware'da body'ni o'qish stream'larni buzishi mumkin — hajm chegarasini imkon qadar proxy'da (`client_max_body_size`) qo'yaman."
+
 ---
 
-## Q85. What is HTTPS and how to configure it? | HTTPS nima va uni qanday sozlash kerak?
+## Q80. What is HTTPS and how to configure it? | HTTPS nima va uni qanday sozlash kerak?
+
+**Oddiy qilib aytganda:** HTTPS — shifrlangan HTTP: klient va server orasidagi ma'lumotni (parollar, tokenlar) hech kim o'qiy olmaydi yoki o'zgartira olmaydi. Odatda TLS'ni ilova emas, uning oldidagi proxy (Nginx, load balancer) boshqaradi.
+
+**Batafsilroq:**
 
 **EN:** HTTPS encrypts traffic using TLS/SSL. In production, use Nginx as a reverse proxy with Let's Encrypt certificates. Uvicorn also supports TLS directly.
 
@@ -3571,13 +3967,19 @@ server {
 }
 ```
 
----
-
-# 🧪 TESTING (Q86–Q92)
+**Intervyuda shunday ayting:** "TLS'ni reverse proxy yoki load balancer'da tugataman, sertifikatlarni Let's Encrypt/ACME bilan avtomatik yangilayman, HTTP'ni HTTPS'ga yo'naltiraman va HSTS qo'yaman. Ilova proxy ortida to'g'ri sxemani ko'rishi uchun `--forwarded-allow-ips` bilan faqat proxy'ga ishonaman."
 
 ---
 
-## Q86. How to test FastAPI endpoints? | FastAPI endpointlarini qanday sinash mumkin?
+# 🧪 TESTING
+
+---
+
+## Q81. How to test FastAPI endpoints? | FastAPI endpointlarini qanday sinash mumkin?
+
+**Oddiy qilib aytganda:** Endpoint'larni test qilish — soxta so'rov yuborib, javob statusi va tanasini tekshirish. FastAPI'da `TestClient` serverni ishga tushirmasdan ilovani to'g'ridan-to'g'ri chaqiradi — tez va oddiy.
+
+**Batafsilroq:**
 
 **EN:** Use `TestClient` (sync) or `AsyncClient` (async) from `httpx` with pytest.
 
@@ -3622,9 +4024,15 @@ async def test_unauthorized_access(client: AsyncClient):
     assert response.status_code == 401
 ```
 
+**Intervyuda shunday ayting:** "`TestClient` sinxron testlar uchun, async kod ham kerak bo'lsa — `httpx.AsyncClient` + `ASGITransport`. Muvaffaqiyatli yo'ldan tashqari xato holatlarini ham tekshiraman: 401/403/404/422. Har test mustaqil — o'z ma'lumotini yaratadi va tozalaydi."
+
 ---
 
-## Q87. How to mock dependencies in FastAPI tests? | FastAPI testlarida dependency'larni qanday mock qilish kerak?
+## Q82. How to mock dependencies in FastAPI tests? | FastAPI testlarida dependency'larni qanday mock qilish kerak?
+
+**Oddiy qilib aytganda:** Dependency'ni mock qilish — testda haqiqiy baza yoki tashqi xizmat o'rniga soxtasini berish: `app.dependency_overrides[get_db] = fake_db`. Endpoint kodi o'zgarmaydi, faqat unga beriladigan narsa almashadi.
+
+**Batafsilroq:**
 
 **EN:** Use `app.dependency_overrides` to replace real dependencies with mock ones during testing.
 
@@ -3667,9 +4075,15 @@ async def test_admin_endpoint(authenticated_client: AsyncClient):
     assert response.status_code == 200
 ```
 
+**Intervyuda shunday ayting:** "`dependency_overrides` — FastAPI'da testlashning asosiy vositasi: baza, joriy foydalanuvchi, tashqi klientlar. Fixture oxirida `clear()` qilaman. Tashqi HTTP xizmatlar uchun respx yoki soxta server. Amaliy ssenariy — `practical/fastapi.md` Q4."
+
 ---
 
-## Q88. How to set up test database? | Test ma'lumotlar bazasini qanday sozlash kerak?
+## Q83. How to set up test database? | Test ma'lumotlar bazasini qanday sozlash kerak?
+
+**Oddiy qilib aytganda:** Test bazasi — production bazasidan butunlay alohida, har test yugurishida toza holatdan boshlanadigan baza. Eng ishonchlisi — testlar uchun konteynerda haqiqiy PostgreSQL ko'tarish (SQLite emas, chunki u boshqacha ishlaydi).
+
+**Batafsilroq:**
 
 **EN:** Use a separate test database with Alembic migrations. Use `pytest-asyncio` and transaction rollback to keep tests isolated.
 
@@ -3713,9 +4127,15 @@ async def client(db_session: AsyncSession):
     app.dependency_overrides.clear()
 ```
 
+**Intervyuda shunday ayting:** "Testcontainers yoki CI servis konteyneri bilan haqiqiy PostgreSQL; sxemani Alembic migratsiyalari bilan yarataman (migratsiyalar ham tekshiriladi). Izolyatsiya uchun har testni tranzaksiyada ishlatib, oxirida rollback. SQLite'da o'tgan test PostgreSQL'da yiqilishi mumkin — shuning uchun bir xil baza."
+
 ---
 
-## Q89. How to write integration tests for DB operations? | DB operatsiyalari uchun integratsiya testlarini qanday yozish kerak?
+## Q84. How to write integration tests for DB operations? | DB operatsiyalari uchun integratsiya testlarini qanday yozish kerak?
+
+**Oddiy qilib aytganda:** Integratsiya testi — bir nechta qism birga ishlashini tekshiradi: endpoint → service → haqiqiy test bazasi. Unit testlar alohida qismlarni, integratsiya testlari esa ular orasidagi 'ulanishlarni' tekshiradi.
+
+**Batafsilroq:**
 
 **EN:** Integration tests check the full stack — FastAPI endpoint + DB. Use test fixtures with real (test) DB.
 
@@ -3768,9 +4188,15 @@ async def test_full_user_flow(client: AsyncClient, db_session: AsyncSession):
     assert user.hashed_password != "password123"  # Xeshlangan | Hashed
 ```
 
+**Intervyuda shunday ayting:** "Integratsiya testlarida haqiqiy baza, tashqi xizmatlar esa soxta. Tranzaksiya, constraint va parallel holatlarni (masalan, bir vaqtda ikki so'rov) aynan shu darajada tekshiraman. Testlar sekinroq, shuning uchun ularni muhim oqimlarga qarataman."
+
 ---
 
-## Q90. How to test Pydantic models? | Pydantic modellarini qanday sinash kerak?
+## Q85. How to test Pydantic models? | Pydantic modellarini qanday sinash kerak?
+
+**Oddiy qilib aytganda:** Pydantic modellarini test qilish — to'g'ri ma'lumot qabul qilinishini va noto'g'ri ma'lumot aniq xato bilan rad etilishini tekshirish. Ayniqsa o'zingiz yozgan validatorlar va chegara qiymatlari (0, bo'sh satr, juda uzun matn) muhim.
+
+**Batafsilroq:**
 
 **EN:** Test validation logic, field validators, and edge cases directly with Pydantic models.
 
@@ -3811,9 +4237,15 @@ def test_user_name_normalized():
     assert user.name == "Ali"  # Normalize qilingan | Normalized
 ```
 
+**Intervyuda shunday ayting:** "Validatorlar uchun parametrlashtirilgan testlar: to'g'ri va noto'g'ri qiymatlar ro'yxati, `pytest.raises(ValidationError)` va xato yo'lini tekshirish. Serializatsiyani (maxfiy maydonlar chiqmasligini) ham tekshiraman. Hypothesis bilan xossaga asoslangan testlar chegara holatlarni topadi."
+
 ---
 
-## Q91. What is `pytest-asyncio` and how to configure it? | `pytest-asyncio` nima va uni qanday sozlash kerak?
+## Q86. What is `pytest-asyncio` and how to configure it? | `pytest-asyncio` nima va uni qanday sozlash kerak?
+
+**Oddiy qilib aytganda:** `pytest-asyncio` — pytest'da async test funksiyalarini ishga tushirish uchun plagin. `asyncio_mode = auto` sozlamasi bilan har async testga alohida belgi qo'yish shart emas.
+
+**Batafsilroq:**
 
 **EN:** `pytest-asyncio` enables running async test functions with pytest. Configure it in `pytest.ini` or `pyproject.toml`.
 
@@ -3848,9 +4280,15 @@ async def test_something_strict():
     assert result == expected
 ```
 
+**Intervyuda shunday ayting:** "Async testlar uchun pytest-asyncio yoki anyio plagini — loyihada bittasini tanlayman. Event loop va async fixture'larning scope'ini (function, session) moslashtiraman — aks holda 'attached to a different loop' xatolari chiqadi."
+
 ---
 
-## Q92. How to measure test coverage? | Test qamrovini qanday o'lchash mumkin?
+## Q87. How to measure test coverage? | Test qamrovini qanday o'lchash mumkin?
+
+**Oddiy qilib aytganda:** Test qamrovi (coverage) — testlar kodning qancha qismini ishga tushirganini ko'rsatadi. `pytest --cov` hisobot beradi: qaysi qatorlar hech qachon tekshirilmagan.
+
+**Batafsilroq:**
 
 **EN:** Use `pytest-cov` to measure code coverage and identify untested parts.
 
@@ -3885,13 +4323,19 @@ pytest --cov=app --cov-fail-under=80
 # fail_under = 80
 ```
 
----
-
-# 🚀 DEPLOY & BEST PRACTICES (Q93–Q100)
+**Intervyuda shunday ayting:** "Coverage — tekshirilmagan joylarni topish vositasi, sifat o'lchovi emas: 100% qamrov xatosiz degani emas. CI'da minimal chegara va branch coverage; asosiy e'tibor — muhim biznes mantiq va xato yo'llari to'liq tekshirilganligi."
 
 ---
 
-## Q93. How to deploy FastAPI with Docker in production? | FastAPI'ni Docker bilan production'da qanday deploy qilish kerak?
+# 🚀 DEPLOY & BEST PRACTICES
+
+---
+
+## Q88. How to deploy FastAPI with Docker in production? | FastAPI'ni Docker bilan production'da qanday deploy qilish kerak?
+
+**Oddiy qilib aytganda:** Docker — ilovani barcha kerakli narsalari bilan bitta 'konteyner' qilib qadoqlash: qaysi serverda ishga tushirsangiz ham bir xil ishlaydi. Production image kichik, xavfsiz va root bo'lmagan foydalanuvchi bilan bo'lishi kerak.
+
+**Batafsilroq:**
 
 **EN:** Use multi-stage Docker build, Gunicorn + Uvicorn workers, and Docker Compose for orchestration.
 
@@ -3921,7 +4365,7 @@ EXPOSE 8000
 
 # Gunicorn + Uvicorn workers
 CMD ["gunicorn", "main:app",
-     "--worker-class", "uvicorn.workers.UvicornWorker",
+     "--worker-class", "uvicorn_worker.UvicornWorker",
      "--workers", "4",
      "--bind", "0.0.0.0:8000",
      "--timeout", "120",
@@ -3970,9 +4414,15 @@ volumes:
   postgres_data:
 ```
 
+**Intervyuda shunday ayting:** "Multi-stage build (bog'liqliklar alohida qatlamda — kesh), slim bazaviy image, root bo'lmagan foydalanuvchi, `HEALTHCHECK`, sirlar image ichida emas. Ishga tushirish: `fastapi run` yoki `uvicorn` bir necha worker bilan; Kubernetes'da har pod'da bitta jarayon va masshtablashni orkestrator qiladi."
+
 ---
 
-## Q94. What is Uvicorn and Gunicorn and when to use which? | Uvicorn va Gunicorn nima, qachon qaysinisini ishlatish kerak?
+## Q89. What is Uvicorn and Gunicorn and when to use which? | Uvicorn va Gunicorn nima, qachon qaysinisini ishlatish kerak?
+
+**Oddiy qilib aytganda:** Uvicorn — FastAPI ilovasini ishga tushiruvchi tezkor ASGI server. Gunicorn — jarayonlar menejeri: bir nechta Uvicorn worker'ini boshqaradi, yiqilganini qayta ishga tushiradi. Bugun Uvicorn'ning o'zi ham `--workers` bilan bir nechta jarayonni boshqara oladi.
+
+**Batafsilroq:**
 
 **EN:** Uvicorn is an ASGI server (single process). Gunicorn is a process manager. In production: Gunicorn manages multiple Uvicorn workers for multi-core utilization.
 
@@ -3984,7 +4434,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 # Production — Gunicorn + Uvicorn
 gunicorn main:app \
-    --worker-class uvicorn.workers.UvicornWorker \
+    --worker-class uvicorn_worker.UvicornWorker \
     --workers 4 \               # 2 * CPU + 1 qoida | Rule: 2 * CPU + 1
     --bind 0.0.0.0:8000 \
     --timeout 120 \             # Uzoq so'rovlar uchun | For long requests
@@ -3998,9 +4448,15 @@ gunicorn main:app \
 # 4 yadroli server → 9 worker | 4-core server → 9 workers
 ```
 
+**Intervyuda shunday ayting:** "Oddiy VM'da: `uvicorn --workers N` yoki Gunicorn + Uvicorn worker (endi alohida `uvicorn-worker` paketi). Kubernetes/konteynerda: har konteynerda bitta Uvicorn jarayoni, masshtablash replicalar bilan. Worker soni CPU yadrolariga qarab, lekin baza ulanishlari limitini ham hisobga olaman."
+
 ---
 
-## Q95. What is Nginx and how to configure it as reverse proxy? | Nginx nima va uni reverse proxy sifatida qanday sozlash kerak?
+## Q90. What is Nginx and how to configure it as reverse proxy? | Nginx nima va uni reverse proxy sifatida qanday sozlash kerak?
+
+**Oddiy qilib aytganda:** Nginx — ilova oldida turadigan 'darvozabon' (reverse proxy): HTTPS'ni boshqaradi, statik fayllarni beradi, so'rovlarni bir nechta ilova nusxasiga tarqatadi va hajm/tezlik chegaralarini qo'yadi.
+
+**Batafsilroq:**
 
 **EN:** Nginx acts as a reverse proxy, handling SSL termination, load balancing, static files, and request buffering.
 
@@ -4058,9 +4514,15 @@ server {
 }
 ```
 
+**Intervyuda shunday ayting:** "Nginx'da: TLS, `proxy_set_header` (Host, X-Forwarded-For/Proto), timeout'lar, `client_max_body_size`, WebSocket uchun `Upgrade`, SSE uchun buferlashni o'chirish. Ilova esa faqat proxy'dan kelgan forwarded sarlavhalarga ishonadi."
+
 ---
 
-## Q96. What is CI/CD and how to set it up for FastAPI? | CI/CD nima va FastAPI uchun qanday sozlash kerak?
+## Q91. What is CI/CD and how to set it up for FastAPI? | CI/CD nima va FastAPI uchun qanday sozlash kerak?
+
+**Oddiy qilib aytganda:** CI/CD — kodni avtomatik tekshirish va chiqarish: har push'da testlar, linter va type checker ishga tushadi (CI), muvaffaqiyatli bo'lsa — image yig'ilib, serverga avtomatik deploy qilinadi (CD).
+
+**Batafsilroq:**
 
 **EN:** CI/CD automates testing and deployment. GitHub Actions example for FastAPI.
 
@@ -4132,9 +4594,15 @@ jobs:
             docker compose exec api alembic upgrade head
 ```
 
+**Intervyuda shunday ayting:** "Pipeline: lint (ruff), type check, testlar (haqiqiy PostgreSQL bilan), xavfsizlik skanerlari, image build va teg, migratsiya qadami, deploy va smoke test. Sirlar CI secret'larida, production deploy — himoyalangan branch va tasdiqlash bilan; orqaga qaytarish oldindan rejalashtirilgan."
+
 ---
 
-## Q97. What are FastAPI project structure best practices? | FastAPI loyiha tuzilmasi bo'yicha eng yaxshi amaliyotlar nima?
+## Q92. What are FastAPI project structure best practices? | FastAPI loyiha tuzilmasi bo'yicha eng yaxshi amaliyotlar nima?
+
+**Oddiy qilib aytganda:** Loyiha tuzilmasi — kodni tartibli papkalarga ajratish: har domen (users, orders) o'z router, schema, service va repository fayllariga ega. Tuzilma aniq bo'lsa, yangi dasturchi kerakli joyni tez topadi.
+
+**Batafsilroq:**
 
 **EN / UZ:**
 
@@ -4202,9 +4670,15 @@ my-fastapi-app/
 └── pyproject.toml
 ```
 
+**Intervyuda shunday ayting:** "Domen bo'yicha tuzilma (feature folders) texnik qatlamlar bo'yicha ajratishdan (hamma router'lar bitta papkada) yaxshiroq kengayadi. Endpoint'lar yupqa, biznes mantiq service'da, baza — repository'da; sozlamalar, dependency'lar va umumiy narsalar alohida `core/` da."
+
 ---
 
-## Q98. What is the Repository Pattern and how to use it with FastAPI? | Repository Pattern nima va FastAPI bilan qanday ishlatish kerak?
+## Q93. What is the Repository Pattern and how to use it with FastAPI? | Repository Pattern nima va FastAPI bilan qanday ishlatish kerak?
+
+**Oddiy qilib aytganda:** Repository pattern — baza bilan ishlashni alohida klassga yashirish: service 'foydalanuvchini email bo'yicha top' deydi, SQL qanday yozilgani esa repository ichida. Testda haqiqiy baza o'rniga soxta repository berish oson.
+
+**Batafsilroq:**
 
 **EN:** Repository pattern abstracts data access layer, making business logic independent of the database implementation.
 
@@ -4270,9 +4744,15 @@ async def get_user(
     return user
 ```
 
+**Intervyuda shunday ayting:** "Repository ma'lumotga kirishni biznes mantiqdan ajratadi va test uchun almashtiriladigan qiladi (Protocol + DI). Lekin SQLAlchemy sessiyasi allaqachon unit of work — oddiy CRUD uchun ortiqcha qatlam qo'shmayman; murakkab so'rovlar va domen chegaralari bo'lganda foydali."
+
 ---
 
-## Q99. What is OpenTelemetry and how to add observability to FastAPI? | OpenTelemetry nima va FastAPI'ga kuzatuvchanlikni qanday qo'shish kerak?
+## Q94. What is OpenTelemetry and how to add observability to FastAPI? | OpenTelemetry nima va FastAPI'ga kuzatuvchanlikni qanday qo'shish kerak?
+
+**Oddiy qilib aytganda:** OpenTelemetry — tizim ichida nima bo'layotganini kuzatish standarti: har so'rov qaysi servis va baza chaqiruvlaridan o'tgani (trace), qancha vaqt olgani va qayerda xato bo'lgani. Bitta SDK bilan ma'lumotni istalgan monitoring tizimiga yuborish mumkin.
+
+**Batafsilroq:**
 
 **EN:** OpenTelemetry provides tracing, metrics, and logging. Use `opentelemetry-instrumentation-fastapi` for automatic instrumentation.
 
@@ -4314,9 +4794,15 @@ async def get_user(user_id: int):
         return user
 ```
 
+**Intervyuda shunday ayting:** "FastAPI, SQLAlchemy, httpx va Redis uchun avtomatik instrumentatsiya, muhim biznes amallari uchun qo'lda span'lar. Trace ID'ni log'larga qo'shaman. Sampling bilan narxni boshqaraman, xatoli trace'larni esa saqlayman; ma'lumot OTLP orqali collector'ga ketadi."
+
 ---
 
-## Q100. What are the most important FastAPI best practices? | FastAPI bo'yicha eng muhim amaliyotlar nima?
+## Q95. What are the most important FastAPI best practices? | FastAPI bo'yicha eng muhim amaliyotlar nima?
+
+**Oddiy qilib aytganda:** FastAPI bo'yicha eng muhim odatlar: to'g'ri async/sync tanlovi, kirish va chiqish uchun alohida Pydantic modellar, dependency injection, sozlamalarni tekshirish, sahifalash, xatolarni bir xil formatda qaytarish, testlar, monitoring va xavfsizlik (auth, rate limit, CORS).
+
+**Batafsilroq:**
 
 **EN / UZ:** Summary of all critical best practices.
 
@@ -4377,8 +4863,10 @@ async def list_items(skip: int = 0, limit: int = Query(default=20, le=100)):
     ...
 
 # ✅ 15. Docker + Nginx + Gunicorn production stack
-# gunicorn main:app -k uvicorn.workers.UvicornWorker -w 4
+# gunicorn main:app -k uvicorn_worker.UvicornWorker -w 4
 ```
+
+**Intervyuda shunday ayting:** "Mening ro'yxatim: yupqa endpoint'lar va service qatlami, `Annotated` dependency'lar, response modellar, `pydantic-settings` bilan fail-fast konfiguratsiya, har tashqi chaqiruvga timeout, eager loading, pagination chegaralari, liveness/readiness, OpenTelemetry, haqiqiy baza bilan testlar va migratsiyalar deploy'ning alohida qadami."
 
 ---
 
@@ -4392,7 +4880,7 @@ pip install fastapi uvicorn[standard] pydantic-settings python-multipart
 pip install sqlalchemy asyncpg alembic aiofiles
 
 # Auth
-pip install python-jose[cryptography] passlib[bcrypt] authlib
+pip install pyjwt "pwdlib[argon2]" authlib
 
 # Cache
 pip install fastapi-cache2 redis
@@ -4411,7 +4899,7 @@ pip install opentelemetry-instrumentation-fastapi
 
 # Run
 uvicorn main:app --reload                              # Development
-gunicorn main:app -k uvicorn.workers.UvicornWorker -w 4  # Production
+fastapi run main.py --workers 4                        # Production (yoki uvicorn --workers)
 
 # Alembic
 alembic init alembic

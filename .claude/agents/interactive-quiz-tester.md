@@ -20,5 +20,5 @@ Key responsibilities:
    relevant (especially for `dsa.md`).
 
 When adding quiz questions, match the existing MCQ format exactly (options lettering, answer-reveal
-style, difficulty tags) rather than inventing a new layout. A PostToolUse hook already regenerates
-`index.html` automatically after any `.md` edit.
+style, difficulty tags) rather than inventing a new layout. Run `npm run content:audit` afterwards to
+confirm the quiz parses (answer key table included).

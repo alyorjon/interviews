@@ -8,8 +8,9 @@ RUN npm ci
 
 FROM dependencies AS build
 COPY . .
-RUN npm run build \
-    && npm run content:audit
+# `build` runs the content audit first: it writes the static JSON shards into
+# apps/web/public/data, which Vite then copies into apps/web/dist/data.
+RUN npm run build
 
 FROM node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 AS production-dependencies
 WORKDIR /app
@@ -32,7 +33,6 @@ COPY --from=production-dependencies --chown=node:node /app/packages/content/pack
 COPY --from=build --chown=node:node /app/apps/api/dist ./apps/api/dist
 COPY --from=build --chown=node:node /app/apps/web/dist ./apps/web/dist
 COPY --from=build --chown=node:node /app/packages/content/dist ./packages/content/dist
-COPY --from=build --chown=node:node /app/content-audit ./content-audit
 USER node
 EXPOSE 4173
 HEALTHCHECK --interval=20s --timeout=5s --start-period=20s --retries=3 \

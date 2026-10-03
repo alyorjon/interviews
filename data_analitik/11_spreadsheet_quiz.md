@@ -107,7 +107,7 @@ D) Sana qiymatini / A date value
 A) Ustunlarni birlashtiradi / Merges columns
 B) Qatorlarni tasodifiy aralashtiradi / Randomly shuffles rows
 C) `LAMBDA` funksiyasini massivning har bir satriga alohida qo'llaydi / Applies a `LAMBDA` function to each row of an array individually
-D) Xatoликларни avtomatik tuzatadi / Automatically fixes errors
+D) Xatoliklarni avtomatik tuzatadi / Automatically fixes errors
 
 **17.** `SEQUENCE(100, 1, 1, 1)` nimani hosil qiladi? / What does `SEQUENCE(100, 1, 1, 1)` generate?
 A) Tasodifiy sonlar to'plamini / A set of random numbers

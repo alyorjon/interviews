@@ -25,7 +25,7 @@
 
 > *"I bring a rare combination of backend development skills (FastAPI, PostgreSQL, Redis) and hands-on SAP B1 ERP experience. I've delivered a multi-database credit scoring system serving 500+ clients. I don't just write code — I understand business processes."*
 
-**UZB:** O'zingizning noyob qiymatinglizga e'tibor qarating — texnik ko'nikmalar + yumshoq ko'nikmalar + natijalar.
+**UZB:** O'zingizning noyob qiymatingizga e'tibor qarating — texnik ko'nikmalar + yumshoq ko'nikmalar + natijalar.
 
 > *"Men backend ko'nikmalari (FastAPI, PostgreSQL, Redis) va SAP B1 ERP tajribasini birlashtiraman. 500+ mijozga xizmat qiluvchi ko'p bazali kredit ballashtirish tizimini yetkazib berdim. Men faqat kod yozib qolmay, biznes jarayonlarni ham tushunaman."*
 
@@ -187,7 +187,7 @@
 
 ---
 
-## 16. What motivates you in your career? / Karerrangizda sizni nima rag'batlantiradi?
+## 16. What motivates you in your career? / Karyerangizda sizni nima rag'batlantiradi?
 
 **EN:** Be genuine — interviewers spot generic answers immediately.
 
@@ -355,7 +355,7 @@
 
 ---
 
-## 30. How do you prioritize your work? / Ishingizni qanday ustuvorlashtirасiz?
+## 30. How do you prioritize your work? / Ishingizni qanday ustuvorlashtirasiz?
 
 **EN:** Show a framework, not just intuition.
 
@@ -415,7 +415,7 @@
 
 ---
 
-## 35. How do you stay motivated? / O'zingizni qanday rag'batlantirасiz?
+## 35. How do you stay motivated? / O'zingizni qanday rag'batlantirasiz?
 
 **EN:** Connect motivation to purpose, not just rewards.
 
@@ -447,7 +447,7 @@
 
 **UZB:** Yaxshilanishni raqamlashtiring.
 
-> *"Joylashtirishlarimiz 45 daqiqa va qo'lda SSH qadamlari talab qilardi. Avtomatlashtirilgan testlar va Docker qurishlari bilan GitHub Actions joriy etdim — joylаshtirish vaqti nol qo'lda qadam bilan 8 daqiqaga tushdi."*
+> *"Joylashtirishlarimiz 45 daqiqa va qo'lda SSH qadamlari talab qilardi. Avtomatlashtirilgan testlar va Docker qurishlari bilan GitHub Actions joriy etdim — joylashtirish vaqti nol qo'lda qadam bilan 8 daqiqaga tushdi."*
 
 ---
 
@@ -499,7 +499,7 @@
 
 ---
 
-## 42. How do you encourage teamwork? / Jamoaviy ishni qanday rag'batlantirасiz?
+## 42. How do you encourage teamwork? / Jamoaviy ishni qanday rag'batlantirasiz?
 
 **EN:** Show concrete practices, not just intentions.
 
@@ -535,7 +535,7 @@
 
 ---
 
-## 45. How do you measure your own performance? / O'z ko'rsatkichlaringizni qanday o'lchaлы?
+## 45. How do you measure your own performance? / O'z ko'rsatkichlaringizni qanday o'lchaysiz?
 
 **EN:** Use both quantitative and qualitative metrics.
 
@@ -559,7 +559,7 @@
 
 ---
 
-## 47. How do you prepare for presentations? / Taqdimotlarga qanday tayyorlanасiz?
+## 47. How do you prepare for presentations? / Taqdimotlarga qanday tayyorlanasiz?
 
 **EN:** Show preparation depth, not just "I make slides."
 
@@ -567,7 +567,7 @@
 
 **UZB:** Faqat "slaydlar yarataman" emas, tayyorgarlik chuqurligini ko'rsating.
 
-> *"Auditoriya qabul qilishi kerak bo'lgan qarorni aniqlashdan boshlayman. Keyin shu qarordan orqaga qarab hikoya qurilishini tuzaman. Bir marta to'liq tezlikda, bir marta sekinlatilgan holda mashq qilaman. 3 ta eng qiyin savolni oldindan tayyorlayман."*
+> *"Auditoriya qabul qilishi kerak bo'lgan qarorni aniqlashdan boshlayman. Keyin shu qarordan orqaga qarab hikoya qurilishini tuzaman. Bir marta to'liq tezlikda, bir marta sekinlatilgan holda mashq qilaman. 3 ta eng qiyin savolni oldindan tayyorlayman."*
 
 ---
 
@@ -583,7 +583,7 @@
 
 ---
 
-## 49. How do you balance multiple deadlines? / Bir nechta muddatni qanday muvozanatlasiztsiz?
+## 49. How do you balance multiple deadlines? / Bir nechta muddatni qanday muvozanatlaysiz?
 
 **EN:** Show proactive management, not reactive firefighting.
 
@@ -591,7 +591,7 @@
 
 **UZB:** Reaktiv o't o'chirish emas, proaktiv boshqaruvni ko'rsating.
 
-> *"Sprint boshida barcha muddatlarni Gantt uslubidagi ko'rinishda xaritalаshtirama. Nizolarni erta aniqlayman va kritik davrdan oldin hajmni muzokarа qilaman — uning davomida emas. Barcha manfaatdor tomonlar bilan shaffof muloqot muhimdir."*
+> *"Sprint boshida barcha muddatlarni Gantt uslubidagi ko'rinishda xaritalashtiraman. Nizolarni erta aniqlayman va kritik davrdan oldin hajmni muzokara qilaman — uning davomida emas. Barcha manfaatdor tomonlar bilan shaffof muloqot muhimdir."*
 
 ---
 
@@ -631,7 +631,7 @@
 
 ---
 
-## 53. How do you motivate others? / Boshqalarni qanday rag'batlantirасiz?
+## 53. How do you motivate others? / Boshqalarni qanday rag'batlantirasiz?
 
 **EN:** Show individual understanding + recognition.
 
@@ -667,7 +667,7 @@
 
 ---
 
-## 56. How do you approach diversity and inclusion? / Xilma-xillik va kiritishga qanday yondashасiz?
+## 56. How do you approach diversity and inclusion? / Xilma-xillik va kiritishga qanday yondashasiz?
 
 **EN:** Show active behavior, not passive support.
 
@@ -703,7 +703,7 @@
 
 ---
 
-## 59. What tools do you use to stay organized? / Tartibli qolish uchun qanday vositalardan foydalanасiz?
+## 59. What tools do you use to stay organized? / Tartibli qolish uchun qanday vositalardan foydalanasiz?
 
 **EN:** Name real tools you actually use.
 
@@ -723,11 +723,11 @@
 
 **UZB:** Narsalarni yaxshilash uchun ruxsat kutmasligingizni ko'rsating.
 
-> *"Jamoamizda yangi dasturchilar uchun onboarding hujjati yo'q edi — hamma so'rash orqali o'rganardi. Hafta oxirida to'liq sozlash qo'llanmasini (mahalliy muhit, kodlash standartlari, joylаshtirish jarayoni) yozishga vaqt sarfladim. Yangi ishga kelganlar hozir 1 hafta o'rniga 1 kunda onboarding qilishadi."*
+> *"Jamoamizda yangi dasturchilar uchun onboarding hujjati yo'q edi — hamma so'rash orqali o'rganardi. Hafta oxirida to'liq sozlash qo'llanmasini (mahalliy muhit, kodlash standartlari, joylashtirish jarayoni) yozishga vaqt sarfladim. Yangi ishga kelganlar hozir 1 hafta o'rniga 1 kunda onboarding qilishadi."*
 
 ---
 
-## 61. How do you maintain work-life balance? / Ish-hayot balansini qanday saqlaybsiz?
+## 61. How do you maintain work-life balance? / Ish-hayot balansini qanday saqlaysiz?
 
 **EN:** Be honest — show healthy boundaries.
 
@@ -831,7 +831,7 @@
 
 **UZB:** Aniq va esda qoladigan bo'ling — kamtarona maqtanish emas.
 
-> *"Ko'pchilik backend dasturchilар yoki ma'lumotlar bazalarini yoki biznes mantiqni biladi. Men ikkalasini ham bajardim: murakkab ko'p bazali arxitekturalar qurdim VA loyiha rahbari sifatida SAP B1 ERP joriy etishni boshqardim. Bu ikki tomonlama ko'rinish meni biznes natijalarida fikrlaydigan dasturchi qiladi."*
+> *"Ko'pchilik backend dasturchilar yoki ma'lumotlar bazalarini yoki biznes mantiqni biladi. Men ikkalasini ham bajardim: murakkab ko'p bazali arxitekturalar qurdim VA loyiha rahbari sifatida SAP B1 ERP joriy etishni boshqardim. Bu ikki tomonlama ko'rinish meni biznes natijalarida fikrlaydigan dasturchi qiladi."*
 
 ---
 
@@ -847,7 +847,7 @@
 
 > *"1. Senior muhandislar uchun onboarding jarayoni qanday ko'rinadi?*  
 > *2. Backend jamoasi hozir duch kelayotgan eng katta texnik muammo nima?*  
-> *3. Muhandislik muvaffaqiyatini qanday o'lchaybsiz — tezlik, sifat yoki ta'sir?"*
+> *3. Muhandislik muvaffaqiyatini qanday o'lchaysiz — tezlik, sifat yoki ta'sir?"*
 
 ---
 
@@ -858,7 +858,7 @@ Behavioral savollarga javob berishda **STAR** usulidan foydalaning:
 | Harf | Ma'no (UZB) | Meaning (EN) |
 |------|------------|--------------|
 | **S** | Vaziyat — kontekstni tushuntiring | Situation — set the context |
-| **T** | Vazifa — sizning rolингизни aniqlang | Task — define your role |
+| **T** | Vazifa — sizning rolingizni aniqlang | Task — define your role |
 | **A** | Harakat — nima qilganingizni batafsil ayting | Action — detail what YOU did |
 | **R** | Natija — o'lchanadigan natijani ko'rsating | Result — show measurable outcome |
 

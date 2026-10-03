@@ -1,42 +1,65 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { vi } from "vitest";
-import App from "../src/App";
+import { expect, it } from "vitest";
 
-it("renders mobile navigation and a fluid app boundary at 360px", async () => {
-  Object.defineProperty(window, "innerWidth", { configurable: true, value: 360 });
-  vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ schemaVersion: 1, generatedAt: "now", summary: { pageCount: 1, extractedQuestionCount: 0, canonicalQuestionCount: 0, duplicateCount: 0, nearDuplicateCount: 0, questionsNeedingSource: 0 }, items: [{ slug: "safe", title: "Mobil sahifa", sourcePath: "mobile/safe.md", cardCount: 0, contentScore: { score: 5, label: "rivojlanmoqda", reasons: ["audit"] }, designReadinessScore: { score: 8, label: "yetuk", reasons: ["responsive"] }, overallScore: { score: 7, label: "yetuk", reasons: ["tayyor"] } }], pagination: { page: 1, pageSize: 100, totalItems: 1, totalPages: 1 } }) }));
-  const { container } = render(<App />);
+import App from "../src/App";
+import { mockBackend } from "./fixtures";
+
+it("mobile drawer traps focus, closes on Escape, scrim and navigation, and restores focus", async () => {
+  mockBackend();
   const user = userEvent.setup();
+  render(<App />);
   const menu = await screen.findByRole("button", { name: "Menyuni ochish" });
-  expect(menu).toBeInTheDocument();
   expect(menu).toHaveAttribute("aria-expanded", "false");
   expect(menu).toHaveAttribute("aria-controls", "primary-navigation");
-  expect(container.querySelector(".app-shell")).toBeInTheDocument();
-  expect([...container.querySelectorAll<HTMLElement>("[style]")].every(element => !/width:\s*[4-9]\d\dpx/.test(element.getAttribute("style") ?? ""))).toBe(true);
+
   await user.click(menu);
-  const sidebar = screen.getByRole("dialog", { name: "Asosiy navigatsiya" });
-  const firstNavigationItem = screen.getByRole("button", { name: /Bosh sahifa/ });
-  expect(sidebar).toHaveClass("is-open");
-  expect(sidebar).toHaveAttribute("aria-modal", "true");
-  expect(menu).toHaveAttribute("aria-expanded", "true");
-  expect(firstNavigationItem).toHaveFocus();
+  const drawer = screen.getByRole("dialog", { name: "Asosiy navigatsiya" });
+  expect(drawer).toHaveAttribute("aria-modal", "true");
+  expect(drawer).toHaveAttribute("data-open", "true");
+  const first = screen.getByRole("link", { name: "Bilimxona IT intervyuga tayyorgarlik" });
+  expect(first).toHaveFocus();
   await user.keyboard("{Shift>}{Tab}{/Shift}");
-  expect(screen.getByRole("button", { name: "Takrorlash" })).toHaveFocus();
+  expect(screen.getByRole("button", { name: /rejim/ })).toHaveFocus();
   await user.tab();
-  expect(firstNavigationItem).toHaveFocus();
+  expect(first).toHaveFocus();
+
   await user.keyboard("{Escape}");
-  expect(sidebar).not.toHaveClass("is-open");
+  expect(drawer).not.toHaveAttribute("data-open");
   expect(menu).toHaveFocus();
 
   await user.click(menu);
-  const scrim = container.querySelector<HTMLElement>(".drawer-scrim");
-  expect(scrim).toBeInTheDocument();
-  await user.click(scrim!);
+  await user.click(screen.getByTestId("drawer-scrim"));
   expect(menu).toHaveFocus();
 
   await user.click(menu);
-  await user.click(firstNavigationItem);
-  expect(menu).toHaveFocus();
-  vi.unstubAllGlobals();
+  await user.click(screen.getByRole("link", { name: "Takrorlash" }));
+  await waitFor(() => expect(document.getElementById("main-content")).toHaveFocus());
+  expect(document.getElementById("primary-navigation")).not.toHaveAttribute("data-open");
+});
+
+it("theme toggle persists and switches the document theme", async () => {
+  mockBackend();
+  const user = userEvent.setup();
+  document.documentElement.dataset.theme = "light";
+  render(<App />);
+  await user.click(await screen.findByRole("button", { name: "Tungi rejim" }));
+  expect(document.documentElement.dataset.theme).toBe("dark");
+  expect(localStorage.getItem("theme")).toBe("dark");
+  expect(screen.getByRole("button", { name: "Yorug' rejim" })).toBeVisible();
+});
+
+it("theme toggle still works when storage throws (private mode)", async () => {
+  mockBackend();
+  const user = userEvent.setup();
+  const original = localStorage.setItem;
+  localStorage.setItem = () => { throw new DOMException("quota", "QuotaExceededError"); };
+  try {
+    document.documentElement.dataset.theme = "light";
+    render(<App />);
+    await user.click(await screen.findByRole("button", { name: "Tungi rejim" }));
+    expect(document.documentElement.dataset.theme).toBe("dark");
+  } finally {
+    localStorage.setItem = original;
+  }
 });

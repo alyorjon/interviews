@@ -91,10 +91,10 @@ test("writes machine-readable catalog and audit summary with counts", async () =
   assert.equal("questionCount" in summary.pages[0], false);
 });
 
-test("reports likely duplicates for review without auto-merging them", async () => {
+test("reports partial near-duplicates for review without auto-merging them", async () => {
   const root = await fixture({
-    "a.md": "# A\n\n## Q1. Docker image nima?\n\nImage o'zgarmas shablon.",
-    "b.md": "# B\n\n## Q1. Docker image degani nima?\n\nU container uchun shablon bo'ladi."
+    "a.md": "# A\n\n## Q1. Docker image ni qanday lokal build qilish mumkin?\n\nImage o'zgarmas shablon.",
+    "b.md": "# B\n\n## Q1. Docker image ni qanday build qilish mumkin?\n\nU container uchun shablon bo'ladi."
   });
   const catalog = await buildCatalog(root);
   assert.equal(catalog.cards.length, 2);
@@ -186,10 +186,10 @@ test("real corpus preserves nearest useful sections without reviving known leaka
   const contextFor = (question: string) => catalog.cards.find((card) => card.question === question)?.enrichment.questionContext;
 
   assert.equal(contextFor("Excel nima va undan foydalanish? — 1:15"), "Asosiy savollar");
-  assert.equal(contextFor("What is a final class? | Final klass nima?"), "2. Keywords & Methods | Kalit So'zlar");
-  assert.equal(contextFor("What is multiple inheritance? | Ko'p meros olish nima?"), "3. Inheritance & Relations | Meros va Munosabatlar");
-  assert.equal(contextFor("What is constructor chaining? | Konstruktor zanjiri nima?"), "5. Advanced OOP | Ilg'or OOP");
-  assert.equal(contextFor("What is dynamic binding? | Dinamik bog'lash nima?"), "6. Binding & Casting | Bog'lash va Konvertatsiya");
+  assert.equal(contextFor("Final (sealed) klass nima? / What is a final (sealed) class?"), "🔹 Keywords & Methods | Kalit So'zlar");
+  assert.equal(contextFor("Ko'p meros va MRO qanday ishlaydi (diamond muammosi)? / How do multiple inheritance and MRO work (the diamond problem)?"), "🔹 Inheritance & Relations | Meros va Munosabatlar");
+  assert.equal(contextFor("Konstruktor zanjiri va delegatsiyasi nima? / What are constructor chaining and delegation?"), "🔹 Advanced OOP | Ilg'or OOP");
+  assert.equal(contextFor("Dinamik (kech) bog'lash nima? / What is dynamic (late) binding?"), "🔹 Binding & Casting | Bog'lash va Konvertatsiya");
   assert.equal(contextFor("Grafda BFS orqali eng qisqa yo'l (unweighted) qanday topiladi? / How do you find the shortest path in an unweighted graph using BFS?"), "🔴 3. Ilg'or daraja / Advanced Level (39–58)");
   assert.doesNotMatch(catalog.cards.map((card) => card.enrichment.questionContext).join("\n"), /Toshkent Uzbekistan|ORDER BY salary/i);
 });
@@ -227,15 +227,71 @@ test("P02 contributes twenty unique practical source-grounded cards per requeste
   assert.equal(catalog.summary.questionsNeedingSource, 0);
 });
 
+test("bold numbered lines and numbered bilingual headings become questions", async () => {
+  const root = await fixture({
+    "sql.md": "# PostgreSQL\n\n## 1. Asosiy tushunchalar / Basics\n\n**1. SAVEPOINT nima?**\n> Tranzaksiya ichidagi qaytish nuqtasi.\n\n**2. VACUUM vazifasi**\n> O'lik qatorlarni tozalaydi.",
+    "python.md": "# Python\n\n## 10. String formatlash / String formatting\n\nf-string eng tez va o'qilishi oson usul.\n\n## 11. Regex / Regular expressions\n\n`re` moduli naqsh bo'yicha qidiradi.",
+  });
+  const catalog = await buildCatalog(root);
+  assert.deepEqual(catalog.cards.map((card) => card.question).sort(), [
+    "Regex / Regular expressions", "SAVEPOINT nima?", "String formatlash / String formatting", "VACUUM vazifasi",
+  ], "the empty '## 1. Basics' section title must not become a card");
+  assert.match(catalog.cards.find((card) => card.question === "SAVEPOINT nima?")!.answer, /qaytish nuqtasi/);
+});
+
+test("a question heading that mentions 'javoblar' is a card; only the answer-key heading is skipped", async () => {
+  const root = await fixture({
+    "api.md": "# API\n\n## Q1. Stream qilinadigan javoblar nega birdaniga keladi?\n\nMiddleware body'ni buferlaydi.\n\n## Q2. CORS nima?\n\nBrauzer qoidasi.",
+    "quiz.md": "# Quiz\n\n**1.** Qaysi biri to'g'ri?\nA) x\nB) y\n\n## ✅ Javoblar / Answer Key\n\n1. B",
+  });
+  const questions = (await buildCatalog(root)).cards.map((card) => card.question);
+  assert.ok(questions.includes("Stream qilinadigan javoblar nega birdaniga keladi?"));
+  assert.ok(questions.includes("CORS nima?"));
+  assert.equal(questions.some((question) => /Answer Key/.test(question)), false);
+});
+
+test("questions that differ only in word order or language order merge and keep a stable id", async () => {
+  const root = await fixture({
+    "a/basics.md": "# A\n\n## Q1. What is Docker? | Docker nima?\n\nKonteyner platformasi.",
+    "b/basics.md": "# B\n\n## Q1. Docker nima? / What is Docker?\n\nDocker ilovalarni konteynerda ishga tushiradigan platforma.",
+  });
+  const catalog = await buildCatalog(root);
+  assert.equal(catalog.cards.length, 1);
+  const [card] = catalog.cards;
+  assert.equal(card!.id, `card-${fingerprintQuestion("What is Docker? | Docker nima?")}`);
+  assert.match(card!.answer, /ishga tushiradigan/, "the fuller answer wins");
+  assert.deepEqual(catalog.pages.map((page) => page.cardIds), [[card!.id], [card!.id]]);
+});
+
+test("real corpus has no template-generated filler questions", async () => {
+  const catalog = await buildCatalog(path.resolve(import.meta.dirname, "../../.."));
+  const templates = new Map<string, string[]>();
+  for (const card of catalog.cards) {
+    const key = card.question.replace(/\d+/g, "#");
+    templates.set(key, [...templates.get(key) ?? [], card.sources[0]!.sourcePath]);
+  }
+  const filler = [...templates].filter(([, sources]) => sources.length >= 5).map(([key, sources]) => `${sources[0]}: ${key}`);
+  assert.deepEqual(filler, [], "questions that differ only by a number are placeholder filler");
+  const copies = catalog.cards.flatMap((card) => {
+    const perFile = new Map<string, number>();
+    for (const source of card.sources) perFile.set(source.sourcePath, (perFile.get(source.sourcePath) ?? 0) + 1);
+    return [...perFile].filter(([, count]) => count >= 3).map(([file, count]) => `${file}: "${card.question}" x${count}`);
+  });
+  assert.deepEqual(copies, [], "the same question copied 3+ times within one file is filler");
+  const ranges = catalog.pages.flatMap((page) => [...page.markdown.matchAll(/^#{2,6}\s+(?:\S+\s+)?Q\d+\s*[-–]\s*Q?\d+\.\s.*$/gm)]
+    .map((match) => `${page.sourcePath}: ${match[0]}`));
+  assert.deepEqual(ranges, [], "a 'Q11-Q100. ...' heading promises questions that do not exist");
+});
+
 test("real corpus regression totals stay stable", async () => {
   const repositoryRoot = path.resolve(import.meta.dirname, "../../..");
   const catalog = await buildCatalog(repositoryRoot);
   assert.deepEqual(catalog.summary, {
-    pageCount: 55,
-    extractedQuestionCount: 2419,
-    canonicalQuestionCount: 2339,
-    duplicateCount: 80,
-    nearDuplicateCount: 4015,
+    pageCount: 61,
+    extractedQuestionCount: 2405,
+    canonicalQuestionCount: 2398,
+    duplicateCount: 7,
+    nearDuplicateCount: 6,
     questionsNeedingSource: 0
   });
 });

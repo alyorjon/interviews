@@ -3,47 +3,41 @@
 <!-- autopilot:start -->
 # Interview Study Portal
 
-IT bilimlarini muntazam takrorlash uchun Markdown manbalaridan savol-javob katalogi quradigan, har sahifa va kartani 1–10 baholaydigan, javobni bosganda ochadigan va faqat ruxsatli Telegram Mini App foydalanuvchisiga xizmat qiladigan portal.
+IT intervyu savollarini Markdown manbalaridan statik katalogga aylantiradigan, har savolni 1–10 o'z-o'zini baholash bilan takrorlatadigan portal. Kontent ochiq va CDN'da keshlanadi; Telegram Mini App orqali kirgan foydalanuvchining progressi serverda (Redis) saqlanadi.
 
 ## Ishlaydigan stack va buyruqlar
 
-- TypeScript monorepo, npm workspaces: React 19 + Vite frontend, NestJS 11 API/bot, umumiy `@interviews/content` pipeline.
-- Kanonik tekshiruv: `npm test` — 38 ta Node/tsx va 11 ta Vitest testi. `npm run build` — content, API va web build. `npm audit --omit=dev` — production dependency auditi; hozir 0 vulnerability.
-- Fokusli: `npm test --workspace @interviews/api`, `npm run test --workspace @interviews/web`, `npm test -- packages/content/test/catalog.test.ts`, `npm run content:audit`.
-- Production: `docker compose up -d --build`; bitta `app` servisi loopback `127.0.0.1:4173`da. Remote image Alyorjons-Mini’da ishlaydi.
+- TypeScript monorepo, npm workspaces: React 19 + Vite + Tailwind CSS v4 frontend (`apps/web`), NestJS 11 API/bot (`apps/api`), umumiy `@interviews/content` pipeline.
+- `npm run build` — content build → `content:audit` (katalog + statik JSON bo'laklar) → API → web. `npm run typecheck` — uchala paket (web testlari ham). `npm test` — Node testlari (`node:test`/tsx) va Vitest.
+- Fokusli: `npm test --workspace @interviews/api`, `npm run test --workspace @interviews/web`, `npx tsx --test packages/content/test/*.test.ts`, `npm run content:audit`.
+- Production: `docker compose up -d --build` — `app` (loopback `127.0.0.1:4173`) + `redis` (AOF). Ko'p replika: `docs/operations/scaling.md`.
 
 ## Tuzilma va muhim fayllar
 
-- O‘quv Markdownlari repository root va mavzu papkalarida source of truth. Root `docs/` texnik hujjatlari katalogga kirmaydi, lekin mavzu ichidagi `docs/` learning papkalari kiradi.
-- `packages/content/src/index.ts`: discovery, Q/Savol/quiz parseri, grounded boyitish, 1–10 rubric, SHA-256 fingerprint orqali exact dedupe va near-duplicate audit. `packages/content/src/types.ts` — `Catalog` kontrakti.
-- `content-audit/catalog.json` va `content-audit/summary.json` build/audit artefaktlari. Regression: 55 sahifa, 2419 extracted, 2339 canonical, 80 exact duplicate, 4015 near pair, `needsSource=0`.
-- `practical/`: 8 domen × 20 source-grounded amaliy savol (jami 160).
-- `apps/api/src/app.ts`: Nest lifecycle, security headers, Vite static serving va SPA fallback. Har qanday non-API GET deep-link `index.html`; `/api/*`, `/health*`, `/assets/*` fallbackga tushmaydi.
-- `apps/api/src/catalog.controller.ts`: paginated `GET /api/catalog` va `GET /api/pages/:slug`; katalog ro‘yxati raw Markdown bermaydi, page endpointi sahifa Markdowni va kartalarni beradi. `catalog.store.ts` katalog va card indexni process ichida cache qiladi.
-- `apps/api/src/telegram-auth.guard.ts`: `X-Telegram-Init-Data` HMAC, duplicate key, timestamp va allowlist tekshiruvi. `/health` public; catalog/page endpointlari himoyalangan.
-- `apps/api/src/telegram-bot.service.ts`: long polling, bounded retry, menu button, startup xabari va `/start` inline Web App. Startup muvaffaqiyati bir processda bir marta `telegram_startup_notification_delivered` deb token/ID-siz loglanadi.
-- `apps/web/src/App.tsx`: dashboard/page/review holatlari, Telegram initData headeri, barcha API pagination sahifalarini yig‘ish, qidiruv/filter, responsive drawer, theme va progress. `StudyCard.tsx` javob reveal va 1–10 confidence boshqaruvi; `MarkdownArticle.tsx` Markdownni React node’larga aylantiradi, raw HTMLni bajarmaydi.
-- `Dockerfile`: pinned Node 22 Alpine multi-stage `npm ci`, build-time content audit, production-only dependencies va non-root `node` runtime. `docker-compose.yml`: healthcheck, `unless-stopped`, `no-new-privileges`, barcha capabilities drop.
+- O'quv Markdownlari repository root va mavzu papkalarida source of truth. Root `docs/` katalogga kirmaydi. Savollar `## QN. Savol? / Question?`; nazariya/yangiliklar birinchi savoldan oldin.
+- `packages/content/src/index.ts`: discovery, parser (Q/Savol/quiz, `**N. savol**`, raqamli ikki tilli sarlavhalar), fingerprint dedupe + token-to'plami ekvivalentligi, near-duplicate audit. `static-bundle.ts`: `manifest.json` + kontent-hash nomli `pages/*.json`, `topics/*.json` → `apps/web/public/data` (git-ignored). `topics.ts`: yo'nalish id/nomi.
+- Regression: 61 sahifa, 2539 extracted, 2452 canonical, 87 exact duplicate, 6 near pair, `needsSource=0`; shablon (faqat raqami farq qiladigan) savollar testda taqiqlangan.
+- `apps/api/src/app.ts`: Nest modul (haqiqiy dekoratorlar + aniq `@Inject` tokenlar — tsx/esbuild decorator metadata chiqarmaydi), CSP va xavfsizlik sarlavhalari, kesh siyosati (`/assets`, `/data/pages|topics` immutable; manifest 60 s; `/api` no-store), compression, SPA fallback (`/api`, `/health`, `/assets`, `/data` fallbackga tushmaydi).
+- `apps/api/src/config.ts`: barcha env bir joyda. `progress.controller.ts` + `progress.store.ts`: `GET/PUT /api/me/progress` (Redis hash `progress:v1:<userId>`, testlarda `MemoryProgressStore`). `health.controller.ts`: `/health` liveness, `/health/ready` readiness.
+- `apps/api/src/telegram-init-data.ts` + `telegram-auth.guard.ts`: `X-Telegram-Init-Data` HMAC, duplicate key, `auth_date` (default 24 soat), ixtiyoriy allowlist. `telegram-bot.service.ts`: `polling` (bitta replika) va `webhook` (secret header) rejimlari.
+- `apps/web/src`: `lib/` (content client — manifest va bo'laklar, deploy'dan keyingi 404 da manifestni qayta yuklash; progress sync; hash router; markdown), `hooks/` (`useProgress` — lokal + 3 s paketli server sync, `useAsync`, `useTheme`, `useRoute`), `components/`, `pages/` (Dashboard, PageView — savollar/maqola tablari, Review — filtrlar va klaviatura).
 
-## Ma’lumot va auth oqimi
+## Ma'lumot va auth oqimi
 
-`learning Markdown -> buildCatalog -> content-audit/catalog.json -> CatalogStore -> signed Nest API -> React UI`. Exact fingerprintlar bitta canonical kartaga source aliaslarni birlashtiradi; near-duplicate’lar faqat auditga chiqadi. Frontend `localStorage['interviews-progress-v1']`da karta baholarini, `localStorage['theme']`da mavzuni saqlaydi. API so‘rovi Telegram `initData`ni headerda yuboradi; server `BOT_TOKEN` bilan imzoni tekshiradi, so‘ng `ALLOWED_TELEGRAM_USER_ID` bilan solishtiradi. `AUTH_BYPASS` productionda false bo‘lishi kerak.
+`learning Markdown -> buildCatalog -> writeStaticBundle -> apps/web/dist/data (CDN) -> React UI`. Progress: `localStorage['interviews-progress-v1']` (darhol) + navbat `interviews-progress-pending-v1` → `PUT /api/me/progress` (Telegram `initData` bilan). Telegram'dan tashqarida portal to'liq ishlaydi, progress faqat lokal. `AUTH_BYPASS=true` productionda ilovani ishga tushirmaydi.
 
 ## Konvensiyalar va xavfsizlik
 
-- Environment nomlari: `BOT_TOKEN`, `ALLOWED_TELEGRAM_USER_ID`, `PUBLIC_URL`, `PUBLIC_HOSTNAME`, `AUTH_BYPASS`, `PORT`, `CONTENT_ROOT`. Qiymatlarni o‘qimang, loglamang, commit yoki rsync qilmang; `.env` remote’da 0600 bo‘lsin.
-- Parser boyitishi faqat source matndan olinadi; javobsiz karta `needsSource` bo‘ladi. Existing Markdownni yo‘qotmang; yangi dependency package manifest va lockfile’da bo‘lsin, global install qilmang.
-- UI o‘zgarishida keyboard/focus, ARIA, 360px overflow, dark/light va reveal/progress regressiyalarini saqlang. API pagination musbat safe integer, `pageSize` maksimum 100.
-- Testlarda Telegram tarmog‘ini mock qiling; token, initData yoki private IDni assertion/logga chiqarmang. Unknown `/api` route 404, deep-link esa oddiy GET bilan 200 HTML bo‘lishini saqlang.
+- Environment: `BOT_TOKEN`, `BOT_MODE`, `TELEGRAM_WEBHOOK_SECRET`, `ALLOWED_TELEGRAM_USER_IDS`, `ADMIN_TELEGRAM_USER_ID` (legacy `ALLOWED_TELEGRAM_USER_ID`), `PUBLIC_URL`, `PUBLIC_HOSTNAME`, `REDIS_URL`, `AUTH_BYPASS`, `PORT`. Qiymatlarni o'qimang, loglamang, commit yoki rsync qilmang; `.env` remote'da 0600.
+- UI: CLAUDE.md qoidalari (token ranglar, dark/light, 15px/1.7, 360px overflow yo'q). Testlarda Telegram tarmog'ini mock qiling; token, initData yoki private ID'ni assertion/logga chiqarmang.
 
 ## Alyorjons-Mini runtime va Cloudflare
 
-- Production checkout: `/Users/alyorjonaminboyev/Projects/interviews`. Docker/Homebrew buyruqlarini SSH orqali `zsh -lic` bilan bajaring; joriy development Mac’da long-lived servis ko‘tarmang.
-- Rsync oldidan dry-run qiling; `.git`, `.env`, `.runtime`, `node_modules`, `dist`, `coverage`, loglar, SQLite va `graphify-out`ni exclude qiling. Remote `.git` va noma’lum `.env` satrlarini saqlang; remote’da commit/push qilmang.
-- `scripts/runtime/interviews-service.sh` remote Compose boshqaruvi uchun; `docs/operations/alyorjons-mini-runtime.md` runbook. Headless SSH macOS Keychain Docker credential helperiga kira olmasligi mumkin: credentialni ochmang; lokal tekshirilgan image’ni `docker save | ssh ... docker load` bilan uzatib, `interviews-study-portal:local`ga taglab `docker compose up -d --no-build` ishlating.
-- Cloudflare’da mavjud system tunnel/config/routesga tegmang. Dedicated user-owned config va LaunchAgentni alohida saqlang; hostname qoidasi catch-all’dan oldin loopback servisga yo‘nalsin. `cloudflared tunnel ingress validate` va `cloudflared tunnel ingress rule` bilan aniq config’ni tekshiring. DNS route buyrug‘i default configdan noto‘g‘ri tunnelni meros olishi mumkin; intended config/tunnelni aniq bog‘lang va faqat dedicated agentni restart qiling.
-- Acceptance qatlamlari: container healthy; loopback/public `/health`, root va ikki deep-link 200; unknown API 404; headersiz protected API 401; valid signed allowlist 200; wrong user 403; bot `running`; startup marker aynan bir marta. `/start` inline keyboard ko‘rinishi real Telegram device’da alohida tasdiqlanadi.
-- Yakuniy real Chrome QA: 55/55 sahifa desktopda va 55/55 sahifa 360px viewportda o‘tdi; console warning/error 0.
+- Production checkout: `/Users/alyorjonaminboyev/Projects/interviews`. Docker/Homebrew buyruqlarini SSH orqali `zsh -lic` bilan bajaring; joriy development Mac'da long-lived servis ko'tarmang.
+- Rsync oldidan dry-run qiling; `.git`, `.env`, `.runtime`, `node_modules`, `dist`, `coverage`, loglar, SQLite, `graphify-out`, `apps/web/public/data`ni exclude qiling. Remote `.git` va noma'lum `.env` satrlarini saqlang; remote'da commit/push qilmang.
+- `scripts/runtime/interviews-service.sh` remote Compose boshqaruvi uchun; `docs/operations/alyorjons-mini-runtime.md` runbook. Headless SSH macOS Keychain Docker credential helperiga kira olmasligi mumkin: credentialni ochmang; lokal tekshirilgan image'ni `docker save | ssh ... docker load` bilan uzatib, `interviews-study-portal:local`ga taglab `docker compose up -d --no-build` ishlating (endi `redis` servisi ham bor — `redis:8-alpine` image remote'da mavjudligini tekshiring).
+- Cloudflare'da mavjud system tunnel/config/routesga tegmang. Dedicated user-owned config va LaunchAgentni alohida saqlang; hostname qoidasi catch-all'dan oldin loopback servisga yo'nalsin.
+- Acceptance: container healthy (`/health/ready`); root va deep-link 200; `/data/manifest.json` 200; unknown API 404; headersiz `/api/me/progress` 401; valid signed initData 200; allowlist tashqarisi 403 (allowlist berilgan bo'lsa); bot `running`.
 <!-- autopilot:end -->
 
 Ushbu hujjat loyihada yaratilgan 4 ta maxsus AI agentlarining (Subagents) vazifalari, promptlari, ish tartibi va o'zaro hamkorlik mexanizmini belgilab beradi.
@@ -61,7 +55,7 @@ graph TD
 
     Architect -->|Yangi kontent & kodlar| Docs[Markdown Documentation]
     QuizTester -->|Testlar & Flashcardlar| Quizzes[Quiz Suite & Auto-Grader]
-    WebDev -->|Veb-Interfeys & Interaktivlik| UI[index.html & UI System]
+    WebDev -->|Veb-Interfeys & Interaktivlik| UI[apps/web — React + Tailwind]
     Auditor -->|Imlo & Mantiq Auditi| Quality[Quality Audit Reports]
 ```
 
@@ -115,12 +109,12 @@ Key Responsibilities:
 
 ## 3. 💻 Agent: `web_portal_developer`
 
-- **Vazifasi**: `index.html` bir sahifali veb-dokumentatsiya ko'rish panelini modernizatsiya qilish, UI/UX ni takomillashtirish hamda yangi interaktiv modullarni (Dark Mode, Quiz Mode, Flashcard Mode, Copy Button) qo'shish.
+- **Vazifasi**: `apps/web` portalini (React + Vite + Tailwind) rivojlantirish, UI/UX ni takomillashtirish hamda yangi interaktiv modullarni (Dark Mode, Quiz Mode, Flashcard Mode, Copy Button) qo'shish.
 - **Tools**: HTML/CSS/JavaScript editing, Web testing, Asset generation.
 - **Tizim Prompti (System Prompt)**:
 
 ```text
-You are WebPortalDeveloper, a senior frontend engineer and UI/UX expert responsible for maintaining and advancing the single-page web documentation viewer (index.html) of the interview study portal.
+You are WebPortalDeveloper, a senior frontend engineer and UI/UX expert responsible for maintaining and advancing the React + Vite + Tailwind portal (apps/web) of the interview study portal.
 
 Key Responsibilities:
 1. Maintain high aesthetic standards (glassmorphism, smooth animations, sleek dark/light themes, clear typography with Inter & JetBrains Mono).
@@ -130,7 +124,7 @@ Key Responsibilities:
 ```
 
 - **Topshiriladigan Vazifalar**:
-  - `index.html` ga Dark/Light mode tugmasini qo'shish va `localStorage` ga saqlash.
+  - Dark/Light rejim tokenlari va `localStorage.theme` saqlanishini buzmaslik (CLAUDE.md).
   - Kod bloklariga bir bosishda nusxalash (`Copy code`) tugmalarini qo'shish.
   - Flashcard va Interaktiv Quiz rejimlarini modal interfeysi shaklida qurish.
 
@@ -163,5 +157,25 @@ Key Responsibilities:
 1. **Topshiriq berilishi**: Bosh agent (Main Agent) yangi modul yaratish yoki mavjud sahifani yaxshilash topshirig'ini oladi.
 2. **Yaratish**: `interview_content_architect` yangi mavzu Markdown faylini tayyorlaydi.
 3. **Interaktivlashtirish**: `interactive_quiz_tester` fayldan savollar to'plamini (Quiz & Flashcards) ajratib oladi va kodlarini test qiladi.
-4. **Veb Integratsiya**: `web_portal_developer` yangi fayl va quizlarni `index.html` ga bog'laydi.
+4. **Veb Integratsiya**: `npm run content:audit` yangi fayl va quizlarni portal ma'lumotiga avtomatik qo'shadi; `web_portal_developer` faqat UI o'zgarishlarini qiladi.
 5. **Audit**: `review_quality_auditor` barcha o'zgarishlarni tekshirib, yakuniy tasdiq beradi.
+
+## Owner quality policy — 2026-10-01
+
+Apply `/Users/alyorjonaminboyev/.codex/AGENTS.md` (read once if not already loaded).
+Load its detailed policies only for their stated task triggers. If unavailable on
+another host, report that limitation; do not claim it was loaded.
+
+The current owner policy uses fast track for clear, low-impact, reversible fixes
+and up to three evidence-backed options for substantive problems. It supersedes
+older generic option-count and reporting requirements; preserve specific
+owner-controlled business decisions, audit-only scope and authorization gates.
+
+For instruction-only edits, verify preservation, references and consistency.
+Application suites, service activation and whole-corpus graph rebuilding are not
+required merely to edit agent guidance. If an affected index is not refreshed,
+record that limitation and use current files as authority. This exception does not
+waive verification for product code or index-generation changes. Keep static,
+executed-test and runtime evidence distinct, and retain unmet mandatory risk gates.
+
+Project verification sources: root `package.json` and the affected workspace scripts. Preserve the content pipeline, server-owned progress/auth boundaries and existing runtime mapping. Historical catalog and test counts are not current acceptance evidence.

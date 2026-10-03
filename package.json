@@ -2,13 +2,17 @@
   "name": "interviews-study-portal",
   "private": true,
   "type": "module",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "build": "npm run build --workspace @interviews/content && npm run build --workspace @interviews/api && npm run build --workspace @interviews/web",
+    "build": "npm run build --workspace @interviews/content && npm run content:audit && npm run build --workspace @interviews/api && npm run build --workspace @interviews/web",
     "test": "npm run test:node && npm run test:web",
     "test:node": "tsx --test",
     "test:web": "npm run test --workspace @interviews/web",
-    "content:audit": "npm run audit --workspace @interviews/content"
+    "content:audit": "npm run audit --workspace @interviews/content",
+    "typecheck": "tsc -p packages/content/tsconfig.json --noEmit && tsc -p apps/api/tsconfig.json --noEmit && tsc -p apps/web/tsconfig.json --noEmit"
   },
   "overrides": {
     "@nestjs/platform-express": {

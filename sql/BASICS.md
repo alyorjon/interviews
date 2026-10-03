@@ -1,12 +1,12 @@
-# 🗄️ 100 SQL Commands — Bilingual Reference / Ikki tilli qo'llanma
+# 🗄️ SQL asoslari — buyruqlar ma'lumotnomasi va intervyu savollari / SQL Basics
 
 > **Manba / Source:** 100 SQL Commands PDF  
 > **Tillar / Languages:** O'zbek 🇺🇿 | English 🇬🇧  
-> **Maqsad / Goal:** SQL buyruqlarini tez esga olish uchun / Quick SQL reference
+> **Maqsad / Goal:** SQL buyruqlarini tez esga olish (1–18-bo'limlar) va umumiy SQL intervyu savollari (pastda). PostgreSQL'ga xos savollar — `sql/postgresql_interviews.md`, amaliy ssenariylar — `practical/postgresql.md`.
 
 ---
 
-## � Modern SQL interview topics
+## 🆕 Modern SQL interview topics
 
 **EN:** Modern SQL interviews emphasize query performance, indexing, transactions, and practical database design.
 
@@ -26,7 +26,7 @@ FROM orders;
 
 ---
 
-## �📌 1. DML — Ma'lumot boshqaruvi / Data Manipulation
+## 📌 1. DML — Ma'lumot boshqaruvi / Data Manipulation
 
 > Mavjud ma'lumotlar ustida amal bajaradi / Works on existing data
 
@@ -619,28 +619,15 @@ CREATE TABLE employees (
 
 | Savol / Question                             | Qisqa javob / Short Answer                                                                                                                                                                              |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DELETE` vs `TRUNCATE` vs `DROP`?            | DELETE — WHERE bilan qator o'chiradi, rollback qilinadi, trigger ishga tushadi; TRUNCATE — barcha qatorni tez o'chiradi, odatda rollback qilinmaydi, tuzilma qoladi; DROP — jadvalni butunlay o'chiradi |
-| `CHAR` vs `VARCHAR`?                         | CHAR — belgilangan uzunlik, bo'sh joy bilan to'ldiriladi; VARCHAR — o'zgaruvchan uzunlik, faqat kerakli joy sarflanadi                                                                                  |
-| Clustered vs Non-clustered index?            | Clustered — jadval qatorlarining fizik tartibini belgilaydi (jadvalda faqat bitta bo'ladi); Non-clustered — alohida tuzilma, ko'rsatgich orqali qatorga yo'naltiradi (bir nechta bo'lishi mumkin)       |
-| Correlated vs Non-correlated subquery?       | Correlated — tashqi so'rovning har bir qatoriga bog'liq, har safar qayta bajariladi; Non-correlated — mustaqil, bir marta bajariladi                                                                    |
+| Clustered vs Non-clustered index?            | Clustered — jadval qatorlarining fizik tartibini belgilaydi (jadvalda faqat bitta bo'ladi; SQL Server/MySQL InnoDB'da bor, PostgreSQL'da yo'q — u yerda `CLUSTER` buyrug'i jadvalni faqat bir marta tartiblaydi); Non-clustered — alohida tuzilma, ko'rsatgich orqali qatorga yo'naltiradi (bir nechta bo'lishi mumkin)       |
 | View vs Materialized View?                   | View — har so'ralganda qayta hisoblanadi, real vaqt ma'lumoti; Materialized View — natija diskda saqlanadi, tezroq lekin eskirishi mumkin                                                               |
 | Statement-level vs Row-level trigger?        | Statement-level — butun operatsiya uchun bir marta ishga tushadi; Row-level — har bir ta'sirlangan qator uchun alohida ishga tushadi                                                                    |
-| Idempotent SQL nima?                         | Bir necha marta bajarilsa ham natija bir xil bo'ladigan so'rov (masalan, UPSERT), oddiy INSERT idempotent emas                                                                                          |
-| SQL Injection dan qanday himoyalanish kerak? | Parametrlangan so'rovlar (prepared statements) ishlatish, foydalanuvchi kiritgan matnni to'g'ridan-to'g'ri so'rovga qo'shmaslik, ORM ishlatish                                                          |
 
 ---
 
 ## 💡 Tezkor eslatma / Quick Reference
 
-### SQL buyruqlari tartibi / SQL Execution Order
-
-```sql
--- Yozilish tartibi / Writing order:
-SELECT → FROM → JOIN → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT
-
--- Bajarilish tartibi / Execution order:
-FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT
-```
+> SQL so'rovning bajarilish tartibi — pastdagi **Q2** da.
 
 ### PostgreSQL (FastAPI stack uchun) muhim farqlar
 
@@ -658,145 +645,406 @@ _Tayyorlagan / Prepared by: Alyorjon | Manba / Source: 100 SQL Commands PDF_
 
 ---
 
-# 🗄️ 100 SQL Interview Questions & Answers (Savol va Javoblar)
+# 🗄️ SQL intervyu savollari / SQL Interview Questions
+
+> **Har bir javob tartibi:** oddiy tilda → batafsilroq (misol bilan) → intervyuda qanday aytasiz → esda tuting. Misollar PostgreSQL sintaksisida, lekin tushunchalar barcha relyatsion bazalar uchun umumiy.
 
 ---
 
-## Q1. What is SQL and what are its main sub-languages (DDL, DML, DCL, TCL, DQL)? | SQL nima va uning asosiy sub-tillari qaysilar?
+## Q1. SQL nima va uning qanday qismlari bor? / What is SQL and what are its sub-languages?
 
-**EN:** SQL (Structured Query Language) is the standard language for relational databases. It comprises DDL (Data Definition), DML (Data Manipulation), DCL (Data Control), TCL (Transaction Control), and DQL (Data Query).
+**Oddiy qilib aytganda:** SQL — ma'lumotlar bazasi bilan "gaplashish" tili. Siz bazaga nima kerakligini aytasiz ("30 yoshdan katta mijozlarni ber"), qanday topishni esa baza o'zi hal qiladi. Buyruqlar vazifasiga qarab guruhlarga bo'linadi: jadval **tuzish**, ma'lumot **yozish**, **o'qish**, **ruxsat berish** va **tranzaksiyani boshqarish**.
 
-**UZB:** SQL — relyatsion ma'lumotlar bazalarini boshqarish uchun standart til. U DDL, DML, DCL, TCL va DQL kabi bo'limlardan iborat.
+**Batafsilroq:**
+
+| Guruh | Nima qiladi | Buyruqlar |
+|---|---|---|
+| DDL (Data Definition) | jadval va tuzilmani yaratadi/o'zgartiradi | `CREATE`, `ALTER`, `DROP`, `TRUNCATE` |
+| DML (Data Manipulation) | qatorlarni o'zgartiradi | `INSERT`, `UPDATE`, `DELETE`, `MERGE` |
+| DQL (Data Query) | ma'lumotni o'qiydi | `SELECT` |
+| DCL (Data Control) | ruxsatlarni boshqaradi | `GRANT`, `REVOKE` |
+| TCL (Transaction Control) | tranzaksiyani boshqaradi | `BEGIN`, `COMMIT`, `ROLLBACK`, `SAVEPOINT` |
 
 ```sql
--- DDL: CREATE, ALTER, DROP
-CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(50));
-
--- DML: INSERT, UPDATE, DELETE
-INSERT INTO employees VALUES (1, 'Ali');
-
--- DQL: SELECT
-SELECT * FROM employees;
-
--- TCL: COMMIT, ROLLBACK
-COMMIT;
+CREATE TABLE employees (id bigint PRIMARY KEY, name text NOT NULL, salary numeric(12,2));  -- DDL
+INSERT INTO employees VALUES (1, 'Ali', 5000);                                              -- DML
+SELECT name FROM employees WHERE salary > 3000;                                             -- DQL
+GRANT SELECT ON employees TO reporting;                                                     -- DCL
+BEGIN; UPDATE employees SET salary = salary * 1.1 WHERE id = 1; COMMIT;                     -- TCL
 ```
 
----
+**Intervyuda shunday ayting:** "SQL — deklarativ til: natijani tasvirlayman, bajarish rejasini esa planner tanlaydi. Buyruqlar DDL, DML, DQL, DCL va TCL guruhlariga bo'linadi. Amalda muhimi — DDL o'zgarishlarini migratsiyalar orqali, DCL'ni esa eng kam huquq tamoyili bilan boshqarish."
 
-## Q2. What is the difference between WHERE and HAVING clauses? | WHERE va HAVING o'rtasidagi farq nima?
+**Esda tuting:** PostgreSQL'da DDL ham tranzaksiyada ishlaydi — `CREATE TABLE` ni `ROLLBACK` qilish mumkin. Ko'p boshqa bazalarda (masalan, MySQL) bunday emas.
 
-**EN:** `WHERE` filters rows BEFORE aggregation. `HAVING` filters grouped groups AFTER `GROUP BY` aggregation.
+## Q2. SQL so'rov qaysi tartibda bajariladi? / In what order is a SQL query executed?
 
-**UZB:** `WHERE` agregatsiyadan OLDIN satrlarni saralaydi. `HAVING` esa `GROUP BY` qilgandan KEYIN guruhlangan natijalarni saralaydi.
+**Oddiy qilib aytganda:** biz so'rovni `SELECT` dan boshlab yozamiz, lekin baza uni **boshqa tartibda** bajaradi: avval jadvalni oladi (`FROM`), keraksiz qatorlarni tashlaydi (`WHERE`), guruhlaydi (`GROUP BY`), guruhlarni filtrlaydi (`HAVING`) va faqat shundan keyin kerakli ustunlarni tanlaydi (`SELECT`). Shu tartibni bilsangiz, ko'p xatolar tushunarli bo'ladi.
+
+**Batafsilroq:**
 
 ```sql
-SELECT department_id, AVG(salary) as avg_sal
+-- Yozilish tartibi:   SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT
+-- Mantiqiy tartib:    FROM/JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT
+
+SELECT department, avg(salary) AS avg_salary
 FROM employees
-WHERE age > 25              -- Satrlarni filtrlash
-GROUP BY department_id
-HAVING AVG(salary) > 5000;  -- Guruhlarni filtrlash
+WHERE salary > 1000          -- ❌ WHERE avg_salary > 1000 ishlamaydi: alias hali yo'q
+GROUP BY department
+HAVING avg(salary) > 3000
+ORDER BY avg_salary DESC;    -- ✅ ORDER BY SELECT'dan keyin — alias ishlaydi
 ```
 
----
+**Intervyuda shunday ayting:** "Mantiqiy tartib: FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY, LIMIT. Shuning uchun `WHERE` da `SELECT` alias'ini ishlatib bo'lmaydi, `ORDER BY` da esa bo'ladi. Bu mantiqiy tartib — planner jismoniy bajarishni o'zgartirishi mumkin, lekin natija shu tartibdagidek bo'ladi."
 
-## Q3. What are SQL Window Functions (OVER, PARTITION BY)? | SQL Window funksiyalari nima?
+**Esda tuting:** window funksiyalar ham `SELECT` bosqichida hisoblanadi — ularni `WHERE` da ishlatib bo'lmaydi, buning uchun subquery yoki CTE kerak.
 
-**EN:** Window functions perform calculations across a set of table rows related to the current row without collapsing rows into a single group like `GROUP BY`.
+## Q3. WHERE va HAVING farqi nima? / What is the difference between WHERE and HAVING?
 
-**UZB:** Window funksiyalari joriy satrga bog'liq satrlar to'plami bo'yicha hisoblashlarni amalga oshiradi, lekin `GROUP BY` kabi satrlarni bitta guruhga yig'ib qo'ymaydi.
+**Oddiy qilib aytganda:** `WHERE` — eshikdagi qo'riqchi: har bir qatorni **guruhlashdan oldin** tekshiradi. `HAVING` — guruhlar tuzilgandan **keyin** butun guruhni tekshiradi. "30 yoshdan kattalar" — `WHERE`; "o'rtacha maoshi 5000 dan yuqori bo'limlar" — `HAVING`.
+
+**Batafsilroq:**
+
+```sql
+SELECT department_id, avg(salary) AS avg_salary, count(*) AS people
+FROM employees
+WHERE age > 25                    -- qatorlar: guruhlashdan oldin
+GROUP BY department_id
+HAVING avg(salary) > 5000         -- guruhlar: agregatdan keyin
+   AND count(*) >= 3;
+```
+
+**Intervyuda shunday ayting:** "`WHERE` qatorlarni agregatdan oldin, `HAVING` esa guruhlarni agregatdan keyin filtrlaydi. Agregatsiz shartni `HAVING` ga emas, `WHERE` ga yozaman — shunda keraksiz qatorlar guruhlashga umuman kirmaydi va so'rov tezroq."
+
+**Esda tuting:** `WHERE count(*) > 3` — xato: `WHERE` bosqichida guruhlar hali yo'q.
+
+## Q4. JOIN turlari qanday farq qiladi? / How do the JOIN types differ?
+
+**Oddiy qilib aytganda:** JOIN — ikki jadvalni umumiy ustun bo'yicha "tikish". **INNER** — faqat ikkala tomonda mos keladigan juftliklar. **LEFT** — chap jadvalning hamma qatori, o'ng tomonda mos bo'lmasa — `NULL`. **FULL** — ikkala tomonning hammasi. **CROSS** — har biri har biri bilan (barcha kombinatsiyalar). **SELF** — jadvalni o'zi bilan (masalan, xodim va uning rahbari).
+
+**Batafsilroq:**
+
+```sql
+-- Buyurtmasi bor mijozlar
+SELECT c.name, o.id FROM customers c INNER JOIN orders o ON o.customer_id = c.id;
+
+-- Barcha mijozlar, buyurtmasi bo'lmasa ham (o.id = NULL)
+SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id;
+
+-- Hech buyurtma bermagan mijozlar (anti-join)
+SELECT c.name FROM customers c
+WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);
+
+-- Xodim va uning rahbari (self join)
+SELECT e.name AS employee, m.name AS manager
+FROM employees e LEFT JOIN employees m ON e.manager_id = m.id;
+```
+
+**Intervyuda shunday ayting:** "INNER — faqat moslar, LEFT — chapdagilarning hammasi, FULL — ikkala tomonning hammasi, CROSS — dekart ko'paytma. 'Ikkinchi jadvalda yo'qlar' uchun `NOT EXISTS` ishlataman — `NOT IN` ichida `NULL` bo'lsa, natija bo'sh chiqadi."
+
+**Esda tuting:** `LEFT JOIN` dan keyin o'ng jadval ustunini `WHERE` da filtrlash (`WHERE o.status = 'paid'`) uni jimgina `INNER JOIN` ga aylantiradi. Bunday shartni `ON` ichiga yozing.
+
+## Q5. NULL nima va u bilan solishtirish nega "ishlamaydi"? / What is NULL and why doesn't comparing to it "work"?
+
+**Oddiy qilib aytganda:** `NULL` — "noma'lum", nol ham emas, bo'sh satr ham emas. Noma'lum narsa bilan solishtirsangiz, natija ham noma'lum: `NULL = NULL` — `true` emas, `NULL`. `WHERE` faqat `true` bo'lgan qatorlarni qaytaradi, shuning uchun `WHERE phone = NULL` hech narsa topmaydi.
+
+**Batafsilroq:**
+
+```sql
+SELECT * FROM users WHERE phone = NULL;              -- ❌ doim 0 qator
+SELECT * FROM users WHERE phone IS NULL;             -- ✅
+SELECT * FROM users WHERE phone IS DISTINCT FROM $1; -- ✅ NULL'ni oddiy qiymat kabi solishtiradi
+
+SELECT count(*), count(phone) FROM users;            -- count(phone) NULL'larni sanamaydi
+SELECT avg(bonus) FROM employees;                    -- NULL'lar o'rtachaga kirmaydi (0 emas!)
+```
+
+**Intervyuda shunday ayting:** "SQL uch qiymatli mantiqda ishlaydi: true, false, unknown. `NULL` bilan har qanday solishtirish unknown beradi, shuning uchun `IS NULL` yoki `IS DISTINCT FROM` ishlataman. Agregatlar `NULL` ni o'tkazib yuboradi — bu o'rtacha qiymatni kutilmaganda o'zgartirishi mumkin."
+
+**Esda tuting:** `NOT IN (1, 2, NULL)` hech qachon `true` bo'lmaydi — ro'yxatda `NULL` bo'lsa, natija bo'sh. Bu klassik intervyu tuzog'i.
+
+## Q6. COALESCE va NULLIF nima uchun kerak? / What are COALESCE and NULLIF for?
+
+**Oddiy qilib aytganda:** `COALESCE(a, b, c)` — "birinchi bo'sh bo'lmaganini ber": telefon yo'q bo'lsa — email, u ham yo'q bo'lsa — "ma'lumot yo'q". `NULLIF(a, b)` — teskarisi: "a va b teng bo'lsa, NULL qaytar". Uning eng mashhur ishlatilishi — nolga bo'lishdan himoya.
+
+**Batafsilroq:**
+
+```sql
+SELECT name, COALESCE(phone, email, 'ma''lumot yo''q') AS contact FROM users;
+
+-- Nolga bo'lish xatosi o'rniga NULL
+SELECT revenue / NULLIF(visits, 0) AS revenue_per_visit FROM daily_stats;
+```
+
+**Intervyuda shunday ayting:** "`COALESCE` birinchi NULL bo'lmagan argumentni qaytaradi — standart qiymat uchun. `NULLIF` ikki qiymat teng bo'lsa NULL beradi — ko'pincha `x / NULLIF(y, 0)` bilan nolga bo'lishdan himoyalanish uchun."
+
+**Esda tuting:** `COALESCE` ichidagi barcha argumentlar bir xil (yoki mos) turda bo'lishi kerak — `COALESCE(age, 'noma''lum')` xato beradi.
+
+## Q7. UNION va UNION ALL farqi nima? / What is the difference between UNION and UNION ALL?
+
+**Oddiy qilib aytganda:** ikkalasi ham ikki so'rov natijasini ustma-ust qo'yadi. `UNION` takrorlarni **olib tashlaydi** — buning uchun hamma qatorlarni solishtiradi (sekin). `UNION ALL` hammasini **boricha** qo'shadi (tez).
+
+**Batafsilroq:**
+
+```sql
+SELECT email FROM customers
+UNION ALL                       -- takrorlar qoladi, tez
+SELECT email FROM newsletter_subscribers;
+
+SELECT email FROM customers
+UNION                           -- takrorlar olib tashlanadi (saralash/hash kerak)
+SELECT email FROM newsletter_subscribers;
+```
+
+**Intervyuda shunday ayting:** "Takror bo'lmasligi kafolatlangan yoki takror kerak bo'lsa — `UNION ALL`, u qo'shimcha saralash qilmaydi. `UNION` ni faqat haqiqatan dublikatlarni olib tashlash kerak bo'lganda ishlataman. Ikkala so'rovda ustunlar soni va turlari mos bo'lishi shart."
+
+**Esda tuting:** `INTERSECT` — ikkalasida ham borlar, `EXCEPT` — birinchida bor, ikkinchida yo'qlar.
+
+## Q8. Subquery va korrelyatsiyalangan subquery farqi nima? / What is the difference between a subquery and a correlated subquery?
+
+**Oddiy qilib aytganda:** oddiy subquery — mustaqil savol: "o'rtacha maosh qancha?" — bir marta hisoblanadi. Korrelyatsiyalangan subquery tashqi so'rovning **har bir qatoriga** bog'liq: "shu xodimning **o'z bo'limidagi** o'rtacha maosh qancha?" — mantiqan har qator uchun qayta so'raladi.
+
+**Batafsilroq:**
+
+```sql
+-- Oddiy: bir marta
+SELECT name FROM employees
+WHERE salary > (SELECT avg(salary) FROM employees);
+
+-- Korrelyatsiyalangan: tashqi qatorning e.department_id siga bog'liq
+SELECT name FROM employees e
+WHERE salary > (SELECT avg(salary) FROM employees x WHERE x.department_id = e.department_id);
+
+-- Ko'pincha tezroq muqobil: window funksiya
+SELECT name FROM (
+  SELECT name, salary, avg(salary) OVER (PARTITION BY department_id) AS dept_avg FROM employees
+) t WHERE salary > dept_avg;
+```
+
+**Intervyuda shunday ayting:** "Korrelyatsiyalangan subquery tashqi qatorga bog'liq, shuning uchun sekin bo'lishi mumkin. Planner ko'pincha uni JOIN'ga aylantiradi, lekin bunga ishonmayman — `EXPLAIN` bilan tekshiraman va kerak bo'lsa window funksiya yoki `JOIN` ga qayta yozaman. `EXISTS` bilan korrelyatsiya esa ko'pincha eng samarali."
+
+**Esda tuting:** skalyar subquery bittadan ko'p qator qaytarsa — xato. `IN`/`EXISTS` esa ko'p qator bilan ishlaydi.
+
+## Q9. CTE (WITH) va rekursiv CTE nima? / What are CTEs and recursive CTEs?
+
+**Oddiy qilib aytganda:** CTE — so'rov ichidagi vaqtinchalik, nomlangan natija: "avval mana buni hisobla, uni `top_customers` deb atayman, keyin undan foydalanaman". Murakkab so'rov o'qiladigan bo'laklarga bo'linadi. Rekursiv CTE o'zini-o'zi chaqiradi — daraxtsimon ma'lumot uchun: kategoriyalar, tashkilot tuzilmasi.
+
+**Batafsilroq:**
+
+```sql
+-- Oddiy CTE: o'qilishi oson
+WITH monthly AS (
+  SELECT customer_id, date_trunc('month', created_at) AS month, sum(total) AS spent
+  FROM orders GROUP BY 1, 2
+)
+SELECT * FROM monthly WHERE spent > 1000;
+
+-- Rekursiv: rahbar va uning barcha bo'ysunuvchilari
+WITH RECURSIVE team AS (
+  SELECT id, name, manager_id, 1 AS depth FROM employees WHERE id = 42   -- boshlanish
+  UNION ALL
+  SELECT e.id, e.name, e.manager_id, t.depth + 1
+  FROM employees e JOIN team t ON e.manager_id = t.id                     -- keyingi daraja
+)
+SELECT * FROM team;
+```
+
+**Intervyuda shunday ayting:** "CTE so'rovni o'qiladigan qismlarga bo'ladi. Rekursiv CTE — boshlang'ich qism + `UNION ALL` + o'ziga murojaat qiluvchi qism. Siklik ma'lumotda cheksiz aylanmaslik uchun chuqurlik chegarasi yoki PostgreSQL 14+ dagi `CYCLE` bandini ishlataman."
+
+**Esda tuting:** PostgreSQL 12 dan boshlab bir marta ishlatilgan CTE asosiy so'rovga "eritib" yuboriladi va optimallashtiriladi; natijani majburan alohida hisoblash kerak bo'lsa — `WITH x AS MATERIALIZED (...)`.
+
+## Q10. Window funksiyalar nima va GROUP BY'dan nimasi bilan farq qiladi? / What are window functions and how do they differ from GROUP BY?
+
+**Oddiy qilib aytganda:** `GROUP BY` qatorlarni **yig'ib**, har guruhdan bitta qator qoldiradi. Window funksiya esa har qatorni **joyida qoldiradi** va yoniga hisob qo'shadi: "shu xodimning maoshi va uning bo'limidagi o'rtacha maosh" — ikkalasi bir qatorda.
+
+**Batafsilroq:**
 
 ```sql
 SELECT
-    name, department, salary,
-    AVG(salary) OVER(PARTITION BY department) as dept_avg,
-    RANK() OVER(PARTITION BY department ORDER BY salary DESC) as rank_in_dept
+  name, department, salary,
+  avg(salary)  OVER (PARTITION BY department)                     AS dept_avg,
+  rank()       OVER (PARTITION BY department ORDER BY salary DESC) AS rank_in_dept,
+  sum(salary)  OVER (ORDER BY hired_at)                           AS running_total,
+  lag(salary)  OVER (PARTITION BY department ORDER BY hired_at)   AS prev_salary
 FROM employees;
+
+-- Har bo'limdagi eng yuqori maoshli xodim (top-1 per group)
+SELECT * FROM (
+  SELECT *, row_number() OVER (PARTITION BY department ORDER BY salary DESC) AS rn FROM employees
+) t WHERE rn = 1;
 ```
 
----
+**Intervyuda shunday ayting:** "Window funksiya qatorlarni yig'maydi — `PARTITION BY` guruhni, `ORDER BY` tartibni, frame esa qaysi qo'shni qatorlar hisobga olinishini belgilaydi. Tipik masalalar: reyting, yig'ma summa, oldingi qiymat bilan solishtirish, har guruhdan top-N."
 
-## Q4. What is a Common Table Expression (CTE) and Recursive CTE? | CTE va Rekursiv CTE nima?
+**Esda tuting:** `ROW_NUMBER` — doim 1, 2, 3; `RANK` — tenglarda sakraydi (1, 1, 3); `DENSE_RANK` — sakramaydi (1, 1, 2). Batafsil — yuqoridagi 11-bo'lim.
 
-**EN:** A CTE (`WITH` clause) defines a temporary result set accessible within a single query. Recursive CTEs are used to query hierarchical data (org charts, categories).
+## Q11. DELETE, TRUNCATE va DROP farqi nima? / What is the difference between DELETE, TRUNCATE and DROP?
 
-**UZB:** CTE — bitta so'rov ichida ishlatiladigan vaqtinchalik natija to'plami. Rekursiv CTE daraxtsimon iyerarxik ma'lumotlarni qidirishda ishlatiladi.
+**Oddiy qilib aytganda:** `DELETE` — daftardan kerakli sahifalarni birma-bir yirtib olish (shart bilan, sekinroq). `TRUNCATE` — daftarning barcha sahifalarini birdan tozalash, lekin muqova qoladi (juda tez). `DROP` — daftarni butunlay axlatga tashlash (jadval ham, tuzilma ham yo'qoladi).
+
+**Batafsilroq:**
+
+| | `DELETE` | `TRUNCATE` | `DROP` |
+|---|---|---|---|
+| Nima o'chiriladi | shartga mos qatorlar | barcha qatorlar | jadvalning o'zi |
+| `WHERE` | ✅ | ❌ | ❌ |
+| Tezlik | qatorma-qator, sekin | juda tez | juda tez |
+| Row trigger'lar | ishga tushadi | ishga tushmaydi | — |
+| Qulf | qatorlarni | butun jadvalni (`ACCESS EXCLUSIVE`) | butun jadvalni |
 
 ```sql
--- Recursive CTE for org chart
-WITH RECURSIVE Subordinates AS (
-    SELECT id, name, manager_id FROM employees WHERE manager_id IS NULL
-    UNION ALL
-    SELECT e.id, e.name, e.manager_id
-    FROM employees e
-    INNER JOIN Subordinates s ON e.manager_id = s.id
-)
-SELECT * FROM Subordinates;
+DELETE FROM sessions WHERE expires_at < now();
+TRUNCATE TABLE staging_import RESTART IDENTITY;   -- hisoblagich ham noldan
+DROP TABLE IF EXISTS old_reports;
 ```
 
----
+**Intervyuda shunday ayting:** "`DELETE` — tanlab o'chirish, trigger'lar ishlaydi. `TRUNCATE` — butun jadvalni tez tozalash, lekin qat'iy qulf oladi. `DROP` — jadvalni butunlay yo'q qilish. PostgreSQL'da `TRUNCATE` va `DROP` ham tranzaksiya ichida `ROLLBACK` qilinadi — bu ko'p boshqa bazalarda emas."
 
-## Q5. What is the difference between UNION and UNION ALL? | UNION va UNION ALL farqi nima?
+**Esda tuting:** `DELETE` joyni darhol bo'shatmaydi — o'chirilgan qatorlarni keyin `VACUUM` tozalaydi.
 
-**EN:** `UNION` combines result sets and removes duplicate rows (requires sorting). `UNION ALL` includes all duplicates and is much faster.
+## Q12. CHAR, VARCHAR va TEXT farqi nima? / What is the difference between CHAR, VARCHAR and TEXT?
 
-**UZB:** `UNION` natijalarni birlashtiradi va takroriy satrlarni olib tashlaydi. `UNION ALL` takroriylarni ham saqlaydi va ancha tez ishlaydi.
+**Oddiy qilib aytganda:** `CHAR(10)` — doim 10 belgi, qisqa matn bo'sh joy bilan to'ldiriladi. `VARCHAR(10)` — 10 tagacha, qancha kerak bo'lsa shuncha joy. `TEXT` — uzunlik chegarasiz. PostgreSQL'da ular deyarli bir xil tezlikda ishlaydi, shuning uchun ko'pincha `TEXT` + kerak bo'lsa `CHECK` ishlatiladi.
 
----
-
-## Q6. Explain Indexing (B-Tree, Hash, GIN, GiST) and Query Optimization | Indekslar va So'rovlarni Optimallashtirish
-
-**EN:** Indexes speed up `SELECT` queries by creating balanced search trees, but slow down `INSERT`/`UPDATE` writes.
-
-**UZB:** Indekslar `SELECT` so'rovlarini keskin tezlashtiradi, lekin `INSERT`/`UPDATE` yozish tezligini biroz kamaytiradi.
+**Batafsilroq:**
 
 ```sql
-CREATE INDEX idx_emp_dept_sal ON employees (department_id, salary);
-EXPLAIN ANALYZE SELECT * FROM employees WHERE department_id = 5 AND salary > 3000;
+CREATE TABLE users (
+  country_code char(2),                                     -- doim aynan 2 belgi: 'UZ'
+  username     varchar(30),                                 -- uzunlik chegarasi bor
+  bio          text,                                        -- chegarasiz
+  email        text CHECK (char_length(email) <= 254)       -- chegara biznes qoidasi sifatida
+);
 ```
 
----
+**Intervyuda shunday ayting:** "PostgreSQL'da `text` va `varchar` bir xil saqlanadi va tezligi bir xil; `char(n)` esa bo'sh joy bilan to'ldirib, chalkashlik keltiradi. Men `text` + `CHECK` ni afzal ko'raman — chegarani o'zgartirish oson. Boshqa bazalarda (SQL Server, MySQL) farqlar kattaroq bo'lishi mumkin."
 
-## Q7. What are Database Normalization Forms (1NF, 2NF, 3NF, BCNF)? | Ma'lumotlar bazasi Normalizatsiyasi
+**Esda tuting:** `varchar(n)` dagi `n` baytlar emas, **belgilar** soni — "o'zbek" so'zi UTF-8'da baytlari ko'proq, lekin 6 belgi.
 
-**EN:** Normalization eliminates data redundancy. 1NF (atomic values), 2NF (no partial dependency), 3NF (no transitive dependency).
+## Q13. Normalizatsiya nima (1NF, 2NF, 3NF)? / What is normalization (1NF, 2NF, 3NF)?
 
-**UZB:** Normalizatsiya ma'lumotlar takrorlanishini bartaraf etadi. 1NF (atomik qiymatlar), 2NF (qisman bog'liqlik yo'qligi), 3NF (tranzit bog'liqlik yo'qligi).
+**Oddiy qilib aytganda:** normalizatsiya — bir xil ma'lumotni ko'p joyda takrorlamaslik. Mijoz manzili har buyurtmada qayta yozilsa, manzil o'zgarganda hammasini yangilash kerak va biror joyi unutiladi. Yechim: mijoz — alohida jadvalda, buyurtma esa unga faqat ID orqali ishora qiladi.
 
----
-
-## Q8. What is ACID compliance in SQL Databases? | SQL ma'lumotlar bazasida ACID nima?
-
-**EN:** ACID means Atomicity, Consistency, Isolation, and Durability. Wrap the whole business change in one transaction, enforce invariants with constraints, choose an isolation level for the anomaly you must prevent, and commit only after every statement succeeds.
-
-**UZB:** ACID — Atomicity, Consistency, Isolation va Durability. Masalan, pul o'tkazishda debit va creditni bitta `BEGIN; ... COMMIT;` ichida bajaring; xatoda `ROLLBACK` qiling, constraintlarni database'da saqlang va concurrent transaction testini yozing. [PostgreSQL: Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html) va [Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html).
-
----
-
-## Q9. What are SQL Joins (INNER, LEFT, RIGHT, FULL OUTER, CROSS, SELF)? | SQL Join turlari
+**Batafsilroq:**
+- **1NF** — har katakda bitta qiymat: "tel1, tel2" bitta katakda emas, alohida qatorlarda.
+- **2NF** — 1NF + murakkab kalitning faqat bir qismiga bog'liq ustun yo'q (`order_items(order_id, product_id)` da `product_name` bo'lmasligi kerak — u faqat `product_id` ga bog'liq).
+- **3NF** — 2NF + kalit bo'lmagan ustun boshqa kalit bo'lmagan ustunga bog'liq emas (`employees` da `department_name` bo'lmasin — u `department_id` orqali olinadi).
 
 ```sql
--- Self Join Example
-SELECT e.name as Employee, m.name as Manager
-FROM employees e
-LEFT JOIN employees m ON e.manager_id = m.id;
+-- ❌ takrorlanish: mijoz ma'lumotlari har buyurtmada
+orders(id, customer_name, customer_phone, total)
+
+-- ✅ 3NF
+customers(id, name, phone)
+orders(id, customer_id REFERENCES customers, total)
 ```
 
----
+**Intervyuda shunday ayting:** "OLTP tizimlarda odatda 3NF gacha normallashtiraman — yozishda anomaliya yo'q, har fakt bitta joyda. O'qish juda ko'p bo'lgan joylarda (hisobot, analitika) ongli ravishda denormalizatsiya qilaman: materialized view yoki keshlangan ustun — va uni qanday yangilashni aniq belgilayman."
 
-## Q10. What is COALESCE and NULLIF in SQL? | COALESCE va NULLIF funksiyalari
+**Esda tuting:** buyurtma paytidagi narxni `order_items` da saqlash denormalizatsiya emas — bu **tarixiy fakt**: mahsulot narxi keyin o'zgarsa ham, buyurtma narxi o'zgarmasligi kerak.
 
-**EN:** `COALESCE(a, b, c)` returns the first non-null argument. `NULLIF(a, b)` returns NULL if `a == b`.
+## Q14. ACID nima? / What is ACID?
 
-**UZB:** `COALESCE` ro'yxatdagi birinchi NULL bo'lmagan qiymatni qaytaradi. `NULLIF` ikkala qiymat teng bo'lsa NULL qaytaradi.
+**Oddiy qilib aytganda:** ACID — bazaning to'rtta va'dasi. **A**tomicity — "yo hammasi, yo hech narsa": pul o'tkazmasida yechish va qo'shish birga bo'ladi. **C**onsistency — qoidalar (constraint'lar) doim bajariladi. **I**solation — bir vaqtdagi tranzaksiyalar bir-biriga xalaqit bermaydi. **D**urability — `COMMIT` dan keyin ma'lumot elektr o'chsa ham yo'qolmaydi.
+
+**Batafsilroq:**
 
 ```sql
-SELECT name, COALESCE(phone, email, 'Mavjud emas') as contact FROM users;
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;                -- ikkalasi birga saqlanadi; xato bo'lsa ROLLBACK — hech biri
 ```
 
----
+**Intervyuda shunday ayting:** "Atomicity — tranzaksiya bilan, consistency — constraint'lar bilan (`CHECK`, `FOREIGN KEY`, `UNIQUE`), isolation — izolyatsiya darajasi bilan, durability — WAL va `fsync` bilan ta'minlanadi. Qaysi izolyatsiya darajasi kerakligini men oldini olishim kerak bo'lgan anomaliyaga qarab tanlayman."
 
-## Q11-Q100. Advanced SQL Concepts, Transaction Isolation Levels, JSON Queries, Deadlocks, Query Execution Plans, Partitioning, Sharding & Stored Procedures.
+**Esda tuting:** PostgreSQL'da standart izolyatsiya — `READ COMMITTED`: bitta tranzaksiya ichidagi ikki `SELECT` turli natija ko'rishi mumkin. Manba: [Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html), [Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html).
 
-_Prepared by | Tayyorlagan: Alyorjon_  
-_Sources | Manbalar: SQL Reference, W3Schools, LeetCode SQL, PostgreSQL Docs_
+## Q15. Indeks nima va u qachon yordam bermaydi? / What is an index and when doesn't it help?
+
+**Oddiy qilib aytganda:** indeks — kitob oxiridagi alifbo ko'rsatkichi: kerakli so'zni butun kitobni o'qimasdan topasiz. Lekin har yangi sahifa qo'shilganda ko'rsatkichni ham yangilash kerak — shuning uchun indeks o'qishni tezlashtiradi, yozishni esa biroz sekinlashtiradi.
+
+**Batafsilroq:**
+
+```sql
+CREATE INDEX employees_dept_salary_idx ON employees (department_id, salary);
+
+-- ✅ indeks ishlaydi: chap ustundan boshlangan shart
+SELECT * FROM employees WHERE department_id = 5 AND salary > 3000;
+
+-- ❌ ko'pincha ishlamaydi:
+SELECT * FROM employees WHERE salary > 3000;             -- chap ustun (department_id) yo'q*
+SELECT * FROM employees WHERE lower(name) = 'ali';       -- ustun funksiyaga o'ralgan
+SELECT * FROM employees WHERE name LIKE '%ali%';         -- boshida % bor
+SELECT * FROM employees WHERE status = 'active';         -- 95% qatorlar mos — skan arzonroq
+```
+
+**Intervyuda shunday ayting:** "Indeks tanlanishi uchun so'rov uning tuzilishiga mos bo'lishi kerak: ko'p ustunli indeksda chap ustundan boshlanadigan shart, ustun funksiyaga o'ralmagan, filtr yetarlicha tanlovchan. Qaror doim `EXPLAIN ANALYZE` bilan tasdiqlanadi."
+
+**Esda tuting:** *PostgreSQL 18 dagi skip scan ba'zan chap ustunsiz ham ko'p ustunli B-tree indeksdan foydalana oladi — agar chap ustunda turli qiymatlar kam bo'lsa. Indeks turlari (GIN, GiST, BRIN) — `sql/postgresql_interviews.md` da.
+
+## Q16. SQL injection nima va undan qanday himoyalanasiz? / What is SQL injection and how do you prevent it?
+
+**Oddiy qilib aytganda:** foydalanuvchi kiritgan matn to'g'ridan-to'g'ri SQL so'rovga qo'shilsa, hujumchi matn o'rniga **buyruq** yozishi mumkin: login maydoniga `' OR '1'='1` yozib, parolsiz kirish. Yechim: foydalanuvchi ma'lumotini hech qachon so'rov matniga yopishtirmaslik — **parametr** sifatida alohida yuborish.
+
+**Batafsilroq:**
+
+```python
+# ❌ xavfli: matn so'rovga yopishtirilgan
+cursor.execute(f"SELECT * FROM users WHERE email = '{email}'")
+
+# ✅ parametrlangan so'rov: baza qiymatni doim ma'lumot deb biladi, buyruq deb emas
+cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+```
+
+```sql
+-- Jadval/ustun nomi o'zgaruvchan bo'lsa — faqat ruxsat etilgan ro'yxatdan
+-- (parametr bilan jadval nomini berib bo'lmaydi)
+```
+
+**Intervyuda shunday ayting:** "Asosiy himoya — parametrlangan so'rovlar yoki ORM; ular qiymatni so'rov tuzilmasidan ajratadi. Ustun nomi yoki saralash yo'nalishi kabi qismlar foydalanuvchidan kelsa — faqat allowlist'dan. Qo'shimcha qatlamlar: ilova rolida eng kam huquq, xatolarda SQL matnini ko'rsatmaslik."
+
+**Esda tuting:** belgilarni "qochirish" (escaping) bilan himoyalanish — mo'rt; parametrlar ishonchli yo'l. Manba: [OWASP SQL Injection Prevention](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html).
+
+## Q17. Tranzaksiya izolyatsiya darajalari qanday anomaliyalarning oldini oladi? / Which anomalies do isolation levels prevent?
+
+**Oddiy qilib aytganda:** bir vaqtda ishlayotgan tranzaksiyalar bir-birining ishini qanchalik "ko'rishi" mumkin? Izolyatsiya darajasi shuni belgilaydi. Qanchalik qat'iy bo'lsa — shunchalik kam kutilmagan holat, lekin to'qnashuvlar va qayta urinishlar ko'proq.
+
+**Batafsilroq:**
+
+| Anomaliya | Nima bo'ladi |
+|---|---|
+| Dirty read | boshqaning hali commit qilinmagan o'zgarishini ko'rish |
+| Non-repeatable read | bir qatorni ikki marta o'qisangiz — turli qiymat |
+| Phantom read | bir shart bilan ikki marta so'rasangiz — yangi qatorlar paydo bo'ladi |
+| Serialization anomaly | natija tranzaksiyalarni ketma-ket bajargandagidan farq qiladi |
+
+```sql
+-- PostgreSQL: READ COMMITTED (standart) → REPEATABLE READ → SERIALIZABLE
+BEGIN ISOLATION LEVEL SERIALIZABLE;
+-- ...
+COMMIT;   -- 40001 xatosi kelsa — butun tranzaksiyani qayta urinish
+```
+
+**Intervyuda shunday ayting:** "PostgreSQL'da dirty read umuman yo'q; `READ COMMITTED` har buyruq uchun yangi surat oladi, `REPEATABLE READ` — butun tranzaksiya uchun bitta surat, `SERIALIZABLE` esa ketma-ket bajarilgandek natija kafolatlaydi. Yuqori darajada ilova serialization xatolarida qayta urinishi shart."
+
+**Esda tuting:** PostgreSQL'da `REPEATABLE READ` phantom read'ning ham oldini oladi — standart buni talab qilmasa ham. Manba: [Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html).
+
+## Q18. UPSERT nima va nega "avval tekshir, keyin qo'sh" yetarli emas? / What is an UPSERT and why isn't "check then insert" enough?
+
+**Oddiy qilib aytganda:** UPSERT — "bor bo'lsa yangila, yo'q bo'lsa qo'sh" — **bitta** buyruqda. Agar buni ikki qadamda (avval `SELECT`, keyin `INSERT`) qilsangiz, ikki so'rov bir vaqtda "yo'q" deb ko'rib, ikkalasi ham qo'shishga urinadi — dublikat yoki xato.
+
+**Batafsilroq:**
+
+```sql
+-- Mahsulot zaxirasini yangilash yoki yangi yozuv yaratish
+INSERT INTO inventory (product_id, quantity)
+VALUES ($1, $2)
+ON CONFLICT (product_id)                      -- UNIQUE yoki PRIMARY KEY kerak
+DO UPDATE SET quantity = inventory.quantity + EXCLUDED.quantity
+RETURNING product_id, quantity;
+```
+
+**Intervyuda shunday ayting:** "UPSERT tekshirish va yozishni atomik qiladi — poyga holati yo'q. U unique constraint'ga tayanadi. `EXCLUDED` — qo'shilmoqchi bo'lgan qator. Bu ko'p takrorlanadigan importlarni idempotent qilishning eng oddiy yo'li."
+
+**Esda tuting:** standart SQL'da buning uchun `MERGE` bor (PostgreSQL 15+), lekin parallel yuklamada `INSERT ... ON CONFLICT` ishonchliroq — u unique indeks bilan to'qnashuvni atomik hal qiladi.

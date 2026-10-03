@@ -1,387 +1,188 @@
-# SQL / PostgreSQL — YouTube Intervyu Savol-Javoblari
+# SQL — YouTube intervyularidan qo'shimcha savollar
 
-> YouTube'dan olingan SQL, umumiy RDBMS va PostgreSQL'ga xos intervyu savollari, misollar bilan. To'liq amaliy masalalar uchun `sql/practice_problems.md`, PostgreSQL uchun `sql/postgresql_interviews.md` fayllariga ham qarang.
+> **Nima bu:** YouTube'dagi SQL intervyularida tez-tez beriladigan, lekin boshqa sahifalarda yo'q savollar. Takrorlanmasligi uchun umumiy mavzular boshqa joyda: SQL asoslari, JOIN, NULL, CTE, window funksiyalar, DELETE/TRUNCATE/DROP, CHAR/VARCHAR, ACID — `sql/BASICS.md`; PostgreSQL'ga xos mavzular (MVCC, VACUUM, JSONB, replikatsiya) — `sql/postgresql_interviews.md`; masalalar (ikkinchi eng katta maosh, dublikatlar) — `sql/practice_problems.md`.
+> **Har bir javob tartibi:** oddiy tilda → batafsilroq (misol bilan) → intervyuda qanday aytasiz → esda tuting.
 
 ---
 
-## SQL asoslari va operator turlari
+## Q1. SQL, MySQL va PostgreSQL o'rtasida qanday farq bor? NoSQL qayerga tushadi? / How do SQL, MySQL and PostgreSQL differ, and where does NoSQL fit?
 
-**SQL nima?**
-Relatsion ma'lumotlar bazalari bilan ishlash uchun standart til.
+**Oddiy qilib aytganda:** SQL — **til** (xuddi o'zbek tili kabi). MySQL, PostgreSQL, SQL Server, SQLite — shu tilda "gapiradigan" **dasturlar** (bazalar). Ularning har birida kichik "sheva" farqlari bor: biri `LIMIT` deydi, boshqasi `TOP`. NoSQL bazalar (MongoDB, Redis, Cassandra) esa jadval o'rniga boshqacha tuzilmalardan foydalanadi va odatda SQL'da gaplashmaydi.
 
-**SQL vs MySQL**
-SQL — til (standart). MySQL — shu tilni amalga oshiruvchi konkret RDBMS. Boshqalar: PostgreSQL, SQL Server, Oracle, SQLite — har birining o'z dialekt xususiyatlari bor (`LIMIT` vs `TOP`).
+**Batafsilroq:**
 
-**SQL operatorlari turlari**
+| Tushuncha | Nima | Misollar |
+|---|---|---|
+| SQL | relyatsion bazalar bilan ishlash tili (standart) | `SELECT`, `JOIN`, `GROUP BY` |
+| DBMS | ma'lumotni saqlovchi va boshqaruvchi dastur | umumiy tushuncha |
+| RDBMS | jadvallar, kalitlar va SQL bilan ishlovchi DBMS | PostgreSQL, MySQL, SQL Server, Oracle, SQLite |
+| NoSQL | jadvalsiz: hujjat, kalit-qiymat, ustunli, graf | MongoDB, Redis, Cassandra, Neo4j |
+
 ```sql
--- DDL — struktura
-CREATE TABLE, ALTER TABLE, DROP TABLE
--- DML — ma'lumot
-INSERT, UPDATE, DELETE
--- DQL — o'qish
-SELECT
--- DCL — ruxsatlar
-GRANT, REVOKE
--- TCL — tranzaksiya
-COMMIT, ROLLBACK, SAVEPOINT
+SELECT * FROM users ORDER BY id LIMIT 10;        -- PostgreSQL, MySQL, SQLite
+SELECT TOP 10 * FROM users ORDER BY id;          -- SQL Server
+SELECT * FROM users ORDER BY id FETCH FIRST 10 ROWS ONLY;   -- SQL standarti (PostgreSQL ham qo'llaydi)
 ```
 
-**DBMS, RDBMS va NoSQL**
-- DBMS — umumiy tushuncha
-- RDBMS — jadval shaklida, SQL orqali (MySQL, PostgreSQL)
-- NoSQL — relatsion bo'lmagan, moslashuvchan sxema (MongoDB, Redis, Cassandra)
+**Intervyuda shunday ayting:** "SQL — standart til, MySQL va PostgreSQL — uni amalga oshiruvchi RDBMS'lar, har birining o'z kengaytmalari bor. Tuzilgan, bog'liq ma'lumot va tranzaksiyalar uchun RDBMS'ni tanlayman; juda katta yozish oqimi, moslashuvchan sxema yoki kalit-qiymat kirish kerak bo'lganda — mos NoSQL."
 
----
+**Esda tuting:** "NoSQL tezroq" — noto'g'ri umumlashma. Tezlik ma'lumot modeli va kirish usuliga mos tanlovga bog'liq; ko'p loyihalarga bitta PostgreSQL yetadi.
 
-## Kalitlar (Keys)
+## Q2. Primary key, foreign key va unique key farqi nima? / What is the difference between primary, foreign and unique keys?
 
-**Primary Key vs Foreign Key vs Unique Key**
+**Oddiy qilib aytganda:** **Primary key** — har qatorning pasport raqami: noyob va hech qachon bo'sh emas. **Unique key** — takrorlanmasligi kerak bo'lgan boshqa ustun (email, telefon). **Foreign key** — boshqa jadvaldagi qatorga "havola": buyurtma albatta mavjud mijozga tegishli bo'lishini baza o'zi tekshiradi.
+
+**Batafsilroq:**
+
 ```sql
-CREATE TABLE bolimlar (
-    id INT PRIMARY KEY,
-    nomi VARCHAR(50)
+CREATE TABLE departments (
+  id   bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,   -- noyob + NOT NULL, jadvalda bitta
+  name text NOT NULL UNIQUE                               -- noyob, bir nechta bo'lishi mumkin
 );
-CREATE TABLE xodimlar (
-    id INT PRIMARY KEY,
-    email VARCHAR(100) UNIQUE,
-    bolim_id INT,
-    FOREIGN KEY (bolim_id) REFERENCES bolimlar(id)
+
+CREATE TABLE employees (
+  id            bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  email         text UNIQUE,                               -- NULL'lar bir nechta bo'lishi mumkin
+  department_id bigint NOT NULL REFERENCES departments(id) ON DELETE RESTRICT
 );
+
+INSERT INTO employees (email, department_id) VALUES ('a@x.uz', 999);
+-- ❌ foreign key xatosi: 999 raqamli bo'lim yo'q
 ```
-- Primary Key — qatorni noyob aniqlaydi, NULL bo'la olmaydi
-- Foreign Key — jadvallar orasidagi bog'liqlik va referensial yaxlitlik
-- Unique Key — qiymatlar takrorlanmasligini ta'minlaydi, bitta jadvalda bir nechtasi bo'lishi mumkin, NULL'ga ruxsat berishi mumkin
 
----
+**Intervyuda shunday ayting:** "Primary key qatorni aniqlaydi — noyob va NOT NULL, jadvalda bittagina. Unique — biznes bo'yicha noyob ustunlar uchun, bir nechta bo'lishi mumkin. Foreign key havola yaxlitligini kafolatlaydi; `ON DELETE` harakatini ongli tanlayman — ko'pincha `RESTRICT`, `CASCADE` esa faqat haqiqatan bog'liq bolalar uchun."
 
-## O'chirish buyruqlari
+**Esda tuting:** `UNIQUE` ustunda bir nechta `NULL` bo'lishi mumkin (ular "teng" hisoblanmaydi). PostgreSQL 15+ da buni `UNIQUE NULLS NOT DISTINCT` bilan taqiqlash mumkin. Foreign key ustunlariga indeksni o'zingiz qo'shing — PostgreSQL uni avtomatik yaratmaydi.
 
-**DELETE, TRUNCATE, DROP**
-```sql
-DELETE FROM xodimlar WHERE yosh > 60;   -- shart bo'yicha, DML, ROLLBACK mumkin
-TRUNCATE TABLE xodimlar;                 -- barcha qator, DDL, tez
-DROP TABLE xodimlar;                     -- jadval strukturasi bilan butunlay
-```
-`DELETE` trigger'larni ishga tushiradi (sekinroq); `TRUNCATE` jadvalni "reset" qiladi (auto-increment ham nolga tushadi).
+## Q3. Subquery yoki JOIN — qachon qaysi birini ishlatasiz? / Subquery or JOIN — when do you use which?
 
----
+**Oddiy qilib aytganda:** ikkalasi ko'pincha bir xil natija beradi. **JOIN** — ikki jadvalning ustunlarini bitta natijada ko'rsatish kerak bo'lganda ("buyurtma va mijoz ismi"). **Subquery** (`EXISTS`, `IN`) — faqat "bormi/yo'qmi" ni tekshirish kerak bo'lganda ("buyurtmasi bor mijozlar"). To'g'ri tanlov o'qilishi oson va takrorlanishsiz natija beradi.
 
-## JOIN turlari
+**Batafsilroq:**
 
 ```sql
--- INNER JOIN: ikkala jadvalda ham mos qatorlar
-SELECT * FROM xodimlar x INNER JOIN bolimlar b ON x.bolim_id = b.id;
--- LEFT JOIN: chap jadval to'liq + mos o'ng qatorlar
-SELECT * FROM xodimlar x LEFT JOIN bolimlar b ON x.bolim_id = b.id;
--- RIGHT JOIN: o'ng jadval to'liq + mos chap qatorlar
--- FULL OUTER JOIN: ikkala jadval to'liq (mos kelmasa NULL)
--- CROSS JOIN: har bir kombinatsiya (Cartesian product)
-SELECT * FROM xodimlar CROSS JOIN bolimlar;
--- SELF JOIN: jadval o'zi bilan (masalan xodim-menejer)
-SELECT x.ism, m.ism as menejer FROM xodimlar x JOIN xodimlar m ON x.menejer_id = m.id;
+-- Mijoz ismi + buyurtma summasi kerak → JOIN
+SELECT c.name, o.total
+FROM customers c JOIN orders o ON o.customer_id = c.id;
+
+-- Faqat "buyurtmasi bor mijozlar" kerak → EXISTS (dublikatsiz)
+SELECT c.name FROM customers c
+WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);
+
+-- ❌ JOIN bilan qilsangiz, 5 ta buyurtmali mijoz 5 marta chiqadi
+SELECT c.name FROM customers c JOIN orders o ON o.customer_id = c.id;
 ```
 
-**Subquery vs JOIN**
-```sql
-SELECT ism FROM xodimlar WHERE bolim_id IN (SELECT id FROM bolimlar WHERE nomi='IT');
-```
-JOIN odatda optimizator tomonidan yaxshiroq optimallashtiriladi; subquery ba'zan o'qish/tuzish jihatidan soddaroq.
+**Intervyuda shunday ayting:** "Boshqa jadvaldan ustun kerak bo'lsa — JOIN; faqat mavjudlikni tekshirish kerak bo'lsa — `EXISTS`, u qatorlarni ko'paytirmaydi va birinchi moslikda to'xtaydi. Tezlik bo'yicha zamonaviy planner'lar ko'pincha ikkalasini bir xil rejaga aylantiradi — yakuniy qaror `EXPLAIN ANALYZE` bilan."
 
-**Subquery turlari**
-```sql
--- Non-correlated: mustaqil, bir marta hisoblanadi
-SELECT ism FROM xodimlar WHERE maosh > (SELECT AVG(maosh) FROM xodimlar);
--- Correlated: tashqi so'rovga bog'liq, har qator uchun qayta hisoblanadi (sekinroq)
-SELECT ism FROM xodimlar x1
-WHERE maosh > (SELECT AVG(maosh) FROM xodimlar x2 WHERE x2.bolim_id = x1.bolim_id);
-```
+**Esda tuting:** JOIN'dan keyin `DISTINCT` qo'shib takrorni "yashirish" — ko'pincha noto'g'ri tanlangan JOIN belgisi. `EXISTS` yoki oldindan agregatsiya qiling.
 
----
+## Q4. Denormalizatsiya nima va qachon o'zini oqlaydi? / What is denormalization and when is it justified?
 
-## Filtrlash: WHERE, HAVING, CASE
+**Oddiy qilib aytganda:** normalizatsiya — har ma'lumot bir joyda. Denormalizatsiya — tezlik uchun ba'zi ma'lumotni **ataylab** takrorlash: har safar 5 ta jadvalni birlashtirib hisoblash o'rniga, tayyor natijani saqlab qo'yish. Narxi — takrorlangan ma'lumotni doim bir xil holda ushlab turish kerak.
+
+**Batafsilroq:**
 
 ```sql
-SELECT bolim_id, COUNT(*) as soni
-FROM xodimlar
-WHERE yosh > 25              -- guruhlashdan OLDIN
-GROUP BY bolim_id
-HAVING COUNT(*) > 5;         -- guruhlashdan KEYIN (aggregate)
+-- Har ko'rsatishda sanash o'rniga — tayyor hisoblagich
+ALTER TABLE posts ADD COLUMN comments_count integer NOT NULL DEFAULT 0;
+
+-- Uni izchil saqlash — izoh qo'shilganda bitta tranzaksiyada
+BEGIN;
+INSERT INTO comments (post_id, body) VALUES ($1, $2);
+UPDATE posts SET comments_count = comments_count + 1 WHERE id = $1;
+COMMIT;
+
+-- Og'ir hisobot uchun — materialized view (vaqti-vaqti bilan yangilanadi)
+CREATE MATERIALIZED VIEW daily_sales AS
+SELECT date_trunc('day', created_at) AS day, sum(total) AS revenue FROM orders GROUP BY 1;
 ```
+
+**Intervyuda shunday ayting:** "Avval normallashtiraman, keyin o'lchab, faqat isbotlangan tor joyni denormalizatsiya qilaman. Har takrorlangan qiymat uchun uni kim va qachon yangilashini belgilayman: bir tranzaksiyada, trigger bilan yoki materialized view'ni rejali yangilash bilan. Analitik tizimlar (OLAP) esa odatda ataylab denormallashgan bo'ladi."
+
+**Esda tuting:** denormalizatsiya xatosi jim bo'ladi — hisoblagich asta-sekin haqiqatdan uzoqlashadi. Vaqti-vaqti bilan qayta hisoblab solishtiruvchi tekshiruv qo'ying.
+
+## Q5. Ikki jadvalni solishtirib, farqlarini qanday topasiz? / How do you compare two tables and find the differences?
+
+**Oddiy qilib aytganda:** migratsiya yoki import'dan keyin "eski va yangi jadval bir xilmi?" degan savol tug'iladi. `EXCEPT` — "birinchida bor, ikkinchida yo'q" qatorlarni beradi. Uni ikki tomonga qo'llasangiz — barcha farqlar ko'rinadi.
+
+**Batafsilroq:**
 
 ```sql
-SELECT ism,
-    CASE
-        WHEN yosh < 18 THEN 'Voyaga yetmagan'
-        WHEN yosh BETWEEN 18 AND 60 THEN 'Kattalar'
-        ELSE 'Nafaqadagi'
-    END AS toifa
-FROM xodimlar;
+-- Eski jadvalda bor, yangisida yo'q (yoki qiymati boshqacha)
+SELECT id, email, status FROM customers_old
+EXCEPT
+SELECT id, email, status FROM customers_new;
+
+-- Qaysi tomonda nima farq qilishini bitta natijada ko'rish
+SELECT coalesce(o.id, n.id) AS id,
+       CASE WHEN n.id IS NULL THEN 'faqat eskisida'
+            WHEN o.id IS NULL THEN 'faqat yangisida'
+            ELSE 'qiymat farqli' END AS difference
+FROM customers_old o
+FULL JOIN customers_new n ON n.id = o.id
+WHERE o IS DISTINCT FROM n;   -- butun qatorni solishtirish (NULL'larni ham to'g'ri)
 ```
 
-**COALESCE**
-```sql
-SELECT ism, COALESCE(telefon, email, 'Aloqa yo''q') as aloqa
-FROM mijozlar;
-```
-Chapdan o'ngga birinchi NULL bo'lmagan qiymatni qaytaradi.
+**Intervyuda shunday ayting:** "Tez tekshiruv uchun — ikki yo'nalishli `EXCEPT`. Qaysi qator qayerda ekanini ko'rsatish kerak bo'lsa — kalit bo'yicha `FULL JOIN` va `IS DISTINCT FROM`. Katta jadvallarda avval satrlar soni va ustunlar bo'yicha agregat (masalan, summa yoki hash) solishtiraman, keyin farqli bo'laklarni batafsil tekshiraman."
 
-**NULL qiymatlar**
-```sql
-SELECT * FROM xodimlar WHERE telefon = NULL;   -- HECH QACHON natija bermaydi!
-SELECT * FROM xodimlar WHERE telefon IS NULL;  -- to'g'ri
-```
-NULL — "noma'lum", `0` yoki `''` emas. `NULL = NULL` ham `TRUE` emas.
+**Esda tuting:** `EXCEPT` dublikatlarni olib tashlaydi; takrorlar soni ham muhim bo'lsa — `EXCEPT ALL`.
 
----
+## Q6. OLTP va OLAP farqi nima? / What is the difference between OLTP and OLAP?
 
-## Normalizatsiya va Indekslash
+**Oddiy qilib aytganda:** **OLTP** — do'kon kassasi: juda ko'p kichik, tez amallar ("bu buyurtmani saqla", "bu mijozni top"). **OLAP** — oy oxiridagi hisobot: kam, lekin ulkan so'rovlar ("oxirgi 3 yil bo'yicha har mintaqaning oylik savdosi"). Ular turli vazifa uchun turli tuzilgan tizimlarda yaxshi ishlaydi.
 
-**Normalizatsiya**
-1NF (atomik qiymatlar) → 2NF (to'liq bog'liqlik) → 3NF (tranzitiv bog'liqlik yo'q) → BCNF (har bog'liqlikning chap tomoni superkey).
-
-**Denormalizatsiya**
-Ishlash tezligi uchun qasddan ortiqcha ma'lumot saqlash — odatda OLAP/data warehouse (star schema) stsenariylarida, ko'p JOIN o'rniga bitta jadval.
-
-**Indekslar**
-Kitob mundarijasi kabi — qidiruvni O(n)dan O(log n)ga tezlashtiradi (B-tree). INSERT/UPDATE/DELETE'ni sekinlashtiradi, qo'shimcha joy talab qiladi.
-
-**Clustered vs Non-clustered**
-```sql
-CREATE CLUSTERED INDEX idx_id ON xodimlar(id);        -- jadval shu tartibda saqlanadi (bitta jadvalda 1 ta)
-CREATE NONCLUSTERED INDEX idx_ism ON xodimlar(ism);    -- alohida struktura, pointer orqali (bir nechta bo'lishi mumkin)
-```
-
-**SARGable shartlar — indeksni "buzmaslik"**
-```sql
--- YOMON — indeks ishlamaydi
-SELECT * FROM buyurtmalar WHERE YEAR(sana) = 2024;
--- YAXSHI — indeks ishlaydi
-SELECT * FROM buyurtmalar WHERE sana BETWEEN '2024-01-01' AND '2024-12-31';
-```
-Ustunga funksiya qo'llash indeksdan foydalanishni buzadi (full table scan'ga olib keladi).
-
----
-
-## Aggregate va Window funksiyalar
-
-**Aggregate**
-```sql
-SELECT COUNT(*), SUM(maosh), AVG(maosh), MIN(maosh), MAX(maosh) FROM xodimlar;
-```
-`COUNT(*)` — barcha qatorlar; `COUNT(ustun)` — faqat NULL bo'lmaganlar.
-
-**Ranking: ROW_NUMBER, RANK, DENSE_RANK**
-```sql
-SELECT ism, maosh,
-    ROW_NUMBER() OVER (ORDER BY maosh DESC) as row_num,
-    RANK() OVER (ORDER BY maosh DESC) as rank_,
-    DENSE_RANK() OVER (ORDER BY maosh DESC) as dense_rank_
-FROM xodimlar;
-```
-Teng qiymatlarda: ROW_NUMBER — har doim noyob ketma-ket; RANK — bo'shliq qoldiradi (1,1,3); DENSE_RANK — bo'shliq qoldirmaydi (1,1,2).
-
-**LAG va LEAD**
-```sql
-SELECT sana, sotuv,
-    LAG(sotuv,1) OVER (ORDER BY sana) as oldingi,
-    LEAD(sotuv,1) OVER (ORDER BY sana) as keyingi
-FROM kunlik_sotuv;
-```
-Trend tahlili, o'sish/pasayish hisoblash uchun.
-
-**Ikkinchi eng yuqori maoshni topish**
-```sql
-SELECT maosh FROM (
-    SELECT maosh, DENSE_RANK() OVER (ORDER BY maosh DESC) as reyting
-    FROM xodimlar
-) t WHERE reyting = 2;
-```
-`DENSE_RANK()` — `MAX()` asosidagi yechimdan farqli, dublikatlarni to'g'ri boshqaradi va N-chi eng yuqorini topishga umumlashadi.
-
----
-
-## CTE, Dublikatlar, Solishtirish
-
-**CTE (Common Table Expressions)**
-```sql
-WITH yuqori_maoshli AS (
-    SELECT * FROM xodimlar WHERE maosh > 5000
-),
-bolim_soni AS (
-    SELECT bolim_id, COUNT(*) as soni FROM yuqori_maoshli GROUP BY bolim_id
-)
-SELECT * FROM bolim_soni WHERE soni > 3;
-```
-Subquery'dan o'qish oson, recursive CTE ierarxik ma'lumotlar uchun ham ishlatiladi.
-
-**Dublikatlarni aniqlash va o'chirish**
-```sql
--- Aniqlash
-SELECT COUNT(*), COUNT(DISTINCT email) FROM foydalanuvchilar;
-SELECT email, COUNT(*) FROM foydalanuvchilar GROUP BY email HAVING COUNT(*) > 1;
-
--- O'chirish (ROW_NUMBER bilan)
-WITH raqamlangan AS (
-    SELECT *, ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) as rn
-    FROM foydalanuvchilar
-)
-DELETE FROM raqamlangan WHERE rn > 1;
-```
-
-**Ikki jadvalni solishtirish (farqlarni topish)**
-```sql
-SELECT COALESCE(a.id, b.id) as id,
-    CASE
-        WHEN a.id IS NULL THEN 'Faqat B jadvalda'
-        WHEN b.id IS NULL THEN 'Faqat A jadvalda'
-        ELSE 'Ikkalasida ham'
-    END as holat
-FROM jadval_a a FULL OUTER JOIN jadval_b b ON a.id = b.id
-WHERE a.id IS NULL OR b.id IS NULL;
-```
-(MySQL'da `FULL OUTER JOIN` yo'q — `LEFT JOIN UNION RIGHT JOIN` orqali simulyatsiya qilinadi.)
-
-**UNION vs UNION ALL**
-```sql
-SELECT ism FROM mijozlar UNION SELECT ism FROM yetkazib_beruvchilar;      -- dublikatsiz
-SELECT ism FROM mijozlar UNION ALL SELECT ism FROM yetkazib_beruvchilar; -- barchasi, tezroq
-```
-
----
-
-## View, Stored Procedure, Trigger, Transaction
-
-**View**
-```sql
-CREATE VIEW faol_xodimlar AS
-SELECT ism, bolim_id, maosh FROM xodimlar WHERE holat = 'faol';
-```
-Murakkab so'rovni soddalashtiruvchi virtual jadval, ma'lumot saqlamaydi.
-
-**Stored Procedure vs Trigger**
-```sql
--- Stored Procedure — qo'lda chaqiriladi
-CREATE PROCEDURE MaoshOshirish(@bolim_id INT, @foiz DECIMAL) AS
-BEGIN
-    UPDATE xodimlar SET maosh = maosh * (1 + @foiz/100) WHERE bolim_id = @bolim_id;
-END;
-
--- Trigger — hodisaga avtomatik javob
-CREATE TRIGGER LogOzgarish ON xodimlar AFTER UPDATE AS
-BEGIN
-    INSERT INTO audit_log (xabar, vaqt) VALUES ('Xodim yangilandi', GETDATE());
-END;
-```
-
-**Transaction va ACID**
-```sql
-BEGIN TRANSACTION;
-    UPDATE hisoblar SET balans = balans - 100 WHERE id = 1;
-    UPDATE hisoblar SET balans = balans + 100 WHERE id = 2;
-COMMIT;  -- yoki ROLLBACK;
-```
-- **Atomicity** — hammasi yoki hech nima
-- **Consistency** — qoidalar (constraints) doim bajariladi
-- **Isolation** — parallel tranzaksiyalar bir-biriga xalaqit bermaydi
-- **Durability** — COMMIT'dan keyin ma'lumot yo'qolmaydi
-
----
-
-## Ma'lumot turlari
-
-**CHAR vs VARCHAR**
-```sql
-CREATE TABLE misol (
-    kod CHAR(5),        -- fixed-length, bo'shliq bilan to'ldiriladi, tezroq doimiy uzunlikda
-    ism VARCHAR(50)      -- variable-length, xotira tejaydi
-);
-```
-
----
-
-## OLTP vs OLAP
+**Batafsilroq:**
 
 | | OLTP | OLAP |
 |---|---|---|
-| Maqsad | Kundalik tranzaksiyalar | Tahlil, hisobot |
-| So'rov | Ko'p, kichik, tez | Kam, og'ir, murakkab |
-| Struktura | Normalizatsiyalangan (3NF) | Denormalizatsiyalangan (star schema) |
-| Misollar | MySQL, PostgreSQL | Snowflake, BigQuery, Redshift |
+| So'rovlar | ko'p, kichik, tez (bir necha qator) | kam, katta (millionlab qator) |
+| Maqsad | biznes amallarini bajarish | tahlil va hisobot |
+| Sxema | normallashgan (3NF) | denormallashgan (star/snowflake) |
+| Saqlash | qator bo'yicha (row store) | ustun bo'yicha (column store) |
+| Misollar | PostgreSQL, MySQL | ClickHouse, BigQuery, Snowflake, DuckDB |
 
----
+**Intervyuda shunday ayting:** "OLTP yozish va nuqtali o'qish uchun, OLAP — katta skan va agregatlar uchun optimallashgan. Og'ir analitik so'rovlarni asosiy OLTP bazada ishlatmayman — ular foydalanuvchi so'rovlarini sekinlashtiradi. Ma'lumotni CDC yoki ETL orqali analitik omborga yoki hech bo'lmasa read replica'ga olib chiqaman."
 
-## Amaliy vaziyatlar
+**Esda tuting:** ustunli saqlash analitikada tez, chunki so'rov faqat kerakli ustunlarni o'qiydi va bir xil qiymatlar yaxshi siqiladi.
 
-**So'rov ishlasa-yu, natija noto'g'ri bo'lsa nima qilish kerak?**
-1) Har bir JOIN shartini alohida tekshirish (fan trap ehtimoli); 2) murakkab so'rovni CTE bilan bosqichlarga bo'lib tekshirish; 3) NULL solishtirishlarini tekshirish (`IS NULL`); 4) biznes talab bilan mantiqni qayta solishtirish.
+## Q7. So'rov xatosiz ishladi, lekin natija noto'g'ri — nima qilasiz? / The query runs without errors but the result is wrong — what do you do?
 
-**SQL'ning cheklovlari va alternativalari**
-Murakkab statistik hisoblash, strukturasiz ma'lumot (JSON/matn/rasm), tez o'zgaruvchi sxema uchun unchalik qulay emas — Python/Pandas, NoSQL, ML kutubxonalari afzalroq bo'lishi mumkin.
+**Oddiy qilib aytganda:** xato bermaydigan noto'g'ri so'rov — eng xavflisi, chunki uni hech kim sezmaydi. Uni bo'laklab tekshirish kerak: har qadamda qatorlar sonini ko'rish, kichik ma'lum ma'lumotda natijani qo'lda hisoblangan javob bilan solishtirish. Ko'p uchraydigan sabablar: JOIN qatorlarni ko'paytirgan, `NULL` e'tiborsiz qolgan, noto'g'ri `GROUP BY`.
 
-**Qiyin vaziyatda nima qilish kerak?**
-Talabni aniqlashtirish, mavjud kod namunalarini ko'rib chiqish, so'rovni bosqichlarga bo'lib test qilish, hujjat/jamoadan maslahat, kerak bo'lsa AI vositalaridan yordam (natijani albatta tekshirish bilan).
+**Batafsilroq:**
 
----
-
-## PostgreSQL'ga xos mavzular
-
-**MVCC (Multi-Version Concurrency Control)**
-Har bir UPDATE/DELETE eski qatorni o'chirmaydi — yangi versiya yaratadi, eskisini "eskirgan" belgilaydi. O'qish va yozish bir-birini bloklamaydi. Eski versiyalar `VACUUM` orqali tozalanadi.
-
-**Schema**
 ```sql
-CREATE SCHEMA sotuv;
-CREATE TABLE sotuv.buyurtmalar (id INT, mijoz_id INT);
-```
-Jadvallarni mantiqiy guruhlash, nomlar to'qnashuvining oldini olish.
+-- 1) Har bosqichda qatorlar sonini tekshirish
+SELECT count(*) FROM orders WHERE created_at >= '2026-09-01';          -- 1200
+SELECT count(*) FROM orders o JOIN order_items i ON i.order_id = o.id
+WHERE o.created_at >= '2026-09-01';                                    -- 3900 → JOIN ko'paytirdi!
 
-**Sequence**
-```sql
-CREATE SEQUENCE mening_ketma_ketligim START 1 INCREMENT 1;
-CREATE TABLE mahsulot (id SERIAL PRIMARY KEY, nomi TEXT);  -- SERIAL avtomatik sequence yaratadi
+-- 2) ❌ Buyurtma summasi har mahsulot qatori uchun takror qo'shilgan
+SELECT sum(o.total) FROM orders o JOIN order_items i ON i.order_id = o.id;
+
+-- ✅ Avval agregat, keyin JOIN (yoki summani faqat bir tomondan olish)
+SELECT sum(total) FROM orders WHERE created_at >= '2026-09-01';
 ```
 
-**EXPLAIN**
-```sql
-EXPLAIN ANALYZE SELECT * FROM xodimlar WHERE bolim_id = 3;
-```
-So'rov rejasi (Seq Scan/Index Scan, vaqt, qator soni) — optimallashtirishning birinchi qadami.
+**Intervyuda shunday ayting:** "So'rovni qismlarga bo'lib, har JOIN'dan keyin qatorlar soni va kalit bo'yicha noyoblikni tekshiraman. Tipik xatolar: 'bir-ko'p' JOIN'dan keyin summa takrorlanishi, `NULL` sabab tushib qolgan qatorlar, `LEFT JOIN` ni `WHERE` bilan `INNER` ga aylantirish, sana chegaralari va vaqt mintaqasi. Tuzatishni ma'lum natijali kichik test ma'lumoti bilan tasdiqlayman."
 
-**VACUUM va Autovacuum**
-```sql
-VACUUM xodimlar;         -- bo'sh joyni qayta ishlatishga tayyorlaydi
-VACUUM FULL xodimlar;    -- diskni haqiqatan bo'shatadi (jadval qulflanadi)
-```
-Autovacuum — fon jarayoni, chegaradan oshganda avtomatik ishga tushadi.
+**Esda tuting:** hisobot raqamlarini boshqa mustaqil manba (masalan, to'lov tizimi hisoboti) bilan solishtirish — eng yaxshi tekshiruv.
 
-**Replikasiya**
-Primary → WAL → Replica server(lar). Yuqori mavjudlik va o'qish yukini taqsimlash uchun. Streaming (real vaqt) va Logical (tanlangan jadvallar) turlari bor.
+## Q8. SQL qachon to'g'ri vosita emas va qanday alternativalar bor? / When is SQL not the right tool and what are the alternatives?
 
-**Table space**
-```sql
-CREATE TABLESPACE tez_disk LOCATION '/mnt/ssd_disk';
-```
-Ma'lumotlarni turli fizik disklarga taqsimlash.
+**Oddiy qilib aytganda:** SQL tuzilgan, bog'liq ma'lumotlar va tranzaksiyalar uchun ajoyib. Lekin ba'zi vazifalarga maxsus vositalar yaxshiroq mos keladi: to'liq matnli murakkab qidiruv, juda chuqur graf munosabatlari ("do'stimning do'stining do'sti"), sekundiga millionlab yozuvli vaqt qatorlari yoki ulkan analitika.
 
-**JSON va JSONB**
-```sql
-CREATE TABLE mahsulotlar (id SERIAL, malumot JSONB);
-SELECT malumot->>'nomi' FROM mahsulotlar WHERE (malumot->>'narx')::int > 300;
-```
-`JSONB` — binary, indekslash mumkin (GIN), qidiruv tezroq — amaliyotda odatda tavsiya etiladi.
+**Batafsilroq:**
 
-**Extensions**
-```sql
-CREATE EXTENSION postgis;    -- geografik ma'lumotlar
-CREATE EXTENSION pg_trgm;     -- matn o'xshashligi qidiruvi
-```
+| Vazifa | Nega relyatsion baza qiynaladi | Alternativa |
+|---|---|---|
+| Murakkab to'liq matnli qidiruv, fasetlar | relevantlik, sinonimlar, katta indekslar | Elasticsearch/OpenSearch (yoki boshlanishiga PostgreSQL FTS) |
+| Chuqur graf so'rovlari | ko'p darajali JOIN'lar qimmat | Neo4j yoki graf kengaytmalari |
+| Juda katta analitika | qator bo'yicha saqlash skanda sekin | ClickHouse, BigQuery, DuckDB |
+| Kesh, sessiya, hisoblagichlar | disk va tranzaksiya narxi | Redis/Valkey |
+| Vektor (semantik) qidiruv | maxsus indeks kerak | pgvector (PostgreSQL ichida) yoki vektor bazalar |
 
-**Cursor**
-```sql
-DECLARE mening_cursor CURSOR FOR SELECT * FROM katta_jadval;
-FETCH NEXT FROM mening_cursor;
-```
-Katta natijalarni xotiraga to'liq yuklamasdan qatorma-qator qayta ishlash.
+**Intervyuda shunday ayting:** "Standart tanlovim — PostgreSQL: u JSONB, to'liq matnli qidiruv, pgvector kabi kengaytmalar bilan ko'p ehtiyojni yopadi. Alohida tizimni faqat o'lchangan ehtiyoj bo'lganda qo'shaman, chunki har yangi baza — yangi zaxira nusxa, monitoring va ma'lumotni sinxronlash muammosi."
 
-**Xavfsizlik**
-Role-based access (`GRANT`/`REVOKE`), SSL shifrlash, `pg_hba.conf` (qaysi IP/foydalanuvchi qanday autentifikatsiya bilan ulanishi).
+**Esda tuting:** asosiy haqiqat manbai bitta bo'lsin; qidiruv yoki analitika tizimlari undan (CDC orqali) to'ldiriladigan nusxalar bo'lsin.

@@ -1,2188 +1,1378 @@
-# 🧩 LeetCode & Codewars Algorithm Masterclass — 100 Real Interview Problems
-### Ikki tilli algoritmlar qo'llanmasi / Bilingual Algorithmic Guide (English 🇬🇧 & O'zbek 🇺🇿)
+# 🧩 Algoritmik masalalar (LeetCode) — oddiy tilda, 40 ta klassik masala
 
-> **Mavzular / Topics:** Array, Hash Table, Two Pointers, Dynamic Programming, Binary Search, Sliding Window, Linked List, Tree, Graph, Heap/Priority Queue, Greedy, Backtracking, Bit Manipulation, Codewars 8kyu-1kyu.  
-> **Murakkablik / Difficulty:** 🟢 Easy (1–35) | 🟡 Medium (36–75) | 🔴 Hard (76–100)
-
----
-
-# 📚 ALGORITMLAR VA DATA STRUCTURES MASTERCLASS
+> **Kim uchun:** texnik intervyudagi "masala yeching" bosqichiga tayyorlanayotganlar.
+> **Qanday ishlash kerak:** savolni o'qing va javobni ochmasdan **20–30 daqiqa o'zingiz** yechishga urining. Keyin "Oddiy qilib aytganda" qismidagi g'oyani o'qing va yana urinib ko'ring. Kodga eng oxirida qarang.
+> **Kod:** har bir yechim test misollari bilan Node.js'da ishga tushirib tekshirilgan.
 
 ---
 
-## Big-O Vaqt va Xotira Murakkabligi (Time & Space Complexity)
-- **O(1) Constant**: O'zgarmas vaqt (Hash Map lookup, Bitwise operations).
-- **O(log N) Logarithmic**: Binary Search.
-- **O(N) Linear**: Two Pointers, Single Pass Iteration.
-- **O(N log N) Linearithmic**: Merge Sort, Quick Sort.
-- **O(N^2) Quadratic**: Nested loops, Matrix operations.
-- **O(2^N) Exponential**: Recursive subsets, Naive Backtracking.
+# Asosiy tushuncha: Big-O — algoritm qanchalik tez?
+
+**Big-O** — ma'lumot kattalashganda algoritm qanchalik **sekinlashishini** ko'rsatadi. Aniq soniyalarni emas, **o'sish tezligini**.
+
+| Belgi | Nomi | Hayotiy misol | 1 000 000 element uchun (taxminan) |
+|---|---|---|---|
+| O(1) | o'zgarmas | lug'atdan so'zni bet raqami bilan ochish | 1 qadam |
+| O(log n) | logarifmik | lug'atni o'rtadan ochib, yarmini tashlab qidirish | ~20 qadam |
+| O(n) | chiziqli | ro'yxatni boshidan oxirigacha ko'rib chiqish | 1 000 000 qadam |
+| O(n log n) | — | yaxshi saralash (merge sort) | ~20 000 000 qadam |
+| O(n²) | kvadratik | har bir odamni boshqa har bir odam bilan tanishtirish | 10¹² qadam — juda sekin |
+
+**Xotira murakkabligi** ham xuddi shunday: algoritm qo'shimcha qancha joy talab qiladi.
+
+# Tez-tez uchraydigan usullar (patterns)
+
+- **Hash Map (lug'at)** — "bu qiymatni oldin ko'rganmanmi?" savoliga O(1) da javob.
+- **Two Pointers (ikki ko'rsatkich)** — massivning ikki chetidan yoki ikki tezlikda yurish.
+- **Sliding Window (siljuvchi oyna)** — ketma-ket bo'lakni kengaytirib-toraytirib yurish.
+- **Binary Search** — tartiblangan ma'lumotda har qadamda yarmini tashlab yuborish.
+- **BFS / DFS** — daraxt va grafni kenglik yoki chuqurlik bo'yicha aylanib chiqish.
+- **Dynamic Programming (DP)** — kichik masalalar javobini eslab qolib, kattasini yig'ish.
 
 ---
 
-# 🟢 QUESTIONS & SOLUTIONS (Q1 – Q100)
+# Masalalar
 
----
+## Q1. Two Sum: yig'indisi target'ga teng ikki sonning indekslarini qanday topasiz? / LeetCode #1 — Two Sum
 
+**Masala:** `nums` massivi va `target` son berilgan. Yig'indisi `target`ga teng bo'lgan **ikki** elementning indekslarini qaytaring. `nums = [2, 7, 11, 15], target = 9` → `[0, 1]`.
 
-## Q1. LeetCode #1: Two Sum | Two Sum — Ikki son yig'indisi
+**Oddiy qilib aytganda:** bozorda 9 000 so'mlik sovg'a olmoqchisiz va aynan ikki narsa kerak. Har bir mahsulotni ko'rganda o'zingizdan so'raysiz: "menga **qolgan** summa uchun (9 000 − narx) mahsulot oldin uchraganmi?" Ko'rilgan mahsulotlarni daftarga (Map) yozib borasiz — shunda har birini qayta qidirish shart emas.
 
-**EN:** Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to target. Optimal solution uses Hash Map in O(n) time.
+**Qadam-ba-qadam:**
+1. Bo'sh `Map` yarating: son → indeks.
+2. Har bir son uchun `kerakli = target − son` ni hisoblang.
+3. `kerakli` Map'da bo'lsa — javob topildi.
+4. Aks holda joriy sonni Map'ga yozing.
 
-**UZB:** Berilgan `nums` massivi va `target` soni uchun yig'indisi target ga teng bo'lgan 2 ta sonning indekslarini toping. Optimal yechim Hash Map yordamida O(n) vaqtda ishlaydi.
+**Yechim:**
 
-```javascript
-// Time: O(n) | Space: O(n)
+```js
 function twoSum(nums, target) {
-    const map = new Map();
-    for (let i = 0; i < nums.length; i++) {
-        const diff = target - nums[i];
-        if (map.has(diff)) return [map.get(diff), i];
-        map.set(nums[i], i);
-    }
-    return [];
+  const seen = new Map();                      // son → indeks
+  for (let i = 0; i < nums.length; i++) {
+    const needed = target - nums[i];
+    if (seen.has(needed)) return [seen.get(needed), i];
+    seen.set(nums[i], i);
+  }
+  return [];
 }
+
+console.log(twoSum([2, 7, 11, 15], 9));  // [ 0, 1 ]
+console.log(twoSum([3, 2, 4], 6));       // [ 1, 2 ]
+console.log(twoSum([3, 3], 6));          // [ 0, 1 ]
 ```
 
----
+**Murakkablik:** vaqt O(n) — bir marta o'tamiz; xotira O(n) — Map uchun. Ikki ichma-ich sikl bilan esa O(n²) bo'lardi.
 
-## Q2. LeetCode #2: Add Two Numbers | Add Two Numbers — Linked List qo'shish
+**Intervyuda shunday ayting:** "Oddiy yechim — har juftni tekshirish, O(n²). Tezroq: bir o'tishda har bir son uchun uning 'juftini' Map'dan qidiraman, topilmasa sonni Map'ga qo'shaman. Vaqt O(n), xotira O(n)."
 
-**EN:** You are given two non-empty linked lists representing two non-negative integers stored in reverse order. Add the two numbers and return the sum as a linked list.
+**Esda tuting:** Map'ga sonni **tekshiruvdan keyin** qo'shing — aks holda `[3]` va `target = 6` da bitta elementni o'zi bilan juftlab yuborasiz.
 
-**UZB:** Teskari tartibda saqlangan ikkita Linked List sonlarini qo'shib, yangi Linked List ko'rinishida qaytarish.
+## Q2. Add Two Numbers: teskari saqlangan ikki sonni linked list sifatida qanday qo'shasiz? / LeetCode #2 — Add Two Numbers
 
-```javascript
-// Time: O(max(N, M)) | Space: O(max(N, M))
+**Masala:** ikki son raqamlari **teskari tartibda** linked list'da saqlangan: `342` → `2 → 4 → 3`. Ularni qo'shib, natijani ham shunday linked list sifatida qaytaring. `(2→4→3) + (5→6→4)` → `7→0→8` (342 + 465 = 807).
+
+**Oddiy qilib aytganda:** maktabda ustun bilan qo'shganingizni eslang: o'ngdan chapga, har ustunda raqamlarni qo'shasiz, 10 dan oshsa "1 ni xotirada saqlaysiz" (carry). Raqamlar teskari saqlangani uchun linked list'ning boshi aynan eng o'ngdagi raqam — qo'shishni shundan boshlash qulay.
+
+**Qadam-ba-qadam:**
+1. Soxta bosh tugun (`dummy`) yarating — natijani unga ulab borasiz.
+2. Ikkala ro'yxat va `carry` tugamaguncha: raqamlarni qo'shing (yo'q bo'lsa 0).
+3. Yangi tugun: `sum % 10`; `carry = Math.floor(sum / 10)`.
+4. `dummy.next` — natija.
+
+**Yechim:**
+
+```js
+class ListNode { constructor(val, next = null) { this.val = val; this.next = next; } }
+const fromArray = (arr) => arr.reduceRight((next, val) => new ListNode(val, next), null);
+const toArray = (node) => { const out = []; for (; node; node = node.next) out.push(node.val); return out; };
+
 function addTwoNumbers(l1, l2) {
-    let dummy = new ListNode(0), curr = dummy, carry = 0;
-    while (l1 || l2 || carry) {
-        let sum = (l1 ? l1.val : 0) + (l2 ? l2.val : 0) + carry;
-        carry = Math.floor(sum / 10);
-        curr.next = new ListNode(sum % 10);
-        curr = curr.next;
-        if (l1) l1 = l1.next;
-        if (l2) l2 = l2.next;
-    }
-    return dummy.next;
+  const dummy = new ListNode(0);
+  let tail = dummy, carry = 0;
+  while (l1 || l2 || carry) {
+    const sum = (l1?.val ?? 0) + (l2?.val ?? 0) + carry;
+    carry = Math.floor(sum / 10);
+    tail.next = new ListNode(sum % 10);
+    tail = tail.next;
+    l1 = l1?.next; l2 = l2?.next;
+  }
+  return dummy.next;
 }
+
+console.log(toArray(addTwoNumbers(fromArray([2, 4, 3]), fromArray([5, 6, 4]))));   // [ 7, 0, 8 ]
+console.log(toArray(addTwoNumbers(fromArray([9, 9, 9]), fromArray([1]))));         // [ 0, 0, 0, 1 ]
 ```
 
----
+**Murakkablik:** vaqt O(max(n, m)); xotira O(max(n, m)) — natija uchun.
 
-## Q3. LeetCode #3: Longest Substring Without Repeating Characters | Takrorlanmas belgilardan iborat eng uzun ostki matn
+**Intervyuda shunday ayting:** "Ustun bilan qo'shish kabi: ikkala ro'yxatni parallel yuraman, raqamlarni carry bilan qo'shaman va yangi tugun yarataman. Dummy bosh tugun chekka holatlarni soddalashtiradi. Oxirida carry qolsa, yana bitta tugun qo'shaman."
 
-**EN:** Given a string `s`, find the length of the longest substring without repeating characters using Sliding Window approach.
+**Esda tuting:** sikl shartida `carry`ni unutmang — `999 + 1` da oxirgi `1` yo'qolib qoladi.
 
-**UZB:** Matn ichidan takrorlanuvchi belgilari bo'lmagan eng uzun sub-string (ostki matn) uzunligini Sliding Window yordamida topish.
+## Q3. Takrorlanmaydigan belgilardan iborat eng uzun qism satr qanchalik uzun? / LeetCode #3 — Longest Substring Without Repeating Characters
 
-```javascript
-// Time: O(n) | Space: O(min(m, n))
+**Masala:** satr berilgan. Hech bir belgi takrorlanmaydigan eng uzun **ketma-ket** qismning uzunligini toping. `"abcabcbb"` → `3` ("abc").
+
+**Oddiy qilib aytganda:** satr ustida "oyna" (sliding window) yurgizasiz. Oynaning o'ng tomoni har qadamda bittaga kengayadi. Agar yangi belgi oynada allaqachon bo'lsa, chap tomonni shu belgining oldingi joyidan **keyinga** siljitasiz. Har qadamda oyna uzunligini eng kattasi bilan solishtirasiz.
+
+**Qadam-ba-qadam:**
+1. `lastSeen` Map: belgi → oxirgi ko'rilgan indeksi.
+2. `left = 0`. Har bir `right` uchun: belgi oynada bo'lsa, `left = oldingi indeks + 1`.
+3. `best = max(best, right − left + 1)`.
+
+**Yechim:**
+
+```js
 function lengthOfLongestSubstring(s) {
-    let map = new Map(), left = 0, maxLen = 0;
-    for (let right = 0; right < s.length; right++) {
-        if (map.has(s[right])) {
-            left = Math.max(left, map.get(s[right]) + 1);
-        }
-        map.set(s[right], right);
-        maxLen = Math.max(maxLen, right - left + 1);
-    }
-    return maxLen;
+  const lastSeen = new Map();
+  let left = 0, best = 0;
+  for (let right = 0; right < s.length; right++) {
+    const char = s[right];
+    if (lastSeen.has(char) && lastSeen.get(char) >= left) left = lastSeen.get(char) + 1;
+    lastSeen.set(char, right);
+    best = Math.max(best, right - left + 1);
+  }
+  return best;
 }
+
+console.log(lengthOfLongestSubstring("abcabcbb")); // 3
+console.log(lengthOfLongestSubstring("bbbbb"));    // 1
+console.log(lengthOfLongestSubstring("pwwkew"));   // 3
+console.log(lengthOfLongestSubstring("abba"));     // 2
 ```
 
----
+**Murakkablik:** vaqt O(n) — har belgi bir marta; xotira O(k) — alifbo hajmi.
 
-## Q4. LeetCode #11: Container With Most Water | Eng ko'p suv sig'diruvchi konteyner
+**Intervyuda shunday ayting:** "Sliding window: o'ng chegarani kengaytiraman, takror belgi uchrasa chap chegarani shu belgining oxirgi joyidan keyinga siljitaman. Map oxirgi indekslarni saqlaydi. Vaqt O(n)."
 
-**EN:** Given `n` non-negative integers `height`, find two lines that together with the x-axis form a container containing the most water using Two Pointers.
+**Esda tuting:** `lastSeen.get(char) >= left` sharti muhim — busiz "abba"da chap chegara **orqaga** qaytib, noto'g'ri javob beradi.
 
-**UZB:** Massivdagi ustunlar orasida eng ko'p suv sig'diruvchi maydon hajmini Two Pointers (ikki ko'rsatkich) bilan topish.
+## Q4. Container With Most Water: eng ko'p suv sig'adigan ikki ustunni qanday topasiz? / LeetCode #11 — Container With Most Water
 
-```javascript
-// Time: O(n) | Space: O(1)
+**Masala:** `height[i]` — `i` pozitsiyadagi ustun balandligi. Ikki ustun va yer orasida hosil bo'ladigan "idish"ga eng ko'p qancha suv sig'adi? Suv hajmi = kenglik × **pastroq** ustun balandligi.
+
+**Oddiy qilib aytganda:** eng keng idishdan — ikki chetdagi ustunlardan boshlaysiz. Keyin **pastroq** ustunni ichkariga siljitasiz. Nega? Suv darajasini aynan pastroq ustun cheklaydi; balandini siljitish kenglikni kamaytiradi, lekin balandlik baribir pastrog'idan oshmaydi — foyda yo'q.
+
+**Qadam-ba-qadam:**
+1. `left = 0`, `right = oxirgi`.
+2. Hajmni hisoblang va eng kattasini saqlang.
+3. Pastroq ustun tomondagi ko'rsatkichni ichkariga siljiting.
+
+**Yechim:**
+
+```js
 function maxArea(height) {
-    let left = 0, right = height.length - 1, maxW = 0;
-    while (left < right) {
-        let w = right - left;
-        let h = Math.min(height[left], height[right]);
-        maxW = Math.max(maxW, w * h);
-        if (height[left] < height[right]) left++;
-        else right--;
-    }
-    return maxW;
+  let left = 0, right = height.length - 1, best = 0;
+  while (left < right) {
+    const water = (right - left) * Math.min(height[left], height[right]);
+    best = Math.max(best, water);
+    if (height[left] < height[right]) left++;
+    else right--;
+  }
+  return best;
 }
+
+console.log(maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7])); // 49
+console.log(maxArea([1, 1]));                       // 1
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(1).
 
-## Q5. LeetCode #15: 3Sum | 3Sum — Uchta son yig'indisi nolga teng bo'lishi
+**Intervyuda shunday ayting:** "Ikki ko'rsatkichni chetlardan boshlayman va har qadamda pastroq ustunni siljitaman, chunki hajmni aynan u cheklaydi — balandini siljitish hech qachon natijani yaxshilamaydi. Shunday qilib barcha juftlarni ko'rmasdan O(n) da topaman."
 
-**EN:** Given an integer array nums, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j != k` and `nums[i] + nums[j] + nums[k] == 0`.
+**Esda tuting:** bu masalani Q14 dagi "Trapping Rain Water" bilan adashtirmang — u yerda barcha ustunlar orasidagi suv yig'iladi.
 
-**UZB:** Massiv ichidan yig'indisi 0 bo'lgan barcha unikal uchliklarni Sorting + Two Pointers bilan topish.
+## Q5. 3Sum: yig'indisi 0 bo'lgan barcha noyob uchliklarni qanday topasiz? / LeetCode #15 — 3Sum
 
-```javascript
-// Time: O(n^2) | Space: O(1) or O(n) sorting
+**Masala:** massivdan yig'indisi `0` bo'lgan barcha **takrorlanmaydigan** uchliklarni toping. `[-1, 0, 1, 2, -1, -4]` → `[[-1, -1, 2], [-1, 0, 1]]`.
+
+**Oddiy qilib aytganda:** avval massivni **saralaysiz**. Keyin har bir sonni "birinchi" deb olib, qolgan qismda Two Pointers bilan ikkitasini qidirasiz: yig'indi kichik bo'lsa — chap ko'rsatkichni o'ngga (kattaroq son), katta bo'lsa — o'ng ko'rsatkichni chapga. Saralangani uchun bir xil sonlarni osongina o'tkazib yuborasiz — takror uchliklar chiqmaydi.
+
+**Qadam-ba-qadam:**
+1. Saralash.
+2. Har `i` uchun (oldingisi bilan bir xil bo'lsa — o'tkazib yuborish): `left = i+1`, `right = oxirgi`.
+3. Yig'indi 0 bo'lsa — saqlash va ikkala ko'rsatkichni bir xil qiymatlardan o'tkazib yuborish.
+
+**Yechim:**
+
+```js
 function threeSum(nums) {
-    nums.sort((a, b) => a - b);
-    const res = [];
-    for (let i = 0; i < nums.length - 2; i++) {
-        if (i > 0 && nums[i] === nums[i - 1]) continue;
-        let l = i + 1, r = nums.length - 1;
-        while (l < r) {
-            let sum = nums[i] + nums[l] + nums[r];
-            if (sum === 0) {
-                res.push([nums[i], nums[l], nums[r]]);
-                while (l < r && nums[l] === nums[l + 1]) l++;
-                while (l < r && nums[r] === nums[r - 1]) r--;
-                l++; r--;
-            } else if (sum < 0) l++; else r--;
-        }
+  const sorted = [...nums].sort((a, b) => a - b);
+  const result = [];
+  for (let i = 0; i < sorted.length - 2; i++) {
+    if (sorted[i] > 0) break;                          // keyingilar ham musbat — yig'indi 0 bo'lmaydi
+    if (i > 0 && sorted[i] === sorted[i - 1]) continue; // takror birinchi son
+    let left = i + 1, right = sorted.length - 1;
+    while (left < right) {
+      const sum = sorted[i] + sorted[left] + sorted[right];
+      if (sum < 0) left++;
+      else if (sum > 0) right--;
+      else {
+        result.push([sorted[i], sorted[left], sorted[right]]);
+        while (left < right && sorted[left] === sorted[left + 1]) left++;
+        while (left < right && sorted[right] === sorted[right - 1]) right--;
+        left++; right--;
+      }
     }
-    return res;
+  }
+  return result;
 }
+
+console.log(threeSum([-1, 0, 1, 2, -1, -4])); // [ [ -1, -1, 2 ], [ -1, 0, 1 ] ]
+console.log(threeSum([0, 0, 0, 0]));          // [ [ 0, 0, 0 ] ]
 ```
 
----
+**Murakkablik:** vaqt O(n²) — saralash O(n log n) + har element uchun O(n); xotira O(1) (natijadan tashqari).
 
-## Q6. LeetCode #20: Valid Parentheses | Qavslar to'g me riligini tekshirish (Valid Parentheses)
+**Intervyuda shunday ayting:** "Massivni saralab, har bir elementni fiksatsiya qilaman va qolgan qismda two pointers bilan juft qidiraman. Saralangani uchun takrorlarni qo'shni elementlarni o'tkazib yuborish bilan chiqarib tashlayman. Vaqt O(n²)."
 
-**EN:** Given a string `s` containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid using Stack.
+**Esda tuting:** asl massivni o'zgartirmaslik uchun nusxasini saralang (`[...nums].sort`), va sonlar uchun har doim `(a, b) => a - b` bering.
 
-**UZB:** Ochilgan qavslarning to'g'ri tartibda yopilganini Stack ma'lumotlar strukturasi yordamida tekshirish.
+## Q6. Qavslar to'g'ri joylashganini qanday tekshirasiz? / LeetCode #20 — Valid Parentheses
 
-```javascript
-// Time: O(n) | Space: O(n)
+**Masala:** `()[]{}` belgilaridan iborat satr to'g'ri yopilganmi? `"([]{})"` → `true`, `"(]"` → `false`, `"([)]"` → `false`.
+
+**Oddiy qilib aytganda:** likopchalar to'plami (**stack**)ni tasavvur qiling. Ochiluvchi qavs ko'rsangiz — ustiga qo'yasiz. Yopiluvchi qavs ko'rsangiz — eng ustidagi likopcha aynan uning jufti bo'lishi kerak; bo'lsa olib tashlaysiz, bo'lmasa — xato. Oxirida to'plam bo'sh bo'lishi kerak.
+
+**Qadam-ba-qadam:**
+1. Yopiluvchi → ochiluvchi xaritasi: `) → (`, `] → [`, `} → {`.
+2. Ochiluvchini stack'ka qo'shing; yopiluvchida stack tepasini tekshiring.
+3. Oxirida stack bo'shmi?
+
+**Yechim:**
+
+```js
 function isValid(s) {
-    const stack = [], map = { ')': '(', '}': '{', ']': '[' };
-    for (let char of s) {
-        if (map[char]) {
-            if (stack.pop() !== map[char]) return false;
-        } else {
-            stack.push(char);
-        }
+  const pairs = { ")": "(", "]": "[", "}": "{" };
+  const stack = [];
+  for (const char of s) {
+    if (char in pairs) {
+      if (stack.pop() !== pairs[char]) return false;
+    } else {
+      stack.push(char);
     }
-    return stack.length === 0;
+  }
+  return stack.length === 0;
 }
+
+console.log(isValid("([]{})"), isValid("(]"), isValid("([)]"), isValid("(("), isValid("")); // true false false false true
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(n).
 
-## Q7. LeetCode #21: Merge Two Sorted Lists | Ikkita tartiblangan Linked Listni birlashtirish
+**Intervyuda shunday ayting:** "Stack ishlataman: ochiluvchi qavslarni qo'shaman, yopiluvchida stack tepasi mos juft ekanini tekshiraman. Oxirida stack bo'sh bo'lishi shart. Vaqt va xotira O(n)."
 
-**EN:** Merge two sorted linked lists and return it as a new sorted list.
+**Esda tuting:** oxiridagi `stack.length === 0` tekshiruvini unutmang — `"(("` yopilmagan qavslar bilan tugaydi.
 
-**UZB:** Ikkita tartiblangan Linked List elementlarini yangi bitta tartiblangan listga ulaymiz.
+## Q7. Ikki tartiblangan linked list'ni qanday birlashtirasiz? / LeetCode #21 — Merge Two Sorted Lists
 
-```javascript
-// Time: O(n + m) | Space: O(1)
-function mergeTwoLists(l1, l2) {
-    let dummy = new ListNode(0), curr = dummy;
-    while (l1 && l2) {
-        if (l1.val < l2.val) { curr.next = l1; l1 = l1.next; }
-        else { curr.next = l2; l2 = l2.next; }
-        curr = curr.next;
-    }
-    curr.next = l1 || l2;
-    return dummy.next;
+**Masala:** ikki **tartiblangan** linked list'ni bitta tartiblangan list'ga birlashtiring. `1→2→4` va `1→3→4` → `1→1→2→3→4→4`.
+
+**Oddiy qilib aytganda:** ikki qator o'quvchi bo'yi bo'yicha saf tortgan. Yangi saf tuzish uchun har safar ikkala qatorning **boshidagilarni** solishtirasiz va pastrog'ini yangi safga o'tkazasiz. Bir qator tugasa, ikkinchisining qolganini to'liq ulab qo'yasiz.
+
+**Yechim:**
+
+```js
+class ListNode { constructor(val, next = null) { this.val = val; this.next = next; } }
+const fromArray = (arr) => arr.reduceRight((next, val) => new ListNode(val, next), null);
+const toArray = (node) => { const out = []; for (; node; node = node.next) out.push(node.val); return out; };
+
+function mergeTwoLists(a, b) {
+  const dummy = new ListNode(0);
+  let tail = dummy;
+  while (a && b) {
+    if (a.val <= b.val) { tail.next = a; a = a.next; }
+    else { tail.next = b; b = b.next; }
+    tail = tail.next;
+  }
+  tail.next = a ?? b;                 // qolgan qism to'liq ulanadi
+  return dummy.next;
 }
+
+console.log(toArray(mergeTwoLists(fromArray([1, 2, 4]), fromArray([1, 3, 4])))); // [ 1, 1, 2, 3, 4, 4 ]
+console.log(toArray(mergeTwoLists(null, fromArray([0]))));                      // [ 0 ]
 ```
 
----
+**Murakkablik:** vaqt O(n + m); xotira O(1) — mavjud tugunlar qayta ulanadi.
 
-## Q8. LeetCode #33: Search in Rotated Sorted Array | Aylantirilgan tartiblangan massivda qidiruv
+**Intervyuda shunday ayting:** "Dummy tugun bilan boshlab, har qadamda ikki ro'yxat boshidagi kichigini natijaga ulayman. Biri tugagach, ikkinchisining qolganini to'liq ulayman. Yangi tugun yaratilmaydi, xotira O(1)."
 
-**EN:** Given the array `nums` after possible rotation and a `target`, return index of target in O(log n) time using Binary Search.
+**Esda tuting:** `<=` belgisi teng elementlarda birinchi ro'yxatni oldinga qo'yadi — bu barqaror (stable) birlashtirish.
 
-**UZB:** Aylantirilgan (rotated) tartibli massiv ichidan target qiymatni Binary Search yordamida O(log n) vaqtda topish.
+## Q8. Aylantirilgan tartiblangan massivda qanday qidirasiz? / LeetCode #33 — Search in Rotated Sorted Array
 
-```javascript
-// Time: O(log n) | Space: O(1)
+**Masala:** tartiblangan massiv qaysidir nuqtada "aylantirilgan": `[4, 5, 6, 7, 0, 1, 2]`. `target` ning indeksini O(log n) da toping (yo'q bo'lsa `-1`).
+
+**Oddiy qilib aytganda:** oddiy binary search kabi o'rtani olasiz. Aylantirilgan bo'lsa ham, o'rtadan ikkiga bo'lsangiz, **ikki yarmidan bittasi albatta to'g'ri tartiblangan** bo'ladi. Qaysi yarim tartiblanganini aniqlab, `target` shu yarim chegarasida bo'lsa — o'sha tomonga, aks holda boshqa tomonga o'tasiz.
+
+**Qadam-ba-qadam:**
+1. `mid` ni hisoblang; `nums[mid] === target` bo'lsa — topildi.
+2. `nums[left] <= nums[mid]` — chap yarim tartiblangan: target `[left, mid)` oralig'ida bo'lsa chapga, aks holda o'ngga.
+3. Aks holda o'ng yarim tartiblangan: target `(mid, right]` oralig'ida bo'lsa o'ngga, aks holda chapga.
+
+**Yechim:**
+
+```js
 function search(nums, target) {
-    let l = 0, r = nums.length - 1;
-    while (l <= r) {
-        let mid = Math.floor((l + r) / 2);
-        if (nums[mid] === target) return mid;
-        if (nums[l] <= nums[mid]) {
-            if (nums[l] <= target && target < nums[mid]) r = mid - 1;
-            else l = mid + 1;
-        } else {
-            if (nums[mid] < target && target <= nums[r]) l = mid + 1;
-            else r = mid - 1;
-        }
+  let left = 0, right = nums.length - 1;
+  while (left <= right) {
+    const mid = (left + right) >> 1;
+    if (nums[mid] === target) return mid;
+    if (nums[left] <= nums[mid]) {                                    // chap yarim tartiblangan
+      if (nums[left] <= target && target < nums[mid]) right = mid - 1;
+      else left = mid + 1;
+    } else {                                                          // o'ng yarim tartiblangan
+      if (nums[mid] < target && target <= nums[right]) left = mid + 1;
+      else right = mid - 1;
     }
-    return -1;
+  }
+  return -1;
 }
+
+console.log(search([4, 5, 6, 7, 0, 1, 2], 0)); // 4
+console.log(search([4, 5, 6, 7, 0, 1, 2], 3)); // -1
+console.log(search([1], 1));                   // 0
 ```
 
----
+**Murakkablik:** vaqt O(log n); xotira O(1).
 
-## Q9. LeetCode #42: Trapping Rain Water | Yomg'ir suvini ushlab qolish hajmi (Trapping Rain Water)
+**Intervyuda shunday ayting:** "Binary search'ning o'zgargan varianti: har qadamda ikki yarmidan biri tartiblangan bo'ladi. Qaysi biri ekanini aniqlab, target uning chegarasida bo'lsa o'sha tomonga, aks holda boshqa tomonga o'taman. Vaqt O(log n)."
 
-**EN:** Given `n` non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining using Two Pointers.
+**Esda tuting:** `nums[left] <= nums[mid]` da `<=` muhim — ikki elementli massivda `left === mid` bo'ladi.
 
-**UZB:** Ustunlar orasida yig'ilib qoladigan umumiy yomg me ir suvi hajmini Two Pointers (ikki ko'rsatkich) usulida hisoblash.
+## Q9. Maximum Subarray: eng katta yig'indili ketma-ket qismni qanday topasiz? / LeetCode #53 — Maximum Subarray (Kadane)
 
-```javascript
-// Time: O(n) | Space: O(1)
-function trap(height) {
-    let l = 0, r = height.length - 1, lMax = 0, rMax = 0, res = 0;
-    while (l < r) {
-        if (height[l] < height[r]) {
-            height[l] >= lMax ? (lMax = height[l]) : res += (lMax - height[l]);
-            l++;
-        } else {
-            height[r] >= rMax ? (rMax = height[r]) : res += (rMax - height[r]);
-            r--;
-        }
-    }
-    return res;
-}
-```
+**Masala:** massivdagi eng katta yig'indiga ega **ketma-ket** qismning yig'indisini toping. `[-2, 1, -3, 4, -1, 2, 1, -5, 4]` → `6` (`[4, -1, 2, 1]`).
 
----
+**Oddiy qilib aytganda:** yo'lda tanga terib ketayapsiz, ba'zi joyda qarz (manfiy son) bor. Har qadamda o'zingizdan so'raysiz: "oldingi yig'ganlarimni davom ettiraymi yoki **shu yerdan yangidan** boshlaymi?" Agar oldingi yig'indi manfiy bo'lsa, u faqat zarar keltiradi — yangidan boshlaysiz. Bu **Kadane algoritmi**.
 
-## Q10. LeetCode #49: Group Anagrams | Anagrammalarni guruhlash (Group Anagrams)
+**Qadam-ba-qadam:**
+1. `current` — shu elementda tugaydigan eng yaxshi yig'indi; `best` — umumiy eng yaxshi.
+2. Har element uchun: `current = max(element, current + element)`.
+3. `best = max(best, current)`.
 
-**EN:** Given an array of strings `strs`, group the anagrams together using a Hash Map with sorted character keys or character count tuples.
+**Yechim:**
 
-**UZB:** Matnlar massividagi bir xil harflardan tashkil topgan anagrammalarni Hash Map orqali bir guruhga yig'ish.
-
-```javascript
-// Time: O(N * K log K) | Space: O(N * K)
-function groupAnagrams(strs) {
-    const map = {};
-    for (let str of strs) {
-        let key = str.split('').sort().join('');
-        if (!map[key]) map[key] = [];
-        map[key].push(str);
-    }
-    return Object.values(map);
-}
-```
-
----
-
-## Q11. LeetCode #53: Maximum Subarray (Kadane's Algorithm) | Kadane algoritmi — Eng katta yig'indili ostki massiv
-
-**EN:** Given an integer array `nums`, find the subarray with the largest sum, and return its sum using Kadane's Algorithm.
-
-**UZB:** Massiv ichidagi ketma-ket keluvchi eng katta yig'indiga ega ostki massiv yig'indisini Kadane algoritmi O(n) bilan topish.
-
-```javascript
-// Time: O(n) | Space: O(1)
+```js
 function maxSubArray(nums) {
-    let maxSoFar = nums[0], currMax = nums[0];
-    for (let i = 1; i < nums.length; i++) {
-        currMax = Math.max(nums[i], currMax + nums[i]);
-        maxSoFar = Math.max(maxSoFar, currMax);
-    }
-    return maxSoFar;
+  let current = nums[0], best = nums[0];
+  for (let i = 1; i < nums.length; i++) {
+    current = Math.max(nums[i], current + nums[i]); // davom ettirish yoki yangidan boshlash
+    best = Math.max(best, current);
+  }
+  return best;
 }
+
+console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4])); // 6
+console.log(maxSubArray([-3, -1, -2]));                   // -1 — hammasi manfiy bo'lsa ham
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(1).
 
-## Q12. LeetCode #56: Merge Intervals | Kesishuvchi intervallarni birlashtirish (Merge Intervals)
+**Intervyuda shunday ayting:** "Kadane algoritmi: har pozitsiyada shu yerda tugaydigan eng yaxshi yig'indini hisoblayman — oldingisini davom ettirish yoki yangidan boshlashning kattasi. Umumiy maksimumni alohida saqlayman. Bu dinamik dasturlashning eng oddiy ko'rinishi, O(n)."
 
-**EN:** Given an array of `intervals`, merge all overlapping intervals, and return an array of the non-overlapping intervals after sorting.
+**Esda tuting:** `best`ni `0` bilan emas, **birinchi element** bilan boshlang — aks holda hamma sonlar manfiy bo'lganda noto'g'ri `0` qaytadi.
 
-**UZB:** Bir-biri bilan ustma-ust tushgan sanalar/sonlar intervallarini saralab, avtomatik birlashtirish.
+## Q10. Kesishuvchi intervallarni qanday birlashtirasiz? / LeetCode #56 — Merge Intervals
 
-```javascript
-// Time: O(n log n) | Space: O(n)
+**Masala:** `[boshi, oxiri]` intervallar ro'yxati. Kesishganlarini birlashtiring. `[[1,3],[2,6],[8,10],[15,18]]` → `[[1,6],[8,10],[15,18]]`.
+
+**Oddiy qilib aytganda:** kalendardagi uchrashuvlarni tasavvur qiling. Avval ularni **boshlanish vaqti** bo'yicha tartiblaysiz. Keyin har bir uchrashuv oldingisi tugashidan oldin boshlansa, ularni bitta uzun uchrashuvga birlashtirasiz.
+
+**Qadam-ba-qadam:**
+1. Boshlanishi bo'yicha saralash.
+2. Natijadagi oxirgi interval bilan joriysini solishtirish: `joriy.boshi <= oxirgi.oxiri` — birlashtirish (`oxiri = max`), aks holda yangi interval.
+
+**Yechim:**
+
+```js
 function merge(intervals) {
-    if (!intervals.length) return [];
-    intervals.sort((a, b) => a[0] - b[0]);
-    const res = [intervals[0]];
-    for (let i = 1; i < intervals.length; i++) {
-        let last = res[res.length - 1];
-        let curr = intervals[i];
-        if (curr[0] <= last[1]) last[1] = Math.max(last[1], curr[1]);
-        else res.push(curr);
-    }
-    return res;
+  const sorted = [...intervals].sort((a, b) => a[0] - b[0]);
+  const result = [];
+  for (const [start, end] of sorted) {
+    const last = result.at(-1);
+    if (last && start <= last[1]) last[1] = Math.max(last[1], end);
+    else result.push([start, end]);
+  }
+  return result;
 }
+
+console.log(merge([[1, 3], [2, 6], [8, 10], [15, 18]])); // [ [ 1, 6 ], [ 8, 10 ], [ 15, 18 ] ]
+console.log(merge([[1, 4], [4, 5]]));                    // [ [ 1, 5 ] ] — chegarada tegishi ham birlashadi
+console.log(merge([[1, 10], [2, 3]]));                   // [ [ 1, 10 ] ] — ichma-ich
 ```
 
----
+**Murakkablik:** vaqt O(n log n) — saralash; xotira O(n).
 
-## Q13. LeetCode #70: Climbing Stairs | Zinadan ko'tarilish usullari soni (Climbing Stairs)
+**Intervyuda shunday ayting:** "Intervallarni boshlanishi bo'yicha saralayman, keyin bir o'tishda har birini natijadagi oxirgisi bilan solishtiraman: kesishsa oxirini kengaytiraman, aks holda yangisini qo'shaman. Vaqt O(n log n)."
 
-**EN:** You are climbing a staircase. It takes `n` steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+**Esda tuting:** `Math.max` muhim — `[1,10]` va `[2,3]` da ikkinchisi to'liq birinchining ichida.
 
-**UZB:** N bosqichli zinadan 1 yoki 2 qadam bilan ko'tarilishning jami unikal usullari sonini DP (Fibonachchi) bilan hisoblash.
+## Q11. Zinaga necha xil usulda chiqish mumkin? / LeetCode #70 — Climbing Stairs
 
-```javascript
-// Time: O(n) | Space: O(1)
+**Masala:** `n` pog'onali zina. Har safar 1 yoki 2 pog'ona chiqish mumkin. Tepaga necha xil usulda chiqasiz? `n = 3` → `3` (1+1+1, 1+2, 2+1).
+
+**Oddiy qilib aytganda:** `n`-pog'onaga faqat ikki joydan kelish mumkin: `(n−1)`-pog'onadan (1 qadam) yoki `(n−2)`-pog'onadan (2 qadam). Demak, usullar soni = ikkalasining yig'indisi. Bu **Fibonachchi** ketma-ketligi. Har pog'ona uchun javobni qayta hisoblamaslik uchun faqat oxirgi ikkitasini eslab qolasiz — bu **dinamik dasturlash**.
+
+**Yechim:**
+
+```js
 function climbStairs(n) {
-    if (n <= 2) return n;
-    let first = 1, second = 2;
-    for (let i = 3; i <= n; i++) {
-        let third = first + second;
-        first = second;
-        second = third;
-    }
-    return second;
+  let oneBack = 1, twoBack = 1;            // 1-pog'ona va 0-pog'ona uchun
+  for (let step = 2; step <= n; step++) {
+    [twoBack, oneBack] = [oneBack, oneBack + twoBack];
+  }
+  return oneBack;
 }
+
+console.log(climbStairs(2), climbStairs(3), climbStairs(5), climbStairs(45)); // 2 3 8 1836311903
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(1). Oddiy rekursiya (`f(n-1) + f(n-2)`) esa O(2ⁿ) — `n = 45` da juda sekin.
 
-## Q14. LeetCode #121: Best Time to Buy and Sell Stock | Aktsiyalarni sotib olish va sotishning eng maqbul vaqti
+**Intervyuda shunday ayting:** "`n`-pog'onaga yo'llar soni `f(n−1) + f(n−2)` — Fibonachchi. Naiv rekursiya bir xil qiymatlarni qayta-qayta hisoblaydi, O(2ⁿ). Pastdan yuqoriga faqat oxirgi ikki qiymatni saqlab, O(n) vaqt va O(1) xotira bilan hisoblayman."
 
-**EN:** Find maximum profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+**Esda tuting:** dinamik dasturlashni tanish: "katta javob kichik javoblardan yig'iladimi va ular takrorlanadimi?" — ha bo'lsa, eslab qoling.
 
-**UZB:** Bitta aktsiyani eng arzon kunda sotib olib, eng qimmat kunda sotishdan olinadigan maksimal foydani O(n) da topish.
+## Q12. Aksiyani qachon olib, qachon sotish eng foydali? / LeetCode #121 — Best Time to Buy and Sell Stock
 
-```javascript
-// Time: O(n) | Space: O(1)
+**Masala:** `prices[i]` — `i`-kundagi narx. Bir marta olib, **keyinroq** bir marta sotib, eng katta foyda qancha? `[7, 1, 5, 3, 6, 4]` → `5` (1 da olib, 6 da sotish).
+
+**Oddiy qilib aytganda:** kunma-kun yurasiz va ikki narsani eslab qolasiz: "shu kungacha eng **arzon** narx qancha bo'ldi?" va "bugun sotsam, qancha foyda?" Eng katta foydani saqlab borasiz.
+
+**Yechim:**
+
+```js
 function maxProfit(prices) {
-    let minPrice = Infinity, maxProf = 0;
-    for (let p of prices) {
-        if (p < minPrice) minPrice = p;
-        else if (p - minPrice > maxProf) maxProf = p - minPrice;
-    }
-    return maxProf;
+  let cheapest = Infinity, best = 0;
+  for (const price of prices) {
+    cheapest = Math.min(cheapest, price);
+    best = Math.max(best, price - cheapest);
+  }
+  return best;
 }
+
+console.log(maxProfit([7, 1, 5, 3, 6, 4])); // 5
+console.log(maxProfit([7, 6, 4, 3, 1]));    // 0 — foyda yo'q, savdo qilmaymiz
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(1).
 
-## Q15. LeetCode #141: Linked List Cycle (Floyd's Tortoise and Hare) | Linked List da sikl (halqa) borligini aniqlash
+**Intervyuda shunday ayting:** "Bir o'tishda hozirgacha eng past narxni va bugun sotilganda foydani hisoblayman, maksimum foydani saqlayman. Har juftni tekshirish O(n²) bo'lardi; bu yechim O(n)."
 
-**EN:** Given `head`, the head of a linked list, determine if the linked list has a cycle using Floyd's Cycle Finding Algorithm (Slow & Fast Pointers).
+**Esda tuting:** sotish olishdan **keyin** bo'lishi kerak — shuning uchun `cheapest`ni avval yangilab, keyin foydani hisoblash to'g'ri ishlaydi (bir kunda olib-sotish foyda 0 beradi).
 
-**UZB:** Linked List ichida cheksiz halqa (cycle) borligini Fast & Slow pointer (Toshbaka va Quyon algoritmi) bilan O(1) xotirada topish.
+## Q13. Linked list'da halqa borligini qanday aniqlaysiz? / LeetCode #141 — Linked List Cycle
 
-```javascript
-// Time: O(n) | Space: O(1)
+**Masala:** linked list'da halqa (sikl) bormi — ya'ni biror tugun oldingi tugunga qaytib ulanganmi?
+
+**Oddiy qilib aytganda:** yugurish yo'lagida toshbaqa va quyon yuguradi: quyon ikki barobar tez. Agar yo'l **aylana** bo'lsa, quyon ertami-kechmi toshbaqani **orqadan quvib yetadi**. Agar yo'l tugasa, halqa yo'q. Bu **Floyd algoritmi** (tortoise and hare).
+
+**Yechim:**
+
+```js
+class ListNode { constructor(val, next = null) { this.val = val; this.next = next; } }
+
 function hasCycle(head) {
-    let slow = head, fast = head;
-    while (fast && fast.next) {
-        slow = slow.next;
-        fast = fast.next.next;
-        if (slow === fast) return true;
-    }
-    return false;
+  let slow = head, fast = head;
+  while (fast && fast.next) {
+    slow = slow.next;            // 1 qadam
+    fast = fast.next.next;       // 2 qadam
+    if (slow === fast) return true;
+  }
+  return false;
 }
+
+const a = new ListNode(1), b = new ListNode(2), c = new ListNode(3);
+a.next = b; b.next = c;
+console.log(hasCycle(a));  // false
+c.next = b;                // 3 → 2 halqa
+console.log(hasCycle(a));  // true
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(1). `Set` bilan ko'rilgan tugunlarni saqlash ham ishlaydi, lekin xotira O(n).
 
-## Q16. LeetCode #146: LRU Cache (Least Recently Used Cache) | LRU Cache qurish (Doubly Linked List + Hash Map)
+**Intervyuda shunday ayting:** "Floyd algoritmi: sekin ko'rsatkich bir, tez ko'rsatkich ikki qadam yuradi. Halqa bo'lsa, ular albatta uchrashadi; tez ko'rsatkich `null`ga yetsa, halqa yo'q. Vaqt O(n), xotira O(1)."
 
-**EN:** Design a data structure that follows the constraints of a Least Recently Used (LRU) cache with O(1) time complexity for get and put operations.
+**Esda tuting:** tugunlarni qiymat bo'yicha emas, **havola** (`===`) bo'yicha solishtiring — qiymatlar takrorlanishi mumkin.
 
-**UZB:** Eng kam ishlatilgan elementlarni keshdan o'chiruvchi LRU Cache strukturasini O(1) vaqt murakkabligida yaratish.
+## Q14. Ustunlar orasida qancha yomg'ir suvi yig'iladi? / LeetCode #42 — Trapping Rain Water
 
-```javascript
-// Time: O(1) for get and put
+**Masala:** `height` — ustunlar balandligi (kengligi 1). Yomg'irdan keyin ular orasida jami qancha suv qoladi? `[0,1,0,2,1,0,1,3,2,1,2,1]` → `6`.
+
+**Oddiy qilib aytganda:** har bir katak ustida suv sathi = **chapdagi eng baland** va **o'ngdagi eng baland** ustunlarning **pastrog'i**. Ikki ko'rsatkichni chetlardan yurgizasiz: qaysi tomonning maksimumi pastroq bo'lsa, o'sha tomondagi katakning suvi aniq hisoblanadi (chunki qarama-qarshi tomonda albatta balandroq devor bor).
+
+**Yechim:**
+
+```js
+function trap(height) {
+  let left = 0, right = height.length - 1, leftMax = 0, rightMax = 0, water = 0;
+  while (left < right) {
+    if (height[left] < height[right]) {
+      leftMax = Math.max(leftMax, height[left]);
+      water += leftMax - height[left];
+      left++;
+    } else {
+      rightMax = Math.max(rightMax, height[right]);
+      water += rightMax - height[right];
+      right--;
+    }
+  }
+  return water;
+}
+
+console.log(trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1])); // 6
+console.log(trap([4, 2, 0, 3, 2, 5]));                   // 9
+```
+
+**Murakkablik:** vaqt O(n); xotira O(1).
+
+**Intervyuda shunday ayting:** "Har katakdagi suv — chap va o'ng maksimumlarning minimumi minus balandlik. Ikki ko'rsatkich bilan pastroq tomonni qayta ishlayman: shu tomonning maksimumi cheklovchi ekani aniq. Vaqt O(n), xotira O(1). Oddiyroq variant — chap va o'ng maksimumlarni oldindan massivlarda hisoblash, O(n) xotira."
+
+**Esda tuting:** avval oddiy (ikki massivli) yechimni tushuntirib, keyin optimallashtirish — intervyuda yaxshi taassurot qoldiradi.
+
+## Q15. Anagramlarni qanday guruhlaysiz? / LeetCode #49 — Group Anagrams
+
+**Masala:** so'zlar ro'yxatini anagramlar (bir xil harflardan tuzilgan) bo'yicha guruhlang. `["eat","tea","tan","ate","nat","bat"]` → `[["eat","tea","ate"],["tan","nat"],["bat"]]`.
+
+**Oddiy qilib aytganda:** har bir so'zning harflarini **alifbo tartibida** tersangiz, anagramlar bir xil "kalit"ga ega bo'ladi: `eat`, `tea`, `ate` → `aet`. Kalit bo'yicha Map'ga guruhlaysiz.
+
+**Yechim:**
+
+```js
+function groupAnagrams(words) {
+  const groups = new Map();
+  for (const word of words) {
+    const key = [...word].sort().join("");         // "tea" → "aet"
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(word);
+  }
+  return [...groups.values()];
+}
+
+console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
+// [ [ 'eat', 'tea', 'ate' ], [ 'tan', 'nat' ], [ 'bat' ] ]
+```
+
+**Murakkablik:** vaqt O(n · k log k) — `n` so'z, har biri `k` uzunlikda saralanadi; xotira O(n · k).
+
+**Intervyuda shunday ayting:** "Har so'z uchun kanonik kalit — saralangan harflar — yarataman va Map'da guruhlayman. Tezroq variant: 26 harf uchun hisoblagich massivini kalit qilish, O(n · k)."
+
+**Esda tuting:** ES2024 dan `Map.groupBy(words, (w) => [...w].sort().join(""))` bilan ham yozish mumkin.
+
+## Q16. LRU Cache'ni O(1) da qanday qurasiz? / LeetCode #146 — LRU Cache
+
+**Masala:** sig'imi cheklangan kesh yarating: `get(key)` va `put(key, value)` O(1) da ishlasin. Joy tugasa, **eng uzoq vaqt ishlatilmagan** (Least Recently Used) yozuv o'chirilsin.
+
+**Oddiy qilib aytganda:** stol ustidagi kitoblar to'plami: qaysi kitobni olsangiz, uni **eng tepaga** qo'yasiz. Joy tugasa, eng pastdagisini (eng uzoq tegilmaganini) olib tashlaysiz. JavaScript'dagi `Map` elementlarni **qo'shilgan tartibda** saqlaydi — shuning uchun "tepaga qo'yish" = o'chirib qayta qo'shish, "eng pastdagi" = birinchi kalit.
+
+**Yechim:**
+
+```js
 class LRUCache {
-    constructor(capacity) {
-        this.capacity = capacity;
-        this.map = new Map(); // Preserves insertion order in JS!
-    }
-    get(key) {
-        if (!this.map.has(key)) return -1;
-        const val = this.map.get(key);
-        this.map.delete(key);
-        this.map.set(key, val); // Move to end (most recent)
-        return val;
-    }
-    put(key, value) {
-        if (this.map.has(key)) this.map.delete(key);
-        this.map.set(key, value);
-        if (this.map.size > this.capacity) {
-            const oldestKey = this.map.keys().next().value;
-            this.map.delete(oldestKey); // Remove least recently used
-        }
-    }
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.map = new Map();                         // tartib: eskidan yangiga
+  }
+  get(key) {
+    if (!this.map.has(key)) return -1;
+    const value = this.map.get(key);
+    this.map.delete(key);
+    this.map.set(key, value);                     // eng yangi qilib qo'yish
+    return value;
+  }
+  put(key, value) {
+    this.map.delete(key);
+    this.map.set(key, value);
+    if (this.map.size > this.capacity) this.map.delete(this.map.keys().next().value); // eng eskisini o'chirish
+  }
 }
+
+const cache = new LRUCache(2);
+cache.put(1, "bir"); cache.put(2, "ikki");
+cache.get(1);                  // 1 endi eng yangi
+cache.put(3, "uch");           // 2 o'chiriladi
+console.log(cache.get(2), cache.get(1), cache.get(3)); // -1 bir uch
 ```
 
----
+**Murakkablik:** `get` va `put` O(1) (amortizatsiyalangan); xotira O(capacity).
 
-## Q17. LeetCode #200: Number of Islands | Orollar sonini hisoblash (BFS / DFS Flood Fill)
+**Intervyuda shunday ayting:** "Klassik yechim — hash map va ikki tomonlama bog'langan ro'yxat: map tugunni O(1) topadi, ro'yxat tartibni saqlaydi. JavaScript'da `Map` qo'shilish tartibini saqlagani uchun, kalitni o'chirib qayta qo'shish bilan 'eng yangi' qilaman va birinchi kalitni eng eski sifatida chiqaraman."
 
-**EN:** Given an `m x n` 2D binary grid `grid` which represents a map of '1's (land) and '0's (water), return the number of islands using DFS Flood Fill.
+**Esda tuting:** intervyuer "Map'siz" desa, doubly linked list + obyekt bilan yozishga tayyor turing — bu masalaning asl maqsadi.
 
-**UZB:** 2D matritsada '1' lar (quruqlik) va '0' lar (suv) berilgan. Tutashgan orollar sonini DFS Flood Fill algoritmi bilan hisoblash.
+## Q17. Xaritadagi orollar sonini qanday sanaysiz? / LeetCode #200 — Number of Islands
 
-```javascript
-// Time: O(M * N) | Space: O(M * N)
+**Masala:** `"1"` — quruqlik, `"0"` — suv bo'lgan jadval. Gorizontal yoki vertikal qo'shni quruqliklar bitta orol. Nechta orol bor?
+
+**Oddiy qilib aytganda:** xaritani qatorma-qator ko'rib chiqasiz. Quruqlik topilsa — hisoblagichni oshirasiz va shu orolning **hamma quruqligini "bo'yab"** (suvga aylantirib) chiqasiz, shunda uni qayta sanamaysiz. Bo'yash — qo'shni kataklarga tarqaladigan qidiruv (DFS yoki BFS).
+
+**Yechim:**
+
+```js
 function numIslands(grid) {
-    if (!grid.length) return 0;
-    let count = 0;
-    function dfs(r, c) {
-        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] === '0') return;
-        grid[r][c] = '0'; // Mark visited
-        dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1);
+  const rows = grid.length, cols = grid[0].length;
+  let islands = 0;
+  const sink = (r, c) => {
+    const stack = [[r, c]];                                    // rekursiyasiz DFS — stack chuqurligi xavfsiz
+    while (stack.length) {
+      const [y, x] = stack.pop();
+      if (y < 0 || x < 0 || y >= rows || x >= cols || grid[y][x] !== "1") continue;
+      grid[y][x] = "0";                                        // bo'yaldi
+      stack.push([y + 1, x], [y - 1, x], [y, x + 1], [y, x - 1]);
     }
-    for (let r = 0; r < grid.length; r++) {
-        for (let c = 0; c < grid[0].length; c++) {
-            if (grid[r][c] === '1') { count++; dfs(r, c); }
-        }
+  };
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] === "1") { islands++; sink(r, c); }
     }
-    return count;
+  }
+  return islands;
 }
+
+console.log(numIslands([
+  ["1", "1", "0", "0", "0"],
+  ["1", "1", "0", "0", "0"],
+  ["0", "0", "1", "0", "0"],
+  ["0", "0", "0", "1", "1"],
+])); // 3
 ```
 
----
+**Murakkablik:** vaqt O(rows × cols) — har katak bir marta; xotira O(rows × cols) — eng yomon holatda stack.
 
-## Q18. LeetCode #206: Reverse Linked List | Linked List ni teskarisiga o'girish
+**Intervyuda shunday ayting:** "Har bir ko'rilmagan quruqlikda hisoblagichni oshirib, DFS yoki BFS bilan butun orolni belgilayman. Katta jadvallarda rekursiya stack'ni to'ldirmasligi uchun iterativ stack ishlataman. Vaqt O(m·n)."
 
-**EN:** Given the `head` of a singly linked list, reverse the list, and return the reversed list iteratively in O(n) time and O(1) space.
+**Esda tuting:** asl jadvalni o'zgartirish mumkinmi — so'rang. Mumkin bo'lmasa, alohida `visited` massivi ishlating.
 
-**UZB:** Bir tomonlama Linked Listni O(1) qo'shimcha xotira bilan teskarisiga o'girish.
+## Q18. Linked list'ni qanday teskari aylantirasiz? / LeetCode #206 — Reverse Linked List
 
-```javascript
-// Time: O(n) | Space: O(1)
+**Masala:** `1→2→3→4` → `4→3→2→1`.
+
+**Oddiy qilib aytganda:** har bir tugunning "o'qini" teskari tomonga buramiz. Uchta qo'l kerak: `prev` (oldingi, dastlab `null`), `current` (joriy) va `next` (keyingisini yo'qotmaslik uchun vaqtincha eslab qolish).
+
+**Yechim:**
+
+```js
+class ListNode { constructor(val, next = null) { this.val = val; this.next = next; } }
+const fromArray = (arr) => arr.reduceRight((next, val) => new ListNode(val, next), null);
+const toArray = (node) => { const out = []; for (; node; node = node.next) out.push(node.val); return out; };
+
 function reverseList(head) {
-    let prev = null, curr = head;
-    while (curr) {
-        let next = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = next;
-    }
-    return prev;
+  let prev = null, current = head;
+  while (current) {
+    const next = current.next;    // keyingisini eslab qolish
+    current.next = prev;          // o'qni burish
+    prev = current;
+    current = next;
+  }
+  return prev;
 }
+
+console.log(toArray(reverseList(fromArray([1, 2, 3, 4])))); // [ 4, 3, 2, 1 ]
+console.log(toArray(reverseList(null)));                    // []
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(1).
 
-## Q19. LeetCode #207: Course Schedule (Topological Sort / Cycle Detection) | Kurslar jadvali va Topologik Saralash
+**Intervyuda shunday ayting:** "Uch ko'rsatkich bilan: keyingi tugunni saqlab, joriy tugunning `next`ini oldingisiga buraman va ikkalasini oldinga siljitaman. Vaqt O(n), xotira O(1). Rekursiv variant ham bor, lekin u O(n) stack ishlatadi."
 
-**EN:** There are a total of `numCourses` courses to take. Determine if you can finish all courses given prerequisites using Kahn's Algorithm / Topological Sort.
+**Esda tuting:** `next`ni saqlamasdan o'qni bursangiz, ro'yxatning qolgan qismi yo'qoladi.
 
-**UZB:** Tobe bo'lgan darslar zanjirida cheksiz halqa (cycle) yo'qligini Topologik Saralash (Kahn algoritmi / Indegree) bilan tekshirish.
+## Q19. Barcha kurslarni tugatish mumkinmi (bog'liqliklarda halqa bormi)? / LeetCode #207 — Course Schedule
 
-```javascript
-// Time: O(V + E) | Space: O(V + E)
+**Masala:** `numCourses` ta kurs va `[kurs, oldindanKerak]` juftlari. Barcha kurslarni tugatish mumkinmi? `[[1,0],[0,1]]` → `false` (bir-biriga bog'liq — halqa).
+
+**Oddiy qilib aytganda:** kurslar — graf, bog'liqliklar — o'qlar. Hech narsaga bog'liq **bo'lmagan** kurslardan boshlaysiz (kirish darajasi 0). Ularni "o'tib", ularga bog'liq kurslarning qarzini bittaga kamaytirasiz. Qarzi 0 ga tushgan kurs navbatga qo'shiladi. Oxirida hamma kurs o'tilgan bo'lsa — mumkin; qolib ketganlari bo'lsa — halqa bor. Bu **Kahn algoritmi** (topologik saralash).
+
+**Yechim:**
+
+```js
 function canFinish(numCourses, prerequisites) {
-    const inDegree = new Array(numCourses).fill(0);
-    const adj = Array.from({ length: numCourses }, () => []);
-    for (let [course, pre] of prerequisites) {
-        adj[pre].push(course);
-        inDegree[course]++;
+  const inDegree = new Array(numCourses).fill(0);
+  const next = Array.from({ length: numCourses }, () => []);
+  for (const [course, required] of prerequisites) {
+    next[required].push(course);
+    inDegree[course]++;
+  }
+  const queue = [];
+  for (let i = 0; i < numCourses; i++) if (inDegree[i] === 0) queue.push(i);
+  let taken = 0;
+  for (let head = 0; head < queue.length; head++) {       // shift() o'rniga indeks — O(1)
+    taken++;
+    for (const course of next[queue[head]]) {
+      if (--inDegree[course] === 0) queue.push(course);
     }
-    const queue = [];
-    for (let i = 0; i < numCourses; i++) if (inDegree[i] === 0) queue.push(i);
-    let count = 0;
-    while (queue.length) {
-        let curr = queue.shift(); count++;
-        for (let neighbor of adj[curr]) {
-            inDegree[neighbor]--;
-            if (inDegree[neighbor] === 0) queue.push(neighbor);
-        }
-    }
-    return count === numCourses;
+  }
+  return taken === numCourses;
 }
+
+console.log(canFinish(2, [[1, 0]]));         // true
+console.log(canFinish(2, [[1, 0], [0, 1]])); // false — halqa
 ```
 
----
+**Murakkablik:** vaqt O(V + E) — kurslar va bog'liqliklar soni; xotira O(V + E).
 
-## Q20. LeetCode #238: Product of Array Except Self | O'zidan tashqari barcha elementlar ko'paytmasi
+**Intervyuda shunday ayting:** "Bu yo'naltirilgan grafda halqa bor-yo'qligini tekshirish. Kahn algoritmi bilan kirish darajasi 0 bo'lgan tugunlardan boshlab topologik tartib quraman; barcha tugunlar tartibga kirmasa, halqa bor. Vaqt O(V + E)."
 
-**EN:** Given an integer array `nums`, return an array `answer` such that `answer[i]` is equal to the product of all elements of `nums` except `nums[i]` in O(n) time without division.
+**Esda tuting:** JavaScript'da `array.shift()` O(n) — katta navbatda indeks ko'rsatkichi ishlating (yechimda shunday).
 
-**UZB:** Bo'lish operatoridan foydalanmasdan, har bir indeks uchun o'zidan tashqari barcha elementlar ko'paytmasini Prefix va Suffix ko'paytmalari bilan topish.
+## Q20. O'zidan boshqa barcha elementlar ko'paytmasini bo'lishsiz qanday topasiz? / LeetCode #238 — Product of Array Except Self
 
-```javascript
-// Time: O(n) | Space: O(1) output array
+**Masala:** har bir `i` uchun `nums[i]`dan boshqa barcha elementlar ko'paytmasini hisoblang, **bo'lishdan foydalanmasdan**, O(n) da. `[1, 2, 3, 4]` → `[24, 12, 8, 6]`.
+
+**Oddiy qilib aytganda:** har bir element uchun javob = (undan **chapdagilar** ko'paytmasi) × (undan **o'ngdagilar** ko'paytmasi). Avval chapdan o'ngga yurib "chap ko'paytmalar"ni, keyin o'ngdan chapga yurib ularni "o'ng ko'paytmalar"ga ko'paytirasiz.
+
+**Yechim:**
+
+```js
 function productExceptSelf(nums) {
-    const n = nums.length, res = new Array(n).fill(1);
-    let prefix = 1, suffix = 1;
-    for (let i = 0; i < n; i++) {
-        res[i] = prefix;
-        prefix *= nums[i];
-    }
-    for (let i = n - 1; i >= 0; i--) {
-        res[i] *= suffix;
-        suffix *= nums[i];
-    }
-    return res;
-}
-```
-
----
-
-## Q21. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q22. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q23. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q24. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q25. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q26. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q27. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q28. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q29. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q30. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q31. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q32. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q33. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q34. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q35. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q36. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
-
-## Q37. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+  const result = new Array(nums.length).fill(1);
+  let left = 1;
+  for (let i = 0; i < nums.length; i++) { result[i] = left; left *= nums[i]; }   // chapdagilar
+  let right = 1;
+  for (let i = nums.length - 1; i >= 0; i--) { result[i] *= right; right *= nums[i]; } // × o'ngdagilar
+  return result;
 }
-```
-
----
-
-## Q38. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
 
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(productExceptSelf([1, 2, 3, 4]));      // [ 24, 12, 8, 6 ]
+console.log(productExceptSelf([2, 3, 4, 5]));      // [ 60, 40, 30, 24 ]
 ```
-
----
 
-## Q39. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n); qo'shimcha xotira O(1) (natija massividan tashqari).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Har element uchun javob — prefiks va suffiks ko'paytmalarining ko'paytmasi. Ikki o'tishda hisoblayman: birinchisida prefikslarni natijaga yozaman, ikkinchisida suffiks bilan ko'paytiraman. Bo'lish ishlatilmaydi, shuning uchun nol bilan muammo yo'q."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** "barchasini ko'paytirib, har biriga bo'lish" — nol bo'lsa ishlamaydi va masala shartini buzadi.
 
----
+## Q21. Ikki so'z bir-birining anagrammi ekanini qanday tekshirasiz? / LeetCode #242 — Valid Anagram
 
-## Q40. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** `s` va `t` bir xil harflardan (bir xil miqdorda) tuzilganmi? `"anagram"`, `"nagaram"` → `true`; `"rat"`, `"car"` → `false`.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** birinchi so'zning har bir harfini sanab chiqasiz (a — 3 ta, n — 1 ta...), keyin ikkinchi so'z harflarini shu hisobdan **ayirasiz**. Hammasi aniq nolga tushsa — anagram.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
+```js
 function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+  if (s.length !== t.length) return false;
+  const counts = new Map();
+  for (const char of s) counts.set(char, (counts.get(char) ?? 0) + 1);
+  for (const char of t) {
+    const left = (counts.get(char) ?? 0) - 1;
+    if (left < 0) return false;                  // t da ortiqcha harf
+    counts.set(char, left);
+  }
+  return true;
 }
-```
-
----
-
-## Q41. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
 
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(isAnagram("anagram", "nagaram"), isAnagram("rat", "car"), isAnagram("ab", "a")); // true false false
 ```
-
----
 
-## Q42. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n); xotira O(k) — turli harflar soni. Saralab solishtirish ham ishlaydi, lekin O(n log n).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Uzunliklar teng bo'lmasa — darhol false. Aks holda birinchi satr harflarini sanayman va ikkinchisinikini ayiraman; hisob manfiyga tushsa — false. Vaqt O(n)."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** Unicode (emoji, o'zbekcha `oʻ`) bilan `for...of` belgilarni to'g'ri ajratadi, `s[i]` esa emoji'ni ikki qismga bo'lishi mumkin.
 
----
+## Q22. Massivda takrorlanuvchi element bormi? / LeetCode #217 — Contains Duplicate
 
-## Q43. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** massivda biror qiymat kamida ikki marta uchraydimi? `[1, 2, 3, 1]` → `true`.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** mehmonlar ro'yxati: har bir kelgan odamni ro'yxatga yozasiz. Kimdir kelsa-yu, u allaqachon ro'yxatda bo'lsa — takror topildi. JavaScript'da bunday ro'yxat — `Set` (tekshiruv O(1)).
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+```js
+function containsDuplicate(nums) {
+  const seen = new Set();
+  for (const n of nums) {
+    if (seen.has(n)) return true;               // erta to'xtash
+    seen.add(n);
+  }
+  return false;
 }
-```
-
----
 
-## Q44. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(containsDuplicate([1, 2, 3, 1]), containsDuplicate([1, 2, 3, 4])); // true false
+console.log(new Set([1, 2, 3, 1]).size !== 4);                                  // qisqa variant: true
 ```
-
----
-
-## Q45. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Murakkablik:** vaqt O(n); xotira O(n).
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Intervyuda shunday ayting:** "Set'da ko'rilgan qiymatlarni saqlab, takror uchrashi bilan true qaytaraman. Vaqt O(n), xotira O(n). Xotira cheklangan bo'lsa, saralab qo'shni elementlarni solishtirish mumkin — O(n log n) vaqt, O(1) qo'shimcha xotira."
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** `new Set(nums).size !== nums.length` qisqa, lekin har doim butun massivni o'tadi — erta to'xtamaydi.
 
----
+## Q23. Satr palindrommi (faqat harf va raqamlarni hisobga olib)? / LeetCode #125 — Valid Palindrome
 
-## Q46. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** harf va raqamlardan boshqa belgilarni e'tiborsiz qoldirib, katta-kichik harfni farqlamasdan, satr teskarisiga tengmi? `"A man, a plan, a canal: Panama"` → `true`.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** ikki barmog'ingizni satrning ikki chetiga qo'yasiz va o'rtaga qarab yurasiz. Tinish belgilari va probellarni o'tkazib yuborasiz, harflarni kichik harfga aylantirib solishtirasiz. Bitta farq — palindrom emas.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+```js
+function isPalindrome(s) {
+  const isAlnum = (char) => /[a-z0-9]/i.test(char);
+  let left = 0, right = s.length - 1;
+  while (left < right) {
+    if (!isAlnum(s[left])) { left++; continue; }
+    if (!isAlnum(s[right])) { right--; continue; }
+    if (s[left].toLowerCase() !== s[right].toLowerCase()) return false;
+    left++; right--;
+  }
+  return true;
 }
-```
 
----
-
-## Q47. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(isPalindrome("A man, a plan, a canal: Panama")); // true
+console.log(isPalindrome("race a car"));                     // false
+console.log(isPalindrome(" "));                              // true
 ```
-
----
 
-## Q48. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n); xotira O(1).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Ikki ko'rsatkich bilan chetlardan o'rtaga yuraman, harf-raqam bo'lmagan belgilarni o'tkazib yuboraman va kichik harfda solishtiraman. Tozalangan satrni yaratib teskarisi bilan solishtirish ham mumkin, lekin u O(n) qo'shimcha xotira oladi."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Esda tuting:** intervyuerdan "harf" nimani anglatishini so'rang — faqat lotinmi yoki Unicode ham (`/\p{L}|\p{N}/u`)?
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
+## Q24. Tartiblangan massivda binary search qanday ishlaydi? / LeetCode #704 — Binary Search
 
-## Q49. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** tartiblangan massivda `target` indeksini O(log n) da toping.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** "1 dan 100 gacha son o'yladim" o'yini: siz 50 deysiz, men "kattaroq" deyman — endi 1–50 ni tashlab yuborasiz. Har savolda qidiruv maydoni **yarmiga** qisqaradi: 1 000 000 elementda ~20 qadam yetadi.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+```js
+function binarySearch(nums, target) {
+  let left = 0, right = nums.length - 1;
+  while (left <= right) {
+    const mid = left + ((right - left) >> 1);
+    if (nums[mid] === target) return mid;
+    if (nums[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return -1;
 }
-```
-
----
-
-## Q50. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(binarySearch([-1, 0, 3, 5, 9, 12], 9));  // 4
+console.log(binarySearch([-1, 0, 3, 5, 9, 12], 2));  // -1
 ```
 
----
+**Murakkablik:** vaqt O(log n); xotira O(1).
 
-## Q51. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Intervyuda shunday ayting:** "Har qadamda o'rtadagi element bilan solishtirib, qidiruv oralig'ining yarmini tashlab yuboraman. Chegara shartlari muhim: `left <= right` va `mid ± 1`. Vaqt O(log n)."
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Esda tuting:** chegara xatolari (`<` o'rniga `<=`, `mid` o'rniga `mid + 1`) — binary search'dagi eng keng tarqalgan xato; kichik misollar bilan qo'lda tekshiring.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+## Q25. Binar daraxtning chuqurligini qanday topasiz? / LeetCode #104 — Maximum Depth of Binary Tree
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Masala:** daraxt ildizidan eng uzoq bargigacha nechta tugun bor?
 
----
+**Oddiy qilib aytganda:** oila shajarasida "nechta avlod bor?" deb so'rasangiz, har bir odam o'z bolalaridan so'raydi: "sizdan keyin nechta avlod?" — va eng kattasiga o'zini (+1) qo'shadi. Bu **rekursiya**: katta savol o'sha savolning kichik nusxalariga bo'linadi.
 
-## Q52. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Yechim:**
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+```js
+const node = (val, left = null, right = null) => ({ val, left, right });
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+function maxDepth(root) {
+  if (!root) return 0;
+  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
 }
-```
 
----
-
-## Q53. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+//        3
+//       / \
+//      9  20
+//         / \
+//        15  7
+const tree = node(3, node(9), node(20, node(15), node(7)));
+console.log(maxDepth(tree), maxDepth(null)); // 3 0
 ```
-
----
 
-## Q54. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n); xotira O(h) — `h` daraxt balandligi (rekursiya stack'i).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Chuqurlik — 1 plyus chap va o'ng qism daraxtlar chuqurliklarining kattasi; bo'sh daraxt — 0. Rekursiv DFS O(n) vaqt va O(h) xotira. Juda chuqur daraxtda stack'ni to'ldirmaslik uchun BFS bilan qatlamlarni sanash mumkin."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Esda tuting:** daraxt masalalarining ko'pchiligi shu shablonda: "bo'sh bo'lsa — asosiy holat; aks holda — chap va o'ng javoblardan yig'ish".
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+## Q26. Binar daraxtni qanday oynadagidek aylantirasiz? / LeetCode #226 — Invert Binary Tree
 
----
+**Masala:** har bir tugunning chap va o'ng bolalarini almashtiring (oynadagi aks).
 
-## Q55. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Oddiy qilib aytganda:** har bir tugunda "chap qo'l" va "o'ng qo'l"ni almashtirasiz, keyin xuddi shu ishni bolalaridan ham so'raysiz.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Yechim:**
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+```js
+const node = (val, left = null, right = null) => ({ val, left, right });
+const levels = (root) => { const out = []; const q = root ? [root] : []; while (q.length) { const n = q.shift(); out.push(n.val); if (n.left) q.push(n.left); if (n.right) q.push(n.right); } return out; };
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+function invertTree(root) {
+  if (!root) return null;
+  [root.left, root.right] = [invertTree(root.right), invertTree(root.left)];
+  return root;
 }
-```
 
----
-
-## Q56. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+const tree = node(4, node(2, node(1), node(3)), node(7, node(6), node(9)));
+console.log(levels(invertTree(tree))); // [ 4, 7, 2, 9, 6, 3, 1 ]
 ```
-
----
 
-## Q57. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n); xotira O(h).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Har tugunda chap va o'ng qism daraxtlarni almashtiraman va rekursiv ravishda ularni ham aylantiraman. Har tugun bir marta ko'riladi — O(n)."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Esda tuting:** almashtirishdan oldin rekursiv chaqiruv natijalarini oling — aks holda bitta tomonni ikki marta aylantirib yuborishingiz mumkin (yuqoridagi destructuring bu xavfni yo'qotadi).
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
+## Q27. Eng ko'p uchraydigan k ta elementni qanday topasiz? / LeetCode #347 — Top K Frequent Elements
 
-## Q58. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** `[1,1,1,2,2,3]`, `k = 2` → `[1, 2]`. Saralashdan (O(n log n)) tezroq bo'lsa yaxshi.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** avval har bir sonni sanaysiz. Keyin "savatlar" qatorini tasavvur qiling: 1-savat — bir marta uchraganlar, 2-savat — ikki marta... Har sonni o'z savatiga solasiz va **eng oxirgi (katta) savatlardan** boshlab `k` ta element olasiz. Bu **bucket sort**.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+```js
+function topKFrequent(nums, k) {
+  const counts = new Map();
+  for (const n of nums) counts.set(n, (counts.get(n) ?? 0) + 1);
+  const buckets = Array.from({ length: nums.length + 1 }, () => []);
+  for (const [num, count] of counts) buckets[count].push(num);
+  const result = [];
+  for (let count = buckets.length - 1; count > 0 && result.length < k; count--) {
+    result.push(...buckets[count]);
+  }
+  return result.slice(0, k);
 }
-```
-
----
-
-## Q59. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(topKFrequent([1, 1, 1, 2, 2, 3], 2)); // [ 1, 2 ]
+console.log(topKFrequent([4, 4, 5], 1));          // [ 4 ]
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(n).
 
-## Q60. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Intervyuda shunday ayting:** "Chastotalarni Map'da sanayman, keyin chastota bo'yicha bucket'larga taqsimlab, eng yuqoridan k tasini olaman — O(n). Alternativa — k o'lchamli min-heap, O(n log k), bu oqim (stream) ma'lumotlari uchun qulay."
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Esda tuting:** chastotalar teng bo'lganda qaysi birini qaytarish kerakligini so'rang — masala shartida odatda farqi yo'q.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+## Q28. Eng uzun ketma-ket sonlar zanjirini O(n) da qanday topasiz? / LeetCode #128 — Longest Consecutive Sequence
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
-
----
+**Masala:** tartiblanmagan massivda eng uzun ketma-ket sonlar (masalan, 1,2,3,4) uzunligi. `[100, 4, 200, 1, 3, 2]` → `4`.
 
-## Q61. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Oddiy qilib aytganda:** hamma sonlarni `Set`ga solasiz. Keyin faqat zanjirning **boshlanishi** bo'lgan sonlardan (ya'ni `son − 1` Set'da yo'q) sanashni boshlaysiz: `son + 1`, `son + 2`... bor ekan, davom etasiz. Har zanjir faqat bir marta sanaladi.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Yechim:**
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+```js
+function longestConsecutive(nums) {
+  const set = new Set(nums);
+  let best = 0;
+  for (const n of set) {
+    if (set.has(n - 1)) continue;             // zanjir boshi emas
+    let length = 1;
+    while (set.has(n + length)) length++;
+    best = Math.max(best, length);
+  }
+  return best;
 }
-```
-
----
-
-## Q62. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
 
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(longestConsecutive([100, 4, 200, 1, 3, 2]));           // 4
+console.log(longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));   // 9
 ```
-
----
-
-## Q63. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Murakkablik:** vaqt O(n) — har son ichki siklda ko'pi bilan bir marta; xotira O(n).
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Intervyuda shunday ayting:** "Saralash O(n log n) beradi. O(n) uchun sonlarni Set'ga solib, faqat zanjir boshlarida (oldingi son yo'q) ichki siklni boshlayman — shuning uchun har element jami bir marta ko'riladi."
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** `set.has(n - 1)` tekshiruvisiz algoritm O(n²) ga aylanadi.
 
----
+## Q29. Minimumni O(1) da beradigan stack'ni qanday qurasiz? / LeetCode #155 — Min Stack
 
-## Q64. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** `push`, `pop`, `top` va `getMin` — hammasi O(1).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** har bir likopchani to'plamga qo'yganda, uning ustiga kichik yorliq yopishtirasiz: "shu likopchagacha eng kichigi — X". Likopchani olsangiz, yorliq ham ketadi, pastdagi likopchaning yorlig'i esa to'g'ri minimumni ko'rsatadi.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+```js
+class MinStack {
+  #items = [];                                        // [qiymat, shu joygacha minimum]
+  push(value) {
+    const min = this.#items.length ? Math.min(value, this.getMin()) : value;
+    this.#items.push([value, min]);
+  }
+  pop() { this.#items.pop(); }
+  top() { return this.#items.at(-1)[0]; }
+  getMin() { return this.#items.at(-1)[1]; }
 }
-```
-
----
 
-## Q65. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+const stack = new MinStack();
+stack.push(-2); stack.push(0); stack.push(-3);
+console.log(stack.getMin()); // -3
+stack.pop();
+console.log(stack.top(), stack.getMin()); // 0 -2
 ```
-
----
 
-## Q66. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** barcha amallar O(1); xotira O(n).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Har element bilan birga shu paytgacha bo'lgan minimumni saqlayman. `pop` qilganda minimum avtomatik oldingi holatga qaytadi. Barcha amallar O(1)."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** faqat bitta `min` o'zgaruvchisi yetarli emas — minimum `pop` qilinganda oldingi minimumni bilish kerak.
 
----
+## Q30. Summani eng kam tangalar bilan qanday yig'asiz? / LeetCode #322 — Coin Change
 
-## Q67. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** tangalar qiymatlari `coins` va `amount`. Summani yig'ish uchun **eng kam** nechta tanga kerak (cheksiz miqdorda)? Mumkin bo'lmasa `-1`. `[1, 2, 5]`, `11` → `3` (5+5+1).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** "har doim eng katta tangani ol" (ochko'z usul) har doim ishlamaydi: `[1, 3, 4]` va `6` da ochko'z usul 4+1+1 (3 ta) beradi, to'g'risi 3+3 (2 ta). Shuning uchun 0 dan `amount`gacha **har bir summa** uchun eng yaxshi javobni hisoblab borasiz: `best[x] = 1 + min(best[x − tanga])`.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
+```js
+function coinChange(coins, amount) {
+  const best = new Array(amount + 1).fill(Infinity);
+  best[0] = 0;
+  for (let sum = 1; sum <= amount; sum++) {
+    for (const coin of coins) {
+      if (coin <= sum) best[sum] = Math.min(best[sum], best[sum - coin] + 1);
     }
-    return true;
+  }
+  return best[amount] === Infinity ? -1 : best[amount];
 }
-```
-
----
 
-## Q68. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(coinChange([1, 2, 5], 11)); // 3
+console.log(coinChange([1, 3, 4], 6));  // 2 — ochko'z usul 3 berardi
+console.log(coinChange([2], 3));        // -1
 ```
-
----
 
-## Q69. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(amount × tangalar soni); xotira O(amount).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Ochko'z yondashuv har qanday tanga to'plamida optimal emas, shuning uchun dinamik dasturlash qo'llayman: har summa uchun minimal tangalar soni oldingi summalardan hisoblanadi. Vaqt O(amount · k)."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** "nechta **usul** bor" (Coin Change II) — boshqa masala: u yerda minimum emas, yig'indi hisoblanadi.
 
----
+## Q31. Qo'shni uylarni o'g'irlamasdan eng ko'p pulni qanday olasiz? / LeetCode #198 — House Robber
 
-## Q70. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** `nums[i]` — `i`-uydagi pul. Ikki **qo'shni** uyni birga tanlab bo'lmaydi. Eng ko'p qancha pul olish mumkin? `[2, 7, 9, 3, 1]` → `12` (2 + 9 + 1).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** har bir uy oldida ikki tanlov: "bu uyni olaman" (unda oldingisini ololmayman: `ikki oldingi eng yaxshi + shu uy`) yoki "o'tkazib yuboraman" (`oldingi eng yaxshi`). Kattasini tanlaysiz. Faqat oxirgi ikki javobni eslab qolish yetarli.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+```js
+function rob(nums) {
+  let prevBest = 0, currBest = 0;               // i-2 va i-1 gacha eng yaxshi
+  for (const money of nums) {
+    [prevBest, currBest] = [currBest, Math.max(currBest, prevBest + money)];
+  }
+  return currBest;
 }
-```
-
----
-
-## Q71. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(rob([1, 2, 3, 1]));    // 4
+console.log(rob([2, 7, 9, 3, 1])); // 12
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(1).
 
-## Q72. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Intervyuda shunday ayting:** "Har uy uchun: olish — ikki oldingi optimum plyus shu uy; olmaslik — oldingi optimum. Kattasini tanlayman. Faqat oxirgi ikki qiymat kerak, shuning uchun xotira O(1)."
 
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** bu Climbing Stairs (Q11) bilan bir xil shablon — "oxirgi ikki holatdan hisoblash".
 
----
+## Q32. Massivdagi k-chi eng katta elementni qanday topasiz? / LeetCode #215 — Kth Largest Element in an Array
 
-## Q73. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** `[3, 2, 1, 5, 6, 4]`, `k = 2` → `5`.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** musobaqada faqat eng yaxshi `k` ta natija qiziq. Kichik "podium" (hajmi `k` bo'lgan **min-heap**) tutasiz: yangi natija podiumdagi eng yomonidan yaxshi bo'lsa, uni almashtiradi. Oxirida podiumdagi eng yomoni — `k`-chi eng katta.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
+```js
+class MinHeap {
+  #data = [];
+  get size() { return this.#data.length; }
+  peek() { return this.#data[0]; }
+  push(value) {
+    const d = this.#data; d.push(value);
+    for (let i = d.length - 1, p; i > 0 && d[(p = (i - 1) >> 1)] > d[i]; i = p) [d[i], d[p]] = [d[p], d[i]];
+  }
+  pop() {
+    const d = this.#data, top = d[0], last = d.pop();
+    if (d.length) {
+      d[0] = last;
+      for (let i = 0; ;) {
+        const l = 2 * i + 1, r = l + 1;
+        let m = i;
+        if (l < d.length && d[l] < d[m]) m = l;
+        if (r < d.length && d[r] < d[m]) m = r;
+        if (m === i) break;
+        [d[i], d[m]] = [d[m], d[i]]; i = m;
+      }
     }
-    return true;
+    return top;
+  }
 }
-```
-
----
-
-## Q74. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+function findKthLargest(nums, k) {
+  const heap = new MinHeap();
+  for (const n of nums) {
+    heap.push(n);
+    if (heap.size > k) heap.pop();        // eng kichigini chiqarib tashlaymiz
+  }
+  return heap.peek();
 }
-```
-
----
 
-## Q75. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(findKthLargest([3, 2, 1, 5, 6, 4], 2));          // 5
+console.log(findKthLargest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4)); // 4
 ```
 
----
+**Murakkablik:** vaqt O(n log k); xotira O(k). Oddiy saralash — O(n log n). Quickselect — o'rtacha O(n).
 
-## Q76. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Intervyuda shunday ayting:** "k o'lchamli min-heap tutaman: har elementni qo'shib, hajm k dan oshsa eng kichigini chiqaraman. Oxirida heap tepasi — javob. Vaqt O(n log k). O'rtacha O(n) kerak bo'lsa — quickselect."
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Esda tuting:** JavaScript'da tayyor heap yo'q — intervyuda uni yozishga tayyor bo'ling yoki intervyuerdan tayyor struktura ishlatishga ruxsat so'rang.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+## Q33. Binar daraxt to'g'ri binar qidiruv daraxtimi (BST)? / LeetCode #98 — Validate Binary Search Tree
 
----
+**Masala:** BST'da har tugun uchun: chap qism daraxtdagi **barcha** qiymatlar kichikroq, o'ngdagilar kattaroq. Berilgan daraxt shunday ekanini tekshiring.
 
-## Q77. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Oddiy qilib aytganda:** faqat "bola ota'dan kichikmi" deb tekshirish yetarli emas — nevara bobodan ham kichik bo'lishi kerak. Shuning uchun har tugunga **ruxsat etilgan oraliq** (`min`, `max`) berib pastga tushasiz: chapga borganda yuqori chegara torayadi, o'ngga borganda — pastki chegara.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Yechim:**
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+```js
+const node = (val, left = null, right = null) => ({ val, left, right });
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+function isValidBST(root, min = -Infinity, max = Infinity) {
+  if (!root) return true;
+  if (root.val <= min || root.val >= max) return false;
+  return isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max);
 }
-```
-
----
 
-## Q78. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(isValidBST(node(2, node(1), node(3))));                     // true
+console.log(isValidBST(node(5, node(1), node(4, node(3), node(6)))));   // false
+console.log(isValidBST(node(5, node(4), node(6, node(3), node(7)))));   // false — 3 < 5, lekin o'ng tomonda
 ```
 
----
+**Murakkablik:** vaqt O(n); xotira O(h).
 
-## Q79. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Intervyuda shunday ayting:** "Har tugunga ruxsat etilgan qiymatlar oralig'ini uzataman: chapga o'tganda yuqori chegara ota qiymati, o'ngga o'tganda pastki chegara. Faqat bevosita bolalarni tekshirish yetarli emas. Alternativa — inorder aylanib, qiymatlar qat'iy o'sib borishini tekshirish."
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Esda tuting:** uchinchi test aynan "faqat bolalarni tekshirish" xatosini ushlaydi.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+## Q34. Binar daraxtni qatlamma-qatlam qanday aylanib chiqasiz? / LeetCode #102 — Binary Tree Level Order Traversal
 
----
+**Masala:** daraxt qiymatlarini qatlamlar bo'yicha qaytaring: `[[3], [9, 20], [15, 7]]`.
 
-## Q80. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Oddiy qilib aytganda:** bu **BFS** (kenglik bo'yicha qidiruv): navbatda turgan odamlarga o'xshaydi. Avval ildiz, keyin uning bolalari, keyin nevaralar... Har qatlam boshida navbatda nechta tugun borligini eslab, aynan shunchasini bitta qatlamga yig'asiz.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Yechim:**
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+```js
+const node = (val, left = null, right = null) => ({ val, left, right });
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+function levelOrder(root) {
+  const result = [];
+  let level = root ? [root] : [];
+  while (level.length) {
+    result.push(level.map((n) => n.val));
+    level = level.flatMap((n) => [n.left, n.right].filter(Boolean)); // keyingi qatlam
+  }
+  return result;
 }
-```
-
----
 
-## Q81. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(levelOrder(node(3, node(9), node(20, node(15), node(7))))); // [ [ 3 ], [ 9, 20 ], [ 15, 7 ] ]
+console.log(levelOrder(null));                                          // []
 ```
-
----
-
-## Q82. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Murakkablik:** vaqt O(n); xotira O(w) — eng keng qatlam.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Intervyuda shunday ayting:** "BFS bilan qatlamlab aylanaman: joriy qatlam tugunlaridan keyingi qatlamni yig'aman. Bu eng qisqa yo'l, 'daraxtning o'ng ko'rinishi' kabi ko'p masalalarning asosi. Vaqt O(n)."
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** navbatni `shift()` bilan boshqarish katta daraxtda sekin — qatlamlab massiv almashtirish yoki indeks ko'rsatkichi yaxshiroq.
 
----
+## Q35. Massivning barcha qism to'plamlarini qanday yaratasiz? / LeetCode #78 — Subsets
 
-## Q83. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** takrorsiz sonlar massivining barcha qism to'plamlari. `[1, 2, 3]` → 8 ta: `[]`, `[1]`, `[2]`, `[1,2]`...
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** har bir element uchun ikki tanlov bor: "olaman" yoki "olmayman". 3 element → 2 × 2 × 2 = 8 variant. Oddiy usul: bo'sh to'plamdan boshlab, har yangi elementni **mavjud barcha** to'plamlarga qo'shib, yangi to'plamlar hosil qilasiz.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+```js
+function subsets(nums) {
+  let result = [[]];
+  for (const n of nums) {
+    result = [...result, ...result.map((subset) => [...subset, n])];
+  }
+  return result;
 }
-```
-
----
-
-## Q84. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(subsets([1, 2, 3])); // [ [], [ 1 ], [ 2 ], [ 1, 2 ], [ 3 ], [ 1, 3 ], [ 2, 3 ], [ 1, 2, 3 ] ]
+console.log(subsets([1, 2, 3]).length); // 8
 ```
-
----
 
-## Q85. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt va xotira O(n · 2ⁿ) — natijaning o'zi shuncha katta.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Har element uchun 'ol yoki olma' tanlovi — jami 2ⁿ qism to'plam. Iterativ ravishda mavjud to'plamlarning har biriga yangi elementni qo'shib ko'paytiraman. Backtracking yoki bit maskalari bilan ham yechish mumkin."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** natija hajmi eksponensial — `n = 30` da milliardga yaqin to'plam. Intervyuda buni aytib o'ting.
 
----
+## Q36. Barcha o'rin almashtirishlarni (permutatsiyalarni) qanday yaratasiz? / LeetCode #46 — Permutations
 
-## Q86. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** `[1, 2, 3]` → 6 ta tartib: `[1,2,3]`, `[1,3,2]`, `[2,1,3]`...
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** stullarga odamlarni o'tqazish: birinchi stulga istalgan odam, ikkinchisiga qolganlardan biri... Har qadamda tanlaysiz, oxirigacha borasiz, keyin **orqaga qaytib** (backtracking) boshqa tanlovni sinab ko'rasiz.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
+```js
+function permute(nums) {
+  const result = [];
+  const path = [];
+  const used = new Array(nums.length).fill(false);
+  const build = () => {
+    if (path.length === nums.length) { result.push([...path]); return; }
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i]) continue;
+      used[i] = true; path.push(nums[i]);     // tanlash
+      build();
+      path.pop(); used[i] = false;            // orqaga qaytish
     }
-    return true;
+  };
+  build();
+  return result;
 }
-```
-
----
-
-## Q87. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(permute([1, 2, 3]).map((p) => p.join("")).join(" ")); // 123 132 213 231 312 321
 ```
-
----
 
-## Q88. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n · n!); xotira O(n) — joriy yo'l (natijadan tashqari).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Backtracking: joriy yo'lga ishlatilmagan elementni qo'shaman, rekursiya qilaman, keyin uni olib tashlab boshqasini sinayman. Permutatsiyalar soni n!, shuning uchun vaqt O(n · n!)."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** natijaga `path`ning **nusxasini** (`[...path]`) qo'shing — aks holda hamma natija bitta, oxirida bo'shab qolgan massivga ishora qiladi.
 
----
+## Q37. Satrni lug'at so'zlariga bo'lish mumkinmi? / LeetCode #139 — Word Break
 
-## Q89. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** `s = "applepenapple"`, `wordDict = ["apple", "pen"]` → `true` ("apple pen apple").
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** satr boshidan qaysi pozitsiyalargacha "to'g'ri bo'lib bo'linganini" belgilab borasiz. `can[i] = true` — birinchi `i` ta harfni so'zlarga bo'lib bo'ladi. `can[j]` true bo'lsa va `s[j..i]` lug'atda bo'lsa, `can[i]` ham true.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
+```js
+function wordBreak(s, wordDict) {
+  const words = new Set(wordDict);
+  const can = new Array(s.length + 1).fill(false);
+  can[0] = true;                                  // bo'sh boshlanish
+  for (let end = 1; end <= s.length; end++) {
+    for (let start = 0; start < end; start++) {
+      if (can[start] && words.has(s.slice(start, end))) { can[end] = true; break; }
     }
-    return true;
+  }
+  return can[s.length];
 }
-```
-
----
-
-## Q90. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(wordBreak("applepenapple", ["apple", "pen"]));                    // true
+console.log(wordBreak("catsandog", ["cats", "dog", "sand", "and", "cat"]));   // false
 ```
-
----
 
-## Q91. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n²) (satr bo'laklarini solishtirishsiz); xotira O(n).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Dinamik dasturlash: `can[i]` — prefiks bo'linadimi. Har `i` uchun oldingi true pozitsiyadan boshlanadigan so'z lug'atda borligini tekshiraman. Lug'atni Set'ga olaman. Naiv rekursiya eksponensial bo'lardi."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** tezlashtirish uchun ichki siklni lug'atdagi eng uzun so'z uzunligi bilan cheklash mumkin.
 
----
+## Q38. Har kun uchun issiqroq kungacha necha kun kutish kerak? / LeetCode #739 — Daily Temperatures
 
-## Q92. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** `temps[i]` — `i`-kun harorati. Har kun uchun: nechta kundan keyin issiqroq kun keladi (bo'lmasa 0)? `[73,74,75,71,69,72,76,73]` → `[1,1,4,2,1,1,0,0]`.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** hali "issiqroq kunini topmagan" kunlarni **stack**da saqlaysiz. Yangi kun kelganda, stack tepasidagi har bir sovuqroq kun uchun javob topildi — ularni chiqarib, farqni yozasiz. Bu **monoton stack** usuli.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
+```js
+function dailyTemperatures(temps) {
+  const answer = new Array(temps.length).fill(0);
+  const waiting = [];                                      // indekslar, haroratlari kamayib boradi
+  temps.forEach((temp, day) => {
+    while (waiting.length && temps[waiting.at(-1)] < temp) {
+      const colderDay = waiting.pop();
+      answer[colderDay] = day - colderDay;
     }
-    return true;
+    waiting.push(day);
+  });
+  return answer;
 }
-```
-
----
-
-## Q93. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73])); // [ 1, 1, 4, 2, 1, 1, 0, 0 ]
 ```
-
----
 
-## Q94. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n) — har indeks stack'ka bir marta kiradi va chiqadi; xotira O(n).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Javobini kutayotgan kunlarni monoton kamayuvchi stack'da saqlayman. Issiqroq kun kelganda stack'dan sovuqroq kunlarni chiqarib, javoblarini yozaman. Har element bir marta qo'shiladi va chiqariladi — O(n)."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Esda tuting:** monoton stack "keyingi kattaroq/kichikroq element" turidagi barcha masalalarning kaliti.
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+## Q39. Binar daraxt diametri (eng uzun yo'l) qanday topiladi? / LeetCode #543 — Diameter of Binary Tree
 
----
+**Masala:** istalgan ikki tugun orasidagi eng uzun yo'l (qirralar soni). Yo'l ildizdan o'tishi shart emas.
 
-## Q95. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Oddiy qilib aytganda:** har bir tugun "egilish nuqtasi" bo'lishi mumkin: undan o'tadigan eng uzun yo'l = chap chuqurlik + o'ng chuqurlik. Chuqurlikni hisoblayotganda (Q25), shu yig'indini ham kuzatib, eng kattasini saqlaysiz.
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Yechim:**
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+```js
+const node = (val, left = null, right = null) => ({ val, left, right });
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
+function diameterOfBinaryTree(root) {
+  let best = 0;
+  const depth = (n) => {
+    if (!n) return 0;
+    const left = depth(n.left), right = depth(n.right);
+    best = Math.max(best, left + right);        // shu tugundan o'tuvchi yo'l
+    return 1 + Math.max(left, right);
+  };
+  depth(root);
+  return best;
 }
-```
-
----
-
-## Q96. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(diameterOfBinaryTree(node(1, node(2, node(4), node(5)), node(3)))); // 3 — 4→2→1→3
 ```
-
----
 
-## Q97. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Murakkablik:** vaqt O(n); xotira O(h).
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Intervyuda shunday ayting:** "Chuqurlikni post-order DFS bilan hisoblayotganda, har tugunda chap va o'ng chuqurliklar yig'indisini global maksimum bilan solishtiraman. Bir o'tishda O(n)."
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** diametr **qirralar** sonida o'lchanadi — tugunlar sonida emas; shartni aniqlashtiring.
 
----
+## Q40. Ikki satrning eng uzun umumiy qism ketma-ketligi (LCS) qanday topiladi? / LeetCode #1143 — Longest Common Subsequence
 
-## Q98. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
+**Masala:** ikki satrning eng uzun umumiy **qism ketma-ketligi** (harflar tartibi saqlanadi, lekin yonma-yon bo'lishi shart emas). `"abcde"`, `"ace"` → `3` ("ace").
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Oddiy qilib aytganda:** jadval tuzasiz: qatorlar — birinchi satr harflari, ustunlar — ikkinchisiniki. Har katak: "shu joygacha eng uzun umumiy qism". Harflar mos kelsa — diagonal katak + 1; kelmasa — yuqoridagi yoki chapdagi katakning kattasi. Bu `git diff` va DNK taqqoslashning asosi.
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Yechim:**
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
+```js
+function longestCommonSubsequence(a, b) {
+  let prev = new Array(b.length + 1).fill(0);        // faqat oldingi qator — xotira tejaladi
+  for (let i = 1; i <= a.length; i++) {
+    const curr = new Array(b.length + 1).fill(0);
+    for (let j = 1; j <= b.length; j++) {
+      curr[j] = a[i - 1] === b[j - 1] ? prev[j - 1] + 1 : Math.max(prev[j], curr[j - 1]);
     }
-    return true;
+    prev = curr;
+  }
+  return prev[b.length];
 }
-```
-
----
 
-## Q99. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
-
-**EN:** Check if string t is an anagram of s using character frequency array.
-
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
-
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
+console.log(longestCommonSubsequence("abcde", "ace")); // 3
+console.log(longestCommonSubsequence("abc", "def"));   // 0
 ```
-
----
-
-## Q100. LeetCode #242: Valid Anagram | Valid Anagram — Anagramma tekshiruvi
 
-**EN:** Check if string t is an anagram of s using character frequency array.
+**Murakkablik:** vaqt O(n · m); xotira O(m) (faqat bitta qator saqlanadi).
 
-**UZB:** Ikki matn bir xil harflardan tashkil topganini chastota massivida tekshirish.
+**Intervyuda shunday ayting:** "2D dinamik dasturlash: `dp[i][j]` — birinchi i va j harf uchun LCS. Harflar teng bo'lsa diagonal + 1, aks holda yuqori yoki chapning maksimumi. Faqat oldingi qator kerak bo'lgani uchun xotirani O(m) ga tushiraman."
 
-```javascript
-function isAnagram(s, t) {
-    if (s.length !== t.length) return false;
-    const count = {};
-    for (let c of s) count[c] = (count[c] || 0) + 1;
-    for (let c of t) {
-        if (!count[c]) return false;
-        count[c]--;
-    }
-    return true;
-}
-```
+**Esda tuting:** **subsequence** (tartib saqlanadi, uzilishi mumkin) va **substring** (ketma-ket) — turli masalalar; intervyuda farqini aniqlashtiring.

@@ -2,7 +2,7 @@
 
 > **Tillar / Languages:** O'zbek 🇺🇿 | English 🇬🇧
 > **Maqsad / Goal:** Software Engineering, System Design, Python, Odoo ERP, Database va DevOps bo'yicha intervyularga to'liq tayyorgarlik.
-> **Ko'rish / View:** Barcha fayllarni qulay panelda o'qish uchun [index.html](index.html) ni brauzerda oching.
+> **Ko'rish / View:** portal — `apps/web` (React + Vite + Tailwind). Lokal: `npm install && npm run build && node apps/api/dist/main.js`, keyin <http://localhost:4173>. Batafsil: [docs/operations/scaling.md](docs/operations/scaling.md).
 
 ---
 
@@ -33,6 +33,11 @@
 | 🧩 JS 4: LeetCode & Codewars | Algoritmik masalalar va yechimlar | [javascript/leetcode_codewars.md](javascript/leetcode_codewars.md) |
 | 💛 JS Full-Stack Overview | Umumiy full-stack JS xulosa | [javascript/basics.md](javascript/basics.md) |
 | 🧪 JavaScript Quiz Suite | Self-test MCQ | [javascript/quiz.md](javascript/quiz.md) |
+| 🟢 Node.js chuqur | Event loop, libuv, streams, worker'lar, Node 24–26 yangiliklari | [javascript/nodejs_chuqur.md](javascript/nodejs_chuqur.md) |
+| 🚏 Express.js chuqur | Express 5 migratsiyasi, middleware, xavfsizlik, scaling | [javascript/express_chuqur.md](javascript/express_chuqur.md) |
+| 🐈 NestJS chuqur | DI, lifecycle, scope'lar, NestJS 11–12 yangiliklari | [javascript/nestjs_chuqur.md](javascript/nestjs_chuqur.md) |
+| 💛 JavaScript chuqur | Closure, this, prototip, ES2025–ES2027 | [javascript/js_chuqur.md](javascript/js_chuqur.md) |
+| 🔷 TypeScript chuqur | Tip tizimi, erasable syntax, TypeScript 6/7 | [javascript/typescript_chuqur.md](javascript/typescript_chuqur.md) |
 
 ### 🗄️ Database
 
@@ -50,6 +55,7 @@
 |---|---|---|
 | 🏗️ System Design Architecture | Microservices, Load Balancing, Caching, Kafka, Saga | [system_design.md](system_design.md) |
 | 🧪 System Design Quiz Suite | Self-test MCQ | [system_design_quiz.md](system_design_quiz.md) |
+| 📈 Arxitektura, infra va scaling | CDN, stateless, kesh, DB scaling, deploy, observability | [system_design/arxitektura_infra_scaling.md](system_design/arxitektura_infra_scaling.md) |
 | 🐳 Docker & Containers | Dockerfile, Compose, Networking, Multi-stage builds | [docker/basics.md](docker/basics.md) |
 | 🧪 Docker Quiz Suite | Self-test MCQ | [docker/quiz.md](docker/quiz.md) |
 | 🧰 Git & GitHub Fundamentals | Rebase vs Merge, Hooks, Workflows | [github/basics.md](github/basics.md) |

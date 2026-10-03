@@ -2342,7 +2342,7 @@ def validate_module_architecture():
 
 ---
 
-## 🟢 UI NAVIGATION & SEARCH VIEWS (UI Q1 – UI Q25)
+## 🟢 UI NAVIGATION & SEARCH VIEWS
 
 ---
 
@@ -2433,12 +2433,12 @@ UI Path: Any App (e.g. Sales) -> Top Search Bar -> Filters / Group By / Favorite
 ### UI Q10. Form View da Readonly, Required va Invisible atributlari foydalanuvchiga qanday ta'sir qiladi?
 
 - **Readonly:** Maydonni tahrirlab bo'lmaydi (faqat o'qish uchun).
-- **Required:** Maydon majburiy, to'ldirilmasa saqlab bo meydi (qizil bilan ajratiladi).
+- **Required:** Maydon majburiy, to'ldirilmasa saqlab bo'lmaydi (qizil bilan ajratiladi).
 - **Invisible:** Maydon foydalanuvchi ko'zidan yashiriladi.
 
 ---
 
-## 🟡 UI VIEW CUSTOMIZATION & ODOO STUDIO (UI Q26 – UI Q55)
+## 🟡 UI VIEW CUSTOMIZATION & ODOO STUDIO
 
 ---
 
@@ -2483,11 +2483,7 @@ UI Path: Any App (e.g. Sales) -> Top Search Bar -> Filters / Group By / Favorite
 
 ---
 
-### UI Q31-Q55. Smart Buttons, Automated Actions in UI, Print PDF Reports Customization, Sequence numbers in UI & Multi-Company view setup.
-
----
-
-## 🔴 FUNCTIONAL WORKFLOWS: SALES, PURCHASE, INVENTORY (UI Q56 – UI Q80)
+## 🔴 FUNCTIONAL WORKFLOWS: SALES, PURCHASE, INVENTORY
 
 ---
 
@@ -2530,7 +2526,7 @@ Quotation (Draft) --[Confirm]--> Sale Order --[Validate Delivery]--> Invoice Sen
 
 ---
 
-## ⚫ ACCOUNTING, HR, POS & ADMIN SETTINGS (UI Q81 – UI Q100)
+## ⚫ ACCOUNTING, HR, POS & ADMIN SETTINGS
 
 ---
 
@@ -2567,10 +2563,6 @@ Product -> Bill of Materials (BOM) -> Manufacturing Order -> Work Center Operati
 **EN:** `Settings -> Users & Companies -> Access Rights` defines model permissions (Create, Read, Write, Delete). `Record Rules` filter data dynamically by domain (e.g. user sees only own records).
 
 **UZB:** `Sozlamalar -> Foydalanuvchilar -> Access Rights` obyekt darajasida ruxsat beradi. `Record Rules` esa ma'lumotlarni dinamik filtrlashni boshqaradi (masalan, faqat o'z sotuvlarini ko'rish).
-
----
-
-### UI Q86-Q100. Multi-Currency setup, Tax engines, Security Groups, Automated Backup in UI, Translation Manager & App Store Module Installation.
 
 ---
 

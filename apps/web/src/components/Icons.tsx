@@ -13,3 +13,5 @@ export function BookIcon(props: IconProps) { return <svg {...base} {...props}><p
 export function ArrowIcon(props: IconProps) { return <svg {...base} {...props}><path d="m9 18 6-6-6-6"/></svg>; }
 export function CheckIcon(props: IconProps) { return <svg {...base} {...props}><path d="m5 12 4 4L19 6"/></svg>; }
 export function SparkIcon(props: IconProps) { return <svg {...base} {...props}><path d="m12 3 1.2 4.2L17 9l-3.8 1.8L12 15l-1.2-4.2L7 9l3.8-1.8L12 3ZM5 14l.8 2.2L8 17l-2.2.8L5 20l-.8-2.2L2 17l2.2-.8L5 14ZM19 3l.6 1.4L21 5l-1.4.6L19 7l-.6-1.4L17 5l1.4-.6L19 3Z"/></svg>; }
+export function HomeIcon(props: IconProps) { return <svg {...base} {...props}><path d="m3 10.5 9-7 9 7V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-9.5Z"/></svg>; }
+export function BackIcon(props: IconProps) { return <svg {...base} {...props}><path d="m15 18-6-6 6-6"/></svg>; }

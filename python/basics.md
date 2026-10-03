@@ -1,57 +1,20 @@
-# 🐍 Python Interview: 100 Savol va Javob
+# 🐍 Python intervyu savollari va javoblari / Python Interview Questions
 
-# 🐍 Python Interview: 100 Questions and Answers
-
-> **Bilingual Guide | Ikki tilli qo'llanma** — English 🇬🇧 + O'zbek 🇺🇿  
-> Basic → Intermediate → Advanced → Expert  
-> Har bir javobda ishlaydigan kod misoli keltirilgan.
+> **Nima bu:** Python tilining o'zi — asoslardan ekspert darajasigacha. OOP tushunchalari (klass, meros, MRO, abstrakt klass, interfeys, dizayn naqshlari) takrorlanmasligi uchun `python/oop.md` da; amaliy "nima qilasiz?" ssenariylari — `practical/python.md` da; REST va FastAPI — `python/restfullapi.md` da.  
+> **Har bir javob tartibi:** oddiy tilda → batafsilroq (EN/UZ va ishlaydigan kod) → intervyuda qanday aytasiz.  
+> **Versiya:** Python 3.14 (2025-yil oktabr) — free-threaded build rasman qo'llab-quvvatlanadi, annotatsiyalar kechiktirib hisoblanadi (PEP 649), t-string'lar (PEP 750).
 
 ---
 
-## � Modern interview topics (2025+)
-
-**EN:** In modern Python interviews, employers often test practical knowledge of concurrency, resource management, packaging, and production readiness.
-
-**UZ:** Zamonaviy Python intervyularida ko‘pincha asinxronlik, resurslarni to‘g‘ri boshqarish, paketlashtirish va production tayyorligi bo‘yicha amaliy bilimlar tekshiriladi.
-
-- `asyncio` vs `threading`: `asyncio` ko‘pincha I/O-bound vazifalar uchun, `threading` esa bir nechta OS thread bilan parallel ishlash uchun ishlatiladi.
-- `context managers` (`with`): fayl, DB ulanish va boshqa resurslarni xavfsiz yopish uchun muhim.
-- `multiprocessing`: CPU-bound hisob-kitoblar uchun ishlatiladi.
-- `type hints` va `pydantic`/`FastAPI`: real-world backend loyihalarida juda tez-tez uchraydi.
-- Packaging: `pyproject.toml`, virtualenv/venv, dependency management.
-
-```python
-import asyncio
-
-async def fetch_data():
-    await asyncio.sleep(1)
-    return "done"
-
-async def main():
-    result = await fetch_data()
-    print(result)
-
-asyncio.run(main())
-```
+# 🟢 Boshlang'ich daraja / Basic
 
 ---
 
-## �📚 Mundarija / Table of Contents
+## Q1. Python nima? / What is Python?
 
-| Daraja / Level  | Savollar / Questions |
-| --------------- | -------------------- |
-| 🟢 Basic        | 1–25                 |
-| 🟡 Intermediate | 26–55                |
-| 🔴 Advanced     | 56–80                |
-| ⚫ Expert       | 81–100               |
+**Oddiy qilib aytganda:** Python — o'qish va yozish oson dasturlash tili: kodi deyarli ingliz tilidagi gapga o'xshaydi. Uni yozib darhol ishga tushirish mumkin (kompilyatsiya kutmasdan), shuning uchun veb-backend, ma'lumotlar tahlili, sun'iy intellekt va avtomatlashtirishda juda mashhur.
 
----
-
-# 🟢 BASIC LEVEL (1–25)
-
----
-
-## 1. Python nima? / What is Python?
+**Batafsilroq:**
 
 **EN:** Python is a high-level, interpreted, dynamically-typed programming language known for its readability and simplicity. It supports multiple paradigms: procedural, object-oriented, and functional.
 
@@ -65,9 +28,15 @@ print(f"Hello, {name}! You are {age} years old.")
 # Hello, Alyorjon! You are 25 years old.
 ```
 
+**Intervyuda shunday ayting:** "Python — yuqori darajali, dinamik tipli, interpretatsiya qilinadigan til; standart implementatsiya CPython. Kuchli tomonlari — o'qiluvchanlik va ulkan ekotizim, zaif tomoni — sof Python kodida CPU-og'ir ishlarning sekinligi. Hozirgi versiya — 3.14, unda free-threaded (GIL'siz) build rasman qo'llab-quvvatlanadi."
+
 ---
 
-## 2. Python'da o'zgaruvchi tiplarini qanday e'lon qilinadi? / How are variables declared in Python?
+## Q2. Python'da o'zgaruvchi tiplarini qanday e'lon qilinadi? / How are variables declared in Python?
+
+**Oddiy qilib aytganda:** Python'da o'zgaruvchi — qiymatga yopishtirilgan yorliq. Turini oldindan e'lon qilish shart emas: `age = 25` yozsangiz, Python o'zi uni butun son deb biladi. Keyinroq shu yorliqni boshqa turdagi qiymatga ham yopishtirish mumkin.
+
+**Batafsilroq:**
 
 **EN:** Python uses dynamic typing — you don't declare types explicitly. The interpreter infers the type at runtime.
 
@@ -85,9 +54,15 @@ print(type(y))    # <class 'float'>
 print(type(name)) # <class 'str'>
 ```
 
+**Intervyuda shunday ayting:** "Python'da o'zgaruvchilar obyektlarga havola, tur esa obyektda saqlanadi — dinamik tiplash. Katta loyihalarda type hint'lar va mypy/pyright bilan statik tekshiruv qo'shaman: kod o'qilishi osonlashadi va xatolar erta topiladi."
+
 ---
 
-## 3. List, Tuple, Set va Dict farqi nima? / What is the difference between List, Tuple, Set, and Dict?
+## Q3. List, Tuple, Set va Dict farqi nima? / What is the difference between List, Tuple, Set, and Dict?
+
+**Oddiy qilib aytganda:** To'rt xil 'quti': **list** — tartibli, o'zgartirsa bo'ladigan ro'yxat; **tuple** — tartibli, lekin o'zgarmas; **set** — takrorsiz to'plam (tartib kafolatlanmagan); **dict** — 'kalit → qiymat' lug'ati. Qaysi birini tanlash — nima qilmoqchi ekaningizga bog'liq.
+
+**Batafsilroq:**
 
 **EN:** These are Python's core data structures, each with specific characteristics.
 
@@ -118,9 +93,15 @@ print(my_dict["name"])  # Ali
 | O'zgaruvchan / Mutable | ✅   | ❌    | ✅  | ✅        |
 | Takror / Duplicates    | ✅   | ✅    | ❌  | ❌ (keys) |
 
+**Intervyuda shunday ayting:** "list — o'zgaruvchan ketma-ketlik, tuple — o'zgarmas va hashlanadigan (dict kaliti bo'la oladi), set — noyoblik va tez `in` tekshiruvi (o'rtacha O(1)), dict — kalit bo'yicha tez kirish va 3.7+ dan qo'shilish tartibini saqlaydi. `x in list` O(n), `x in set` esa O(1) — katta ma'lumotda bu hal qiluvchi."
+
 ---
 
-## 4. `is` va `==` farqi nima? / What is the difference between `is` and `==`?
+## Q4. `is` va `==` farqi nima? / What is the difference between `is` and `==`?
+
+**Oddiy qilib aytganda:** `==` — 'qiymatlari tengmi?' deb so'raydi. `is` — 'bu aynan **bitta** obyektmi?' deb so'raydi. Ikki bir xil daftar qiymati teng (`==`), lekin ular ikki alohida daftar (`is` — yo'q).
+
+**Batafsilroq:**
 
 **EN:** `==` checks value equality. `is` checks identity (same object in memory).
 
@@ -145,9 +126,15 @@ y = 257
 print(x is y)   # False — katta sonlar cache qilinmaydi
 ```
 
+**Intervyuda shunday ayting:** "`==` `__eq__` orqali tenglikni, `is` esa obyekt identifikatorini solishtiradi. `is` ni faqat singleton'lar uchun ishlataman: `x is None`, `x is True` emas. Kichik butun sonlar va ba'zi satrlar keshlanadi, shuning uchun `is` bilan sonlarni solishtirish tasodifan ishlashi mumkin — bunga tayanib bo'lmaydi."
+
 ---
 
-## 5. Python'da `*args` va `**kwargs` nima? / What are `*args` and `**kwargs` in Python?
+## Q5. Python'da `*args` va `**kwargs` nima? / What are `*args` and `**kwargs` in Python?
+
+**Oddiy qilib aytganda:** `*args` — funksiyaga istalgan sondagi oddiy argumentlarni (tuple sifatida) qabul qilish. `**kwargs` — istalgan sondagi nomlangan argumentlarni (dict sifatida) qabul qilish. Masalan, `log('xato', kod=500, foydalanuvchi='ali')`.
+
+**Batafsilroq:**
 
 **EN:** `*args` accepts variable positional arguments as a tuple. `**kwargs` accepts variable keyword arguments as a dict.
 
@@ -177,9 +164,15 @@ info = {"a": 1, "b": 2, "c": 3}
 print(add(**info))      # 6
 ```
 
+**Intervyuda shunday ayting:** "`*args` ortiqcha pozitsion argumentlarni tuple'ga, `**kwargs` nomlanganlarini dict'ga yig'adi. Ular decorator va wrapper'larda asosiy vosita. Ochiq API'da esa aniq parametrlarni afzal ko'raman — `**kwargs` imzoni yashiradi va type checker yordamini kamaytiradi."
+
 ---
 
-## 6. List comprehension nima? / What is list comprehension?
+## Q6. List comprehension nima? / What is list comprehension?
+
+**Oddiy qilib aytganda:** List comprehension — ro'yxatni bitta qatorda yaratish: 'har bir son uchun uning kvadratini ol, faqat juftlarini' → `[x*x for x in nums if x % 2 == 0]`. Oddiy `for` siklidan qisqa va odatda tezroq.
+
+**Batafsilroq:**
 
 **EN:** A concise way to create lists using a single line with optional filtering.
 
@@ -208,9 +201,15 @@ unique_squares = {x**2 for x in [-2, -1, 0, 1, 2]}
 print(unique_squares)  # {0, 1, 4}
 ```
 
+**Intervyuda shunday ayting:** "Comprehension'lar oddiy transformatsiya va filtr uchun — o'qiluvchan va tez. Mantiq murakkablashsa (ichma-ich sikllar, bir nechta shart), oddiy `for` ga qaytaman. Katta ma'lumot uchun ro'yxat o'rniga generator ifoda `( ... )` — u xotiraga hammasini yuklamaydi."
+
 ---
 
-## 7. Lambda funksiyasi nima? / What is a lambda function?
+## Q7. Lambda funksiyasi nima? / What is a lambda function?
+
+**Oddiy qilib aytganda:** Lambda — nomsiz, bir qatorli kichik funksiya: `lambda x: x * 2`. U odatda boshqa funksiyaga 'shu qoida bilan ishla' deb berish uchun ishlatiladi — masalan, ro'yxatni saralashda `sorted(users, key=lambda u: u.age)`.
+
+**Batafsilroq:**
 
 **EN:** An anonymous, single-expression function defined with the `lambda` keyword.
 
@@ -244,9 +243,15 @@ odds = list(filter(lambda x: x % 2 != 0, nums))
 print(odds)  # [1, 3, 5]
 ```
 
+**Intervyuda shunday ayting:** "Lambda — faqat bitta ifodali anonim funksiya, asosan `key=` kabi joylarda. Murakkab mantiq yoki qayta ishlatiladigan kod uchun oddiy `def` — nomi bor, test qilish oson va traceback'da ko'rinadi. Ko'pincha `operator.attrgetter` lambdadan tozaroq."
+
 ---
 
-## 8. Python'da exception handling qanday ishlaydi? / How does exception handling work in Python?
+## Q8. Python'da exception handling qanday ishlaydi? / How does exception handling work in Python?
+
+**Oddiy qilib aytganda:** Xato bo'lishi mumkin bo'lgan kodni `try` ichiga qo'yasiz; xato bo'lsa, `except` qismi ishlaydi va dastur yiqilmaydi. `finally` — nima bo'lishidan qat'i nazar oxirida bajariladi (masalan, faylni yopish).
+
+**Batafsilroq:**
 
 **EN:** Python uses `try/except/else/finally` blocks to handle runtime errors gracefully.
 
@@ -290,9 +295,15 @@ except InsufficientFundsError as e:
     print(e)  # Kerakli: 200, Mavjud: 100
 ```
 
+**Intervyuda shunday ayting:** "Faqat kutilgan va hal qila oladigan xatolarni aniq turi bilan ushlayman — `except Exception:` bilan hammasini yutib yubormayman. `raise ... from e` bilan sababni saqlayman, `else` — xato bo'lmaganda ishlaydi, `finally` — tozalash uchun. Python 3.11+ da parallel xatolar uchun `ExceptionGroup` va `except*` bor."
+
 ---
 
-## 9. `range()` funksiyasi qanday ishlaydi? / How does `range()` work?
+## Q9. `range()` funksiyasi qanday ishlaydi? / How does `range()` work?
+
+**Oddiy qilib aytganda:** `range(1, 10, 2)` — '1 dan boshlab, 10 gacha (10 kirmaydi), 2 qadam bilan' sonlar ketma-ketligi: 1, 3, 5, 7, 9. U sonlarni oldindan yaratib qo'ymaydi — kerak bo'lganda bittadan beradi, shuning uchun juda kam xotira oladi.
+
+**Batafsilroq:**
 
 **EN:** `range()` generates an immutable sequence of numbers lazily (without storing all values in memory).
 
@@ -319,9 +330,15 @@ lst = list(range(1_000_000))
 print(sys.getsizeof(lst))     # ~8 MB
 ```
 
+**Intervyuda shunday ayting:** "`range` — dangasa (lazy), o'zgarmas ketma-ketlik: `range(10**9)` ham deyarli xotira olmaydi, `len`, indeks va `in` tekshiruvi O(1). Tugash nuqtasi kirmaydi. Indeks bilan sikl o'rniga ko'pincha `enumerate` yoki to'g'ridan-to'g'ri iteratsiya tozaroq."
+
 ---
 
-## 10. String formatlash usullari / String formatting methods
+## Q10. String formatlash usullari / String formatting methods
+
+**Oddiy qilib aytganda:** Satr ichiga qiymat qo'yishning bir necha yo'li bor, eng qulayi — f-string: `f"Salom, {name}!"`. Figurali qavs ichiga o'zgaruvchi yoki ifoda yoziladi va u avtomatik matnga aylanadi.
+
+**Batafsilroq:**
 
 **EN:** Python offers multiple ways to format strings. f-strings (Python 3.6+) are the most readable and performant.
 
@@ -349,9 +366,15 @@ print(f"{'left':<10}|{'center':^10}|{'right':>10}")
 # left      |  center  |     right
 ```
 
+**Intervyuda shunday ayting:** "Kundalik kod uchun f-string — tez va o'qiluvchan; `f"{price:.2f}"` kabi formatlash ham qo'llaydi. Log'larda esa `logger.info("user %s", user_id)` — satr faqat kerak bo'lganda quriladi. Python 3.14 da t-string'lar (`t"..."`) qo'shildi — ular satr emas, xavfsiz qayta ishlash (masalan, SQL yoki HTML escaping) uchun shablon obyekt qaytaradi."
+
 ---
 
-## 11. Python'da `copy()` va `deepcopy()` farqi / Difference between `copy()` and `deepcopy()`
+## Q11. Python'da `copy()` va `deepcopy()` farqi / Difference between `copy()` and `deepcopy()`
+
+**Oddiy qilib aytganda:** `copy()` — yuza nusxa: tashqi quti yangi, lekin ichidagi ro'yxatlar **o'sha-o'sha**. `deepcopy()` — to'liq nusxa: ichidagi hamma narsa ham yangi. Ichki ro'yxatni o'zgartirganda aslga ta'sir qilmasligi uchun `deepcopy` kerak.
+
+**Batafsilroq:**
 
 **EN:** `copy()` creates a shallow copy (nested objects still reference the original). `deepcopy()` creates a fully independent copy.
 
@@ -373,9 +396,15 @@ print(shallow)   # [[99, 2, 3], [4, 5, 6]] — ❌ ta'sir ko'rdi!
 print(deep)      # [[1, 2, 3], [4, 5, 6]]  — ✅ o'zgarmadi
 ```
 
+**Intervyuda shunday ayting:** "Yuza nusxa faqat birinchi darajani yangilaydi, ichki o'zgaruvchan obyektlar umumiy qoladi. `deepcopy` rekursiv nusxa oladi, lekin sekin va ba'zi obyektlarni (ulanishlar, fayllar) nusxalab bo'lmaydi. Ko'pincha eng yaxshi yechim — o'zgarmas tuzilmalar. Amaliy ssenariy — `practical/python.md` Q12."
+
 ---
 
-## 12. `enumerate()` va `zip()` funksiyalari / `enumerate()` and `zip()` functions
+## Q12. `enumerate()` va `zip()` funksiyalari / `enumerate()` and `zip()` functions
+
+**Oddiy qilib aytganda:** `enumerate()` — sikl paytida elementning tartib raqamini ham beradi: `for i, name in enumerate(names)`. `zip()` — ikki ro'yxatni juftlab yuradi: `for name, score in zip(names, scores)`.
+
+**Batafsilroq:**
 
 **EN:** `enumerate()` adds an index counter to an iterable. `zip()` combines multiple iterables into tuples.
 
@@ -409,9 +438,15 @@ print(list(zip_longest(a, b, fillvalue="N/A")))
 # [(1, 'a'), (2, 'b'), (3, 'N/A')]
 ```
 
+**Intervyuda shunday ayting:** "`enumerate(items, start=1)` — qo'lda hisoblagichdan tozaroq. `zip` eng qisqa ro'yxat tugaganda to'xtaydi va bu xatoni yashirishi mumkin — Python 3.10+ da `zip(a, b, strict=True)` uzunliklar farq qilsa xato beradi. Ikkalasi ham dangasa iterator qaytaradi."
+
 ---
 
-## 13. Global va local o'zgaruvchilar / Global and local variables
+## Q13. Global va local o'zgaruvchilar / Global and local variables
+
+**Oddiy qilib aytganda:** Funksiya ichida yaratilgan o'zgaruvchi — faqat o'sha funksiyaniki (local). Fayl darajasida yaratilgani — hammaga ko'rinadi (global). Funksiya ichida global o'zgaruvchini **o'zgartirish** uchun `global` kalit so'zi kerak, lekin bunday kod chalkash bo'ladi.
+
+**Batafsilroq:**
 
 **EN:** Variables inside a function are local by default. Use `global` or `nonlocal` to modify outer scope variables.
 
@@ -440,9 +475,15 @@ def outer():
 outer()
 ```
 
+**Intervyuda shunday ayting:** "Python nomlarni LEGB tartibida qidiradi: Local, Enclosing, Global, Built-in. `global` va `nonlocal` ni kam ishlataman — global holat testlashni qiyinlashtiradi va parallel kodda muammo keltiradi. Holatni argument va qaytarish qiymatlari orqali yoki obyekt ichida saqlayman."
+
 ---
 
-## 14. Python'da file bilan ishlash / Working with files in Python
+## Q14. Python'da file bilan ishlash / Working with files in Python
+
+**Oddiy qilib aytganda:** Faylni `with open(...) as f:` bilan ochasiz — blokdan chiqqanda fayl o'zi yopiladi, hatto xato bo'lsa ham. Matn uchun kodlashni (`encoding="utf-8"`) aniq yozish kerak, aks holda turli kompyuterlarda turlicha ishlashi mumkin.
+
+**Batafsilroq:**
 
 **EN:** Python uses `open()` with context managers (`with` statement) for safe file handling.
 
@@ -481,9 +522,15 @@ with open("data.json", "r") as f:
     print(loaded["skills"])  # ['Python', 'FastAPI']
 ```
 
+**Intervyuda shunday ayting:** "Fayllarni doim context manager bilan ochaman va `encoding` ni aniq beraman. Katta fayllarni qatorma-qator o'qiyman, yo'llar uchun `pathlib`. Kichik fayllar uchun `Path.read_text()` qulay. Ikkilik ma'lumot — `'rb'`/`'wb'` rejimi."
+
 ---
 
-## 15. `map()`, `filter()`, `reduce()` funksiyalari / `map()`, `filter()`, `reduce()` functions
+## Q15. `map()`, `filter()`, `reduce()` funksiyalari / `map()`, `filter()`, `reduce()` functions
+
+**Oddiy qilib aytganda:** `map` — har elementga funksiyani qo'llaydi, `filter` — shartga mos elementlarni qoldiradi, `reduce` — hammasini bitta natijaga 'yig'adi' (masalan, ko'paytma). Ular funksional uslubdan kelgan.
+
+**Batafsilroq:**
 
 **EN:** Functional programming tools for transforming, filtering, and aggregating iterables.
 
@@ -515,9 +562,15 @@ squared = [x**2 for x in nums]
 evens = [x for x in nums if x % 2 == 0]
 ```
 
+**Intervyuda shunday ayting:** "Python'da ko'pincha comprehension'lar `map`/`filter` dan o'qiluvchanroq. `reduce` o'rniga odatda `sum`, `max`, `math.prod` yoki oddiy sikl aniqroq. `map` va `filter` dangasa iterator qaytaradi — bir marta o'qiladi."
+
 ---
 
-## 16. String metodlari / String methods
+## Q16. String metodlari / String methods
+
+**Oddiy qilib aytganda:** Satr metodlari — matn bilan ishlash asboblari: `strip()` — chetdagi bo'sh joylarni olib tashlaydi, `split()` — bo'laklarga ajratadi, `join()` — birlashtiradi, `replace()` — almashtiradi. Satr o'zgarmas, shuning uchun har metod **yangi** satr qaytaradi.
+
+**Batafsilroq:**
 
 **EN:** Python strings have rich built-in methods for manipulation.
 
@@ -553,93 +606,15 @@ print("   spaces   ".lstrip())    # "spaces   "
 print("   spaces   ".rstrip())    # "   spaces"
 ```
 
----
-
-## 17. Python'da OOP asoslari: Class va Object / OOP basics: Class and Object
-
-**EN:** A class is a blueprint; an object is an instance of that class.
-
-**UZB:** Klass — loyiha; ob'ekt — shu klassning namunasi.
-
-```python
-class BankAccount:
-    bank_name = "UzBank"  # class attribute — barcha instanslarga umumiy
-
-    def __init__(self, owner, balance=0):
-        self.owner = owner      # instance attribute
-        self.balance = balance
-
-    def deposit(self, amount):
-        self.balance += amount
-        print(f"{amount} so'm kiritildi. Balans: {self.balance}")
-
-    def withdraw(self, amount):
-        if amount > self.balance:
-            raise ValueError("Mablag' yetarli emas!")
-        self.balance -= amount
-        print(f"{amount} so'm chiqarildi. Balans: {self.balance}")
-
-    def __str__(self):
-        return f"{self.owner} hisobi | Balans: {self.balance}"
-
-    def __repr__(self):
-        return f"BankAccount(owner='{self.owner}', balance={self.balance})"
-
-acc = BankAccount("Ali", 1000)
-acc.deposit(500)    # 500 so'm kiritildi. Balans: 1500
-acc.withdraw(200)   # 200 so'm chiqarildi. Balans: 1300
-print(acc)          # Ali hisobi | Balans: 1300
-print(repr(acc))    # BankAccount(owner='Ali', balance=1300)
-print(BankAccount.bank_name)  # UzBank
-```
+**Intervyuda shunday ayting:** "Satrlar o'zgarmas, shuning uchun siklda `+=` bilan yig'ish o'rniga bo'laklarni ro'yxatga qo'shib, oxirida `''.join(parts)`. Prefiks olib tashlash uchun `removeprefix` (3.9+) — `lstrip` belgilar to'plamini olib tashlaydi, prefiksni emas. Katta-kichik harfsiz solishtirish uchun `casefold()`."
 
 ---
 
-## 18. Python'da Inheritance (meros) / Inheritance in Python
+## Q17. `__init__`, `__str__`, `__repr__` va boshqa dunder metodlar / Dunder methods
 
-**EN:** Child classes inherit attributes and methods from parent classes.
+**Oddiy qilib aytganda:** Dunder (ikki pastki chiziqli) metodlar — Python'ning 'maxsus tugmalari': `__init__` — obyekt yaratilganda, `__str__` — `print()` qilganda, `__repr__` — dasturchiga ko'rsatishda, `__eq__` — `==` da, `__len__` — `len()` da chaqiriladi. Ularni yozib, o'z klassingizni Python'ning o'rnatilgan turlaridek ishlatish mumkin.
 
-**UZB:** Bola klasslar ota klasslardan atribut va metodlarni meros oladi.
-
-```python
-class Animal:
-    def __init__(self, name, sound):
-        self.name = name
-        self.sound = sound
-
-    def speak(self):
-        return f"{self.name} aytadi: {self.sound}"
-
-class Dog(Animal):
-    def __init__(self, name):
-        super().__init__(name, "Vov!")
-
-    def fetch(self):
-        return f"{self.name} to'p olib keldi!"
-
-class Cat(Animal):
-    def __init__(self, name):
-        super().__init__(name, "Miyov!")
-
-    def purr(self):
-        return f"{self.name} g'urrilladi..."
-
-dog = Dog("Rex")
-cat = Cat("Mishi")
-
-print(dog.speak())   # Rex aytadi: Vov!
-print(dog.fetch())   # Rex to'p olib keldi!
-print(cat.speak())   # Mishi aytadi: Miyov!
-
-# isinstance tekshirishi
-print(isinstance(dog, Dog))     # True
-print(isinstance(dog, Animal))  # True
-print(isinstance(dog, Cat))     # False
-```
-
----
-
-## 19. `__init__`, `__str__`, `__repr__` va boshqa dunder metodlar / Dunder methods
+**Batafsilroq:**
 
 **EN:** Dunder (double underscore) methods allow customizing class behavior for Python's built-in operations.
 
@@ -682,9 +657,15 @@ print(v1 == v2)  # False
 print(abs(v2))   # 5.0
 ```
 
+**Intervyuda shunday ayting:** "Dunder metodlar Python'ning ma'lumot modeli: operatorlar, `len()`, iteratsiya, `with` — hammasi shular orqali. `__repr__` — dasturchi uchun aniq ko'rinish, `__str__` — foydalanuvchi uchun. `__eq__` ni yozsam, `__hash__` ham mos bo'lishi kerak. Ko'p hollarda `@dataclass` bularni o'zi yaratadi."
+
 ---
 
-## 20. Python'da modul va paketlar / Modules and packages in Python
+## Q18. Python'da modul va paketlar / Modules and packages in Python
+
+**Oddiy qilib aytganda:** Modul — bitta `.py` fayl, paket — modullar solingan papka. `import` bilan boshqa fayldagi kodni ishlatasiz. Tashqi paketlar (masalan, `requests`) `pip` yoki `uv` bilan o'rnatiladi va har loyiha uchun alohida virtual muhitda saqlanadi.
+
+**Batafsilroq:**
 
 **EN:** A module is a `.py` file. A package is a directory with `__init__.py`. `import` loads them.
 
@@ -721,9 +702,15 @@ print(sys.version)          # Python versiyasi
 print(sys.path)             # modul qidirish yo'llari
 ```
 
+**Intervyuda shunday ayting:** "Loyihani `pyproject.toml` bilan boshqaraman, bog'liqliklar — virtual muhitda, versiyalar lock-faylda qotirilgan (uv, Poetry yoki pip-tools). Aylanma importlardan qochaman — ular modul tuzilmasi yomonligining belgisi. `src/` layout test'larda tasodifan lokal kodni import qilishdan himoya qiladi."
+
 ---
 
-## 21. `None` nima va qachon ishlatiladi? / What is `None` and when is it used?
+## Q19. `None` nima va qachon ishlatiladi? / What is `None` and when is it used?
+
+**Oddiy qilib aytganda:** `None` — 'hech narsa yo'q' degan maxsus qiymat. Funksiya hech narsa qaytarmasa, u `None` qaytaradi. Ixtiyoriy parametrlar uchun standart qiymat sifatida ham ishlatiladi. Tekshirish — `if x is None`.
+
+**Batafsilroq:**
 
 **EN:** `None` is Python's null value — represents absence of a value. It's a singleton object of `NoneType`.
 
@@ -759,9 +746,15 @@ def get_name(user_id: int) -> Optional[str]:
     return None
 ```
 
+**Intervyuda shunday ayting:** "`None` — singleton, shuning uchun `is None` bilan tekshiraman, `== None` bilan emas. `if not x` bo'sh ro'yxat, 0 va `None` ni bir xil ko'radi — agar farq muhim bo'lsa, aniq `is None`. Type hint'da `str | None`."
+
 ---
 
-## 22. Python'dagi built-in funksiyalar / Python built-in functions
+## Q20. Python'dagi built-in funksiyalar / Python built-in functions
+
+**Oddiy qilib aytganda:** Built-in funksiyalar — import qilmasdan ishlatiladigan tayyor asboblar: `len`, `sum`, `min`, `max`, `sorted`, `any`, `all`, `isinstance` va boshqalar. Ularni bilish kodni qisqa va tez qiladi.
+
+**Batafsilroq:**
 
 **EN:** Python has many powerful built-in functions that don't require importing.
 
@@ -796,9 +789,15 @@ print(round(3.14159, 2)) # 3.14
 print(divmod(17, 5))     # (3, 2) — bo'linma va qoldiq
 ```
 
+**Intervyuda shunday ayting:** "O'rnatilgan funksiyalar C'da yozilgan va odatda qo'lda yozilgan sikldan tez. `any`/`all` birinchi natijada to'xtaydi, `sorted` barqaror (stable) saralaydi, `sum` ga `start` berish mumkin. Ular nomlari bilan o'zgaruvchi yaratmayman (`list = ...`, `id = ...`)."
+
 ---
 
-## 23. Python'da dictionary metodlari / Dictionary methods
+## Q21. Python'da dictionary metodlari / Dictionary methods
+
+**Oddiy qilib aytganda:** Lug'at metodlari: `get(kalit, standart)` — kalit bo'lmasa xato o'rniga standart qiymat qaytaradi, `items()` — juftliklarni beradi, `setdefault` va `update` — qo'shish va yangilash. `|` operatori (3.9+) ikki lug'atni birlashtiradi.
+
+**Batafsilroq:**
 
 **EN:** Dictionaries have powerful methods for accessing, modifying, and iterating data.
 
@@ -836,9 +835,15 @@ merged = defaults | settings  # settings ustunlik qiladi
 print(merged)  # {'theme': 'dark', 'lang': 'en', 'font': 'mono'}
 ```
 
+**Intervyuda shunday ayting:** "`d[key]` — kalit majburiy bo'lsa (yo'q bo'lsa xato — yaxshi), `d.get(key)` — ixtiyoriy bo'lsa. Hisoblash uchun `collections.Counter`, guruhlash uchun `defaultdict(list)`. Lug'atni iteratsiya qilayotganda uni o'zgartirmayman — `RuntimeError`."
+
 ---
 
-## 24. Ternary operator / Ternary operator
+## Q22. Ternary operator / Ternary operator
+
+**Oddiy qilib aytganda:** Ternary — bitta qatordagi `if`: `status = "katta" if age >= 18 else "kichik"`. Oddiy tanlov uchun qulay, lekin ichma-ich yozilsa o'qish qiyinlashadi.
+
+**Batafsilroq:**
 
 **EN:** Python's one-line conditional expression: `value_if_true if condition else value_if_false`.
 
@@ -868,9 +873,15 @@ abs_nums = [x if x >= 0 else -x for x in numbers]
 print(abs_nums)  # [1, 2, 3, 4, 5]
 ```
 
+**Intervyuda shunday ayting:** "`a if cond else b` — qisqa, ikki variantli tanlov uchun. Ichma-ich ternary yozmayman — oddiy `if`/`elif` yoki lug'at bo'yicha tanlash o'qiluvchanroq. `x or default` qisqa, lekin `0` va bo'sh satrni ham 'yo'q' deb hisoblaydi."
+
 ---
 
-## 25. `pass`, `break`, `continue` kalit so'zlari / `pass`, `break`, `continue` keywords
+## Q23. `pass`, `break`, `continue` kalit so'zlari / `pass`, `break`, `continue` keywords
+
+**Oddiy qilib aytganda:** `break` — siklni butunlay to'xtatadi. `continue` — joriy qadamni o'tkazib, keyingisiga o'tadi. `pass` — hech narsa qilmaydi: 'bu yerda kod bo'lishi kerak, lekin hozircha bo'sh' degan belgi.
+
+**Batafsilroq:**
 
 **EN:** Control flow keywords for managing loop and function behavior.
 
@@ -907,13 +918,19 @@ for item in data:
 print(result)  # 42
 ```
 
----
-
-# 🟡 INTERMEDIATE LEVEL (26–55)
+**Intervyuda shunday ayting:** "`break` va `continue` sikl oqimini boshqaradi, `pass` — sintaktik to'ldiruvchi. Kam ma'lum narsa: siklning `else` bloki faqat sikl `break` siz tugaganda ishlaydi — qidiruvda 'topilmadi' holati uchun qulay."
 
 ---
 
-## 26. Decorator nima? / What is a decorator?
+# 🟡 O'rta daraja / Intermediate
+
+---
+
+## Q24. Decorator nima va `functools.wraps` nega kerak? / What is a decorator and why use `functools.wraps`?
+
+**Oddiy qilib aytganda:** Decorator — funksiyani 'o'rab', unga qo'shimcha xususiyat qo'shadigan funksiya: vaqtni o'lchash, log yozish, ruxsatni tekshirish. Funksiya ustiga `@timer` yozasiz — uning kodini o'zgartirmasdan yangi xulq qo'shiladi.
+
+**Batafsilroq:**
 
 **EN:** A decorator is a function that wraps another function to add behavior without modifying its source code.
 
@@ -977,9 +994,83 @@ user = {"name": "Ali", "is_authenticated": True}
 print(get_profile(user))  # Profil: Ali
 ```
 
+**Qo'shimcha — Python'da `functools.wraps` va dekorator zanjiri:**
+
+**EN:** Multiple decorators stack from bottom to top. `functools.wraps` preserves the original function's metadata.
+
+**UZB:** Bir nechta dekoratorlar pastdan yuqoriga to'planadi. `functools.wraps` asl funksiyaning metama'lumotlarini saqlaydi.
+
+```python
+import functools
+import time
+import logging
+
+logger = logging.getLogger(__name__)
+
+def log_call(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        logger.info(f"📞 {func.__name__} chaqirildi")
+        result = func(*args, **kwargs)
+        logger.info(f"✅ {func.__name__} tugadi")
+        return result
+    return wrapper
+
+def retry(max_attempts=3, delay=1.0, exceptions=(Exception,)):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    return func(*args, **kwargs)
+                except exceptions as e:
+                    if attempt == max_attempts:
+                        raise
+                    print(f"⚠️ Urinish {attempt} muvaffaqiyatsiz: {e}. Qayta urinilmoqda...")
+                    time.sleep(delay)
+        return wrapper
+    return decorator
+
+def cache_result(ttl_seconds=60):
+    cache = {}
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args):
+            now = time.time()
+            if args in cache:
+                result, timestamp = cache[args]
+                if now - timestamp < ttl_seconds:
+                    print(f"🎯 Cache hit: {args}")
+                    return result
+            result = func(*args)
+            cache[args] = (result, now)
+            return result
+        return wrapper
+    return decorator
+
+# Dekoratorlarni zanjirda qo'llash
+@log_call
+@retry(max_attempts=3, delay=0.5)
+@cache_result(ttl_seconds=30)
+def fetch_user_data(user_id: int) -> dict:
+    # API call simulation
+    if user_id == 999:
+        raise ConnectionError("Server yo'q!")
+    return {"id": user_id, "name": f"User_{user_id}"}
+
+# __name__ saqlanadi
+print(fetch_user_data.__name__)  # fetch_user_data (not wrapper!)
+```
+
+**Intervyuda shunday ayting:** "Decorator — funksiyani qabul qilib, yangi funksiya qaytaradigan funksiya. Ichki wrapper'ga `@functools.wraps(func)` qo'yaman — aks holda funksiya nomi, docstring va imzo yo'qoladi, bu esa debugging va framework'larni buzadi. Parametrli decorator — decorator qaytaradigan funksiya."
+
 ---
 
-## 27. Generator nima? / What is a generator?
+## Q25. Generator nima? / What is a generator?
+
+**Oddiy qilib aytganda:** Generator — qiymatlarni birdaniga emas, **bittadan**, so'ralganda beradigan funksiya (`yield` bilan). Million qatorli faylni xotiraga yuklamasdan qatorma-qator qayta ishlash mumkin.
+
+**Batafsilroq:**
 
 **EN:** A generator is a function that yields values lazily, one at a time, without storing all results in memory.
 
@@ -1028,9 +1119,15 @@ for _ in range(10):
     print(next(fib), end=" ")  # 0 1 1 2 3 5 8 13 21 34
 ```
 
+**Intervyuda shunday ayting:** "Generator holatini saqlab, `yield` da to'xtaydi — dangasa hisoblash va doimiy xotira. Pipeline'lar uchun ideal: o'qish → filtrlash → yozish. Generator faqat bir marta iteratsiya qilinadi. `yield from` ichki generatorga uzatadi."
+
 ---
 
-## 28. Context Manager va `with` iborasi / Context Manager and `with` statement
+## Q26. Context manager, `with` va `contextlib` / Context managers, `with` and `contextlib`
+
+**Oddiy qilib aytganda:** Context manager — 'ochdim → ishlatdim → albatta yopdim' naqshini avtomatlashtiradi. `with` bloki tugashi bilan (xato bo'lsa ham) resurs bo'shatiladi: fayl yopiladi, qulf ochiladi, tranzaksiya yakunlanadi.
+
+**Batafsilroq:**
 
 **EN:** Context managers handle setup and teardown automatically using `__enter__` and `__exit__` methods.
 
@@ -1078,9 +1175,131 @@ with timer("Hisoblash"):
 # Hisoblash: 0.312s
 ```
 
+**Qo'shimcha — Python'da `contextlib` moduli:**
+
+**EN:** `contextlib` provides utilities for working with context managers without writing full classes.
+
+**UZB:** `contextlib` to'liq klass yozmasdan kontekst menejerlar bilan ishlash uchun yordamchi vositalarni taqdim etadi.
+
+```python
+from contextlib import (
+    contextmanager, suppress, redirect_stdout,
+    ExitStack, asynccontextmanager
+)
+import io
+
+# contextmanager decorator
+@contextmanager
+def managed_resource(name):
+    print(f"🟢 {name} ochildi")
+    try:
+        yield name.upper()
+    except Exception as e:
+        print(f"❌ Xato: {e}")
+        raise
+    finally:
+        print(f"🔴 {name} yopildi")
+
+with managed_resource("database") as db:
+    print(f"Ishlatilmoqda: {db}")
+# 🟢 database ochildi
+# Ishlatilmoqda: DATABASE
+# 🔴 database yopildi
+
+# suppress — xatoni e'tiborsiz qoldirish
+with suppress(FileNotFoundError):
+    open("mavjud_emas.txt")  # xato yo'q!
+
+# redirect_stdout — chiqishni ushlash
+output = io.StringIO()
+with redirect_stdout(output):
+    print("Bu yashiringan")
+    print("Bu ham")
+captured = output.getvalue()
+print(f"Ushlangan: {repr(captured)}")
+
+# ExitStack — dinamik context managers
+def open_files(filenames):
+    with ExitStack() as stack:
+        files = [stack.enter_context(open(f)) for f in filenames]
+        # barcha fayllar bilan ishlash
+        return [f.read() for f in files]
+```
+
+**Qo'shimcha — Python'da `__enter__` va `__exit__` murakkab holatlar:**
+
+**EN:** Context managers can suppress exceptions, manage multiple resources, and handle async scenarios.
+
+**UZB:** Kontekst menejerlar xatolarni bostirib qo'yishi, bir nechta resurslarni boshqarishi va asinxron stsenariylarni boshqarishi mumkin.
+
+```python
+from contextlib import ExitStack, suppress
+import contextlib
+
+# Transaction manager
+class Transaction:
+    def __init__(self, db):
+        self.db = db
+        self.operations = []
+
+    def __enter__(self):
+        self.db.begin()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.db.commit()
+            print("✅ Commit qilindi")
+        else:
+            self.db.rollback()
+            print(f"🔄 Rollback qilindi: {exc_val}")
+        return False  # Xatoni bostirib qo'ymaymiz
+
+# Bir nechta fayllar bilan ishlash / Working with multiple files
+def process_files(input_files: list, output_file: str):
+    with ExitStack() as stack:
+        files = [
+            stack.enter_context(open(f, 'r', encoding='utf-8'))
+            for f in input_files
+        ]
+        out = stack.enter_context(open(output_file, 'w', encoding='utf-8'))
+
+        for f in files:
+            out.write(f.read())
+            out.write("\n")
+
+# Temp katalog / Temp directory
+import tempfile
+import os
+
+@contextlib.contextmanager
+def temp_directory():
+    import tempfile
+    import shutil
+    tmpdir = tempfile.mkdtemp()
+    try:
+        yield tmpdir
+    finally:
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+with temp_directory() as tmpdir:
+    # Test fayllar yaratish
+    test_file = os.path.join(tmpdir, "test.txt")
+    with open(test_file, 'w') as f:
+        f.write("test data")
+    print(f"Temp fayl: {test_file}")
+# tmpdir avtomatik o'chiriladi
+```
+
+**Intervyuda shunday ayting:** "`__enter__`/`__exit__` protokoli yoki `@contextmanager` generatori — `yield` ni `try/finally` ga o'rayman. Bir nechta resurs uchun `contextlib.ExitStack`, xatoni ataylab yutish uchun `suppress`, async resurslar uchun `async with` va `@asynccontextmanager`."
+
 ---
 
-## 29. Closures nima? / What are closures?
+## Q27. Closures nima? / What are closures?
+
+**Oddiy qilib aytganda:** Closure — ichki funksiya tashqi funksiyaning o'zgaruvchisini 'eslab qoladi', hatto tashqi funksiya tugagandan keyin ham. Masalan, `make_counter()` har chaqirilganda o'z hisoblagichini eslab qoluvchi funksiya qaytaradi.
+
+**Batafsilroq:**
 
 **EN:** A closure is a function that remembers variables from its enclosing scope even after the outer function has finished.
 
@@ -1122,9 +1341,15 @@ rst()
 print(inc())    # 11
 ```
 
+**Intervyuda shunday ayting:** "Closure tashqi o'zgaruvchiga havolani saqlaydi, qiymatini emas — sikl ichida lambda yaratish tuzog'i shundan: hammasi oxirgi qiymatni ko'radi (`lambda i=i: ...` bilan tuzatiladi). Tashqi o'zgaruvchini o'zgartirish uchun `nonlocal`. Decorator'lar closure'ga asoslangan."
+
 ---
 
-## 30. `@property` dekoratori / `@property` decorator
+## Q28. `@property` dekoratori / `@property` decorator
+
+**Oddiy qilib aytganda:** `@property` — metodni atribut kabi ishlatish: `user.full_name` deb yozasiz, lekin orqada funksiya hisoblaydi. Qiymat o'rnatilayotganda tekshiruv qo'shish ham mumkin (setter) — masalan, yosh manfiy bo'lmasin.
+
+**Batafsilroq:**
 
 **EN:** `@property` turns a method into a read-only attribute, with optional setter and deleter.
 
@@ -1167,9 +1392,15 @@ print(temp.fahrenheit)   # 32.0
 temp.celsius = -274      # ValueError!
 ```
 
+**Intervyuda shunday ayting:** "`property` public atribut interfeysini buzmasdan, keyinchalik unga mantiq qo'shish imkonini beradi — shuning uchun Python'da getter/setter oldindan yozilmaydi. Og'ir hisob uchun `functools.cached_property`. Property ichida sekin I/O qilmayman — atributdek ko'ringan narsa arzon bo'lishi kerak."
+
 ---
 
-## 31. Python'da `*` va `**` operatorlari / `*` and `**` operators in Python
+## Q29. Python'da `*` va `**` operatorlari / `*` and `**` operators in Python
+
+**Oddiy qilib aytganda:** `*` va `**` 'yoyish' operatorlari: `[*a, *b]` — ikki ro'yxatni birlashtiradi, `{**d1, **d2}` — ikki lug'atni, `f(*args)` — ro'yxatni argumentlarga yoyadi. Funksiya ta'rifida esa aksincha — yig'adi.
+
+**Batafsilroq:**
 
 **EN:** Beyond function arguments, `*` and `**` are used for unpacking in various contexts.
 
@@ -1182,7 +1413,7 @@ print(a)  # 1
 print(b)  # [2, 3, 4]
 print(c)  # 5
 
-# Birlаshtirish / Merging
+# Birlashtirish / Merging
 list1 = [1, 2, 3]
 list2 = [4, 5, 6]
 merged = [*list1, *list2]
@@ -1206,9 +1437,15 @@ x, y = y, x
 print(x, y)  # 20 10
 ```
 
+**Intervyuda shunday ayting:** "Chaqiruvda `*`/`**` yoyadi, ta'rifda yig'adi. Imzoda yakka `*` dan keyingi parametrlar faqat nom bilan beriladi (`def f(a, *, strict=False)`) — ochiq API'lar uchun xavfsiz; `/` dan oldingilari — faqat pozitsion. Destructuring: `first, *rest = items`."
+
 ---
 
-## 32. Python'da `dataclass` / Dataclasses in Python
+## Q30. `dataclass` nima va Pydantic'dan farqi? / Dataclasses and how they differ from Pydantic
+
+**Oddiy qilib aytganda:** `@dataclass` — ma'lumot saqlovchi klassni bir necha qatorda yozish: `__init__`, `__repr__`, `__eq__` avtomatik yaratiladi. Pydantic esa bundan tashqari kiruvchi ma'lumotni **tekshiradi** va turga aylantiradi — tashqi dunyodan (API, JSON) kelgan ma'lumot uchun.
+
+**Batafsilroq:**
 
 **EN:** `@dataclass` automatically generates `__init__`, `__repr__`, `__eq__` and more for data-holding classes.
 
@@ -1249,9 +1486,66 @@ p = Point(3.0, 4.0)
 # p.x = 5  # FrozenInstanceError
 ```
 
+**Qo'shimcha — Python'da `dataclasses` vs `Pydantic`:**
+
+**EN:** Dataclasses are built-in and lightweight. Pydantic adds runtime validation, serialization, and is ideal for FastAPI.
+
+**UZB:** Dataclasslar o'rnatilgan va engil. Pydantic ish vaqti tekshiruvi, seriallashtirish qo'shadi va FastAPI uchun ideal.
+
+```python
+from dataclasses import dataclass
+from typing import Optional
+
+# Dataclass — sodda, tez / Simple, fast
+@dataclass
+class UserDC:
+    name: str
+    age: int
+    email: Optional[str] = None
+
+user = UserDC("Ali", 25)
+print(user)  # UserDC(name='Ali', age=25, email=None)
+
+# Pydantic — tekshiruv bilan / With validation
+try:
+    from pydantic import BaseModel, EmailStr, validator, Field
+
+    class UserPydantic(BaseModel):
+        name: str = Field(..., min_length=2, max_length=50)
+        age: int = Field(..., ge=0, le=150)
+        email: str
+
+        @validator('name')
+        def name_must_be_capitalized(cls, v):
+            return v.capitalize()
+
+        class Config:
+            json_encoders = {str: lambda v: v.strip()}
+
+    user = UserPydantic(name="ali", age=25, email="ali@example.com")
+    print(user.name)   # Ali — avtomatik capitalize
+
+    # Xato tekshiruv / Validation error
+    # UserPydantic(name="X", age=-1, email="not-email")
+    # ValidationError: multiple errors
+
+    # JSON / dict konversiya
+    print(user.dict())
+    print(user.json())
+
+except ImportError:
+    print("pip install pydantic")
+```
+
+**Intervyuda shunday ayting:** "Ichki model va qiymat obyektlari uchun — `dataclass` (standart kutubxona, yengil; `frozen=True`, `slots=True`). Tizim chegarasida — API so'rovlari, konfiguratsiya, JSON — Pydantic v2: validatsiya, serializatsiya va JSON Schema. Ikkalasini aralashtirmayman: tekshirilmagan tashqi ma'lumotni dataclass'ga to'g'ridan-to'g'ri quymayman."
+
 ---
 
-## 33. Iteratorlar va Iterabllar / Iterators and Iterables
+## Q31. Iteratorlar va Iterabllar / Iterators and Iterables
+
+**Oddiy qilib aytganda:** Iterable — ichidan yurib chiqish mumkin bo'lgan narsa (ro'yxat, satr, fayl). Iterator — 'hozir qayerdaman' ni eslab, `next()` bilan keyingisini beradigan ko'rsatkich. `for` sikli orqada aynan shunday ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** An iterable has `__iter__`. An iterator has both `__iter__` and `__next__`. Generators are iterators.
 
@@ -1295,9 +1589,15 @@ combined = list(chain([1, 2], [3, 4], [5, 6]))
 print(combined)    # [1, 2, 3, 4, 5, 6]
 ```
 
+**Intervyuda shunday ayting:** "Iterable `__iter__` orqali iterator beradi, iterator esa `__next__` bilan elementlarni qaytaradi va oxirida `StopIteration` ko'taradi. Iterator bir martalik — ikkinchi marta o'qisangiz bo'sh. O'z iteratorimni ko'pincha generator funksiya bilan yozaman — protokolni qo'lda amalga oshirishdan soddaroq."
+
 ---
 
-## 34. Type hints va typing moduli / Type hints and typing module
+## Q32. Type hints va typing moduli / Type hints and typing module
+
+**Oddiy qilib aytganda:** Type hint — kodga 'bu o'zgaruvchi qanday turda' degan izoh: `def greet(name: str) -> str`. Python ularni ishlash paytida tekshirmaydi, lekin muharrir va mypy kabi vositalar xatoni kod ishga tushmasdan oldin topadi.
+
+**Batafsilroq:**
 
 **EN:** Type hints improve code readability, enable IDE support, and allow static analysis tools like mypy.
 
@@ -1345,9 +1645,15 @@ def first_element(lst: List[T]) -> Optional[T]:
     return lst[0] if lst else None
 ```
 
+**Intervyuda shunday ayting:** "Hint'lar — hujjat va statik tahlil uchun, runtime'da majburiy emas (buning uchun Pydantic). Zamonaviy sintaksis: `list[int]`, `str | None`, 3.12+ da `def first[T](xs: list[T]) -> T`. 3.14 da annotatsiyalar kechiktirib hisoblanadi (PEP 649). CI'da mypy yoki pyright ishga tushiraman."
+
 ---
 
-## 35. Python'da `collections` moduli / `collections` module
+## Q33. Python'da `collections` moduli / `collections` module
+
+**Oddiy qilib aytganda:** `collections` — maxsus konteynerlar to'plami: `Counter` — narsalarni sanaydi, `defaultdict` — yo'q kalit uchun avtomatik boshlang'ich qiymat, `deque` — ikki tomondan tez qo'shish/olish, `namedtuple` — nomlangan maydonli tuple.
+
+**Batafsilroq:**
 
 **EN:** The `collections` module provides specialized container types.
 
@@ -1398,9 +1704,15 @@ d.rotate(2)        # o'ngga aylantirish
 print(d)           # deque([3, 4, 0, 1, 2])
 ```
 
+**Intervyuda shunday ayting:** "To'g'ri konteyner kodni qisqartiradi va tezlashtiradi: `deque` — navbat uchun (`list.pop(0)` O(n)), `Counter.most_common` — top-N, `defaultdict(list)` — guruhlash. `namedtuple` o'rniga ko'pincha `typing.NamedTuple` yoki `dataclass(frozen=True)`."
+
 ---
 
-## 36. Python'da `functools` moduli / `functools` module
+## Q34. Python'da `functools` moduli / `functools` module
+
+**Oddiy qilib aytganda:** `functools` — funksiyalar bilan ishlash asboblari: `lru_cache` — natijani eslab qoladi, `partial` — ba'zi argumentlarni oldindan to'ldiradi, `wraps` — decorator'da asl funksiya ma'lumotini saqlaydi, `reduce` — ro'yxatni bitta qiymatga yig'adi.
+
+**Batafsilroq:**
 
 **EN:** `functools` provides higher-order functions for functional programming.
 
@@ -1459,133 +1771,15 @@ print(dp.statistics)  # Hisoblanmoqda... {'mean': 3.0, ...}
 print(dp.statistics)  # Hisoblanmoqda... yo'q — cached
 ```
 
----
-
-## 37. Python'da multiple inheritance va MRO / Multiple inheritance and MRO
-
-**EN:** Python supports multiple inheritance. Method Resolution Order (MRO) determines which method is called using C3 linearization.
-
-**UZB:** Python ko'p merosni qo'llab-quvvatlaydi. Metod hal qilish tartibi (MRO) C3 linearizatsiya yordamida qaysi metod chaqirilishini aniqlaydi.
-
-```python
-class A:
-    def method(self):
-        print("A.method")
-
-class B(A):
-    def method(self):
-        print("B.method")
-        super().method()
-
-class C(A):
-    def method(self):
-        print("C.method")
-        super().method()
-
-class D(B, C):
-    def method(self):
-        print("D.method")
-        super().method()
-
-d = D()
-d.method()
-# D.method
-# B.method
-# C.method
-# A.method
-
-# MRO ko'rish
-print(D.__mro__)
-# (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
-
-# Amaliy: Mixin pattern
-class LogMixin:
-    def log(self, message):
-        print(f"[LOG] {self.__class__.__name__}: {message}")
-
-class JsonMixin:
-    def to_json(self):
-        import json
-        return json.dumps(self.__dict__)
-
-class User(LogMixin, JsonMixin):
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-user = User("Ali", 25)
-user.log("Created")        # [LOG] User: Created
-print(user.to_json())      # {"name": "Ali", "age": 25}
-```
+**Intervyuda shunday ayting:** "Eng ko'p ishlatiladiganlari: `lru_cache`/`cache` (faqat sof funksiyalar uchun va `maxsize` bilan), `cached_property`, `partial`, `wraps`, `singledispatch` (tur bo'yicha overload). Kesh bilan ehtiyot bo'laman — foydalanuvchiga bog'liq natijani keshlash xavfli (`practical/python.md` Q19)."
 
 ---
 
-## 38. Abstract Class nima? / What is an Abstract Class?
+## Q35. `__slots__` va xotira optimizatsiyasi / `__slots__` and memory optimization
 
-**EN:** An abstract class defines a contract — subclasses must implement abstract methods. Use `abc` module.
+**Oddiy qilib aytganda:** Odatda har Python obyekti o'z atributlarini ichki lug'atda (`__dict__`) saqlaydi — bu moslashuvchan, lekin xotira oladi. `__slots__` — 'bu klassda faqat shu atributlar bo'ladi' deyish: lug'at yaratilmaydi va millionlab obyekt bo'lsa, xotira sezilarli tejaladi.
 
-**UZB:** Abstrakt klass shartnomani belgilaydi — quyi klasslar abstrakt metodlarni amalga oshirishi kerak. `abc` modulidan foydalaning.
-
-```python
-from abc import ABC, abstractmethod
-
-class Shape(ABC):
-    def __init__(self, color="white"):
-        self.color = color
-
-    @abstractmethod
-    def area(self) -> float:
-        """Yuzani hisoblash / Calculate area"""
-        pass
-
-    @abstractmethod
-    def perimeter(self) -> float:
-        """Perimetrni hisoblash / Calculate perimeter"""
-        pass
-
-    def describe(self):
-        return f"{self.color} {self.__class__.__name__}: yuz={self.area():.2f}"
-
-class Circle(Shape):
-    def __init__(self, radius, color="red"):
-        super().__init__(color)
-        self.radius = radius
-
-    def area(self):
-        import math
-        return math.pi * self.radius ** 2
-
-    def perimeter(self):
-        import math
-        return 2 * math.pi * self.radius
-
-class Rectangle(Shape):
-    def __init__(self, width, height, color="blue"):
-        super().__init__(color)
-        self.width = width
-        self.height = height
-
-    def area(self):
-        return self.width * self.height
-
-    def perimeter(self):
-        return 2 * (self.width + self.height)
-
-# Shape()  # TypeError — abstrakt klass
-circle = Circle(5)
-rect = Rectangle(4, 6)
-
-print(circle.describe())   # red Circle: yuz=78.54
-print(rect.describe())     # blue Rectangle: yuz=24.00
-
-shapes = [circle, rect]
-for s in shapes:
-    print(f"  Perimeter: {s.perimeter():.2f}")
-```
-
----
-
-## 39. Python'da `__slots__` / `__slots__` in Python
+**Batafsilroq:**
 
 **EN:** `__slots__` prevents dynamic attribute creation and reduces memory usage by replacing `__dict__`.
 
@@ -1632,9 +1826,189 @@ child.x = 1
 child.y = 2
 ```
 
+**Qo'shimcha — Python'da `slots` va `__dict__` optimizatsiya:**
+
+**EN:** Understanding Python's memory model helps write memory-efficient code at scale.
+
+**UZB:** Python'ning xotira modelini tushunish miqyosda xotira-samarali kod yozishga yordam beradi.
+
+```python
+import sys
+import tracemalloc
+
+# Xotira profili / Memory profiling
+tracemalloc.start()
+
+data = [{"id": i, "name": f"user_{i}"} for i in range(10000)]
+
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics('lineno')[:3]
+for stat in top_stats:
+    print(stat)
+
+# Xotira tejash usullari / Memory saving techniques
+# 1. Generator o'rniga ro'yxat ishlatmang
+total = sum(x**2 for x in range(1_000_000))   # ✅ Generator
+# total = sum([x**2 for x in range(1_000_000)]) # ❌ List — ko'p xotira
+
+# 2. __slots__ ishlatish
+class PointWithSlots:
+    __slots__ = ('x', 'y', 'z')
+    def __init__(self, x, y, z):
+        self.x, self.y, self.z = x, y, z
+
+class PointWithDict:
+    def __init__(self, x, y, z):
+        self.x, self.y, self.z = x, y, z
+
+p1 = PointWithSlots(1, 2, 3)
+p2 = PointWithDict(1, 2, 3)
+print(sys.getsizeof(p1))         # 56 bytes
+print(sys.getsizeof(p2))         # 48 + 232 (dict) bytes
+
+# 3. array moduli — tipli massivlar
+import array
+int_list = list(range(1000))     # ~8.7 KB
+int_array = array.array('i', range(1000))  # ~4 KB
+```
+
+**Qo'shimcha — Python'da `slots` va `__weakref__`:**
+
+**EN:** When using `__slots__`, weak references require explicitly adding `'__weakref__'` to slots.
+
+**UZB:** `__slots__` ishlatilganda, zaif havolalar uchun `'__weakref__'` ni slotlarga aniq qo'shish kerak.
+
+```python
+import weakref
+import sys
+
+class OptimizedNode:
+    __slots__ = ('value', 'next', 'prev', '__weakref__')
+
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+        self.prev = None
+
+class DoublyLinkedList:
+    __slots__ = ('head', 'tail', '_size')
+
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self._size = 0
+
+    def append(self, value):
+        node = OptimizedNode(value)
+        if self.tail:
+            self.tail.next = node
+            node.prev = self.tail
+        else:
+            self.head = node
+        self.tail = node
+        self._size += 1
+
+    def prepend(self, value):
+        node = OptimizedNode(value)
+        if self.head:
+            node.next = self.head
+            self.head.prev = node
+        else:
+            self.tail = node
+        self.head = node
+        self._size += 1
+
+    def __len__(self):
+        return self._size
+
+    def __iter__(self):
+        current = self.head
+        while current:
+            yield current.value
+            current = current.next
+
+dll = DoublyLinkedList()
+for i in range(5):
+    dll.append(i)
+
+print(list(dll))          # [0, 1, 2, 3, 4]
+print(len(dll))           # 5
+print(sys.getsizeof(dll.head))  # slots yordamida kichikroq
+
+# Zaif havola ishlaydi chunki __weakref__ slots da
+weak_head = weakref.ref(dll.head)
+print(weak_head().value)  # 0
+```
+
+**Qo'shimcha — Python'da `__slots__` + `__dict__` gibrid:**
+
+**EN:** Combining `__slots__` for core attributes with `__dict__` for flexibility.
+
+**UZB:** Asosiy atributlar uchun `__slots__` va moslashuvchanlik uchun `__dict__` ni birlashtirish.
+
+```python
+import sys
+
+class HybridModel:
+    """
+    __slots__ tez va xotirada iqtisodiy bo'lgan asosiy atributlar uchun,
+    __dict__ qo'shimcha dinamik atributlar uchun
+    """
+    __slots__ = ('id', 'name', 'created_at')
+
+    def __init__(self, id: int, name: str):
+        self.id = id
+        self.name = name
+        import datetime
+        self.created_at = datetime.datetime.now()
+
+    def __repr__(self):
+        extra = getattr(self, '__dict__', {})
+        return f"HybridModel(id={self.id}, name={self.name}, extra={extra})"
+
+# Agar __dict__ kerak bo'lsa
+class FlexibleModel:
+    __slots__ = ('_id', '_name', '__dict__')  # __dict__ ni slots ga qo'shish
+
+    def __init__(self, id: int, name: str):
+        self._id = id
+        self._name = name
+
+    @property
+    def id(self): return self._id
+
+    @property
+    def name(self): return self._name
+
+m = FlexibleModel(1, "Ali")
+m.dynamic_attr = "anything"  # __dict__ bor, shuning uchun ishlaydi
+m.another = [1, 2, 3]
+print(m.dynamic_attr)  # anything
+print(m.__dict__)       # {'dynamic_attr': 'anything', 'another': [1, 2, 3]}
+
+# Xotira taqqoslash / Memory comparison
+class WithSlots:
+    __slots__ = ('x', 'y', 'z')
+    def __init__(self): self.x = self.y = self.z = 0
+
+class WithDict:
+    def __init__(self): self.x = self.y = self.z = 0
+
+s = WithSlots()
+d = WithDict()
+print(f"Slots: {sys.getsizeof(s)} bytes")  # ~56 bytes
+print(f"Dict:  {sys.getsizeof(d) + sys.getsizeof(d.__dict__)} bytes")  # ~280 bytes
+```
+
+**Intervyuda shunday ayting:** "`__slots__` har nusxadagi `__dict__` ni olib tashlaydi — xotira kamayadi va atributga kirish biroz tezlashadi, lekin yangi atribut qo'shib bo'lmaydi va merosda har klass o'z slots'ini e'lon qilishi kerak. `weakref` kerak bo'lsa `__weakref__` ni slots'ga qo'shaman. Dataclass'da — `@dataclass(slots=True)`."
+
 ---
 
-## 40. Python'da Regex / Regular Expressions in Python
+## Q36. Python'da Regex / Regular Expressions in Python
+
+**Oddiy qilib aytganda:** Regex (muntazam ifoda) — matnda naqsh bo'yicha qidirish tili: 'telefon raqamga o'xshash hamma narsani top', 'email formatini tekshir'. Python'da `re` moduli orqali ishlatiladi.
+
+**Batafsilroq:**
 
 **EN:** The `re` module provides powerful pattern matching for strings.
 
@@ -1682,9 +2056,15 @@ print(m.group('year'))   # 2024
 print(m.groupdict())     # {'year': '2024', 'month': '03', 'day': '15'}
 ```
 
+**Intervyuda shunday ayting:** "Tez-tez ishlatiladigan naqshni `re.compile` qilaman, satrlarni `r"..."` (raw) ko'rinishda yozaman, butun satr mosligi uchun `re.fullmatch`. Regex har narsa uchun emas: email yoki HTML'ni to'liq tekshirish uchun maxsus kutubxonalar yaxshiroq. Foydalanuvchi kiritgan naqshlar ReDoS (sekinlashtirish hujumi) xavfini tug'diradi."
+
 ---
 
-## 41. Python'da `sorted()` va `sort()` farqi / Difference between `sorted()` and `sort()`
+## Q37. Python'da `sorted()` va `sort()` farqi / Difference between `sorted()` and `sort()`
+
+**Oddiy qilib aytganda:** `sorted(lst)` — **yangi** saralangan ro'yxat qaytaradi, asl ro'yxat o'zgarmaydi. `lst.sort()` — ro'yxatning **o'zini** saralaydi va `None` qaytaradi. `key=` bilan nimaga qarab saralashni aytasiz.
+
+**Batafsilroq:**
 
 **EN:** `sort()` modifies list in-place and returns None. `sorted()` returns a new sorted list and works on any iterable.
 
@@ -1727,9 +2107,15 @@ from operator import attrgetter, itemgetter
 sorted_by_salary = sorted(employees, key=itemgetter("salary"))
 ```
 
+**Intervyuda shunday ayting:** "`sorted` istalgan iterable bilan ishlaydi va yangi ro'yxat beradi, `list.sort` joyida saralaydi va `None` qaytaradi (`x = x.sort()` — klassik xato). Ikkalasi ham barqaror (stable) — ko'p bosqichli saralashni ketma-ket qilish mumkin. Murakkablik O(n log n) (Timsort/Powersort)."
+
 ---
 
-## 42. Python'da `pathlib` moduli / `pathlib` module
+## Q38. Python'da `pathlib` moduli / `pathlib` module
+
+**Oddiy qilib aytganda:** `pathlib` fayl yo'llari bilan ishlashni osonlashtiradi: yo'llarni `/` bilan qo'shasiz (`Path("data") / "report.csv"`), faylni o'qish, kengaytmani olish, papkadagi fayllarni sanash — hammasi metodlar bilan. Windows va Linux'da bir xil ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** `pathlib` provides an object-oriented interface for filesystem paths, replacing `os.path`.
 
@@ -1778,9 +2164,15 @@ json_file = Path("data.json")
 json_file.write_text(json.dumps({"key": "value"}, indent=2))
 ```
 
+**Intervyuda shunday ayting:** "`os.path` o'rniga `pathlib` — obyektga yo'naltirilgan va OS'ga mos. Foydalanuvchi bergan yo'llarni `resolve()` qilib, ruxsat etilgan papka ichida qolganini `is_relative_to` bilan tekshiraman — path traversal'dan himoya (`practical/python.md` Q17)."
+
 ---
 
-## 43. Python'da `enum` / Enumerations in Python
+## Q39. Python'da `enum` / Enumerations in Python
+
+**Oddiy qilib aytganda:** `Enum` — cheklangan, nomlangan qiymatlar ro'yxati: buyurtma holati faqat `PENDING`, `PAID`, `SHIPPED` bo'lishi mumkin. Oddiy satrlar o'rniga ishlatilsa, harf xatolari va noto'g'ri qiymatlar oldini oladi.
+
+**Batafsilroq:**
 
 **EN:** `Enum` creates a set of named constants, making code more readable and preventing invalid values.
 
@@ -1836,9 +2228,15 @@ def process_order(status: Status):
 print(process_order(Status.ACTIVE))  # Faol!
 ```
 
+**Intervyuda shunday ayting:** "Enum 'sehrli satrlar'ni turli xavfsiz konstantalarga aylantiradi. JSON va baza bilan ishlash uchun `StrEnum` (3.11+) qulay — a'zosi oddiy satr kabi solishtiriladi. Bayroqlar to'plami uchun `Flag`, qiymat muhim bo'lmasa `auto()`."
+
 ---
 
-## 44. Python'da `logging` moduli / `logging` module
+## Q40. Python'da `logging` moduli / `logging` module
+
+**Oddiy qilib aytganda:** `logging` — `print` ning professional versiyasi: har xabarga daraja (DEBUG, INFO, WARNING, ERROR), vaqt va manba qo'shiladi, xabarlarni faylga yoki tizimga yuborish va keraksiz darajalarni o'chirish mumkin.
+
+**Batafsilroq:**
 
 **EN:** `logging` is the standard way to add structured logging to Python applications.
 
@@ -1890,9 +2288,15 @@ app_logger.info("Ilova ishga tushdi")
 app_logger.error("Xato: ma'lumotlar bazasiga ulanib bo'lmadi")
 ```
 
+**Intervyuda shunday ayting:** "Modul darajasida `logger = logging.getLogger(__name__)`, sozlash esa faqat ilova kirish nuqtasida. Xabarlarni `%s` parametrlari bilan yozaman — satr faqat kerak bo'lganda quriladi. Production'da JSON format, request ID va hech qanday sir (token, parol) yo'q. Xatoni `logger.exception` bilan — traceback ham yoziladi."
+
 ---
 
-## 45. Python'da `unittest` / Unit testing with `unittest`
+## Q41. Python'da `unittest` / Unit testing with `unittest`
+
+**Oddiy qilib aytganda:** Unit test — kodingizning kichik qismini avtomatik tekshiruvchi kod: 'bu funksiyaga 2 va 3 bersam, 5 qaytishi kerak'. O'zgarish kiritganingizda testlar biror narsa buzilganini darhol ko'rsatadi.
+
+**Batafsilroq:**
 
 **EN:** `unittest` is Python's built-in testing framework following the xUnit pattern.
 
@@ -1962,9 +2366,15 @@ if __name__ == '__main__':
     unittest.main(verbosity=2)
 ```
 
+**Intervyuda shunday ayting:** "`unittest` standart kutubxonada bor, lekin amalda ko'pincha pytest — oddiy `assert`, fixture'lar va parametrlash. Test tez, izolyatsiyalangan va tashqi xizmatlarsiz bo'lishi kerak; tashqi bog'liqliklarni ishlatilgan joyda mock qilaman (`practical/python.md` Q5)."
+
 ---
 
-## 46. Python'da `argparse` / Command-line arguments with `argparse`
+## Q42. Python'da `argparse` / Command-line arguments with `argparse`
+
+**Oddiy qilib aytganda:** `argparse` — terminal dasturlari uchun argumentlarni o'qish: `python import.py data.csv --limit 100`. U argumentlarni tekshiradi, noto'g'ri bo'lsa tushunarli xato beradi va `--help` ni avtomatik yaratadi.
+
+**Batafsilroq:**
 
 **EN:** `argparse` parses command-line arguments for Python scripts.
 
@@ -2011,9 +2421,15 @@ delete_cmd.add_argument("id", type=int, help="ID")
 # python script.py delete 42
 ```
 
+**Intervyuda shunday ayting:** "`argparse` da `type`, `choices`, `required` bilan kirishni chegaralayman — xabar tushunarli, chiqish kodi 2. Python 3.14 da `suggest_on_error` va rangli yordam qo'shildi. Katta CLI'lar uchun Typer yoki Click qulayroq."
+
 ---
 
-## 47. Python'da `threading` asoslari / Threading basics
+## Q43. `threading` va `ThreadPoolExecutor` / Threads and thread pools
+
+**Oddiy qilib aytganda:** Thread — bitta dastur ichida bir vaqtda ishlaydigan 'ishchilar'. Ular kutish ko'p bo'lgan ishlarda (internetdan yuklash, fayl o'qish) foydali: biri javob kutayotganda, boshqasi ishlaydi. Oddiy Python'da hisob-kitob og'ir ishlarni esa GIL sabab tezlashtirmaydi.
+
+**Batafsilroq:**
 
 **EN:** Threading allows concurrent execution but is limited by the GIL for CPU-bound tasks. Best for I/O-bound work.
 
@@ -2071,9 +2487,77 @@ for t in threads: t.join()
 print(counter.count)  # 1000 — har doim to'g'ri
 ```
 
+**Qo'shimcha — Python'da `concurrent.futures` va Thread/Process Pool:**
+
+**EN:** `concurrent.futures` provides a high-level interface for async execution with thread and process pools.
+
+**UZB:** `concurrent.futures` thread va jarayon havzalari bilan async bajarish uchun yuqori darajali interfeys taqdim etadi.
+
+```python
+from concurrent.futures import (
+    ThreadPoolExecutor,
+    ProcessPoolExecutor,
+    as_completed,
+    wait,
+    FIRST_COMPLETED,
+    ALL_COMPLETED
+)
+import time
+import requests  # pip install requests
+
+# ThreadPoolExecutor — I/O bound
+def download_page(url: str) -> tuple:
+    start = time.time()
+    time.sleep(0.1)  # I/O simulation
+    return url, len(url), time.time() - start
+
+urls = [f"https://example.com/page/{i}" for i in range(20)]
+
+with ThreadPoolExecutor(max_workers=10) as executor:
+    # map — ketma-ket natijalar / Sequential results
+    results = list(executor.map(download_page, urls))
+
+    # submit + as_completed — birinchi tayyor bo'lgan / As they complete
+    futures = {executor.submit(download_page, url): url for url in urls[:5]}
+
+    for future in as_completed(futures):
+        url = futures[future]
+        result = future.result()
+        print(f"✅ {url}: {result[2]:.3f}s")
+
+# ProcessPoolExecutor — CPU bound
+def prime_check(n: int) -> tuple:
+    if n < 2: return n, False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return n, False
+    return n, True
+
+numbers = range(1, 100)
+
+with ProcessPoolExecutor(max_workers=4) as executor:
+    primes = [
+        n for n, is_prime in executor.map(prime_check, numbers)
+        if is_prime
+    ]
+    print(f"Tub sonlar: {primes}")
+
+# wait bilan / With wait
+with ThreadPoolExecutor(max_workers=5) as executor:
+    futures = [executor.submit(time.sleep, 0.1) for _ in range(5)]
+    done, not_done = wait(futures, return_when=ALL_COMPLETED)
+    print(f"Tugagan: {len(done)}, Kutilmoqda: {len(not_done)}")
+```
+
+**Intervyuda shunday ayting:** "Thread'lar I/O-og'ir ishlar uchun. Qo'lda `Thread` yaratish o'rniga `ThreadPoolExecutor` — cheklangan ishchilar soni va natija/xatolarni `Future` orqali olish. Umumiy holatni `Lock` yoki `queue.Queue` bilan himoyalayman. Future natijasini o'qimasam, xato jimgina yo'qoladi."
+
 ---
 
-## 48. Python'da `asyncio` asoslari / `asyncio` basics
+## Q44. `asyncio`: asoslar, vazifalar va ilg'or naqshlar / asyncio: basics, tasks and advanced patterns
+
+**Oddiy qilib aytganda:** `asyncio` — bitta thread'da ko'p ishni navbat bilan bajarish: bir vazifa javob kutayotganda (`await`), boshqasi ishlaydi. Minglab tarmoq so'rovlarini bir vaqtda yuborish uchun ideal. Faqat `await` qilinadigan (async) kutubxonalar bilan ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** `asyncio` provides cooperative concurrency using coroutines and event loop — ideal for I/O-bound tasks at scale.
 
@@ -2125,62 +2609,164 @@ async def with_timeout():
 # asyncio.run(with_timeout())
 ```
 
----
+**Qo'shimcha — Python'da `asyncio` ilg'or naqshlari:**
 
-## 49. Python'da `dataclasses` vs `Pydantic` / Dataclasses vs Pydantic
+**EN:** Advanced async patterns include semaphores, queues, event broadcasting, and cancellation.
 
-**EN:** Dataclasses are built-in and lightweight. Pydantic adds runtime validation, serialization, and is ideal for FastAPI.
-
-**UZB:** Dataclasslar o'rnatilgan va engil. Pydantic ish vaqti tekshiruvi, seriallashtirish qo'shadi va FastAPI uchun ideal.
+**UZB:** Ilg'or async naqshlarga semaforlar, navbatlar, hodisa tarqatish va bekor qilish kiradi.
 
 ```python
-from dataclasses import dataclass
-from typing import Optional
+import asyncio
+from asyncio import Queue, Semaphore, Event
 
-# Dataclass — sodda, tez / Simple, fast
-@dataclass
-class UserDC:
-    name: str
-    age: int
-    email: Optional[str] = None
+# Semaphore — bir vaqtda cheklash / Rate limiting
+async def fetch_with_limit(url: str, semaphore: Semaphore) -> str:
+    async with semaphore:
+        await asyncio.sleep(0.1)  # API call
+        return f"✅ {url}"
 
-user = UserDC("Ali", 25)
-print(user)  # UserDC(name='Ali', age=25, email=None)
+async def batch_fetch(urls: list, max_concurrent: int = 5):
+    sem = Semaphore(max_concurrent)
+    tasks = [fetch_with_limit(url, sem) for url in urls]
+    return await asyncio.gather(*tasks)
 
-# Pydantic — tekshiruv bilan / With validation
-try:
-    from pydantic import BaseModel, EmailStr, validator, Field
+# Producer-Consumer with Queue
+async def producer(queue: Queue, n: int):
+    for i in range(n):
+        item = f"item_{i}"
+        await queue.put(item)
+        print(f"📤 {item} qo'shildi")
+        await asyncio.sleep(0.1)
+    await queue.put(None)  # sentinel
 
-    class UserPydantic(BaseModel):
-        name: str = Field(..., min_length=2, max_length=50)
-        age: int = Field(..., ge=0, le=150)
-        email: str
+async def consumer(queue: Queue, name: str):
+    while True:
+        item = await queue.get()
+        if item is None:
+            queue.task_done()
+            break
+        print(f"📥 {name}: {item} qayta ishlandi")
+        await asyncio.sleep(0.2)
+        queue.task_done()
 
-        @validator('name')
-        def name_must_be_capitalized(cls, v):
-            return v.capitalize()
+# Event — signal / Signaling between tasks
+async def waiter(event: Event, name: str):
+    print(f"{name} kutmoqda...")
+    await event.wait()
+    print(f"{name} signal oldi!")
 
-        class Config:
-            json_encoders = {str: lambda v: v.strip()}
+async def signaler(event: Event):
+    await asyncio.sleep(1)
+    print("Signal yuborilmoqda!")
+    event.set()
 
-    user = UserPydantic(name="ali", age=25, email="ali@example.com")
-    print(user.name)   # Ali — avtomatik capitalize
+# Task cancellation
+async def long_running_task():
+    try:
+        await asyncio.sleep(100)  # simulating long work
+    except asyncio.CancelledError:
+        print("Task bekor qilindi, tozalanmoqda...")
+        raise  # muhim: har doim re-raise
 
-    # Xato tekshiruv / Validation error
-    # UserPydantic(name="X", age=-1, email="not-email")
-    # ValidationError: multiple errors
+async def main():
+    task = asyncio.create_task(long_running_task())
+    await asyncio.sleep(1)
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        print("Task muvaffaqiyatli bekor qilindi")
 
-    # JSON / dict konversiya
-    print(user.dict())
-    print(user.json())
-
-except ImportError:
-    print("pip install pydantic")
+# asyncio.run(main())
 ```
+
+**Qo'shimcha — Python'da `Coroutine` va `Task` boshqaruvi:**
+
+**EN:** Advanced task management with priorities, cancellation groups, and structured concurrency.
+
+**UZB:** Ustuvorliklar, bekor qilish guruhlari va tuzilgan parallellik bilan ilg'or vazifa boshqaruvi.
+
+```python
+import asyncio
+from asyncio import TaskGroup  # Python 3.11+
+from typing import Coroutine, Any
+
+# TaskGroup — tuzilgan parallellik / Structured concurrency
+async def fetch_user(user_id: int) -> dict:
+    await asyncio.sleep(0.1)
+    return {"id": user_id, "name": f"User_{user_id}"}
+
+async def fetch_posts(user_id: int) -> list:
+    await asyncio.sleep(0.15)
+    return [{"id": i, "user_id": user_id} for i in range(3)]
+
+async def fetch_user_data(user_id: int) -> dict:
+    try:
+        async with TaskGroup() as tg:
+            user_task = tg.create_task(fetch_user(user_id))
+            posts_task = tg.create_task(fetch_posts(user_id))
+    except* ValueError as eg:
+        print(f"Xatolar: {eg.exceptions}")
+        return {}
+
+    return {
+        "user": user_task.result(),
+        "posts": posts_task.result()
+    }
+
+# Timeout va bekor qilish / Timeout and cancellation
+async def with_timeout_example():
+    try:
+        async with asyncio.timeout(2.0):  # Python 3.11+
+            result = await asyncio.sleep(5)  # bu timeout beradi
+    except TimeoutError:
+        print("Vaqt tugadi!")
+
+# Prioritet navbat / Priority queue
+import heapq
+
+class PriorityTaskQueue:
+    def __init__(self):
+        self._queue = []
+        self._counter = 0
+
+    async def put(self, priority: int, coro: Coroutine):
+        task = asyncio.create_task(coro)
+        heapq.heappush(self._queue, (priority, self._counter, task))
+        self._counter += 1
+        return task
+
+    async def process_all(self):
+        results = []
+        while self._queue:
+            priority, _, task = heapq.heappop(self._queue)
+            result = await task
+            results.append((priority, result))
+        return results
+
+async def task_example(name: str, delay: float) -> str:
+    await asyncio.sleep(delay)
+    return f"{name} tugadi"
+
+async def priority_demo():
+    pq = PriorityTaskQueue()
+    await pq.put(3, task_example("LOW", 0.1))
+    await pq.put(1, task_example("HIGH", 0.1))
+    await pq.put(2, task_example("MEDIUM", 0.1))
+    results = await pq.process_all()
+    for priority, result in sorted(results):
+        print(f"Ustuvorlik {priority}: {result}")
+```
+
+**Intervyuda shunday ayting:** "asyncio — kooperativ ko'p vazifalilik: vazifalar faqat `await` nuqtalarida boshqaruvni beradi, shuning uchun bitta bloklovchi chaqiruv butun loop'ni to'xtatadi. Vazifalarni `asyncio.TaskGroup` bilan (structured concurrency), vaqtni `asyncio.timeout` bilan cheklayman. Python 3.14 da osilgan vazifalarni `python -m asyncio pstree PID` bilan ko'rish mumkin."
 
 ---
 
-## 50. Python'da `__init__.py` va paket tuzilmasi / Package structure
+## Q45. Python'da `__init__.py` va paket tuzilmasi / Package structure
+
+**Oddiy qilib aytganda:** Paket — `__init__.py` fayli bor papka (zamonaviy Python'da bu fayl shart emas, lekin odatda qo'yiladi). `__init__.py` paket import qilinganda ishlaydi va tashqariga nimani ko'rsatishni belgilashi mumkin.
+
+**Batafsilroq:**
 
 **EN:** `__init__.py` marks a directory as a Python package and controls what's exported.
 
@@ -2231,110 +2817,15 @@ __version__ = "1.0.0"
 __author__ = "Alyorjon"
 ```
 
----
-
-## 51. Python'da `slots` va `__dict__` optimizatsiya / Memory optimization
-
-**EN:** Understanding Python's memory model helps write memory-efficient code at scale.
-
-**UZB:** Python'ning xotira modelini tushunish miqyosda xotira-samarali kod yozishga yordam beradi.
-
-```python
-import sys
-import tracemalloc
-
-# Xotira profili / Memory profiling
-tracemalloc.start()
-
-data = [{"id": i, "name": f"user_{i}"} for i in range(10000)]
-
-snapshot = tracemalloc.take_snapshot()
-top_stats = snapshot.statistics('lineno')[:3]
-for stat in top_stats:
-    print(stat)
-
-# Xotira tejash usullari / Memory saving techniques
-# 1. Generator o'rniga ro'yxat ishlatmang
-total = sum(x**2 for x in range(1_000_000))   # ✅ Generator
-# total = sum([x**2 for x in range(1_000_000)]) # ❌ List — ko'p xotira
-
-# 2. __slots__ ishlatish
-class PointWithSlots:
-    __slots__ = ('x', 'y', 'z')
-    def __init__(self, x, y, z):
-        self.x, self.y, self.z = x, y, z
-
-class PointWithDict:
-    def __init__(self, x, y, z):
-        self.x, self.y, self.z = x, y, z
-
-p1 = PointWithSlots(1, 2, 3)
-p2 = PointWithDict(1, 2, 3)
-print(sys.getsizeof(p1))         # 56 bytes
-print(sys.getsizeof(p2))         # 48 + 232 (dict) bytes
-
-# 3. array moduli — tipli massivlar
-import array
-int_list = list(range(1000))     # ~8.7 KB
-int_array = array.array('i', range(1000))  # ~4 KB
-```
+**Intervyuda shunday ayting:** "`__init__.py` ni ingichka tutaman — og'ir import va yon ta'sirlar paketni sekin va aylanma importlarga moyil qiladi. Loyiha tuzilmasi: `src/` layout, `pyproject.toml`, testlar alohida. `__all__` ommaviy API'ni aniq ko'rsatadi."
 
 ---
 
-## 52. Python'da `contextlib` moduli / `contextlib` module
+## Q46. Python'da `pickle` va `shelve` / Serialization with `pickle` and `shelve`
 
-**EN:** `contextlib` provides utilities for working with context managers without writing full classes.
+**Oddiy qilib aytganda:** `pickle` — Python obyektini baytlarga aylantirib saqlash va qayta tiklash. Qulay, lekin **xavfli**: ishonchsiz manbadan kelgan pickle faylni ochish — begona kodni ishga tushirish bilan teng.
 
-**UZB:** `contextlib` to'liq klass yozmasdan kontekst menejerlar bilan ishlash uchun yordamchi vositalarni taqdim etadi.
-
-```python
-from contextlib import (
-    contextmanager, suppress, redirect_stdout,
-    ExitStack, asynccontextmanager
-)
-import io
-
-# contextmanager decorator
-@contextmanager
-def managed_resource(name):
-    print(f"🟢 {name} ochildi")
-    try:
-        yield name.upper()
-    except Exception as e:
-        print(f"❌ Xato: {e}")
-        raise
-    finally:
-        print(f"🔴 {name} yopildi")
-
-with managed_resource("database") as db:
-    print(f"Ishlatilmoqda: {db}")
-# 🟢 database ochildi
-# Ishlatilmoqda: DATABASE
-# 🔴 database yopildi
-
-# suppress — xatoni e'tiborsiz qoldirish
-with suppress(FileNotFoundError):
-    open("mavjud_emas.txt")  # xato yo'q!
-
-# redirect_stdout — chiqishni ushlash
-output = io.StringIO()
-with redirect_stdout(output):
-    print("Bu yashiringan")
-    print("Bu ham")
-captured = output.getvalue()
-print(f"Ushlangan: {repr(captured)}")
-
-# ExitStack — dinamik context managers
-def open_files(filenames):
-    with ExitStack() as stack:
-        files = [stack.enter_context(open(f)) for f in filenames]
-        # barcha fayllar bilan ishlash
-        return [f.read() for f in files]
-```
-
----
-
-## 53. Python'da `pickle` va `shelve` / Serialization with `pickle` and `shelve`
+**Batafsilroq:**
 
 **EN:** `pickle` serializes Python objects to binary format. `shelve` provides a persistent dictionary.
 
@@ -2384,9 +2875,15 @@ with shelve.open("mydb") as db:
 # Never unpickle data from untrusted sources!
 ```
 
+**Intervyuda shunday ayting:** "Pickle faqat ishonchli, ichki ma'lumot uchun — `pickle.loads` ixtiyoriy kod bajarishi mumkin. Tizimlar va tillar orasida almashish uchun JSON, MessagePack yoki Protobuf. Pickle formati Python versiyalari va klass o'zgarishlariga bog'liq — uzoq muddatli saqlash uchun yaroqsiz."
+
 ---
 
-## 54. Python'da `__call__` va callable ob'ektlar / `__call__` and callable objects
+## Q47. Python'da `__call__` va callable ob'ektlar / `__call__` and callable objects
+
+**Oddiy qilib aytganda:** Klassga `__call__` metodini yozsangiz, uning obyekti funksiya kabi chaqiriladi: `validator(data)`. Holat saqlashi kerak bo'lgan 'funksiyalar' uchun qulay — masalan, sozlamalari bor tekshiruvchi.
+
+**Batafsilroq:**
 
 **EN:** `__call__` makes instances callable like functions, useful for stateful function-like objects.
 
@@ -2437,9 +2934,15 @@ for i in range(3):
 # 4-chi chaqiruv Rate limit xatosini chiqaradi
 ```
 
+**Intervyuda shunday ayting:** "`__call__` — holatli callable obyektlar uchun: sozlanadigan validator, decorator klass, strategiya. Oddiy holatda closure yoki `functools.partial` yetarli. `callable(x)` bilan tekshirish mumkin."
+
 ---
 
-## 55. Python'da `Protocols` va Structural Subtyping / Protocols and Structural Subtyping
+## Q48. Python'da `Protocols` va Structural Subtyping / Protocols and Structural Subtyping
+
+**Oddiy qilib aytganda:** Protocol — 'kim bo'lishing muhim emas, shu metodlaring bo'lsa bas' degan tip. Masalan, `read()` metodi bor har qanday obyekt 'o'qiladigan' hisoblanadi — merosdan qat'i nazar. Bu Python'ning 'o'rdak tipizatsiyasi'ni type checker tushunadigan qiladi.
+
+**Batafsilroq:**
 
 **EN:** `Protocol` (Python 3.8+) enables structural subtyping — "duck typing" with static type checking.
 
@@ -2490,13 +2993,19 @@ for shape in shapes:
 print(isinstance(Circle(1), Drawable))  # True
 ```
 
----
-
-# 🔴 ADVANCED LEVEL (56–80)
+**Intervyuda shunday ayting:** "Protocol — strukturaviy tiplash: klass protokoldan meros olishi shart emas, kerakli metodlari bo'lsa yetarli. ABC — nominal: meros majburiy va runtime'da abstrakt metodlar tekshiriladi. Kutubxona interfeyslari va test dublyorlari uchun Protocol qulay; runtime `isinstance` kerak bo'lsa — `@runtime_checkable`."
 
 ---
 
-## 56. GIL nima va unga munosabat? / What is the GIL and how to work around it?
+# 🔴 Ilg'or daraja / Advanced
+
+---
+
+## Q49. GIL nima va free-threaded Python nima o'zgartirdi? / What is the GIL and what does free-threaded Python change?
+
+**Oddiy qilib aytganda:** GIL — CPython'dagi 'bitta kalit': bir vaqtda faqat bitta thread Python kodini bajara oladi. Shuning uchun oddiy Python'da hisob-kitob og'ir ishlarni thread'lar bilan tezlashtirib bo'lmaydi. Python 3.13 da GIL'siz tajribaviy build paydo bo'ldi, 3.14 da u rasman qo'llab-quvvatlanadi.
+
+**Batafsilroq:**
 
 **EN:** Global Interpreter Lock (GIL) allows only one thread to execute Python bytecode at a time, limiting CPU parallelism. Use `multiprocessing` or async for workarounds.
 
@@ -2550,9 +3059,15 @@ with ThreadPoolExecutor(max_workers=10) as executor:
     results = list(executor.map(fetch_url, urls))
 ```
 
+**Intervyuda shunday ayting:** "Standart CPython'da GIL CPU-og'ir kodni thread'lar orasida parallel qilmaydi; I/O kutishda esa u bo'shatiladi, shuning uchun I/O uchun thread'lar ishlaydi. CPU uchun — `ProcessPoolExecutor`, C kengaytmalar (NumPy GIL'ni bo'shatadi) yoki 3.14 dagi free-threaded build (PEP 779; bir oqimli kodda ~5–10% sekinroq va C kengaytmalar mosligi tekshirilishi kerak). Yana bir yo'l — `InterpreterPoolExecutor` (subinterpreter'lar)."
+
 ---
 
-## 57. Python'da Metaclass / Metaclass in Python
+## Q50. Python'da Metaclass / Metaclass in Python
+
+**Oddiy qilib aytganda:** Metaclass — 'klasslarni yaratuvchi klass'. Oddiy klass obyektlarni yaratadi, metaclass esa klassning o'zini yaratadi va uni o'zgartirishi mumkin: masalan, har yangi klassni avtomatik ro'yxatga olish yoki qoidalarni tekshirish.
+
+**Batafsilroq:**
 
 **EN:** A metaclass is "a class of a class" — it controls class creation. `type` is the default metaclass.
 
@@ -2601,9 +3116,15 @@ class StrictClass(metaclass=ValidatedMeta):
         return f"Salom, {name}!"
 ```
 
+**Intervyuda shunday ayting:** "Metaclass — kuchli, lekin kam kerak bo'ladigan vosita; framework'larda (Django ORM, eski Enum) uchraydi. Ko'p vazifalar uchun soddaroq alternativalar bor: `__init_subclass__`, klass decorator'lari, `__set_name__`. 'Metaclass kerakmi?' degan savolga javob odatda 'yo'q'."
+
 ---
 
-## 58. Python'da Descriptor Protocol / Descriptor Protocol
+## Q51. Python'da Descriptor Protocol / Descriptor Protocol
+
+**Oddiy qilib aytganda:** Descriptor — atributga kirishni boshqaradigan obyekt: `obj.x` o'qilganda, yozilganda yoki o'chirilganda uning `__get__`/`__set__` metodlari chaqiriladi. `@property`, `@classmethod` va ORM ustunlari aynan shu mexanizm ustida qurilgan.
+
+**Batafsilroq:**
 
 **EN:** Descriptors customize attribute access using `__get__`, `__set__`, `__delete__` — the foundation of `property`, `classmethod`, `staticmethod`.
 
@@ -2661,9 +3182,15 @@ print(p.total_value)  # 15000.0
 # p.name = ""     # ValueError
 ```
 
+**Intervyuda shunday ayting:** "Descriptor protokoli — `__get__`, `__set__`, `__delete__` va `__set_name__`. Data descriptor (`__set__` bor) nusxa `__dict__` idan ustun turadi, non-data descriptor esa yo'q. Qayta ishlatiladigan validatsiyali maydonlar (masalan, `PositiveInt()`) uchun ishlataman."
+
 ---
 
-## 59. Python'da `__new__` vs `__init__` / `__new__` vs `__init__`
+## Q52. Python'da `__new__` vs `__init__` / `__new__` vs `__init__`
+
+**Oddiy qilib aytganda:** `__new__` — obyektni **yaratadi** (bo'sh quti ajratadi), `__init__` — uni **to'ldiradi** (atributlarni o'rnatadi). Odatda faqat `__init__` yoziladi; `__new__` o'zgarmas turlardan meros olganda yoki obyekt yaratilishini boshqarish kerak bo'lganda kerak.
+
+**Batafsilroq:**
 
 **EN:** `__new__` creates the instance; `__init__` initializes it. Rarely need to override `__new__` except for immutable types or advanced patterns.
 
@@ -2714,9 +3241,15 @@ e = Example(42)
 # 2. __init__ chaqirildi, value=42
 ```
 
+**Intervyuda shunday ayting:** "`__new__` — klass metodi, nusxani qaytaradi; `__init__` — tayyor nusxani sozlaydi. `__new__` `int`, `str`, `tuple` kabi o'zgarmas turlardan meros olishda kerak, chunki ularning qiymati yaratilishda belgilanadi. Singleton uchun `__new__` dan ko'ra modul darajasidagi obyekt soddaroq."
+
 ---
 
-## 60. Python'da `weakref` / Weak references in Python
+## Q53. Python'da `weakref` / Weak references in Python
+
+**Oddiy qilib aytganda:** Weak reference — obyektga 'kuchsiz' havola: u obyektni xotirada ushlab turmaydi. Obyektni hech kim ishlatmay qo'ysa, u o'chiriladi va havola bo'sh bo'lib qoladi. Keshlar va kuzatuvchilar ro'yxatida xotira sizishining oldini oladi.
+
+**Batafsilroq:**
 
 **EN:** Weak references don't prevent garbage collection, useful for caches and avoiding circular references.
 
@@ -2768,86 +3301,15 @@ gc.collect()
 get_user(1)        # Qayta yaratiladi — cache bo'sh
 ```
 
----
-
-## 61. Python'da `abc` va Interface naqshi / Interface pattern with `abc`
-
-**EN:** Combining ABC with abstract properties creates strict interface contracts.
-
-**UZB:** ABC ni abstrakt xususiyatlar bilan birlashtirish qat'iy interfeys shartnomalari yaratadi.
-
-```python
-from abc import ABC, abstractmethod
-from typing import List, Dict, Any
-
-class Repository(ABC):
-    """Generic Repository Interface"""
-
-    @abstractmethod
-    async def find_by_id(self, id: int) -> Dict[str, Any]:
-        ...
-
-    @abstractmethod
-    async def find_all(self, skip: int = 0, limit: int = 100) -> List[Dict]:
-        ...
-
-    @abstractmethod
-    async def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        ...
-
-    @abstractmethod
-    async def update(self, id: int, data: Dict[str, Any]) -> Dict[str, Any]:
-        ...
-
-    @abstractmethod
-    async def delete(self, id: int) -> bool:
-        ...
-
-class InMemoryUserRepository(Repository):
-    def __init__(self):
-        self._storage: Dict[int, Dict] = {}
-        self._counter = 0
-
-    async def find_by_id(self, id: int) -> Dict:
-        user = self._storage.get(id)
-        if not user:
-            raise ValueError(f"Foydalanuvchi {id} topilmadi")
-        return user
-
-    async def find_all(self, skip=0, limit=100) -> List[Dict]:
-        values = list(self._storage.values())
-        return values[skip:skip+limit]
-
-    async def create(self, data: Dict) -> Dict:
-        self._counter += 1
-        data["id"] = self._counter
-        self._storage[self._counter] = data
-        return data
-
-    async def update(self, id: int, data: Dict) -> Dict:
-        if id not in self._storage:
-            raise ValueError(f"Foydalanuvchi {id} topilmadi")
-        self._storage[id].update(data)
-        return self._storage[id]
-
-    async def delete(self, id: int) -> bool:
-        return self._storage.pop(id, None) is not None
-
-# PostgreSQL implementation almashtirish oson / Easy to swap
-class PostgresUserRepository(Repository):
-    def __init__(self, db_pool):
-        self.pool = db_pool
-
-    async def find_by_id(self, id: int) -> Dict:
-        async with self.pool.acquire() as conn:
-            row = await conn.fetchrow("SELECT * FROM users WHERE id=$1", id)
-            return dict(row)
-    # ... boshqalari
-```
+**Intervyuda shunday ayting:** "`weakref` kesh va observer'larda xotira sizishini oldini oladi: `WeakValueDictionary` obyekt boshqa joyda kerak bo'lmay qolganda yozuvni o'zi o'chiradi. Hamma obyektga weakref olib bo'lmaydi (masalan, `int`, `list`), `__slots__` li klassda `__weakref__` slot kerak."
 
 ---
 
-## 62. Python'da `__getattr__` va `__getattribute__` / `__getattr__` vs `__getattribute__`
+## Q54. Python'da `__getattr__` va `__getattribute__` / `__getattr__` vs `__getattribute__`
+
+**Oddiy qilib aytganda:** `__getattr__` — atribut **topilmaganda** chaqiriladi (zaxira varianti). `__getattribute__` — **har qanday** atributga murojaatda chaqiriladi. Birinchisi xavfsiz va ko'p ishlatiladi, ikkinchisi xavfli — ozgina xato cheksiz rekursiyaga olib keladi.
+
+**Batafsilroq:**
 
 **EN:** `__getattribute__` is called for every attribute access. `__getattr__` is called only when the attribute is NOT found normally.
 
@@ -2899,9 +3361,15 @@ class APIProxy:
         return logged_method
 ```
 
+**Intervyuda shunday ayting:** "`__getattr__` — faqat oddiy qidiruv muvaffaqiyatsiz bo'lganda: proxy va delegatsiya uchun qulay. `__getattribute__` har kirishni ushlaydi, ichida `super().__getattribute__` ishlatmasam cheksiz rekursiya bo'ladi va sekin. Modul darajasida ham `__getattr__` bor (PEP 562) — eskirgan nomlar uchun ogohlantirish berishda qulay."
+
 ---
 
-## 63. Python'da `async` generators va `async` context managers
+## Q55. Python'da `async` generators va `async` context managers
+
+**Oddiy qilib aytganda:** Async generator — qiymatlarni `await` bilan kutib, `async for` orqali bittadan beradi: masalan, API'dan sahifama-sahifa ma'lumot olish. Async context manager — `async with` bilan ochiladigan va yopiladigan resurs (ulanish, sessiya).
+
+**Batafsilroq:**
 
 **EN:** Async generators use `async def` with `yield`. Async context managers use `__aenter__` and `__aexit__`.
 
@@ -2962,79 +3430,15 @@ async def main():
 # asyncio.run(main())
 ```
 
----
-
-## 64. Python'da `functools.wraps` va dekorator zanjiri / Decorator chaining
-
-**EN:** Multiple decorators stack from bottom to top. `functools.wraps` preserves the original function's metadata.
-
-**UZB:** Bir nechta dekoratorlar pastdan yuqoriga to'planadi. `functools.wraps` asl funksiyaning metama'lumotlarini saqlaydi.
-
-```python
-import functools
-import time
-import logging
-
-logger = logging.getLogger(__name__)
-
-def log_call(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        logger.info(f"📞 {func.__name__} chaqirildi")
-        result = func(*args, **kwargs)
-        logger.info(f"✅ {func.__name__} tugadi")
-        return result
-    return wrapper
-
-def retry(max_attempts=3, delay=1.0, exceptions=(Exception,)):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            for attempt in range(1, max_attempts + 1):
-                try:
-                    return func(*args, **kwargs)
-                except exceptions as e:
-                    if attempt == max_attempts:
-                        raise
-                    print(f"⚠️ Urinish {attempt} muvaffaqiyatsiz: {e}. Qayta urinilmoqda...")
-                    time.sleep(delay)
-        return wrapper
-    return decorator
-
-def cache_result(ttl_seconds=60):
-    cache = {}
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args):
-            now = time.time()
-            if args in cache:
-                result, timestamp = cache[args]
-                if now - timestamp < ttl_seconds:
-                    print(f"🎯 Cache hit: {args}")
-                    return result
-            result = func(*args)
-            cache[args] = (result, now)
-            return result
-        return wrapper
-    return decorator
-
-# Dekoratorlarni zanjirda qo'llash
-@log_call
-@retry(max_attempts=3, delay=0.5)
-@cache_result(ttl_seconds=30)
-def fetch_user_data(user_id: int) -> dict:
-    # API call simulation
-    if user_id == 999:
-        raise ConnectionError("Server yo'q!")
-    return {"id": user_id, "name": f"User_{user_id}"}
-
-# __name__ saqlanadi
-print(fetch_user_data.__name__)  # fetch_user_data (not wrapper!)
-```
+**Intervyuda shunday ayting:** "`async def` + `yield` — async generator, `async for` bilan o'qiladi; `@asynccontextmanager` — async resurslar uchun. Muhim: async generatorni oxirigacha o'qimasangiz, uning tozalash kodi kechikadi — `contextlib.aclosing` bilan o'rayman."
 
 ---
 
-## 65. Python'da `__init_subclass__` / `__init_subclass__` hook
+## Q56. `__init_subclass__` hook va amaliy naqshlar / `__init_subclass__` and practical patterns
+
+**Oddiy qilib aytganda:** `__init_subclass__` — klassdan kimdir meros olganda avtomatik chaqiriladigan 'hook'. Masalan, har yangi plagin klassini ro'yxatga olish yoki bola klassda majburiy atribut borligini tekshirish — metaclass'siz.
+
+**Batafsilroq:**
 
 **EN:** `__init_subclass__` is called when a class is subclassed, enabling plugin-like patterns.
 
@@ -3082,9 +3486,77 @@ plugin = Plugin.get("json")
 print(plugin.execute())  # JSON faylini qayta ishlash
 ```
 
+**Qo'shimcha — Python'da `__init_subclass__` va `__class_getitem__` amaliy naqsh:**
+
+**EN:** Combining metaclass features for a self-registering plugin system with type safety.
+
+**UZB:** Tip xavfsizligi bilan o'z-o'zini ro'yxatga oluvchi plagin tizimi uchun metaclass xususiyatlarini birlashtirish.
+
+```python
+from typing import Dict, Type, TypeVar, ClassVar, Generic
+from abc import ABC, abstractmethod
+
+T = TypeVar('T')
+
+class Command(ABC):
+    """O'z-o'zini ro'yxatga oluvchi buyruq bazasi / Self-registering command base"""
+    _registry: ClassVar[Dict[str, Type['Command']]] = {}
+    command_name: ClassVar[str]
+
+    def __init_subclass__(cls, name: str = None, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if name:
+            cls.command_name = name
+            Command._registry[name] = cls
+
+    @abstractmethod
+    def execute(self, **kwargs) -> dict:
+        ...
+
+    @classmethod
+    def create(cls, name: str, **kwargs) -> 'Command':
+        if name not in cls._registry:
+            raise ValueError(f"Buyruq '{name}' topilmadi. "
+                           f"Mavjudlar: {list(cls._registry.keys())}")
+        return cls._registry[name](**kwargs)
+
+    @classmethod
+    def list_commands(cls):
+        return list(cls._registry.keys())
+
+# Buyruqlarni ro'yxatga olish / Register commands
+class CreateUserCommand(Command, name="create_user"):
+    def execute(self, username: str, email: str) -> dict:
+        return {"action": "created", "user": username, "email": email}
+
+class DeleteUserCommand(Command, name="delete_user"):
+    def execute(self, user_id: int) -> dict:
+        return {"action": "deleted", "user_id": user_id}
+
+class UpdateUserCommand(Command, name="update_user"):
+    def execute(self, user_id: int, data: dict) -> dict:
+        return {"action": "updated", "user_id": user_id, "data": data}
+
+# Ishlatish / Usage
+print(Command.list_commands())  # ['create_user', 'delete_user', 'update_user']
+
+cmd = Command.create("create_user")
+result = cmd.execute(username="Ali", email="ali@example.com")
+print(result)  # {'action': 'created', 'user': 'Ali', ...}
+
+cmd2 = Command.create("delete_user")
+print(cmd2.execute(user_id=42))  # {'action': 'deleted', 'user_id': 42}
+```
+
+**Intervyuda shunday ayting:** "`__init_subclass__` ko'p hollarda metaclass'ni almashtiradi: registry, konfiguratsiya tekshiruvi, klass parametrlari (`class A(Base, kind="x")`). Ichida `super().__init_subclass__(**kwargs)` ni chaqiraman — ko'p merosda zanjir buzilmasin."
+
 ---
 
-## 66. Python'da `__class_getitem__` va Generic turlar / Generic types
+## Q57. Generic turlar: `__class_getitem__` va PEP 695 sintaksisi / Generics: `__class_getitem__` and PEP 695
+
+**Oddiy qilib aytganda:** Generic — 'turi keyin aniqlanadigan' konteyner: `Box[int]` — ichida son, `Box[str]` — ichida satr. Type checker shu orqali qaysi turdagi qiymat qaytishini biladi. Python 3.12 da buning uchun qisqa sintaksis qo'shildi: `class Box[T]: ...`.
+
+**Batafsilroq:**
 
 **EN:** `__class_getitem__` enables `Class[T]` syntax for generic types, like `List[int]`.
 
@@ -3148,9 +3620,74 @@ class TypedCache(Generic[K, V]):
         return self._cache.get(key)
 ```
 
+**Qo'shimcha — Python'da `PEP 695` — Type Parameter Syntax (Python 3.12+):**
+
+**EN:** Python 3.12 introduces new syntax for type parameters, making generics more readable.
+
+**UZB:** Python 3.12 tip parametrlari uchun yangi sintaksis kiritadi, genericslarni yanada o'qiluvchan qiladi.
+
+```python
+# Python 3.12+ yangi sintaksis / New syntax
+# Eski usul / Old style:
+from typing import TypeVar, Generic
+T = TypeVar('T')
+class Stack(Generic[T]): ...
+
+# Yangi usul / New style (Python 3.12+):
+# class Stack[T]:
+#     def push(self, item: T) -> None: ...
+#     def pop(self) -> T: ...
+
+# TypeAlias (Python 3.12)
+# type Point = tuple[float, float]
+# type Matrix = list[list[float]]
+
+# Hozirgi versiyalarda / Current versions (3.9+)
+from typing import TypeAlias
+
+Point: TypeAlias = tuple[float, float]
+Matrix: TypeAlias = list[list[float]]
+
+def dot_product(a: Point, b: Point) -> float:
+    return a[0] * b[0] + a[1] * b[1]
+
+def matrix_multiply(a: Matrix, b: Matrix) -> Matrix:
+    rows_a = len(a)
+    cols_a = len(a[0])
+    cols_b = len(b[0])
+
+    result = [[0.0] * cols_b for _ in range(rows_a)]
+
+    for i in range(rows_a):
+        for j in range(cols_b):
+            for k in range(cols_a):
+                result[i][j] += a[i][k] * b[k][j]
+
+    return result
+
+p1: Point = (3.0, 4.0)
+p2: Point = (1.0, 2.0)
+print(dot_product(p1, p2))  # 11.0
+
+m1: Matrix = [[1, 2], [3, 4]]
+m2: Matrix = [[5, 6], [7, 8]]
+result = matrix_multiply(m1, m2)
+print(result)  # [[19.0, 22.0], [43.0, 50.0]]
+
+# ParamSpec — decorator uchun / For decorators
+from typing import ParamSpec, Concatenate
+P = ParamSpec('P')
+```
+
+**Intervyuda shunday ayting:** "PEP 695 (3.12+) `TypeVar` e'lonlarisiz generik yozish imkonini beradi: `def first[T](xs: list[T]) -> T` va `type Vector = list[float]`. `__class_getitem__` — `Box[int]` sintaksisini runtime'da ishlatadigan mexanizm. Generiklar faqat statik tekshiruv uchun; runtime'da tur tekshirilmaydi."
+
 ---
 
-## 67. Python'da `sys.settrace` va profiling / Profiling in Python
+## Q58. Python'da `sys.settrace` va profiling / Profiling in Python
+
+**Oddiy qilib aytganda:** Profiling — dastur vaqti qayerga ketayotganini o'lchash. Taxmin qilmasdan, qaysi funksiya eng sekin ekanini aniq ko'rsatadi. Python'da `cProfile` o'rnatilgan, `sys.settrace` esa har qatorni kuzatadigan past darajali mexanizm.
+
+**Batafsilroq:**
 
 **EN:** Python provides built-in profiling tools (`cProfile`, `profile`) to find performance bottlenecks.
 
@@ -3208,9 +3745,15 @@ print(f"Tez: {fast_time:.6f}s")
 print(f"Farq: {slow_time/fast_time:.0f}x")
 ```
 
+**Intervyuda shunday ayting:** "Avval o'lchayman: `cProfile` + `pstats` yoki snakeviz — funksiya darajasida; production'da jarayonni to'xtatmasdan — py-spy (sampling profiler). `sys.settrace` debugger va coverage vositalari uchun, u kodni juda sekinlashtiradi. Xotira uchun — `tracemalloc`."
+
 ---
 
-## 68. Python'da `ast` moduli / Abstract Syntax Tree
+## Q59. Python'da `ast` moduli / Abstract Syntax Tree
+
+**Oddiy qilib aytganda:** `ast` moduli Python kodini daraxt shaklida tahlil qiladi: kod ishga tushmasdan uning tuzilishini (funksiyalar, chaqiruvlar, importlar) ko'rish mumkin. Linter'lar va kod generatorlari shu bilan ishlaydi.
+
+**Batafsilroq:**
 
 **EN:** The `ast` module allows parsing, analyzing, and transforming Python source code.
 
@@ -3280,9 +3823,15 @@ def safe_eval(expression: str) -> float:
 print(safe_eval("2 + 3 * 4"))  # 14
 ```
 
+**Intervyuda shunday ayting:** "`ast` — statik tahlil va xavfsiz transformatsiya uchun: maxsus lint qoidalari, import tekshiruvi, kod generatsiyasi. Foydalanuvchi kiritgan ifodani `eval` o'rniga `ast.literal_eval` bilan o'qiyman — u faqat literal'larni qabul qiladi."
+
 ---
 
-## 69. Python'da `ctypes` va C integratsiyasi / C integration with `ctypes`
+## Q60. Python'da `ctypes` va C integratsiyasi / C integration with `ctypes`
+
+**Oddiy qilib aytganda:** `ctypes` — C tilida yozilgan kutubxonalarni (`.so`, `.dll`) Python'dan to'g'ridan-to'g'ri chaqirish imkonini beradi, qo'shimcha kompilyatsiyasiz.
+
+**Batafsilroq:**
 
 **EN:** `ctypes` allows calling C functions from shared libraries directly from Python.
 
@@ -3334,9 +3883,15 @@ print(list(arr))  # [1, 2, 3, 4, 5]
 # ffi = FFI()
 ```
 
+**Intervyuda shunday ayting:** "`ctypes` tez integratsiya uchun, lekin tiplarni qo'lda aniq e'lon qilish kerak — xato bo'lsa jarayon butunlay yiqilishi (segfault) mumkin. Kattaroq integratsiyalar uchun cffi, Cython yoki pybind11/nanobind xavfsizroq va qulayroq."
+
 ---
 
-## 70. Python'da `__missing__` va maxsus dict / `__missing__` and custom dict
+## Q61. Python'da `__missing__` va maxsus dict / `__missing__` and custom dict
+
+**Oddiy qilib aytganda:** `__missing__` — lug'atdan meros olgan klassda kalit topilmaganda chaqiriladi. Xato o'rniga standart qiymat qaytarish yoki uni hisoblash mumkin — `defaultdict` shu g'oyaga asoslangan.
+
+**Batafsilroq:**
 
 **EN:** `__missing__` is called when a key is not found in a dict subclass.
 
@@ -3385,9 +3940,15 @@ print(data["users"]["admin"]["permissions"])  # ['read', 'write']
 print(data["nonexistent"]["key"])  # NestedDict() — xato yo'q
 ```
 
+**Intervyuda shunday ayting:** "`__missing__` faqat `d[key]` da ishlaydi, `d.get()` da emas. Ko'p hollarda `defaultdict` yoki `setdefault` yetarli; `__missing__` hisoblanadigan standart qiymat kalitga bog'liq bo'lganda foydali. `dict` o'rniga `collections.UserDict` dan meros olish kutilmagan xatolardan saqlaydi."
+
 ---
 
-## 71. Python'da `multiprocessing` va shared memory / Shared memory in multiprocessing
+## Q62. Python'da `multiprocessing` va shared memory / Shared memory in multiprocessing
+
+**Oddiy qilib aytganda:** `multiprocessing` — bir nechta alohida Python jarayonini ishga tushiradi, har biri o'z yadrosida ishlaydi. GIL cheklovi yo'q, shuning uchun hisob-kitob og'ir ishlar haqiqatan parallel bajariladi. Jarayonlar orasida katta ma'lumotni nusxalamaslik uchun umumiy xotira (shared memory) bor.
+
+**Batafsilroq:**
 
 **EN:** Sharing data between processes requires special mechanisms since each process has its own memory space.
 
@@ -3444,9 +4005,15 @@ if __name__ == "__main__":
     p1.join(); p2.join()
 ```
 
+**Intervyuda shunday ayting:** "CPU-og'ir ish uchun `ProcessPoolExecutor` — oddiy interfeys. Argumentlar pickle orqali uzatiladi, shuning uchun katta massivlar uchun `multiprocessing.shared_memory`. macOS va Windows'da jarayonlar `spawn` bilan yaratiladi — kirish nuqtasini `if __name__ == "__main__":` bilan himoyalayman."
+
 ---
 
-## 72. Python'da `typing.Protocol` va Structural Pattern Matching / Pattern Matching (Python 3.10+)
+## Q63. Structural pattern matching (`match`/`case`) / Structural pattern matching
+
+**Oddiy qilib aytganda:** `match`/`case` (Python 3.10+) — qiymatning **shakliga** qarab tarmoqlanish. Oddiy `if` dan kuchliroq: 'bu `Point(x, 0)` mi?', 'bu ikki elementli ro'yxatmi?', 'bu `{"type": "click"}` lug'atmi?' kabi savollarni bir yo'la tekshiradi va qismlarini o'zgaruvchilarga ajratadi.
+
+**Batafsilroq:**
 
 **EN:** Structural pattern matching (`match/case`) provides powerful pattern-based dispatch, similar to switch but far more powerful.
 
@@ -3518,9 +4085,15 @@ def handle_status(status: int, data: dict) -> str:
             return f"❓ Noma'lum status: {status}"
 ```
 
+**Intervyuda shunday ayting:** "Pattern matching tuzilmani tekshiradi va destructuring qiladi — buyruqlar, AST, JSON xabarlarni qayta ishlashda qulay. Tuzoq: `case some_name:` taqqoslash emas, o'zgaruvchiga bog'lash — konstanta uchun nuqtali nom (`Color.RED`) kerak. Oddiy qiymat tekshiruvi uchun lug'at yoki `if` yetarli."
+
 ---
 
-## 73. Python'da `__set_name__` va Descriptor Factory / Descriptor Factory
+## Q64. Python'da `__set_name__` va Descriptor Factory / Descriptor Factory
+
+**Oddiy qilib aytganda:** `__set_name__` — descriptor klass ichida e'lon qilinganda unga **o'z nomini** aytadi. Shunda `name = Field()` yozganingizda, `Field` o'zining 'name' deb atalganini biladi va nomni qo'lda takrorlash shart emas.
+
+**Batafsilroq:**
 
 **EN:** `__set_name__` is called during class creation, passing the attribute name automatically to the descriptor.
 
@@ -3598,82 +4171,15 @@ print(emp.name, emp.salary)
 # emp.name = 123  # TypeError: name: kutilgan str, berildi int
 ```
 
----
-
-## 74. Python'da `asyncio` ilg'or naqshlari / Advanced asyncio patterns
-
-**EN:** Advanced async patterns include semaphores, queues, event broadcasting, and cancellation.
-
-**UZB:** Ilg'or async naqshlarga semaforlar, navbatlar, hodisa tarqatish va bekor qilish kiradi.
-
-```python
-import asyncio
-from asyncio import Queue, Semaphore, Event
-
-# Semaphore — bir vaqtda cheklash / Rate limiting
-async def fetch_with_limit(url: str, semaphore: Semaphore) -> str:
-    async with semaphore:
-        await asyncio.sleep(0.1)  # API call
-        return f"✅ {url}"
-
-async def batch_fetch(urls: list, max_concurrent: int = 5):
-    sem = Semaphore(max_concurrent)
-    tasks = [fetch_with_limit(url, sem) for url in urls]
-    return await asyncio.gather(*tasks)
-
-# Producer-Consumer with Queue
-async def producer(queue: Queue, n: int):
-    for i in range(n):
-        item = f"item_{i}"
-        await queue.put(item)
-        print(f"📤 {item} qo'shildi")
-        await asyncio.sleep(0.1)
-    await queue.put(None)  # sentinel
-
-async def consumer(queue: Queue, name: str):
-    while True:
-        item = await queue.get()
-        if item is None:
-            queue.task_done()
-            break
-        print(f"📥 {name}: {item} qayta ishlandi")
-        await asyncio.sleep(0.2)
-        queue.task_done()
-
-# Event — signal / Signaling between tasks
-async def waiter(event: Event, name: str):
-    print(f"{name} kutmoqda...")
-    await event.wait()
-    print(f"{name} signal oldi!")
-
-async def signaler(event: Event):
-    await asyncio.sleep(1)
-    print("Signal yuborilmoqda!")
-    event.set()
-
-# Task cancellation
-async def long_running_task():
-    try:
-        await asyncio.sleep(100)  # simulating long work
-    except asyncio.CancelledError:
-        print("Task bekor qilindi, tozalanmoqda...")
-        raise  # muhim: har doim re-raise
-
-async def main():
-    task = asyncio.create_task(long_running_task())
-    await asyncio.sleep(1)
-    task.cancel()
-    try:
-        await task
-    except asyncio.CancelledError:
-        print("Task muvaffaqiyatli bekor qilindi")
-
-# asyncio.run(main())
-```
+**Intervyuda shunday ayting:** "`__set_name__(owner, name)` klass yaratilganda chaqiriladi — descriptor atribut nomini va egasini biladi. Bu ORM ustunlari va validatsiyali maydonlarni takrorlanishsiz yozish imkonini beradi (`email = EmailField()`)."
 
 ---
 
-## 75. Python'da `importlib` va dinamik import / Dynamic imports with `importlib`
+## Q65. Python'da `importlib` va dinamik import / Dynamic imports with `importlib`
+
+**Oddiy qilib aytganda:** `importlib` — modulni nomi bo'yicha, dastur ishlayotgan paytda yuklash: `importlib.import_module("plugins.csv")`. Plaginlar tizimi uchun qulay, lekin nom foydalanuvchidan kelsa — xavfli.
+
+**Batafsilroq:**
 
 **EN:** `importlib` allows dynamic module loading at runtime — useful for plugin systems.
 
@@ -3737,146 +4243,15 @@ print(is_available("pydantic"))  # True/False
 print(is_available("xyzabc"))    # False
 ```
 
----
-
-## 76. Python'da `__enter__` va `__exit__` murakkab holatlar / Advanced context manager scenarios
-
-**EN:** Context managers can suppress exceptions, manage multiple resources, and handle async scenarios.
-
-**UZB:** Kontekst menejerlar xatolarni bostirib qo'yishi, bir nechta resurslarni boshqarishi va asinxron stsenariylarni boshqarishi mumkin.
-
-```python
-from contextlib import ExitStack, suppress
-import contextlib
-
-# Transaction manager
-class Transaction:
-    def __init__(self, db):
-        self.db = db
-        self.operations = []
-
-    def __enter__(self):
-        self.db.begin()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_type is None:
-            self.db.commit()
-            print("✅ Commit qilindi")
-        else:
-            self.db.rollback()
-            print(f"🔄 Rollback qilindi: {exc_val}")
-        return False  # Xatoni bostirib qo'ymaymiz
-
-# Bir nechta fayllar bilan ishlash / Working with multiple files
-def process_files(input_files: list, output_file: str):
-    with ExitStack() as stack:
-        files = [
-            stack.enter_context(open(f, 'r', encoding='utf-8'))
-            for f in input_files
-        ]
-        out = stack.enter_context(open(output_file, 'w', encoding='utf-8'))
-
-        for f in files:
-            out.write(f.read())
-            out.write("\n")
-
-# Temp katalog / Temp directory
-import tempfile
-import os
-
-@contextlib.contextmanager
-def temp_directory():
-    import tempfile
-    import shutil
-    tmpdir = tempfile.mkdtemp()
-    try:
-        yield tmpdir
-    finally:
-        shutil.rmtree(tmpdir, ignore_errors=True)
-
-with temp_directory() as tmpdir:
-    # Test fayllar yaratish
-    test_file = os.path.join(tmpdir, "test.txt")
-    with open(test_file, 'w') as f:
-        f.write("test data")
-    print(f"Temp fayl: {test_file}")
-# tmpdir avtomatik o'chiriladi
-```
+**Intervyuda shunday ayting:** "Dinamik import plaginlar uchun, lekin ruxsat etilgan ro'yxat bilan — foydalanuvchi bergan nomni to'g'ridan-to'g'ri `import_module` ga bermayman. Tashqi plaginlar uchun `importlib.metadata.entry_points`, paket ichidagi fayllar uchun `importlib.resources`."
 
 ---
 
-## 77. Python'da `slots` va `__weakref__` / `__slots__` with `__weakref__`
+## Q66. Python'da `__buffer__` va Bytes protokoli / Buffer protocol
 
-**EN:** When using `__slots__`, weak references require explicitly adding `'__weakref__'` to slots.
+**Oddiy qilib aytganda:** Buffer protokoli obyektlar o'z xotirasini **nusxalamasdan** boshqasiga ko'rsatishi imkonini beradi. Masalan, katta `bytearray` ning bir qismini `memoryview` orqali kesib olsangiz, yangi nusxa yaratilmaydi — xotira va vaqt tejaladi.
 
-**UZB:** `__slots__` ishlatilganda, zaif havolalar uchun `'__weakref__'` ni slotlarga aniq qo'shish kerak.
-
-```python
-import weakref
-import sys
-
-class OptimizedNode:
-    __slots__ = ('value', 'next', 'prev', '__weakref__')
-
-    def __init__(self, value):
-        self.value = value
-        self.next = None
-        self.prev = None
-
-class DoublyLinkedList:
-    __slots__ = ('head', 'tail', '_size')
-
-    def __init__(self):
-        self.head = None
-        self.tail = None
-        self._size = 0
-
-    def append(self, value):
-        node = OptimizedNode(value)
-        if self.tail:
-            self.tail.next = node
-            node.prev = self.tail
-        else:
-            self.head = node
-        self.tail = node
-        self._size += 1
-
-    def prepend(self, value):
-        node = OptimizedNode(value)
-        if self.head:
-            node.next = self.head
-            self.head.prev = node
-        else:
-            self.tail = node
-        self.head = node
-        self._size += 1
-
-    def __len__(self):
-        return self._size
-
-    def __iter__(self):
-        current = self.head
-        while current:
-            yield current.value
-            current = current.next
-
-dll = DoublyLinkedList()
-for i in range(5):
-    dll.append(i)
-
-print(list(dll))          # [0, 1, 2, 3, 4]
-print(len(dll))           # 5
-print(sys.getsizeof(dll.head))  # slots yordamida kichikroq
-
-# Zaif havola ishlaydi chunki __weakref__ slots da
-weak_head = weakref.ref(dll.head)
-print(weak_head().value)  # 0
-```
-
----
-
-## 78. Python'da `__buffer__` va Bytes protokoli / Buffer protocol
+**Batafsilroq:**
 
 **EN:** The buffer protocol allows objects to expose raw byte arrays for zero-copy data sharing between C extensions and Python.
 
@@ -3929,9 +4304,15 @@ view = memoryview(floats)
 print(view[1])   # 2.0
 ```
 
+**Intervyuda shunday ayting:** "`memoryview` — nusxasiz bo'laklash: tarmoq buferlari, fayl bloklari, NumPy massivlari bilan ishlashda muhim. Python 3.12 da buffer protokoli Python darajasida ham ochildi (`__buffer__`, PEP 688), shuning uchun o'z klassim ham buffer bera oladi."
+
 ---
 
-## 79. Python'da `inspect` moduli / `inspect` module
+## Q67. Python'da `inspect` moduli / `inspect` module
+
+**Oddiy qilib aytganda:** `inspect` — Python kodining o'zini o'rganish asbobi: funksiya qanday parametrlar qabul qilishini, docstring'ini, manba kodini yoki chaqiruv stekini ko'rish mumkin. Framework'lar (FastAPI, pytest) aynan shu bilan funksiya imzolarini o'qiydi.
+
+**Batafsilroq:**
 
 **EN:** `inspect` provides tools for examining live objects — functions, classes, frames, source code.
 
@@ -4000,77 +4381,19 @@ for name, obj in inspect.getmembers(MyClass):
         print(f"  {name}: {type(obj).__name__}")
 ```
 
----
-
-## 80. Python'da `__init_subclass__` va `__class_getitem__` amaliy naqsh / Practical pattern
-
-**EN:** Combining metaclass features for a self-registering plugin system with type safety.
-
-**UZB:** Tip xavfsizligi bilan o'z-o'zini ro'yxatga oluvchi plagin tizimi uchun metaclass xususiyatlarini birlashtirish.
-
-```python
-from typing import Dict, Type, TypeVar, ClassVar, Generic
-from abc import ABC, abstractmethod
-
-T = TypeVar('T')
-
-class Command(ABC):
-    """O'z-o'zini ro'yxatga oluvchi buyruq bazasi / Self-registering command base"""
-    _registry: ClassVar[Dict[str, Type['Command']]] = {}
-    command_name: ClassVar[str]
-
-    def __init_subclass__(cls, name: str = None, **kwargs):
-        super().__init_subclass__(**kwargs)
-        if name:
-            cls.command_name = name
-            Command._registry[name] = cls
-
-    @abstractmethod
-    def execute(self, **kwargs) -> dict:
-        ...
-
-    @classmethod
-    def create(cls, name: str, **kwargs) -> 'Command':
-        if name not in cls._registry:
-            raise ValueError(f"Buyruq '{name}' topilmadi. "
-                           f"Mavjudlar: {list(cls._registry.keys())}")
-        return cls._registry[name](**kwargs)
-
-    @classmethod
-    def list_commands(cls):
-        return list(cls._registry.keys())
-
-# Buyruqlarni ro'yxatga olish / Register commands
-class CreateUserCommand(Command, name="create_user"):
-    def execute(self, username: str, email: str) -> dict:
-        return {"action": "created", "user": username, "email": email}
-
-class DeleteUserCommand(Command, name="delete_user"):
-    def execute(self, user_id: int) -> dict:
-        return {"action": "deleted", "user_id": user_id}
-
-class UpdateUserCommand(Command, name="update_user"):
-    def execute(self, user_id: int, data: dict) -> dict:
-        return {"action": "updated", "user_id": user_id, "data": data}
-
-# Ishlatish / Usage
-print(Command.list_commands())  # ['create_user', 'delete_user', 'update_user']
-
-cmd = Command.create("create_user")
-result = cmd.execute(username="Ali", email="ali@example.com")
-print(result)  # {'action': 'created', 'user': 'Ali', ...}
-
-cmd2 = Command.create("delete_user")
-print(cmd2.execute(user_id=42))  # {'action': 'deleted', 'user_id': 42}
-```
+**Intervyuda shunday ayting:** "`inspect.signature` — dependency injection va validatsiya framework'larining asosi. Annotatsiyalar uchun 3.14 da `annotationlib.get_annotations` ham bor (PEP 649). `inspect.stack()` sekin — uni faqat debugging yoki kam chaqiriladigan joylarda ishlataman."
 
 ---
 
-# ⚫ EXPERT LEVEL (81–100)
+# ⚫ Ekspert daraja / Expert
 
 ---
 
-## 81. CPython implementation tafsilotlari / CPython implementation details
+## Q68. CPython implementation tafsilotlari / CPython implementation details
+
+**Oddiy qilib aytganda:** CPython — Python'ning asosiy (C'da yozilgan) implementatsiyasi. U kodni bytecode'ga aylantiradi va virtual mashinada bajaradi, xotirani esa havolalar sonini sanash (reference counting) va aylanma havolalar uchun qo'shimcha 'axlat yig'uvchi' bilan boshqaradi.
+
+**Batafsilroq:**
 
 **EN:** Understanding how CPython works internally — object model, memory management, bytecode.
 
@@ -4135,71 +4458,15 @@ s6 = sys.intern("hello world")
 print(s5 is s6)  # True
 ```
 
----
-
-## 82. Python'da `__slots__` + `__dict__` gibrid / Hybrid slots + dict
-
-**EN:** Combining `__slots__` for core attributes with `__dict__` for flexibility.
-
-**UZB:** Asosiy atributlar uchun `__slots__` va moslashuvchanlik uchun `__dict__` ni birlashtirish.
-
-```python
-import sys
-
-class HybridModel:
-    """
-    __slots__ tez va xotirada iqtisodiy bo'lgan asosiy atributlar uchun,
-    __dict__ qo'shimcha dinamik atributlar uchun
-    """
-    __slots__ = ('id', 'name', 'created_at')
-
-    def __init__(self, id: int, name: str):
-        self.id = id
-        self.name = name
-        import datetime
-        self.created_at = datetime.datetime.now()
-
-    def __repr__(self):
-        extra = getattr(self, '__dict__', {})
-        return f"HybridModel(id={self.id}, name={self.name}, extra={extra})"
-
-# Agar __dict__ kerak bo'lsa
-class FlexibleModel:
-    __slots__ = ('_id', '_name', '__dict__')  # __dict__ ni slots ga qo'shish
-
-    def __init__(self, id: int, name: str):
-        self._id = id
-        self._name = name
-
-    @property
-    def id(self): return self._id
-
-    @property
-    def name(self): return self._name
-
-m = FlexibleModel(1, "Ali")
-m.dynamic_attr = "anything"  # __dict__ bor, shuning uchun ishlaydi
-m.another = [1, 2, 3]
-print(m.dynamic_attr)  # anything
-print(m.__dict__)       # {'dynamic_attr': 'anything', 'another': [1, 2, 3]}
-
-# Xotira taqqoslash / Memory comparison
-class WithSlots:
-    __slots__ = ('x', 'y', 'z')
-    def __init__(self): self.x = self.y = self.z = 0
-
-class WithDict:
-    def __init__(self): self.x = self.y = self.z = 0
-
-s = WithSlots()
-d = WithDict()
-print(f"Slots: {sys.getsizeof(s)} bytes")  # ~56 bytes
-print(f"Dict:  {sys.getsizeof(d) + sys.getsizeof(d.__dict__)} bytes")  # ~280 bytes
-```
+**Intervyuda shunday ayting:** "CPython: kompilyatsiya bytecode'ga, keyin interpretator; 3.11+ da moslashuvchan (specializing) interpretator katta tezlanish berdi, 3.13 da tajribaviy JIT paydo bo'ldi. Xotira — reference counting + sikllar uchun generatsion GC. Implementatsiya tafsilotlariga (masalan, `id()` — xotira manzili) kod tayanmasligi kerak."
 
 ---
 
-## 83. Python'da Event sourcing naqshi / Event Sourcing pattern
+## Q69. Python'da Event sourcing naqshi / Event Sourcing pattern
+
+**Oddiy qilib aytganda:** Event sourcing — obyektning hozirgi holatini emas, unga olib kelgan **barcha hodisalarni** saqlash: 'hisob ochildi', '100 qo'yildi', '30 yechildi'. Hozirgi balans hodisalarni ketma-ket qo'llab hisoblanadi, to'liq tarix esa har doim bor.
+
+**Batafsilroq:**
 
 **EN:** Event sourcing stores state changes as a sequence of events rather than current state.
 
@@ -4278,9 +4545,15 @@ for event in store.get_all():
           f"{event.event_type}: {event.data}")
 ```
 
+**Intervyuda shunday ayting:** "Python'da hodisalarni o'zgarmas dataclass'lar sifatida ifodalayman, agregat holatini ularni qo'llab tiklayman, event store'ga optimistic concurrency (versiya tekshiruvi) bilan yozaman. Konseptual tafsilotlar — `system_design.md` Q58–Q59. Faqat audit va tarix biznes uchun muhim bo'lganda qo'llayman."
+
 ---
 
-## 84. Python'da CQRS naqshi / CQRS Pattern
+## Q70. Python'da CQRS naqshi / CQRS Pattern
+
+**Oddiy qilib aytganda:** CQRS — yozish va o'qishni ajratish: buyruqlar (`CreateOrder`) holatni o'zgartiradi, so'rovlar (`GetOrderSummary`) faqat o'qiydi va ular uchun alohida, tez o'qiladigan modellar bo'lishi mumkin.
+
+**Batafsilroq:**
 
 **EN:** Command Query Responsibility Segregation separates read and write operations.
 
@@ -4375,9 +4648,15 @@ async def main():
 # asyncio.run(main())
 ```
 
+**Intervyuda shunday ayting:** "Python'da buyruq va so'rov handler'larini alohida klass/funksiyalar sifatida yozaman, o'qish modeli ORM o'rniga to'g'ridan-to'g'ri SQL yoki denormallashgan jadval bo'lishi mumkin. Murakkablik qo'shadi — faqat o'qish va yozish ehtiyojlari keskin farq qilganda. Konseptual tomoni — `system_design.md` Q57."
+
 ---
 
-## 85. Python'da `__future__` va versiya muvofiqligi / `__future__` and version compatibility
+## Q71. `__future__` va annotatsiyalarni kechiktirib hisoblash / `__future__` and deferred annotations
+
+**Oddiy qilib aytganda:** `from __future__ import ...` — keyingi versiyalarda standart bo'ladigan xususiyatni hozirdan yoqish. Eng mashhuri — `annotations`: annotatsiyalarni darhol hisoblamaslik, shunda klass o'ziga tirnoqsiz ishora qila oladi. Python 3.14 da bu xulq (PEP 649) standart bo'ldi.
+
+**Batafsilroq:**
 
 **EN:** `from __future__ import` enables future Python features in older versions.
 
@@ -4441,89 +4720,15 @@ def use_walrus():
         print(f"Ro'yxat uzun: {n} element")
 ```
 
----
-
-## 86. Python'da `Coroutine` va `Task` boshqaruvi / Coroutine and Task management
-
-**EN:** Advanced task management with priorities, cancellation groups, and structured concurrency.
-
-**UZB:** Ustuvorliklar, bekor qilish guruhlari va tuzilgan parallellik bilan ilg'or vazifa boshqaruvi.
-
-```python
-import asyncio
-from asyncio import TaskGroup  # Python 3.11+
-from typing import Coroutine, Any
-
-# TaskGroup — tuzilgan parallellik / Structured concurrency
-async def fetch_user(user_id: int) -> dict:
-    await asyncio.sleep(0.1)
-    return {"id": user_id, "name": f"User_{user_id}"}
-
-async def fetch_posts(user_id: int) -> list:
-    await asyncio.sleep(0.15)
-    return [{"id": i, "user_id": user_id} for i in range(3)]
-
-async def fetch_user_data(user_id: int) -> dict:
-    try:
-        async with TaskGroup() as tg:
-            user_task = tg.create_task(fetch_user(user_id))
-            posts_task = tg.create_task(fetch_posts(user_id))
-    except* ValueError as eg:
-        print(f"Xatolar: {eg.exceptions}")
-        return {}
-
-    return {
-        "user": user_task.result(),
-        "posts": posts_task.result()
-    }
-
-# Timeout va bekor qilish / Timeout and cancellation
-async def with_timeout_example():
-    try:
-        async with asyncio.timeout(2.0):  # Python 3.11+
-            result = await asyncio.sleep(5)  # bu timeout beradi
-    except TimeoutError:
-        print("Vaqt tugadi!")
-
-# Prioritet navbat / Priority queue
-import heapq
-
-class PriorityTaskQueue:
-    def __init__(self):
-        self._queue = []
-        self._counter = 0
-
-    async def put(self, priority: int, coro: Coroutine):
-        task = asyncio.create_task(coro)
-        heapq.heappush(self._queue, (priority, self._counter, task))
-        self._counter += 1
-        return task
-
-    async def process_all(self):
-        results = []
-        while self._queue:
-            priority, _, task = heapq.heappop(self._queue)
-            result = await task
-            results.append((priority, result))
-        return results
-
-async def task_example(name: str, delay: float) -> str:
-    await asyncio.sleep(delay)
-    return f"{name} tugadi"
-
-async def priority_demo():
-    pq = PriorityTaskQueue()
-    await pq.put(3, task_example("LOW", 0.1))
-    await pq.put(1, task_example("HIGH", 0.1))
-    await pq.put(2, task_example("MEDIUM", 0.1))
-    results = await pq.process_all()
-    for priority, result in sorted(results):
-        print(f"Ustuvorlik {priority}: {result}")
-```
+**Intervyuda shunday ayting:** "`from __future__ import annotations` (PEP 563) annotatsiyalarni satr sifatida saqlaydi. Python 3.14 da PEP 649 annotatsiyalarni kechiktirib hisoblashni standart qildi — oldinga havolalar uchun importga odatda ehtiyoj qolmaydi, runtime'da esa `annotationlib` orqali o'qiladi. Pydantic kabi annotatsiyalarni runtime'da o'qiydigan kutubxonalar bilan versiyani tekshiraman."
 
 ---
 
-## 87. Python'da `C Extensions` yozish / Writing C Extensions
+## Q72. Python'da `C Extensions` yozish / Writing C Extensions
+
+**Oddiy qilib aytganda:** C kengaytma — Python'dan chaqiriladigan, lekin C'da yozilgan modul. Juda tez ishlashi kerak bo'lgan kichik qism (masalan, murakkab hisob) uchun yoziladi; NumPy va ko'p mashhur kutubxonalar shunday tuzilgan.
+
+**Batafsilroq:**
 
 **EN:** C extensions provide near-native performance for CPU-intensive tasks.
 
@@ -4595,9 +4800,15 @@ setup(
 # .pyx fayl yozib, ko'proq Python-like sintaksis bilan C darajasidagi tezlik
 ```
 
+**Intervyuda shunday ayting:** "Qo'lda C API bilan yozish murakkab va xatoga moyil (reference counting). Amalda Cython, pybind11/nanobind yoki Rust uchun PyO3 + maturin ishlataman. Build `setup.py` o'rniga `pyproject.toml` va zamonaviy backend (scikit-build-core, meson-python, maturin) bilan. Free-threaded Python uchun kengaytma thread-xavfsiz bo'lishi kerak."
+
 ---
 
-## 88. Python'da `__class__` va runtime tip manipulyatsiya / Runtime type manipulation
+## Q73. Python'da `__class__` va runtime tip manipulyatsiya / Runtime type manipulation
+
+**Oddiy qilib aytganda:** Python'da klassni ham, obyektni ham dastur ishlayotgan paytda o'zgartirish mumkin: yangi atribut qo'shish, metod almashtirish, hatto `type()` bilan yangi klassni kod orqali yaratish. Bu kuchli, lekin kodni tushunishni qiyinlashtiradi.
+
+**Batafsilroq:**
 
 **EN:** Python allows dynamic class creation, modification, and introspection at runtime.
 
@@ -4660,9 +4871,15 @@ print(obj.process())      # yangi
 print(obj.new_feature())  # yangi funksiya
 ```
 
+**Intervyuda shunday ayting:** "`type(name, bases, ns)` — klassni dinamik yaratish; `obj.__class__` ni almashtirish mumkin, lekin kamdan-kam o'rinli. Monkey-patching'ni faqat testlarda (mock) va kutubxona xatosini vaqtincha tuzatishda qo'llayman — production kodda u yashirin bog'liqlik yaratadi."
+
 ---
 
-## 89. Python'da `memory mapped files` / Memory-mapped files
+## Q74. Python'da `memory mapped files` / Memory-mapped files
+
+**Oddiy qilib aytganda:** Memory-mapped fayl — faylni xuddi xotiradagi massivdek ishlatish: operatsion tizim kerakli qismlarini o'zi yuklaydi. 10 GB faylning kerakli joyiga butun faylni o'qimasdan to'g'ridan-to'g'ri murojaat qilish mumkin.
+
+**Batafsilroq:**
 
 **EN:** Memory-mapped files allow treating file contents as if they're in memory, enabling fast random access.
 
@@ -4725,73 +4942,15 @@ os.remove("large_data.bin")
 os.remove("text_data.txt")
 ```
 
----
-
-## 90. Python'da `concurrent.futures` va Thread/Process Pool / Thread and Process pools
-
-**EN:** `concurrent.futures` provides a high-level interface for async execution with thread and process pools.
-
-**UZB:** `concurrent.futures` thread va jarayon havzalari bilan async bajarish uchun yuqori darajali interfeys taqdim etadi.
-
-```python
-from concurrent.futures import (
-    ThreadPoolExecutor,
-    ProcessPoolExecutor,
-    as_completed,
-    wait,
-    FIRST_COMPLETED,
-    ALL_COMPLETED
-)
-import time
-import requests  # pip install requests
-
-# ThreadPoolExecutor — I/O bound
-def download_page(url: str) -> tuple:
-    start = time.time()
-    time.sleep(0.1)  # I/O simulation
-    return url, len(url), time.time() - start
-
-urls = [f"https://example.com/page/{i}" for i in range(20)]
-
-with ThreadPoolExecutor(max_workers=10) as executor:
-    # map — ketma-ket natijalar / Sequential results
-    results = list(executor.map(download_page, urls))
-
-    # submit + as_completed — birinchi tayyor bo'lgan / As they complete
-    futures = {executor.submit(download_page, url): url for url in urls[:5]}
-
-    for future in as_completed(futures):
-        url = futures[future]
-        result = future.result()
-        print(f"✅ {url}: {result[2]:.3f}s")
-
-# ProcessPoolExecutor — CPU bound
-def prime_check(n: int) -> tuple:
-    if n < 2: return n, False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return n, False
-    return n, True
-
-numbers = range(1, 100)
-
-with ProcessPoolExecutor(max_workers=4) as executor:
-    primes = [
-        n for n, is_prime in executor.map(prime_check, numbers)
-        if is_prime
-    ]
-    print(f"Tub sonlar: {primes}")
-
-# wait bilan / With wait
-with ThreadPoolExecutor(max_workers=5) as executor:
-    futures = [executor.submit(time.sleep, 0.1) for _ in range(5)]
-    done, not_done = wait(futures, return_when=ALL_COMPLETED)
-    print(f"Tugagan: {len(done)}, Kutilmoqda: {len(not_done)}")
-```
+**Intervyuda shunday ayting:** "`mmap` katta fayllarga tasodifiy kirishni tez qiladi va bir nechta jarayon bitta faylni xotirada bo'lisha oladi. Fayl o'lchami o'zgarishi va OS farqlariga ehtiyot bo'laman; ketma-ket o'qish uchun oddiy bufferli o'qish ham yetarli."
 
 ---
 
-## 91. Python'da `__subclasshook__` va virtual subclassing / Virtual subclasses
+## Q75. Python'da `__subclasshook__` va virtual subclassing / Virtual subclasses
+
+**Oddiy qilib aytganda:** `__subclasshook__` — abstrakt klassga 'kim mening bolam hisoblanadi' ni meros **siz** hal qilish imkonini beradi: kerakli metodlari bor har qanday klass `isinstance` tekshiruvidan o'tadi. `register()` esa klassni qo'lda 'virtual bola' qilib belgilaydi.
+
+**Batafsilroq:**
 
 **EN:** `__subclasshook__` enables ABCs to recognize classes as subclasses without inheritance.
 
@@ -4847,89 +5006,15 @@ print(isinstance("hello", IterableChecker)) # True
 print(isinstance(42, IterableChecker))      # False
 ```
 
----
-
-## 92. Python'da `Proxy` naqshi / Proxy pattern in Python
-
-**EN:** Proxy objects intercept attribute access and method calls, useful for logging, caching, and access control.
-
-**UZB:** Proksi ob'ektlar atributlarga kirish va metod chaqiruvlarini ushlab qoladi, logging, keshlash va kirishni boshqarish uchun foydali.
-
-```python
-from typing import Any, Callable
-import functools
-import time
-
-class LazyProxy:
-    """Kechiktirilgan hisoblash / Lazy evaluation proxy"""
-    def __init__(self, factory: Callable):
-        object.__setattr__(self, '_factory', factory)
-        object.__setattr__(self, '_obj', None)
-        object.__setattr__(self, '_initialized', False)
-
-    def _ensure_initialized(self):
-        if not object.__getattribute__(self, '_initialized'):
-            factory = object.__getattribute__(self, '_factory')
-            object.__setattr__(self, '_obj', factory())
-            object.__setattr__(self, '_initialized', True)
-            print("✅ Ob'ekt yaratildi (kechiktirilgan)")
-
-    def __getattr__(self, name: str) -> Any:
-        self._ensure_initialized()
-        obj = object.__getattribute__(self, '_obj')
-        return getattr(obj, name)
-
-    def __setattr__(self, name: str, value: Any):
-        self._ensure_initialized()
-        obj = object.__getattribute__(self, '_obj')
-        setattr(obj, name, value)
-
-class ExpensiveService:
-    def __init__(self):
-        print("💫 ExpensiveService yaratilmoqda (sekin)...")
-        time.sleep(0.1)  # Sekin initializatsiya
-        self.data = "qimmat ma'lumot"
-
-    def process(self):
-        return f"Qayta ishlandi: {self.data}"
-
-# Hozir yaratilmaydi / Not created yet
-service = LazyProxy(lambda: ExpensiveService())
-print("Proksi yaratildi")  # ExpensiveService yaratilmadi!
-
-# Birinchi marta ishlatganda yaratiladi
-print(service.process())   # Bu yerda yaratiladi
-
-class LoggingProxy:
-    """Logging proxy"""
-    def __init__(self, target, logger=print):
-        object.__setattr__(self, '_target', target)
-        object.__setattr__(self, '_logger', logger)
-
-    def __getattr__(self, name):
-        target = object.__getattribute__(self, '_target')
-        logger = object.__getattribute__(self, '_logger')
-        attr = getattr(target, name)
-
-        if callable(attr):
-            @functools.wraps(attr)
-            def logged(*args, **kwargs):
-                logger(f"📞 {type(target).__name__}.{name}({args}, {kwargs})")
-                result = attr(*args, **kwargs)
-                logger(f"↩️ {name} → {result}")
-                return result
-            return logged
-        return attr
-
-import math
-logged_math = LoggingProxy(math)
-logged_math.sqrt(16)   # 📞 module.sqrt ... ↩️ sqrt → 4.0
-logged_math.pi         # pi — bu callable emas, to'g'ridan-to'g'ri
-```
+**Intervyuda shunday ayting:** "ABC'ning `__subclasshook__` va `register()` — virtual subclass'lar: `collections.abc.Iterable` shunday ishlaydi. Statik tiplash uchun esa `typing.Protocol` zamonaviyroq. Virtual subclass abstrakt metodlarni tekshirmaydi — bu faqat `isinstance` javobini o'zgartiradi."
 
 ---
 
-## 93. Python'da `__array_ufunc__` va NumPy integratsiya / NumPy integration
+## Q76. Python'da `__array_ufunc__` va NumPy integratsiya / NumPy integration
+
+**Oddiy qilib aytganda:** NumPy massivlari ustida o'z klassingiz ishlashini xohlasangiz, `__array_ufunc__` orqali NumPy amallari (qo'shish, ko'paytirish) sizning klassingizda qanday bajarilishini belgilaysiz. Masalan, o'lchov birligi (metr, soniya) saqlovchi massiv.
+
+**Batafsilroq:**
 
 **EN:** Implementing `__array_ufunc__` and `__array_function__` allows custom objects to work seamlessly with NumPy.
 
@@ -4996,9 +5081,15 @@ except ImportError:
     print("# NumPy o'rnatilmagan, misol ko'rsatilmaydi")
 ```
 
+**Intervyuda shunday ayting:** "`__array_ufunc__` va `__array_function__` — NumPy dispetcherlash protokollari: o'z massiv-o'xshash turim NumPy funksiyalari bilan to'g'ri ishlashi uchun. Bu kutubxona muallifi darajasidagi mavzu; oddiy ilovada NumPy massivini o'rash yoki `np.asarray` yetarli."
+
 ---
 
-## 94. Python'da `Cython` va `Numba` tezlashtirish / Performance with Cython and Numba
+## Q77. Python'da `Cython` va `Numba` tezlashtirish / Performance with Cython and Numba
+
+**Oddiy qilib aytganda:** Cython va Numba — sekin Python kodini tezlashtirish vositalari. Cython kodni C'ga aylantirib kompilyatsiya qiladi, Numba esa `@njit` bilan belgilangan funksiyani ishlash paytida mashina kodiga aylantiradi. Sonli hisob-kitob sikllari o'nlab-yuzlab marta tezlashishi mumkin.
+
+**Batafsilroq:**
 
 **EN:** Cython compiles Python to C; Numba uses JIT compilation for numerical code.
 
@@ -5076,9 +5167,15 @@ print("Cython kodi (kompilatsiya talab qilinadi):")
 print(cython_code)
 ```
 
+**Intervyuda shunday ayting:** "Avval profiling va algoritmni yaxshilash, keyin NumPy vektorizatsiyasi, shundan keyingina Cython/Numba. Numba — sonli sikllar uchun eng tez yo'l, lekin Python'ning faqat bir qismini qo'llaydi. Muqobillar: Rust + PyO3, 3.13+ dagi tajribaviy JIT yoki free-threaded Python bilan parallellik."
+
 ---
 
-## 95. Python'da `dis` va bytecode optimizatsiya / Bytecode optimization
+## Q78. Python'da `dis` va bytecode optimizatsiya / Bytecode optimization
+
+**Oddiy qilib aytganda:** Python kodi avval bytecode'ga — virtual mashina uchun oddiy buyruqlarga — aylantiriladi. `dis` moduli shu buyruqlarni ko'rsatadi: kod qanday bajarilishini past darajada tushunish yoki ikki variantdan qaysi biri kamroq ish qilishini solishtirish mumkin.
+
+**Batafsilroq:**
 
 **EN:** Understanding Python bytecode helps write more efficient code and understand interpreter behavior.
 
@@ -5144,9 +5241,15 @@ tl = timeit.timeit(using_local, number=10000)
 print(f"\nGlobal: {tg:.3f}s, Local: {tl:.3f}s → {tg/tl:.1f}x tez")
 ```
 
+**Intervyuda shunday ayting:** "`dis` — o'rganish va micro-optimizatsiya tahlili uchun, lekin bytecode CPython versiyalari orasida o'zgaradi va 3.11+ da interpretator uni ishlash paytida ixtisoslashtiradi. Real optimallashtirishni `timeit` va profiler bilan o'lchayman, bytecode'ni taxmin qilib emas."
+
 ---
 
-## 96. Python'da `type checking` va `mypy` / Static type checking
+## Q79. Python'da `type checking` va `mypy` / Static type checking
+
+**Oddiy qilib aytganda:** mypy — type hint'larni tekshiruvchi dastur: kodni ishga tushirmasdan 'bu funksiyaga satr o'rniga son berildi' kabi xatolarni topadi. Katta loyihalarda xatolarning katta qismini production'ga chiqmasdan ushlaydi.
+
+**Batafsilroq:**
 
 **EN:** MyPy performs static type analysis without running the code, catching type errors early.
 
@@ -5221,9 +5324,15 @@ def divide(a: float, b: float) -> float:
     return a / b  # mypy biladi bu erga hech qachon yetib kelmasligini
 ```
 
+**Intervyuda shunday ayting:** "CI'da mypy yoki pyright (yoki yangi, tezkor vositalar) ishga tushiraman. Mavjud loyihada qat'iylikni bosqichma-bosqich oshiraman: avval yangi modullar `strict`, keyin eskilari. `Any` va `# type: ignore` ni kam va sababi bilan ishlataman."
+
 ---
 
-## 97. Python'da `Reactive Programming` / Reactive Programming
+## Q80. Python'da `Reactive Programming` / Reactive Programming
+
+**Oddiy qilib aytganda:** Reaktiv dasturlash — ma'lumotni **oqim** sifatida ko'rish: hodisalar (klik, xabar, narx o'zgarishi) kelib turadi va siz ularga 'filtrla, o'zgartir, birlashtir' kabi amallarni zanjir qilib qo'llaysiz. Python'da RxPY yoki async generatorlar bilan qilinadi.
+
+**Batafsilroq:**
 
 **EN:** Reactive programming with observables and streams enables declarative async data flow.
 
@@ -5318,9 +5427,15 @@ subscription.unsubscribe()
 prices.emit(300.0)    # hech kim ko'rmaydi
 ```
 
+**Intervyuda shunday ayting:** "Reaktiv yondashuv murakkab hodisa oqimlari (debounce, oynali agregatlar, bir nechta manbani birlashtirish) uchun foydali. Oddiy holatlarda asyncio, async generatorlar va navbatlar yetarli va jamoa uchun tushunarliroq — qo'shimcha kutubxona o'rganish shart emas."
+
 ---
 
-## 98. Python'da `__reduce__` va maxsus seriallashtirish / Custom serialization
+## Q81. Python'da `__reduce__` va maxsus seriallashtirish / Custom serialization
+
+**Oddiy qilib aytganda:** `__reduce__` — obyekt pickle qilinganda 'meni qanday qayta yaratish kerak' degan ko'rsatma beradi. Ulanish yoki fayl kabi saqlab bo'lmaydigan atributlari bor obyektlarni to'g'ri seriyalash uchun kerak.
+
+**Batafsilroq:**
 
 **EN:** `__reduce__` and `__reduce_ex__` control how objects are pickled for serialization.
 
@@ -5389,70 +5504,15 @@ print(r.name, r_copy.name, r_deep.name)
 # database  database_copy  database_deep_copy
 ```
 
----
-
-## 99. Python'da `PEP 695` — Type Parameter Syntax (Python 3.12+) / New style generics
-
-**EN:** Python 3.12 introduces new syntax for type parameters, making generics more readable.
-
-**UZB:** Python 3.12 tip parametrlari uchun yangi sintaksis kiritadi, genericslarni yanada o'qiluvchan qiladi.
-
-```python
-# Python 3.12+ yangi sintaksis / New syntax
-# Eski usul / Old style:
-from typing import TypeVar, Generic
-T = TypeVar('T')
-class Stack(Generic[T]): ...
-
-# Yangi usul / New style (Python 3.12+):
-# class Stack[T]:
-#     def push(self, item: T) -> None: ...
-#     def pop(self) -> T: ...
-
-# TypeAlias (Python 3.12)
-# type Point = tuple[float, float]
-# type Matrix = list[list[float]]
-
-# Hozirgi versiyalarda / Current versions (3.9+)
-from typing import TypeAlias
-
-Point: TypeAlias = tuple[float, float]
-Matrix: TypeAlias = list[list[float]]
-
-def dot_product(a: Point, b: Point) -> float:
-    return a[0] * b[0] + a[1] * b[1]
-
-def matrix_multiply(a: Matrix, b: Matrix) -> Matrix:
-    rows_a = len(a)
-    cols_a = len(a[0])
-    cols_b = len(b[0])
-
-    result = [[0.0] * cols_b for _ in range(rows_a)]
-
-    for i in range(rows_a):
-        for j in range(cols_b):
-            for k in range(cols_a):
-                result[i][j] += a[i][k] * b[k][j]
-
-    return result
-
-p1: Point = (3.0, 4.0)
-p2: Point = (1.0, 2.0)
-print(dot_product(p1, p2))  # 11.0
-
-m1: Matrix = [[1, 2], [3, 4]]
-m2: Matrix = [[5, 6], [7, 8]]
-result = matrix_multiply(m1, m2)
-print(result)  # [[19.0, 22.0], [43.0, 50.0]]
-
-# ParamSpec — decorator uchun / For decorators
-from typing import ParamSpec, Concatenate
-P = ParamSpec('P')
-```
+**Intervyuda shunday ayting:** "Seriyalashni boshqarish uchun odatda `__getstate__`/`__setstate__` soddaroq; `__reduce__` to'liq nazorat beradi. Xavfsizlik jihatidan aynan `__reduce__` pickle'ni xavfli qiladi — u ochilganda ixtiyoriy chaqiruvni bajarishi mumkin. Shuning uchun ishonchsiz pickle'ni hech qachon ochmayman."
 
 ---
 
-## 100. Python'da arxitektura naqshlari: Domain-Driven Design / DDD in Python
+## Q82. Python'da arxitektura naqshlari: Domain-Driven Design / DDD in Python
+
+**Oddiy qilib aytganda:** Domain-Driven Design — kodni biznes tili atrofida qurish: 'Buyurtma', 'To'lov', 'Ombor' kabi tushunchalar kodda ham xuddi shunday nomlanadi va ularning qoidalari bir joyda saqlanadi. Maqsad — murakkab biznesni tushunarli qismlarga bo'lish.
+
+**Batafsilroq:**
 
 **EN:** Domain-Driven Design organizes code around business domain concepts — Entities, Value Objects, Aggregates, Repositories, and Domain Services.
 
@@ -5645,6 +5705,8 @@ async def demo():
 import asyncio
 asyncio.run(demo())
 ```
+
+**Intervyuda shunday ayting:** "DDD'da agregatlar invariantlarni saqlaydi, repository'lar saqlashni yashiradi, domen qatlami framework va bazadan mustaqil. Python'da dataclass'lar, Protocol'lar va aniq modul chegaralari bilan quraman. Oddiy CRUD uchun bu ortiqcha — faqat murakkab domenlarda qo'llayman."
 
 ---
 

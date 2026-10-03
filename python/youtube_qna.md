@@ -1,341 +1,118 @@
-# Python — YouTube Intervyu Savol-Javoblari
+# Python — YouTube intervyularidan qo'shimcha savollar
 
-> YouTube'dan olingan Python intervyu savollari va kod misollari bilan to'liq javoblar. Takrorlanadigan savollar birlashtirilgan, faqat yangi nuqtalar alohida ko'rsatilgan.
-
----
-
-## Asosiy tushunchalar
-
-**1. Python'ning asosiy xususiyatlari**
-Oddiyligi, o'qilishi osonligi, ochiq kodli, cross-platform, obyektga yo'naltirilgan, **dinamik tiplash** (tur oldindan e'lon qilinmaydi) va **interpretatsiyalanuvchi** til.
-```python
-x = 5        # int
-x = "salom"  # endi str — tur avtomatik aniqlanadi
-```
-
-**2. Interpreted til**
-Kod avval bytecode'ga (`.pyc`) aylantiriladi, so'ng Python Virtual Machine tomonidan bajariladi — C/C++ kabi to'g'ridan-to'g'ri mashina kodiga kompilyatsiya qilinmaydi. Sekinroq, lekin platformalararo ishlaydi.
-
-**3. PEP8**
-Kod uslubi qo'llanmasi: 4 bo'shliq indentatsiya, `snake_case` o'zgaruvchilar, `PascalCase` klasslar, ~79 belgi qator uzunligi. `flake8`, `black` avtomatik tekshiradi.
-
-**4. Xotirani boshqarish**
-**Reference counting** + **garbage collector (gc modul)**. Har bir obyektga necha joyda murojaat qilinayotgani hisoblanadi; hisob 0 ga tushganda xotira bo'shatiladi. `gc` moduli circular reference'larni alohida aniqlaydi.
-
-**5. Data types**
-Numeric (`int`, `float`, `complex`), Sequence (`list`, `tuple`, `str`), Mapping (`dict`), Set (`set`, `frozenset`), Boolean (`bool`), None type.
+> **Nima bu:** YouTube'dagi Python intervyularida tez-tez beriladigan, lekin boshqa sahifalarda yo'q savollar. Takrorlanmasligi uchun qolganlari boshqa joyda: tiplar, `is`/`==`, copy/deepcopy, decorator, generator, lambda, `*args`/`**kwargs`, dunder metodlar, `__new__`/`__init__`, istisnolar, `with`, iteratorlar, comprehension, GIL, thread/process, LEGB, monkey patching — `python/basics.md`; MRO va metod turlari — `python/oop.md`; o'zgaruvchan standart argument va xotira sizishi — `practical/python.md`; rekursiya va chuqurlik chegarasi — `dsa.md`.
+> **Har bir javob tartibi:** oddiy tilda → batafsilroq (misol bilan) → intervyuda qanday aytasiz → esda tuting.
 
 ---
 
-## List, Tuple, Set, Mutable/Immutable
+## Q1. PEP 8 nima va kod uslubini qanday avtomatik saqlaysiz? / What is PEP 8 and how do you enforce code style automatically?
 
-**List, tuple va set farqi**
-- List — tartiblangan, mutable
-- Tuple — tartiblangan, immutable
-- Set — tartiblanmagan, noyob elementlar
+**Oddiy qilib aytganda:** PEP 8 — Python kodini qanday yozish bo'yicha umumiy kelishuv: nomlar (`snake_case` funksiyalar, `PascalCase` klasslar), bo'sh joylar, qator uzunligi, importlar tartibi. Hamma bir xil uslubda yozsa, begona kodni o'qish o'z kodingizni o'qigandek oson bo'ladi.
+
+**Batafsilroq:**
 
 ```python
-my_list = [1, 2, 3]
-my_list[0] = 100        # ishlaydi — mutable
+# ❌
+def CalcTotal( Items ):
+    Result=0
+    for i in Items : Result+=i.Price
+    return Result
 
-my_tuple = (1, 2, 3)
-my_tuple[0] = 100        # TypeError — immutable
+# ✅ PEP 8
+def calc_total(items: list[Item]) -> Decimal:
+    return sum((item.price for item in items), start=Decimal("0"))
 ```
-Tuple tezroq ishlaydi, o'zgarmas ma'lumot uchun mos, dictionary kalit sifatida ishlatilishi mumkin (list — yo'q).
 
-**Mutable va Immutable**
-Mutable: list, dict, set. Immutable: string, tuple, int, float, bool, frozenset.
+```toml
+# pyproject.toml — uslub va lint bitta tezkor vositada
+[tool.ruff]
+line-length = 100
 
-**is vs ==**
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]   # pycodestyle, pyflakes, importlar, bugbear, pyupgrade
+```
+
+```bash
+ruff format .      # formatlash
+ruff check --fix . # lint + avtomatik tuzatish
+```
+
+**Intervyuda shunday ayting:** "Uslub haqida bahslashmayman — uni vositaga topshiraman: ruff (yoki black + isort + flake8) pre-commit va CI'da. Shunda kod ko'rigi uslubga emas, mantiqqa qaratiladi. PEP 8 — qo'llanma, dogma emas: jamoaning kelishuvi (masalan, qator uzunligi) `pyproject.toml` da yozilgan bo'ladi."
+
+**Esda tuting:** PEP 20 ("The Zen of Python", `import this`) — PEP 8 ortidagi falsafa: "Readability counts". Manba: [PEP 8](https://peps.python.org/pep-0008/).
+
+## Q2. Python'da argumentlar qiymat bo'yicha uzatiladimi yoki havola bo'yicha? / Are Python arguments passed by value or by reference?
+
+**Oddiy qilib aytganda:** hech biri — Python'da **obyektga havola nusxasi** uzatiladi ("pass by object reference"). Funksiya ichida ro'yxatni **o'zgartirsangiz** (`append`), tashqaridagi ro'yxat ham o'zgaradi — chunki obyekt bitta. Lekin parametrga **yangi qiymat bersangiz** (`x = [...]`), bu faqat mahalliy nomni boshqa obyektga yo'naltiradi, tashqaridagi o'zgarmaydi.
+
+**Batafsilroq:**
+
 ```python
-a = [1, 2, 3]
-b = [1, 2, 3]
-print(a == b)  # True — qiymatlar bir xil
-print(a is b)  # False — xotirada boshqa obyektlar
-c = a
-print(a is c)  # True — bir xil obyektga ishora
+def add_item(items: list[str]) -> None:
+    items.append("yangi")        # obyektning o'zini o'zgartiradi → tashqarida ham ko'rinadi
+
+def replace(items: list[str]) -> None:
+    items = ["butunlay", "boshqa"]   # faqat mahalliy nom yangi obyektga ishora qiladi
+
+cart = ["olma"]
+add_item(cart);  print(cart)    # ['olma', 'yangi']
+replace(cart);   print(cart)    # ['olma', 'yangi'] — o'zgarmadi
+
+def increment(n: int) -> None:
+    n += 1                       # int o'zgarmas → yangi obyekt yaratiladi, tashqarida ta'sir yo'q
 ```
 
-**Shallow vs Deep copy**
+**Intervyuda shunday ayting:** "Python 'call by sharing' modelida ishlaydi: funksiya obyektga havolani oladi. O'zgaruvchan obyektni joyida o'zgartirish chaqiruvchiga ko'rinadi, nomni qayta bog'lash esa yo'q. Kutilmagan yon ta'sirlardan qochish uchun funksiyalarda kiruvchi o'zgaruvchan argumentlarni o'zgartirmayman — yangi qiymat qaytaraman."
+
+**Esda tuting:** o'zgaruvchan standart argument (`def f(items=[])`) ham xuddi shu sababli xavfli — batafsil `practical/python.md` Q6.
+
+## Q3. `append` va `extend`, `remove`, `del` va `pop` farqi nima? / What is the difference between append and extend, and remove, del and pop?
+
+**Oddiy qilib aytganda:** qo'shish: `append(x)` — bitta elementni (hatto u ro'yxat bo'lsa ham) **bitta** element sifatida qo'shadi; `extend(xs)` — ro'yxatning **har bir** elementini alohida qo'shadi. O'chirish: `remove(x)` — **qiymati** bo'yicha birinchisini; `del lst[i]` — **indeksi** bo'yicha; `pop(i)` — indeks bo'yicha o'chiradi va **qaytaradi**.
+
+**Batafsilroq:**
+
 ```python
-import copy
-original = [[1, 2], [3, 4]]
+nums = [1, 2]
+nums.append([3, 4])   # [1, 2, [3, 4]]   — bitta element (ro'yxat)
+nums = [1, 2]
+nums.extend([3, 4])   # [1, 2, 3, 4]     — har biri alohida
 
-shallow = copy.copy(original)
-shallow[0][0] = 100
-print(original)  # [[100, 2], [3, 4]] — ichki listlar umumiy
-
-deep = copy.deepcopy(original)
-deep[0][0] = 999
-print(original)  # [[100, 2], [3, 4]] — o'zgarmadi, mustaqil nusxa
+fruits = ["olma", "nok", "olma", "uzum"]
+fruits.remove("olma")     # birinchi "olma" o'chadi; yo'q bo'lsa ValueError
+del fruits[0]             # indeks bo'yicha; qaytarmaydi; kesma ham mumkin: del fruits[1:3]
+last = fruits.pop()       # oxirgisini o'chirib qaytaradi (O(1))
+first = fruits.pop(0)     # boshidan — O(n), navbat uchun collections.deque
 ```
 
-**Append vs Extend**
+**Intervyuda shunday ayting:** "`append` — bitta obyekt, `extend` — iterable'ning elementlari. `remove` qiymat bo'yicha va birinchi moslikni, `del` indeks yoki kesma bo'yicha, `pop` indeks bo'yicha o'chiradi va qiymatni qaytaradi. Boshidan tez-tez o'chirish kerak bo'lsa — `deque.popleft()`, chunki `list.pop(0)` barcha elementlarni suradi."
+
+**Esda tuting:** ro'yxatni aylanib chiqayotganda undan element o'chirmang — elementlar o'tkazib yuboriladi. Buning o'rniga yangi ro'yxat yarating: `[x for x in xs if keep(x)]`.
+
+## Q4. Ro'yxatdan dublikatlarni tartibni saqlagan holda qanday olib tashlaysiz? / How do you remove duplicates from a list while preserving order?
+
+**Oddiy qilib aytganda:** `set(items)` dublikatlarni olib tashlaydi, lekin **tartibni buzadi**. Tartib muhim bo'lsa, `dict.fromkeys(items)` ishlatiladi: lug'at kalitlari takrorlanmaydi va qo'shilish tartibini eslab qoladi.
+
+**Batafsilroq:**
+
 ```python
-lst = [1, 2, 3]
-lst.append([4, 5])   # [1, 2, 3, [4, 5]] — butun list bitta element sifatida
+emails = ["b@x.uz", "a@x.uz", "b@x.uz", "c@x.uz", "a@x.uz"]
 
-lst2 = [1, 2, 3]
-lst2.extend([4, 5])  # [1, 2, 3, 4, 5] — har bir element alohida
+list(set(emails))              # tartib kafolatlanmagan
+list(dict.fromkeys(emails))    # ['b@x.uz', 'a@x.uz', 'c@x.uz'] — birinchi uchragan tartibda
+
+# Kalit bo'yicha (masalan, katta-kichik harfsiz) — o'zgaruvchan yo'l bilan
+def unique_by(items, key):
+    seen = set()
+    for item in items:
+        k = key(item)
+        if k not in seen:
+            seen.add(k)
+            yield item
+
+list(unique_by(["Ali@x.uz", "ali@x.uz"], key=str.casefold))   # ['Ali@x.uz']
 ```
 
-**Dublikatlarni o'chirish (dict.fromkeys())**
-```python
-lst = [3, 1, 2, 3, 1, 4]
-noyob = list(dict.fromkeys(lst))
-print(noyob)  # [3, 1, 2, 4] — tartib saqlanadi (set() esa tartibni kafolatlamaydi)
-```
+**Intervyuda shunday ayting:** "Tartib muhim bo'lmasa — `set`, muhim bo'lsa — `dict.fromkeys` (3.7+ dan lug'at tartibi kafolatlangan), ikkalasi ham O(n). Maxsus kalit bo'yicha — `seen` to'plami bilan generator. Elementlar hashlanmaydigan bo'lsa (masalan, lug'atlar), kalit sifatida ularning hashlanadigan qismini olaman."
 
-**Dict vs List**
-Dict xesh-jadval (hash table) orqali ishlaydi — qidiruv O(1), list esa O(n).
-
----
-
-## Funksiyalar va OOP
-
-**Decorators**
-```python
-def my_decorator(func):
-    def wrapper(*args, **kwargs):
-        print("Funksiyadan oldin")
-        result = func(*args, **kwargs)
-        print("Funksiyadan keyin")
-        return result
-    return wrapper
-
-@my_decorator
-def salom():
-    print("Salom!")
-```
-
-**Decorator chaining**
-```python
-def bold(func):
-    def wrapper(): return f"<b>{func()}</b>"
-    return wrapper
-
-def italic(func):
-    def wrapper(): return f"<i>{func()}</i>"
-    return wrapper
-
-@bold
-@italic
-def matn():
-    return "Salom"
-
-print(matn())  # <b><i>Salom</i></b>
-```
-Pastdan yuqoriga qarab qo'llaniladi (italic avval, keyin bold).
-
-**Generators va yield**
-```python
-def sanagich(n):
-    i = 0
-    while i < n:
-        yield i
-        i += 1
-```
-Barcha qiymatlarni xotirada saqlamaydi — `next()` chaqirilganda birma-bir hisoblab beradi.
-
-**Lambda funksiyalar**
-```python
-kvadrat = lambda x: x ** 2
-sorted([(1,'b'),(2,'a')], key=lambda x: x[1])
-```
-
-**Metodlar turlari (instance/class/static)**
-```python
-class Misol:
-    def instance_method(self): return "obyektga bog'liq"
-    @classmethod
-    def class_method(cls): return "klassga bog'liq"
-    @staticmethod
-    def static_method(): return "hech nimaga bog'liq emas"
-```
-
-**MRO (Method Resolution Order)**
-```python
-class A:
-    def salom(self): return "A"
-class B(A):
-    def salom(self): return "B"
-class C(A):
-    def salom(self): return "C"
-class D(B, C):
-    pass
-
-print(D().salom())   # "B"
-print(D.__mro__)     # (D, B, C, A, object)
-```
-Python **C3 linearization** algoritmi ishlatadi — diamond problem'da qaysi metod chaqirilishini aniqlaydi.
-
-**Dunder/Magic metodlar**
-```python
-class Vektor:
-    def __init__(self, x, y): self.x, self.y = x, y
-    def __add__(self, other): return Vektor(self.x+other.x, self.y+other.y)
-    def __str__(self): return f"Vektor({self.x}, {self.y})"
-    def __eq__(self, other): return self.x==other.x and self.y==other.y
-```
-`__init__`, `__str__`, `__len__`, `__getitem__`, `__eq__`, `__add__` — operator overloading imkonini beradi.
-
-**__init__ vs __new__**
-```python
-class Misol:
-    def __new__(cls, *args, **kwargs):
-        return super().__new__(cls)   # obyektni YARATADI
-    def __init__(self, qiymat):
-        self.qiymat = qiymat          # obyektni SOZLAYDI
-```
-`__new__` deyarli hech qachon override qilinmaydi (faqat immutable turlarni meros olishda kerak bo'ladi).
-
-**args va kwargs**
-```python
-def funksiya(*args, **kwargs):
-    print(args)    # tuple: pozitsion argumentlar
-    print(kwargs)  # dict: nomlangan argumentlar
-
-funksiya(1, 2, 3, ism="Ali", yosh=25)
-# (1, 2, 3)
-# {'ism': 'Ali', 'yosh': 25}
-```
-
-**Pass by value vs Pass by reference**
-Python aslida **"pass by object reference"**:
-```python
-def func1(x):
-    x = x + 1
-a = 5
-func1(a)
-print(a)  # 5 — o'zgarmadi (int immutable)
-
-def func2(lst):
-    lst.append(4)
-b = [1, 2, 3]
-func2(b)
-print(b)  # [1, 2, 3, 4] — o'zgardi (list mutable)
-```
-
----
-
-## Exception handling, Context managers, Recursion
-
-**Exception handling**
-```python
-try:
-    result = 10 / 0
-except ZeroDivisionError as e:
-    print(f"Xato: {e}")
-else:
-    print("Xatolik bo'lmadi")  # faqat try muvaffaqiyatli bo'lsa
-finally:
-    print("Har doim bajariladi")
-```
-
-**With statement**
-```python
-with open("fayl.txt", "r") as f:
-    content = f.read()
-# blok tugagach fayl avtomatik yopiladi — __enter__/__exit__ protokoli
-```
-
-**Recursion**
-```python
-def faktorial(n):
-    if n <= 1:          # base case
-        return 1
-    return n * faktorial(n - 1)
-```
-
----
-
-## Iterators, Comprehension, GIL
-
-**Iterators va Iterables**
-```python
-my_list = [1, 2, 3]
-it = iter(my_list)
-next(it)  # 1
-next(it)  # 2
-```
-Iterable — `__iter__` metodiga ega. Iterator — `__iter__` + `__next__` ga ega. Har bir generator — iterator.
-
-**List comprehension**
-```python
-kvadratlar = [x**2 for x in range(10) if x % 2 == 0]
-```
-
-**GIL (Global Interpreter Lock)**
-Bir vaqtning o'zida faqat bitta thread Python bytecode bajaradi. CPU-bound vazifalar uchun `multiprocessing` (GIL cheklovi yo'q), I/O-bound uchun `threading` foydali (I/O kutganda GIL bo'shatiladi).
-
-**Multithreading vs Multiprocessing**
-- Multithreading — bitta jarayon, umumiy xotira, GIL tufayli CPU-bound'da haqiqiy parallellik yo'q. I/O-bound uchun mos.
-- Multiprocessing — alohida jarayonlar, o'z xotirasi/interpreteri, GIL cheklovi yo'q. CPU-bound uchun mos, lekin IPC xarajati bor.
-
-**Namespace (LEGB)**
-Local → Enclosing → Global → Built-in — o'zgaruvchi qidirish tartibi.
-
-**Monkey patching**
-```python
-class Sinf:
-    def salom(self): return "Salom"
-
-def yangi_salom(self): return "Yangi salom!"
-Sinf.salom = yangi_salom  # runtime'da metodni almashtirish
-```
-
----
-
-## Muhim "gotcha"lar
-
-**Mutable default argument trap**
-```python
-def qoshish(item, lst=[]):   # XATOLIK
-    lst.append(item)
-    return lst
-# qoshish(1) -> [1]; qoshish(2) -> [1, 2]  <- kutilmagan!
-
-def qoshish_togri(item, lst=None):
-    if lst is None:
-        lst = []
-    lst.append(item)
-    return lst
-```
-Default argument funksiya **aniqlanganda bir marta** yaratiladi — har chaqiriqda saqlanib qoladi.
-
-**O'chirish usullari: remove, del, pop**
-```python
-lst = [1, 2, 3, 2]
-lst.remove(2)   # qiymat bo'yicha, birinchi topilganini -> [1, 3, 2]
-del lst[0]      # indeks bo'yicha -> [3, 2]
-lst.pop()       # oxirgi elementni o'chirib qaytaradi
-```
-
----
-
-## Modullar, Frameworklar
-
-**Modullar va paketlar**
-Modul — bitta `.py` fayl. Paket — `__init__.py`ga ega papka.
-
-**Built-in funksiyalar**
-`len()`, `type()`, `range()`, `map()`, `filter()`, `zip()`, `sorted()`, `enumerate()`, `isinstance()`.
-
-**Xotira sizib chiqishi (memory leaks)**
-Sabablari: circular reference (`__del__` bilan), global cache'larda cheksiz saqlash, yopilmagan fayl/ulanishlar. Yechim: `weakref`, `with` statement, `tracemalloc`/`objgraph` profiling.
-
-**Kod samaradorligini oshirish**
-To'g'ri data structure tanlash (qidiruv uchun `set`/`dict`), list comprehension, `"".join()` (string `+=` o'rniga), generatorlar (xotira tejash), `cProfile`/`timeit` bilan bottleneck aniqlash.
-```python
-# Yomon:
-result = ""
-for i in range(10000): result += str(i)
-# Yaxshi:
-result = "".join(str(i) for i in range(10000))
-```
-
-**Frameworklar**
-Django (to'liq web framework), Flask (yengil), Pandas (ma'lumot tahlili), TensorFlow/PyTorch (ML), NumPy (ilmiy hisoblash), FastAPI (zamonaviy API — batafsil `python/fastapi_youtube_qna.md` faylida).
-
-**Python'ning boshqa tillardan farqi**
-Java/C++ ga nisbatan: statik tiplashsiz, kod qisqaroq. JavaScript'ga nisbatan: indentatsiya majburiy, GIL tufayli haqiqiy parallel threading yo'q. "Batteries included" falsafasi — boy standart kutubxona.
+**Esda tuting:** ma'lumot bazadan kelsa, dublikatni ilovada emas, so'rovda (`DISTINCT`) yoki unique constraint bilan hal qilish yaxshiroq.

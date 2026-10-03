@@ -191,7 +191,7 @@ Kanal 1957 xabar davomida bitta katta seriya sifatida 8 ta loyihani alohida qism
 - Tajriba yo'qligida: Upwork/Fiverr frilanserlik, do'stlar/oila uchun bepul tahlil
 - Ish qidirish uchun Telegram kanallari (@jobs_SQL, @getjobss va h.k.) va firibgar "pul so'ragan" e'lonlardan ogohlik
 
-**Monetizatsiya g'oyalari:** frilансing, onlayn kurs sotish, texnik blog (Medium), YouTube, affiliate marketing, dashboard/shablon sotish (Gumroad), pullik community
+**Monetizatsiya g'oyalari:** frilansing, onlayn kurs sotish, texnik blog (Medium), YouTube, affiliate marketing, dashboard/shablon sotish (Gumroad), pullik community
 
 **Karyera yo'nalishlari:** Data Analyst, BI Analyst, Product/Marketing/Financial/Risk & Fraud Analyst, Analytics Engineer, Analytics Consultant — har biriga xos ko'nikma va maosh (LPA) ma'lumotlari bilan; 2025 tendensiyasi — umumiy "Data Analyst" o'rniga soha-spetsifik unvonlarga yo'naltirilish
 

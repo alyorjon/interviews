@@ -79,3 +79,61 @@ export interface Catalog {
   nearDuplicates: NearDuplicate[];
   summary: AuditSummary;
 }
+
+/*
+ * Static, CDN-cacheable bundle consumed by the web client. Only fields the UI
+ * renders are kept, so each shard stays small and identical for every user.
+ */
+export interface StudyCardData {
+  id: string;
+  question: string;
+  /** Raw Markdown answer from the source; empty when the source has none. */
+  answer: string;
+  difficulty: Difficulty;
+  topic: string;
+  page: string;
+  options?: string[];
+  correctOption?: string;
+}
+
+export interface ManifestPage {
+  slug: string;
+  title: string;
+  sourcePath: string;
+  cardCount: number;
+  /** Relative URL of the page shard, content-hashed and immutable. */
+  file: string;
+}
+
+export interface ManifestTopic {
+  id: string;
+  label: string;
+  cardCount: number;
+  /** Relative URL of the topic's review shard, content-hashed and immutable. */
+  file: string;
+  pages: ManifestPage[];
+}
+
+export interface StaticManifest {
+  schemaVersion: 2;
+  version: string;
+  generatedAt: string;
+  pageCount: number;
+  cardCount: number;
+  topics: ManifestTopic[];
+}
+
+export interface StaticPage {
+  slug: string;
+  title: string;
+  sourcePath: string;
+  topic: string;
+  markdown: string;
+  cards: StudyCardData[];
+}
+
+export interface StaticTopic {
+  id: string;
+  label: string;
+  cards: StudyCardData[];
+}

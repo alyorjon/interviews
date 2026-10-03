@@ -1,9 +1,10 @@
-import type { ApiOptions } from "./config.js";
-import { parseTelegramUserId } from "./telegram-user-id.js";
+import { timingSafeEqual } from "node:crypto";
+
+import { type ApiConfig, type ApiOptions, resolveConfig } from "./config.js";
 
 export type BotStatus = "disabled" | "starting" | "running" | "error" | "stopped";
 
-interface TelegramUpdate {
+export interface TelegramUpdate {
   update_id: number;
   message?: { from?: { id?: number }; chat?: { id?: number; type?: string }; text?: string };
 }
@@ -24,28 +25,44 @@ function isPermanentClientError(error: unknown): error is TelegramCallError {
   return error instanceof TelegramCallError && error.status >= 400 && error.status < 500 && error.status !== 429;
 }
 
+export const WEBHOOK_PATH = "/api/telegram/webhook";
+
+/**
+ * Telegram integration with two delivery modes:
+ * - `polling`: long-polls getUpdates. Telegram allows ONE poller per token, so
+ *   run exactly one replica in this mode.
+ * - `webhook`: Telegram pushes updates to WEBHOOK_PATH; any number of stateless
+ *   replicas behind a load balancer can answer them.
+ */
 export class TelegramBotService {
   private status: BotStatus = "disabled";
   private abortController?: AbortController;
   private offset = 0;
   private startupNotificationDelivered = false;
   private runtimeManaged = false;
+  private token = "";
+  private publicUrl = "";
+  private readonly config: ApiConfig;
 
-  constructor(private readonly options: ApiOptions) {}
+  constructor(private readonly options: ApiOptions = {}, config?: ApiConfig) {
+    this.config = config ?? resolveConfig(options);
+  }
 
   getStatus(): BotStatus {
     return this.status;
   }
 
+  get mode(): ApiConfig["botMode"] {
+    return this.config.botMode;
+  }
+
   onModuleInit(): void {
     this.runtimeManaged = true;
-    const token = this.options.botToken ?? process.env.BOT_TOKEN ?? "";
-    const publicUrl = this.options.publicUrl ?? process.env.PUBLIC_URL ?? "";
-    if (!token.trim()) {
+    if (this.config.botMode === "off" || !this.config.botToken) {
       this.status = "disabled";
       return;
     }
-    this.startBot(token, publicUrl);
+    this.startBot(this.config.botToken, this.config.publicUrl);
   }
 
   onModuleDestroy(): void {
@@ -62,21 +79,53 @@ export class TelegramBotService {
       this.status = "error";
       return;
     }
-    const allowedUserId = this.allowedUserId();
-    if (allowedUserId === undefined) {
+    if (this.config.botMode === "webhook" && !/^[A-Za-z0-9_-]{16,256}$/.test(this.config.webhookSecret)) {
       this.status = "error";
       return;
     }
+    this.token = token;
+    this.publicUrl = publicUrl;
     this.status = "starting";
     this.offset = 0;
     this.abortController = new AbortController();
-    void this.poll(token, publicUrl, allowedUserId, this.abortController.signal);
+    const signal = this.abortController.signal;
+    void (this.config.botMode === "webhook" ? this.registerWebhook(signal) : this.poll(signal));
   }
 
   stopBot(): void {
     this.abortController?.abort();
     this.abortController = undefined;
     if (this.status !== "disabled") this.status = "stopped";
+  }
+
+  /** Constant-time check of Telegram's X-Telegram-Bot-Api-Secret-Token header. */
+  isWebhookSecretValid(received: unknown): boolean {
+    const expected = Buffer.from(this.config.webhookSecret);
+    if (this.config.botMode !== "webhook" || !expected.length || typeof received !== "string") return false;
+    const actual = Buffer.from(received);
+    return actual.length === expected.length && timingSafeEqual(actual, expected);
+  }
+
+  /** Processes one update; used by both the poller and the webhook controller. */
+  async handleUpdate(update: TelegramUpdate, signal = this.abortController?.signal ?? AbortSignal.timeout(10_000)): Promise<void> {
+    const message = update.message;
+    const chatId = message?.chat?.id;
+    if (chatId === undefined || !/^\/start(?:@\w+)?(?:\s|$)/.test(message?.text ?? "")) return;
+    const fromId = message?.from?.id;
+    const allowed = message?.chat?.type === "private" && fromId === chatId && this.isAllowedUser(fromId);
+    await this.call("sendMessage", allowed ? {
+      chat_id: chatId,
+      text: "IT bilimlaringizni takrorlash portalini oching.",
+      reply_markup: { inline_keyboard: [[{ text: "Portalni ochish", web_app: { url: this.publicUrl } }]] },
+    } : {
+      chat_id: chatId,
+      text: "Bu bot shaxsiy foydalanish uchun yopiq.",
+    }, signal);
+  }
+
+  private isAllowedUser(userId: number | undefined): boolean {
+    if (userId === undefined) return false;
+    return this.config.allowedUserIds.size === 0 || this.config.allowedUserIds.has(userId);
   }
 
   private isValidPublicUrl(value: string): boolean {
@@ -88,47 +137,51 @@ export class TelegramBotService {
     }
   }
 
-  private allowedUserId(): number | undefined {
-    const raw = this.options.allowedTelegramUserId ?? process.env.ALLOWED_TELEGRAM_USER_ID ?? "";
-    return parseTelegramUserId(raw);
+  /** Default menu button for an open portal; per-chat buttons for an allowlist. */
+  private async setupMenuButton(signal: AbortSignal): Promise<void> {
+    const menuButton = { type: "web_app", text: "Portalni ochish", web_app: { url: this.publicUrl } };
+    const chats = [...this.config.allowedUserIds];
+    if (!chats.length) {
+      await this.retrySetup("setChatMenuButton", { menu_button: menuButton }, signal);
+      return;
+    }
+    for (const chatId of chats) await this.retrySetup("setChatMenuButton", { chat_id: chatId, menu_button: menuButton }, signal);
   }
 
-  private async poll(token: string, publicUrl: string, allowedUserId: number, signal: AbortSignal): Promise<void> {
-    let retryMs = Math.max(1, this.options.botRetryBaseMs ?? 1_000);
+  private async registerWebhook(signal: AbortSignal): Promise<void> {
     try {
-      await this.retrySetup(token, "setChatMenuButton", {
-        chat_id: allowedUserId,
-        menu_button: { type: "web_app", text: "Portalni ochish", web_app: { url: publicUrl } },
+      await this.setupMenuButton(signal);
+      // Idempotent: every replica may call it on boot with identical arguments.
+      await this.retrySetup("setWebhook", {
+        url: new URL(WEBHOOK_PATH, this.publicUrl).toString(),
+        secret_token: this.config.webhookSecret,
+        allowed_updates: ["message"],
+        max_connections: 100,
       }, signal);
-      await this.notifyStartup(token, allowedUserId, signal);
+      if (!signal.aborted) this.status = "running";
+    } catch {
+      if (!signal.aborted) this.status = "error";
+    }
+  }
+
+  private async poll(signal: AbortSignal): Promise<void> {
+    const baseRetryMs = Math.max(1, this.options.botRetryBaseMs ?? 1_000);
+    let retryMs = baseRetryMs;
+    try {
+      await this.setupMenuButton(signal);
+      await this.notifyStartup(signal);
       if (signal.aborted) return;
       this.status = "running";
-      retryMs = Math.max(1, this.options.botRetryBaseMs ?? 1_000);
       while (!signal.aborted) {
         try {
-          const updates = await this.call<TelegramUpdate[]>(token, "getUpdates", {
+          const updates = await this.call<TelegramUpdate[]>("getUpdates", {
             offset: this.offset,
             timeout: 25,
             allowed_updates: ["message"],
           }, signal);
-          retryMs = Math.max(1, this.options.botRetryBaseMs ?? 1_000);
+          retryMs = baseRetryMs;
           for (const update of updates) {
-            const chatId = update.message?.chat?.id;
-            if (chatId !== undefined && /^\/start(?:@\w+)?(?:\s|$)/.test(update.message?.text ?? "")) {
-              const isAllowedPrivateChat = chatId === allowedUserId
-                && update.message?.from?.id === allowedUserId
-                && update.message?.chat?.type === "private";
-              await this.call(token, "sendMessage", isAllowedPrivateChat ? {
-                  chat_id: chatId,
-                  text: "IT bilimlaringizni takrorlash portalini oching.",
-                  reply_markup: {
-                    inline_keyboard: [[{ text: "Portalni ochish", web_app: { url: publicUrl } }]],
-                  },
-                } : {
-                  chat_id: chatId,
-                  text: "Bu bot shaxsiy foydalanish uchun yopiq.",
-                }, signal);
-            }
+            await this.handleUpdate(update, signal);
             this.offset = Math.max(this.offset, update.update_id + 1);
           }
         } catch (error) {
@@ -141,13 +194,14 @@ export class TelegramBotService {
           retryMs = Math.min(retryMs * 2, 30_000);
         }
       }
-    } catch (error) {
+    } catch {
       if (!signal.aborted) this.status = "error";
     }
   }
 
-  private async notifyStartup(token: string, allowedUserId: number, signal: AbortSignal): Promise<void> {
-    if (this.startupNotificationDelivered) return;
+  private async notifyStartup(signal: AbortSignal): Promise<void> {
+    const adminId = this.config.adminUserId;
+    if (this.startupNotificationDelivered || adminId === undefined) return;
     const configuredAttempts = this.options.startupNotificationMaxAttempts;
     const maximumAttempts = typeof configuredAttempts === "number"
       && Number.isSafeInteger(configuredAttempts)
@@ -157,10 +211,7 @@ export class TelegramBotService {
     let retryMs = Math.max(1, this.options.botRetryBaseMs ?? 1_000);
     for (let attempt = 1; attempt <= maximumAttempts && !signal.aborted; attempt += 1) {
       try {
-        await this.call(token, "sendMessage", {
-          chat_id: allowedUserId,
-          text: "Bilimxona ishga tushdi va foydalanishga tayyor.",
-        }, signal);
+        await this.call("sendMessage", { chat_id: adminId, text: "Bilimxona ishga tushdi va foydalanishga tayyor." }, signal);
         this.startupNotificationDelivered = true;
         this.emitEvent("telegram_startup_notification_delivered");
         return;
@@ -182,11 +233,11 @@ export class TelegramBotService {
     if (this.runtimeManaged) console.info(event);
   }
 
-  private async retrySetup(token: string, method: string, body: Record<string, unknown>, signal: AbortSignal): Promise<void> {
+  private async retrySetup(method: string, body: Record<string, unknown>, signal: AbortSignal): Promise<void> {
     let retryMs = Math.max(1, this.options.botRetryBaseMs ?? 1_000);
     while (!signal.aborted) {
       try {
-        await this.call(token, method, body, signal);
+        await this.call(method, body, signal);
         return;
       } catch (error) {
         if (signal.aborted) throw error;
@@ -197,9 +248,9 @@ export class TelegramBotService {
     }
   }
 
-  private async call<T = unknown>(token: string, method: string, body: Record<string, unknown>, signal: AbortSignal): Promise<T> {
+  private async call<T = unknown>(method: string, body: Record<string, unknown>, signal: AbortSignal): Promise<T> {
     const request = this.options.telegramFetch ?? fetch;
-    const response = await request(`https://api.telegram.org/bot${token}/${method}`, {
+    const response = await request(`https://api.telegram.org/bot${this.token}/${method}`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(body),

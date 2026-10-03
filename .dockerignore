@@ -18,3 +18,4 @@ graphify-out
 *.log
 *.sqlite*
 .DS_Store
+apps/web/public/data
